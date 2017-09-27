@@ -57,7 +57,7 @@ public class SquareSynth extends Synth {
                 }
                 double angularFrequency = i / (this.SAMPLE_RATE/this.note.getFrequency()) * 2.0 * Math.PI;
                 buffer[0] = (byte)(fadedAmplitude * (Math.sin(angularFrequency) >= 0 ? 1 : 0));
-                buffer[1] = (byte)(fadedAmplitude * (Math.sin(angularFrequency+2) >= 0 ? 1 : 0));
+                buffer[1] = (byte)(fadedAmplitude * (Math.sin(angularFrequency+1) >= 0 ? 1 : 0));
                 sdl.write(buffer, 0, 2);
             }
 

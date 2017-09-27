@@ -45,6 +45,7 @@ public class UIWindow extends javax.swing.JFrame {
         btnTest = new javax.swing.JButton();
         btnTest2 = new javax.swing.JButton();
         btnTest3 = new javax.swing.JButton();
+        btnTest4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,6 +70,13 @@ public class UIWindow extends javax.swing.JFrame {
             }
         });
 
+        btnTest4.setText("Random");
+        btnTest4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTest4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,16 +88,19 @@ public class UIWindow extends javax.swing.JFrame {
                 .addComponent(btnTest2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTest3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnTest4, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnTest3, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                    .addComponent(btnTest4, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnTest2, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                        .addComponent(btnTest3, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                        .addComponent(btnTest2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(340, Short.MAX_VALUE))
         );
@@ -108,6 +119,10 @@ public class UIWindow extends javax.swing.JFrame {
     private void btnTest3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest3ActionPerformed
         Instrument.shared.playKey(2);
     }//GEN-LAST:event_btnTest3ActionPerformed
+
+    private void btnTest4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest4ActionPerformed
+        Instrument.shared.playKey(3);
+    }//GEN-LAST:event_btnTest4ActionPerformed
 
     public void makeKeyAndVisible() {
         Gaudrophone.shared.keyWindow = this;
@@ -130,5 +145,6 @@ public class UIWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnTest;
     private javax.swing.JButton btnTest2;
     private javax.swing.JButton btnTest3;
+    private javax.swing.JButton btnTest4;
     // End of variables declaration//GEN-END:variables
 }

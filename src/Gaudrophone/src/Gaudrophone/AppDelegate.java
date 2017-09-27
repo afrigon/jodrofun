@@ -32,9 +32,11 @@ public class AppDelegate {
         Key sin = new Key(new Sound(new SinusSynth(note, 100)), null);
         Key square = new Key(new Sound(new SquareSynth(note, 100)), null);
         Key saw = new Key(new Sound(new SawSynth(note, 100)), null);
+        Key random = new Key(new Sound(new RandomSynth(100)), null);
         int index = Instrument.shared.addKey(sin);
         int index1 = Instrument.shared.addKey(square);
         int index2 = Instrument.shared.addKey(saw);
+        int index4 = Instrument.shared.addKey(random);
         UIWindow window = new UIWindow();
         window.makeKeyAndVisible();
     }

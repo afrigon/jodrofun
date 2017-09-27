@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 package Music;
-import Visual.KeyShape;
+import UIKit.KeyShape;
 /**
  *
  * @author frigon

@@ -33,9 +33,8 @@ import javax.sound.sampled.SourceDataLine;
  *
  * @author frigon
  */
-public class SawSynth extends Synth {
-    public SawSynth(Note note, double amplitude) {
-        this.note = note;
+public class RandomSynth extends Synth {
+    public RandomSynth(double amplitude) {
         this.amplitude = amplitude;
     }
     
@@ -55,10 +54,8 @@ public class SawSynth extends Synth {
 //                } else if (i > (this.LENGTH - this.FADE_OUT) * this.SAMPLE_RATE/1000) {
 //                    fadedAmplitude -= (this.amplitude/(this.FADE_OUT * this.SAMPLE_RATE/1000));
 //                }
-                double period = this.SAMPLE_RATE/this.note.getFrequency();
-                double time = i / period;
-                buffer[0] = (byte)(fadedAmplitude * (time - Math.floor(time)));
-                buffer[1] = (byte)(fadedAmplitude * (time+1 - Math.floor(time)));
+                buffer[0] = (byte)(fadedAmplitude * Math.random());
+                buffer[1] = (byte)(fadedAmplitude * (Math.random()+1));
                 sdl.write(buffer, 0, 2);
             }
 
