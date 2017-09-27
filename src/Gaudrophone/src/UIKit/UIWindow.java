@@ -21,12 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package gaudrophone.UIKit;
-import gaudrophone.Gaudrophone;
-import gaudrophone.Prototype;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.sampled.LineUnavailableException;
+package UIKit;
+import Gaudrophone.Gaudrophone;
+import Music.Instrument;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -46,13 +43,29 @@ public class UIWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         btnTest = new javax.swing.JButton();
+        btnTest2 = new javax.swing.JButton();
+        btnTest3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnTest.setText("This is a test");
+        btnTest.setText("SinWave C4");
         btnTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTestActionPerformed(evt);
+            }
+        });
+
+        btnTest2.setText("SquareWave C4");
+        btnTest2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTest2ActionPerformed(evt);
+            }
+        });
+
+        btnTest3.setText("SawWave C4");
+        btnTest3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTest3ActionPerformed(evt);
             }
         });
 
@@ -61,24 +74,40 @@ public class UIWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(191, 191, 191)
-                .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnTest2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnTest3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(197, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(91, 91, 91)
-                .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(264, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnTest3, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnTest2, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                        .addComponent(btnTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(340, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
-        Prototype.play(1000, 261.63f, 100);
+        Instrument.shared.playKey(0);
     }//GEN-LAST:event_btnTestActionPerformed
+
+    private void btnTest2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest2ActionPerformed
+        Instrument.shared.playKey(1);
+    }//GEN-LAST:event_btnTest2ActionPerformed
+
+    private void btnTest3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest3ActionPerformed
+        Instrument.shared.playKey(2);
+    }//GEN-LAST:event_btnTest3ActionPerformed
 
     public void makeKeyAndVisible() {
         Gaudrophone.shared.keyWindow = this;
@@ -99,5 +128,7 @@ public class UIWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTest;
+    private javax.swing.JButton btnTest2;
+    private javax.swing.JButton btnTest3;
     // End of variables declaration//GEN-END:variables
 }

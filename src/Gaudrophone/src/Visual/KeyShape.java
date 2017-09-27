@@ -21,13 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package gaudrophone;
-import gaudrophone.UIKit.UIWindow;
-import java.net.URL;
+package Visual;
 
-public class AppDelegate {
-    public static void main(String[] args) {
-        UIWindow window = new UIWindow();
-        window.makeKeyAndVisible();
-    }
+/**
+ *
+ * @author frigon
+ */
+public class KeyShape {
+    
 }

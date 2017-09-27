@@ -21,10 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package gaudrophone;
-import gaudrophone.UIKit.UIWindow;
-
-public class Gaudrophone {
-    public static Gaudrophone shared = new Gaudrophone();
-    public UIWindow keyWindow;
+package Music;
+import Visual.KeyShape;
+/**
+ *
+ * @author frigon
+ */
+public class Key {
+    private final Sound sound;
+    private final KeyShape shape;
+    
+    public Key(Sound sound, KeyShape shape) {
+        this.sound = sound;
+        this.shape = shape;
+    }
+    
+    public void play() {
+        this.sound.play();
+    }
 }
