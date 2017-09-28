@@ -33,8 +33,8 @@ import javax.sound.sampled.SourceDataLine;
  *
  * @author frigon
  */
-public class SinusSynth extends Synth {
-    public SinusSynth(Note note, double amplitude) {
+public class SineSynth extends Synth {
+    public SineSynth(Note note, double amplitude) {
         this.note = note;
         this.amplitude = amplitude;
     }

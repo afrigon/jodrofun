@@ -27,6 +27,6 @@ package UIKit;
  *
  * @author frigon
  */
-public class KeyShape {
+public class UIKey {
     
 }
