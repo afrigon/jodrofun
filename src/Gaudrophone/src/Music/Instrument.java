@@ -30,13 +30,10 @@ import java.util.ArrayList;
  * @author frigon
  */
 public class Instrument {
-    public static Instrument shared = new Instrument();
     private final ArrayList<Key> keys;
-    private final SoundPlayer player;
     
     public Instrument() {
         this.keys = new ArrayList<>();
-        this.player = new SoundPlayer();
     }
     
     public int addKey(Key key) {

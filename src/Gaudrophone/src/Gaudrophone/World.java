@@ -22,24 +22,18 @@
  * THE SOFTWARE.
  */
 package Gaudrophone;
-import Music.*;
-import Music.Synth.*;
-import UIKit.UIWindow;
 
-public class AppDelegate {
-    public static void main(String[] args) {
-        Note note = new Note(NoteName.C, 4);
-        Key sin = new Key(new Sound(new SineSynth(note, 100)), null);
-        Key square = new Key(new Sound(new SquareSynth(note, 100)), null);
-        Key saw = new Key(new Sound(new SawSynth(note, 100)), null);
-        Key random = new Key(new Sound(new RandomSynth(100)), null);
-        Key triangle = new Key(new Sound(new TriangleSynth(note, 100)), null);
-        int index = World.shared.instrument.addKey(sin);
-        int index1 = World.shared.instrument.addKey(square);
-        int index2 = World.shared.instrument.addKey(saw);
-        int index3 = World.shared.instrument.addKey(random);
-        int index4 = World.shared.instrument.addKey(triangle);
-        UIWindow window = new UIWindow();
-        window.makeKeyAndVisible();
+import Music.Instrument;
+
+/**
+ *
+ * @author frigon
+ */
+public class World {
+    public static World shared = new World(new Instrument());
+    public Instrument instrument;
+    
+    public World(Instrument instrument) {
+        this.instrument = instrument;
     }
 }

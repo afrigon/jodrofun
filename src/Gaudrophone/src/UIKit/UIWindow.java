@@ -24,14 +24,11 @@
 package UIKit;
 import Gaudrophone.Gaudrophone;
 import Gaudrophone.World;
-import Music.Instrument;
-import Music.Piano;
 
 public class UIWindow extends javax.swing.JFrame {
 
     public UIWindow() {
         this.initComponents();
-        this.drawWorld();
     }
 
     /**
@@ -117,11 +114,6 @@ public class UIWindow extends javax.swing.JFrame {
         jMenu5.setText("New");
 
         jMenuItem5.setText("Piano");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
         jMenu5.add(jMenuItem5);
 
         jMenu1.add(jMenu5);
@@ -133,11 +125,6 @@ public class UIWindow extends javax.swing.JFrame {
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.META_MASK));
         jMenuItem3.setText("Save");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.META_MASK));
@@ -236,37 +223,24 @@ public class UIWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
-        Instrument.shared.playKey(0);
+        World.shared.instrument.playKey(0);
     }//GEN-LAST:event_btnTestActionPerformed
 
     private void btnTest2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest2ActionPerformed
-        Instrument.shared.playKey(1);
+        World.shared.instrument.playKey(1);
     }//GEN-LAST:event_btnTest2ActionPerformed
 
     private void btnTest3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest3ActionPerformed
-        Instrument.shared.playKey(2);
+        World.shared.instrument.playKey(2);
     }//GEN-LAST:event_btnTest3ActionPerformed
 
     private void btnTest4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest4ActionPerformed
-        Instrument.shared.playKey(3);
+        World.shared.instrument.playKey(3);
     }//GEN-LAST:event_btnTest4ActionPerformed
 
-    private void btnTest5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTest5ActionPerformed
-        Instrument.shared.playKey(4);
-    }//GEN-LAST:event_btnTest5ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        World.shared = new World(new Piano());
-        this.drawWorld();
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void drawWorld() {
-        //this.resetWorld();
-    }
+    private void btnTest5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        World.shared.instrument.playKey(4);
+    }   
     
     public void makeKeyAndVisible() {
         Gaudrophone.shared.keyWindow = this;

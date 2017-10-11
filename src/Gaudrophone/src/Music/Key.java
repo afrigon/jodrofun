@@ -22,16 +22,16 @@
  * THE SOFTWARE.
  */
 package Music;
-import UIKit.UIKey;
+import UIKit.KeyShape;
 /**
  *
  * @author frigon
  */
 public class Key {
     private final Sound sound;
-    private final UIKey shape;
+    private final KeyShape shape;
     
-    public Key(Sound sound, UIKey shape) {
+    public Key(Sound sound, KeyShape shape) {
         this.sound = sound;
         this.shape = shape;
     }
