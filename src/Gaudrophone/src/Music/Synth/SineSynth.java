@@ -39,6 +39,15 @@ public class SineSynth extends Synth {
         this.amplitude = amplitude;
     }
     
+    public double getY(double time, double frequency) {
+        return this.getY(time, frequency, 0);
+    }
+    
+    public double getY(double time, double frequency, double phase) {
+        double angularFrequency = 2 * Math.PI * frequency ;
+        return Math.sin(angularFrequency * (time+phase));
+    } 
+    
     @Override
     public void play() {
         try {
@@ -47,17 +56,11 @@ public class SineSynth extends Synth {
             sdl.open(audioFormat, 4096*2);
             sdl.start();
 
+            double reducedSampleRate = this.SAMPLE_RATE/1000;
             byte[] buffer = new byte[2];
-            double fadedAmplitude = 0;
-            for(int i = 0; i < this.LENGTH * this.SAMPLE_RATE/1000; i++) {
-                if (i < FADE_IN * SAMPLE_RATE/1000) {
-                    fadedAmplitude += (this.amplitude/(this.FADE_IN * this.SAMPLE_RATE/1000));
-                } else if (i > (this.LENGTH - this.FADE_OUT) * this.SAMPLE_RATE/1000) {
-                    fadedAmplitude -= (this.amplitude/(this.FADE_OUT * this.SAMPLE_RATE/1000));
-                }
-                double angularFrequency = i / (this.SAMPLE_RATE/this.note.getFrequency()) * 2.0 * Math.PI;
-                buffer[0] = (byte)(fadedAmplitude * Math.sin(angularFrequency));
-                buffer[1] = (byte)(fadedAmplitude * Math.sin(angularFrequency+1));
+            for(int i = 0; i < this.LENGTH * reducedSampleRate; i++) {
+                buffer[0] = (byte)(amplitude * this.getY(i/reducedSampleRate, LENGTH));
+                buffer[1] = (byte)(amplitude * this.getY(i/reducedSampleRate, LENGTH, 1));
                 sdl.write(buffer, 0, 2);
             }
 

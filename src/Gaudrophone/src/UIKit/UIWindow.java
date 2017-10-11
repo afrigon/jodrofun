@@ -23,12 +23,15 @@
  */
 package UIKit;
 import Gaudrophone.Gaudrophone;
+import Gaudrophone.World;
 import Music.Instrument;
+import Music.Piano;
 
 public class UIWindow extends javax.swing.JFrame {
 
     public UIWindow() {
         this.initComponents();
+        this.drawWorld();
     }
 
     /**
@@ -47,7 +50,8 @@ public class UIWindow extends javax.swing.JFrame {
         btnTest5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -110,9 +114,17 @@ public class UIWindow extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.META_MASK));
-        jMenuItem1.setText("New");
-        jMenu1.add(jMenuItem1);
+        jMenu5.setText("New");
+
+        jMenuItem5.setText("Piano");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem5);
+
+        jMenu1.add(jMenu5);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.META_MASK));
         jMenuItem4.setText("Open");
@@ -247,6 +259,15 @@ public class UIWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        World.shared = new World(new Piano());
+        this.drawWorld();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void drawWorld() {
+        //this.resetWorld();
+    }
+    
     public void makeKeyAndVisible() {
         Gaudrophone.shared.keyWindow = this;
         
@@ -266,8 +287,8 @@ public class UIWindow extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
@@ -278,6 +299,7 @@ public class UIWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
