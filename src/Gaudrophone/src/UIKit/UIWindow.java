@@ -128,17 +128,9 @@ public class UIWindow extends javax.swing.JFrame {
     public void makeKeyAndVisible() {
         Gaudrophone.shared.keyWindow = this;
         
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            SwingUtilities.updateComponentTreeUI(this);
-        } catch (Exception e) {
-            System.err.println("Internal Look And Feel Setting Error.");
-            System.err.println(e);
-        }
-        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new UIWindow().setVisible(true);
+            this.setVisible(true);
         });
     }
 

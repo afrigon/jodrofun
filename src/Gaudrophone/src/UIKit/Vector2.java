@@ -54,6 +54,10 @@ public class Vector2 {
     }
     
     // Operators
+    public boolean equals(Vector2 otherVector) {
+        return x == otherVector.getX() && y == otherVector.getY();
+    }
+    
     public Vector2 add(Vector2 otherVector) {
         return new Vector2(x + otherVector.getX(), y + otherVector.getY());
     }
