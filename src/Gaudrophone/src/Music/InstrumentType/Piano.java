@@ -24,11 +24,17 @@
 package Music.InstrumentType;
 
 import Music.Instrument;
+import Music.Key;
+import Music.Sound;
+import Music.Envelope;
+import Music.Waveform.ComplexWaveform;
+import Music.Waveform.Sine;
+import Music.Waveform.Waveform;
 
-/**
- *
- * @author frigon
- */
 public class Piano extends Instrument {
-    
+    public Piano() {
+        ComplexWaveform wf = new ComplexWaveform(new Sine());
+        wf.addWave(1.0);
+        super.addKey(new Key(new Sound(wf, null), null));
+    }
 }

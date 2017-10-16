@@ -23,20 +23,20 @@
  */
 package Music;
 
-import Music.Waveform.Waveform;
-
-
-/**
- *
- * @author frigon
- */
-public class Sound {
-    public long startTime = -1;
-    public Waveform waveform;
-    public Envelope envelope;
+public class Envelope {
+    private double attack;
+    private double decay;
+    private double sustain;
+    private double release;
     
-    public Sound(Waveform waveform, Envelope envelope) {
-        this.waveform = waveform;
-        this.envelope = envelope;
+    public Envelope(double attack, double decay, double sustain, double release) {
+        this.attack = Math.max(0, attack);
+        this.decay = Math.max(0, decay);
+        this.sustain = Math.max(0, Math.min(1, sustain));
+        this.release = Math.max(0, release);
+    }
+    
+    public double getAmplitude(double time) {
+        return 1;
     }
 }

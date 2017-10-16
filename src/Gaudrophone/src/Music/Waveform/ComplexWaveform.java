@@ -21,22 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-import Music.Waveform.Waveform;
+import java.util.LinkedList;
 
-
-/**
- *
- * @author frigon
- */
-public class Sound {
-    public long startTime = -1;
-    public Waveform waveform;
-    public Envelope envelope;
+public class ComplexWaveform implements Waveform {
+    public LinkedList<Double> amplitudes;
+    public SimpleWaveform baseForm;
     
-    public Sound(Waveform waveform, Envelope envelope) {
-        this.waveform = waveform;
-        this.envelope = envelope;
+    public ComplexWaveform(SimpleWaveform baseForm) {
+        this.baseForm = baseForm;
+    }
+    
+    public void addWave(Double amplitude) {
+        this.amplitudes.add(amplitude);
+    }
+
+    @Override
+    public double getY(double amplitude, double frequency, double time) {
+        return this.getY(amplitude, frequency, time, 0);
+    }
+
+    @Override
+    public double getY(double amplitude, double frequency, double time, double phase) {
+        double totalY = 0;
+        for (int i = 0; i < this.amplitudes.size(); i++) {
+            totalY += this.baseForm.getY(amplitude * this.amplitudes.get(i), frequency * (i+1), time, phase);
+        }
+        return totalY;
     }
 }

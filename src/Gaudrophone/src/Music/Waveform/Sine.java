@@ -21,22 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-import Music.Waveform.Waveform;
-
-
-/**
- *
- * @author frigon
- */
-public class Sound {
-    public long startTime = -1;
-    public Waveform waveform;
-    public Envelope envelope;
+public class Sine extends SimpleWaveform {
+    @Override
+    public double getY(double amplitude, double frequency, double time) {
+        return this.getY(amplitude, frequency, time, 0);
+    }
     
-    public Sound(Waveform waveform, Envelope envelope) {
-        this.waveform = waveform;
-        this.envelope = envelope;
+    @Override
+    public double getY(double amplitude, double frequency, double time, double phase) {
+        double angularFrequency = 2 * Math.PI * frequency ;
+        return amplitude * Math.sin(angularFrequency * (time+phase));
     }
 }

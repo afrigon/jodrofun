@@ -23,20 +23,26 @@
  */
 package Music;
 
-import Music.Waveform.Waveform;
+import java.util.LinkedList;
 
-
-/**
- *
- * @author frigon
- */
-public class Sound {
-    public long startTime = -1;
-    public Waveform waveform;
-    public Envelope envelope;
+public class SoundService {
+    public static SoundService shared = new SoundService();
+    private final LinkedList<Sound> sounds = new LinkedList();
+    private Boolean isPlaying = true;
     
-    public Sound(Waveform waveform, Envelope envelope) {
-        this.waveform = waveform;
-        this.envelope = envelope;
+    public void add(Sound sound) {
+        this.sounds.add(sound);
+        this.play();
+    }
+    
+    private void play() {
+        if (this.isPlaying) {
+            return;
+        }
+        
+        this.isPlaying = true;
+        while (this.sounds.size() > 0) {
+            
+        }
     }
 }

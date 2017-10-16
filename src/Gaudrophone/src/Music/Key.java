@@ -37,6 +37,6 @@ public class Key {
     }
     
     public void play() {
-        this.sound.play();
+        SoundService.shared.add(this.sound);
     }
 }

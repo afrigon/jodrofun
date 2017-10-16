@@ -21,8 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-public class SoundPlayer {
+public abstract class SimpleWaveform implements Waveform {
+    @Override
+    public double getY(double amplitude, double frequency, double time) {
+        return 0;
+    }
     
+    @Override
+    public double getY(double amplitude, double frequency, double time, double phase) {
+        return 0;
+    }
 }

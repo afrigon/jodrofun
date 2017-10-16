@@ -59,8 +59,8 @@ public class SineSynth extends Synth {
             double reducedSampleRate = this.SAMPLE_RATE/1000;
             byte[] buffer = new byte[2];
             for(int i = 0; i < this.LENGTH * reducedSampleRate; i++) {
-                buffer[0] = (byte)(amplitude * this.getY(i/reducedSampleRate, LENGTH));
-                buffer[1] = (byte)(amplitude * this.getY(i/reducedSampleRate, LENGTH, 1));
+                buffer[0] = (byte)(amplitude * this.getY(i/reducedSampleRate, note.getFrequency()) + amplitude * this.getY(i/reducedSampleRate, note.getFrequency()+500));
+                buffer[1] = (byte)(amplitude * this.getY(i/reducedSampleRate, note.getFrequency(), 1) + amplitude * this.getY(i/reducedSampleRate, note.getFrequency()+500, 1));
                 sdl.write(buffer, 0, 2);
             }
 

@@ -30,9 +30,6 @@ package Music;
 
 public class NoteTranslator {
     
-    public NoteTranslator() {
-    };
-    
     public double getFrequencyFromMIDI(int n) {
         return 440.0 * Math.pow(2.0, ((double)(n - NOTE_REFERENCE))/12);
     }

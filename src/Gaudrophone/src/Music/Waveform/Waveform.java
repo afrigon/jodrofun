@@ -21,22 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-import Music.Waveform.Waveform;
-
-
-/**
- *
- * @author frigon
- */
-public class Sound {
-    public long startTime = -1;
-    public Waveform waveform;
-    public Envelope envelope;
-    
-    public Sound(Waveform waveform, Envelope envelope) {
-        this.waveform = waveform;
-        this.envelope = envelope;
-    }
+public interface Waveform {
+    public double getY(double amplitude, double frequency, double time);
+    public double getY(double amplitude, double frequency, double time, double phase);
 }
