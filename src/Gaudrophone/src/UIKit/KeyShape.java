@@ -21,26 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Gaudrophone;
-import Music.*;
-import Music.Synth.*;
-import UIKit.MainWindow;
+package UIKit;
 
-public class AppDelegate {
-    public static void main(String[] args) {
-        Note note = new Note(NoteName.C, 4);
-        Key sin = new Key(new Sound(new SinusSynth(note, 100)), null);
-        Key square = new Key(new Sound(new SquareSynth(note, 100)), null);
-        Key saw = new Key(new Sound(new SawSynth(note, 100)), null);
-        Key random = new Key(new Sound(new RandomSynth(100)), null);
-        int index = Instrument.shared.addKey(sin);
-        int index1 = Instrument.shared.addKey(square);
-        int index2 = Instrument.shared.addKey(saw);
-        int index4 = Instrument.shared.addKey(random);
-        MainWindow window = new MainWindow();
-        window.setVisible();
-        
-        SoundTest sound = new SoundTest();
-        
-    }
+/**
+ *
+ * @author frigon
+ */
+public class KeyShape {
+    
 }
