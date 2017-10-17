@@ -44,6 +44,7 @@ public class MainWindow extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         keyTypeButtonGroup = new javax.swing.ButtonGroup();
         alterationButtonGroup = new javax.swing.ButtonGroup();
@@ -51,42 +52,12 @@ public class MainWindow extends javax.swing.JFrame {
         instrumentPanel = new javax.swing.JPanel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(250, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(250, 32767));
         jScrollPane1 = new javax.swing.JScrollPane();
-        keyProperties = new javax.swing.JPanel();
+        PropertyPanel = new javax.swing.JPanel();
+        KeyProperties = new javax.swing.JPanel();
         generalProperties = new javax.swing.JPanel();
-        nameProperty = new javax.swing.JPanel();
-        nameLabel = new javax.swing.JLabel();
-        nameField = new javax.swing.JTextField();
-        volumeProperty = new javax.swing.JPanel();
-        volumeLabel = new javax.swing.JLabel();
-        volumeSpinner = new javax.swing.JSpinner();
-        envelopeProperties = new javax.swing.JPanel();
-        envelopeTitlePanel = new javax.swing.JPanel();
-        envelopeLabel = new javax.swing.JLabel();
-        envelopeGraph = new javax.swing.JPanel();
-        envelopeSliders = new javax.swing.JPanel();
-        attackSliderPanel = new javax.swing.JPanel();
-        attackSlider = new javax.swing.JSlider();
-        attackLabel = new javax.swing.JLabel();
-        decaySliderPanel = new javax.swing.JPanel();
-        decaySlider = new javax.swing.JSlider();
-        decayLabel = new javax.swing.JLabel();
-        sustainSliderPanel = new javax.swing.JPanel();
-        sustainLabel = new javax.swing.JLabel();
-        sustainSlider = new javax.swing.JSlider();
-        releaseSliderPanel = new javax.swing.JPanel();
-        releaseLabel = new javax.swing.JLabel();
-        releaseSlider = new javax.swing.JSlider();
-        typeProperty = new javax.swing.JPanel();
-        synthRadioButton = new javax.swing.JRadioButton();
-        audioClipRadioButton = new javax.swing.JRadioButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        noteProperties = new javax.swing.JPanel();
-        frequencyProperty = new javax.swing.JPanel();
-        frequencyLabel = new javax.swing.JLabel();
-        frequencySpinner = new javax.swing.JSpinner();
-        tuningProperty = new javax.swing.JPanel();
-        tuningLabel = new javax.swing.JLabel();
-        tuningSpinner = new javax.swing.JSpinner();
+        keyNameProperty = new javax.swing.JPanel();
+        keyNameLabel = new javax.swing.JLabel();
+        keyNameField = new javax.swing.JTextField();
         noteNameProperty = new javax.swing.JPanel();
         noteNameLabel = new javax.swing.JLabel();
         noteNameChoice = new java.awt.Choice();
@@ -98,6 +69,46 @@ public class MainWindow extends javax.swing.JFrame {
         sharpRadioButton = new javax.swing.JRadioButton();
         naturalRadioButton = new javax.swing.JRadioButton();
         flatRadioButton = new javax.swing.JRadioButton();
+        volumeProperty = new javax.swing.JPanel();
+        volumeLabel = new javax.swing.JLabel();
+        jSlider1 = new javax.swing.JSlider();
+        volumeSpinner = new javax.swing.JSpinner();
+        envelopeProperties = new javax.swing.JPanel();
+        envelopeTitlePanel = new javax.swing.JPanel();
+        envelopeLabel = new javax.swing.JLabel();
+        envelopeGraph = new javax.swing.JPanel();
+        envelopeSliders = new javax.swing.JPanel();
+        attackSliderPanel = new javax.swing.JPanel();
+        attackSlider = new javax.swing.JSlider();
+        attackSpinner = new javax.swing.JSpinner();
+        attackLabel = new javax.swing.JLabel();
+        decaySliderPanel = new javax.swing.JPanel();
+        decaySlider = new javax.swing.JSlider();
+        decaySpinner = new javax.swing.JSpinner();
+        decayLabel = new javax.swing.JLabel();
+        sustainSliderPanel = new javax.swing.JPanel();
+        sustainSlider = new javax.swing.JSlider();
+        sustainSpinner = new javax.swing.JSpinner();
+        sustainLabel = new javax.swing.JLabel();
+        releaseSliderPanel = new javax.swing.JPanel();
+        releaseSlider = new javax.swing.JSlider();
+        releaseSpinner = new javax.swing.JSpinner();
+        releaseLabel = new javax.swing.JLabel();
+        showNameProperty = new javax.swing.JPanel();
+        showNoteNameLabel = new javax.swing.JLabel();
+        showKeyNameCheckbox = new java.awt.Checkbox();
+        showNoteNameCheckbox = new java.awt.Checkbox();
+        typeProperty = new javax.swing.JPanel();
+        synthRadioButton = new javax.swing.JRadioButton();
+        audioClipRadioButton = new javax.swing.JRadioButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        noteProperties = new javax.swing.JPanel();
+        frequencyProperty = new javax.swing.JPanel();
+        frequencyLabel = new javax.swing.JLabel();
+        frequencySpinner = new javax.swing.JSpinner();
+        tuningProperty = new javax.swing.JPanel();
+        tuningLabel = new javax.swing.JLabel();
+        tuningSpinner = new javax.swing.JSpinner();
         waveFormProperty = new javax.swing.JPanel();
         waveFormLabel = new javax.swing.JLabel();
         waveFormChoice = new java.awt.Choice();
@@ -110,6 +121,21 @@ public class MainWindow extends javax.swing.JFrame {
         readSpeedProperty = new javax.swing.JPanel();
         readSpeedLabel = new javax.swing.JLabel();
         readSpeedSpinner = new javax.swing.JSpinner();
+        KeyShapeProperties = new javax.swing.JPanel();
+        backgroundProperty = new javax.swing.JPanel();
+        backgroundLabel = new javax.swing.JLabel();
+        backgroundDisplayLabel = new javax.swing.JLabel();
+        backgroundColorButton = new java.awt.Button();
+        backgroundImageButton = new java.awt.Button();
+        backgroundSunkenProperty = new javax.swing.JPanel();
+        backgroundSunkenLabel = new javax.swing.JLabel();
+        backgroundSunkenDisplayLabel = new javax.swing.JLabel();
+        backgroundSunkenColorButton = new java.awt.Button();
+        backgroundSunkenImageButton = new java.awt.Button();
+        linesColorProperty = new javax.swing.JPanel();
+        linesColorLabel = new javax.swing.JLabel();
+        linesColorDisplay = new javax.swing.JLabel();
+        linesColorButton = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(650, 500));
@@ -125,32 +151,85 @@ public class MainWindow extends javax.swing.JFrame {
         splitWindow.setLeftComponent(instrumentPanel);
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(350, 250));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(350, 226));
 
-        keyProperties.setLayout(new javax.swing.BoxLayout(keyProperties, javax.swing.BoxLayout.Y_AXIS));
+        PropertyPanel.setPreferredSize(new java.awt.Dimension(400, 224));
+        PropertyPanel.setLayout(new javax.swing.BoxLayout(PropertyPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        KeyProperties.setLayout(new javax.swing.BoxLayout(KeyProperties, javax.swing.BoxLayout.Y_AXIS));
 
         generalProperties.setBackground(new java.awt.Color(153, 153, 153));
         generalProperties.setLayout(new javax.swing.BoxLayout(generalProperties, javax.swing.BoxLayout.Y_AXIS));
 
-        nameProperty.setLayout(new java.awt.GridLayout());
+        keyNameProperty.setLayout(new java.awt.GridLayout(1, 0));
 
-        nameLabel.setText("Nom :");
-        nameProperty.add(nameLabel);
+        keyNameLabel.setText("Nom de la touche :");
+        keyNameProperty.add(keyNameLabel);
 
-        nameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        nameField.setText("Nom de note");
-        nameField.addActionListener(new java.awt.event.ActionListener() {
+        keyNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        keyNameField.setText("Nom de note");
+        keyNameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameFieldActionPerformed(evt);
+                keyNameFieldActionPerformed(evt);
             }
         });
-        nameProperty.add(nameField);
+        keyNameProperty.add(keyNameField);
 
-        generalProperties.add(nameProperty);
+        generalProperties.add(keyNameProperty);
 
-        volumeProperty.setLayout(new java.awt.GridLayout(1, 0));
+        noteNameProperty.setLayout(new javax.swing.BoxLayout(noteNameProperty, javax.swing.BoxLayout.LINE_AXIS));
+
+        noteNameLabel.setText("Nom de note :");
+        noteNameProperty.add(noteNameLabel);
+        noteNameProperty.add(noteNameChoice);
+        noteNameProperty.add(filler1);
+
+        octaveLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        octaveLabel.setText("Octave :");
+        noteNameProperty.add(octaveLabel);
+
+        octaveSpinner.setModel(new javax.swing.SpinnerNumberModel(2, -2, 8, 1));
+        noteNameProperty.add(octaveSpinner);
+
+        generalProperties.add(noteNameProperty);
+
+        alterationProperty.setLayout(new java.awt.GridLayout(1, 0));
+
+        alterationLabel.setText("Altération :");
+        alterationProperty.add(alterationLabel);
+
+        alterationButtonGroup.add(sharpRadioButton);
+        sharpRadioButton.setText("Dièse");
+        alterationProperty.add(sharpRadioButton);
+
+        alterationButtonGroup.add(naturalRadioButton);
+        naturalRadioButton.setSelected(true);
+        naturalRadioButton.setText("Naturelle");
+        naturalRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                naturalRadioButtonActionPerformed(evt);
+            }
+        });
+        alterationProperty.add(naturalRadioButton);
+
+        alterationButtonGroup.add(flatRadioButton);
+        flatRadioButton.setText("Bémol");
+        flatRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flatRadioButtonActionPerformed(evt);
+            }
+        });
+        alterationProperty.add(flatRadioButton);
+
+        generalProperties.add(alterationProperty);
+
+        volumeProperty.setLayout(new java.awt.GridLayout());
 
         volumeLabel.setText("Volume :");
         volumeProperty.add(volumeLabel);
+
+        jSlider1.setValue(100);
+        volumeProperty.add(jSlider1);
 
         volumeSpinner.setModel(new javax.swing.SpinnerNumberModel(100.0d, 0.0d, 100.0d, 1.0d));
         volumeProperty.add(volumeSpinner);
@@ -179,134 +258,115 @@ public class MainWindow extends javax.swing.JFrame {
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 132, Short.MAX_VALUE)
+            .addGap(0, 112, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
 
+        envelopeSliders.setLayout(new javax.swing.BoxLayout(envelopeSliders, javax.swing.BoxLayout.X_AXIS));
+
+        attackSliderPanel.setLayout(new java.awt.BorderLayout());
+
         attackSlider.setOrientation(javax.swing.JSlider.VERTICAL);
         attackSlider.setToolTipText("Attack");
-        attackSlider.setValue(15);
         attackSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         attackSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         attackSlider.setPreferredSize(new java.awt.Dimension(50, 200));
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, attackSpinner, org.jdesktop.beansbinding.ELProperty.create("${value}"), attackSlider, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        attackSliderPanel.add(attackSlider, java.awt.BorderLayout.CENTER);
+
+        attackSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        attackSpinner.setPreferredSize(new java.awt.Dimension(20, 20));
+        attackSliderPanel.add(attackSpinner, java.awt.BorderLayout.PAGE_START);
 
         attackLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         attackLabel.setLabelFor(attackSlider);
         attackLabel.setText("Attack");
         attackLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         attackLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout attackSliderPanelLayout = new javax.swing.GroupLayout(attackSliderPanel);
-        attackSliderPanel.setLayout(attackSliderPanelLayout);
-        attackSliderPanelLayout.setHorizontalGroup(
-            attackSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(attackSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(attackLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        attackSliderPanelLayout.setVerticalGroup(
-            attackSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(attackSliderPanelLayout.createSequentialGroup()
-                .addComponent(attackSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(attackLabel)
-                .addGap(1, 1, 1))
-        );
+        attackSliderPanel.add(attackLabel, java.awt.BorderLayout.PAGE_END);
 
         envelopeSliders.add(attackSliderPanel);
 
+        decaySliderPanel.setLayout(new java.awt.BorderLayout());
+
         decaySlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        decaySlider.setToolTipText("Decay");
+        decaySlider.setToolTipText("Attack");
+        decaySlider.setValue(40);
         decaySlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         decaySlider.setMinimumSize(new java.awt.Dimension(50, 36));
         decaySlider.setPreferredSize(new java.awt.Dimension(50, 200));
+        decaySliderPanel.add(decaySlider, java.awt.BorderLayout.CENTER);
+
+        decaySpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        decaySpinner.setPreferredSize(new java.awt.Dimension(20, 20));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, decaySlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), decaySpinner, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        decaySliderPanel.add(decaySpinner, java.awt.BorderLayout.PAGE_START);
 
         decayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        decayLabel.setLabelFor(attackSlider);
         decayLabel.setText("Decay");
         decayLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        javax.swing.GroupLayout decaySliderPanelLayout = new javax.swing.GroupLayout(decaySliderPanel);
-        decaySliderPanel.setLayout(decaySliderPanelLayout);
-        decaySliderPanelLayout.setHorizontalGroup(
-            decaySliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(decaySliderPanelLayout.createSequentialGroup()
-                .addGroup(decaySliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(decaySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(decayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
-        );
-        decaySliderPanelLayout.setVerticalGroup(
-            decaySliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(decaySliderPanelLayout.createSequentialGroup()
-                .addComponent(decaySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(decayLabel)
-                .addGap(2, 2, 2))
-        );
+        decayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        decaySliderPanel.add(decayLabel, java.awt.BorderLayout.PAGE_END);
 
         envelopeSliders.add(decaySliderPanel);
 
-        sustainLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sustainLabel.setText("Sustain");
-        sustainLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        sustainSliderPanel.setLayout(new java.awt.BorderLayout());
 
         sustainSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        sustainSlider.setToolTipText("Sustain");
-        sustainSlider.setValue(75);
+        sustainSlider.setToolTipText("Attack");
         sustainSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         sustainSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         sustainSlider.setPreferredSize(new java.awt.Dimension(50, 200));
+        sustainSliderPanel.add(sustainSlider, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout sustainSliderPanelLayout = new javax.swing.GroupLayout(sustainSliderPanel);
-        sustainSliderPanel.setLayout(sustainSliderPanelLayout);
-        sustainSliderPanelLayout.setHorizontalGroup(
-            sustainSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sustainSliderPanelLayout.createSequentialGroup()
-                .addGroup(sustainSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(sustainSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(sustainLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
-        );
-        sustainSliderPanelLayout.setVerticalGroup(
-            sustainSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sustainSliderPanelLayout.createSequentialGroup()
-                .addComponent(sustainSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sustainLabel)
-                .addGap(0, 0, 0))
-        );
+        sustainSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        sustainSpinner.setPreferredSize(new java.awt.Dimension(20, 20));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, sustainSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), sustainSpinner, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        sustainSliderPanel.add(sustainSpinner, java.awt.BorderLayout.PAGE_START);
+
+        sustainLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sustainLabel.setLabelFor(attackSlider);
+        sustainLabel.setText("Sustain");
+        sustainLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        sustainLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sustainSliderPanel.add(sustainLabel, java.awt.BorderLayout.PAGE_END);
 
         envelopeSliders.add(sustainSliderPanel);
 
-        releaseLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        releaseLabel.setText("Release");
-        releaseLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        releaseSliderPanel.setLayout(new java.awt.BorderLayout());
 
         releaseSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        releaseSlider.setToolTipText("Release");
-        releaseSlider.setValue(10);
+        releaseSlider.setToolTipText("Attack");
         releaseSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         releaseSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         releaseSlider.setPreferredSize(new java.awt.Dimension(50, 200));
+        releaseSliderPanel.add(releaseSlider, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout releaseSliderPanelLayout = new javax.swing.GroupLayout(releaseSliderPanel);
-        releaseSliderPanel.setLayout(releaseSliderPanelLayout);
-        releaseSliderPanelLayout.setHorizontalGroup(
-            releaseSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(releaseSliderPanelLayout.createSequentialGroup()
-                .addGroup(releaseSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(releaseSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(releaseLabel))
-                .addGap(0, 0, 0))
-        );
-        releaseSliderPanelLayout.setVerticalGroup(
-            releaseSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(releaseSliderPanelLayout.createSequentialGroup()
-                .addComponent(releaseSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(releaseLabel)
-                .addGap(0, 0, 0))
-        );
+        releaseSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        releaseSpinner.setPreferredSize(new java.awt.Dimension(20, 20));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, releaseSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), releaseSpinner, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        releaseSliderPanel.add(releaseSpinner, java.awt.BorderLayout.PAGE_START);
+
+        releaseLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        releaseLabel.setLabelFor(attackSlider);
+        releaseLabel.setText("Release");
+        releaseLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        releaseLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        releaseSliderPanel.add(releaseLabel, java.awt.BorderLayout.PAGE_END);
 
         envelopeSliders.add(releaseSliderPanel);
 
@@ -314,10 +374,23 @@ public class MainWindow extends javax.swing.JFrame {
 
         generalProperties.add(envelopeProperties);
 
-        typeProperty.setLayout(new java.awt.GridLayout());
+        showNameProperty.setLayout(new java.awt.GridLayout());
+
+        showNoteNameLabel.setText("Affichage :");
+        showNoteNameLabel.setToolTipText("");
+        showNameProperty.add(showNoteNameLabel);
+
+        showKeyNameCheckbox.setLabel("Nom de la touche");
+        showNameProperty.add(showKeyNameCheckbox);
+
+        showNoteNameCheckbox.setLabel("Nom de la note");
+        showNameProperty.add(showNoteNameCheckbox);
+
+        generalProperties.add(showNameProperty);
+
+        typeProperty.setLayout(new java.awt.GridLayout(1, 0));
 
         keyTypeButtonGroup.add(synthRadioButton);
-        synthRadioButton.setSelected(true);
         synthRadioButton.setText("Synth");
         typeProperty.add(synthRadioButton);
 
@@ -332,10 +405,10 @@ public class MainWindow extends javax.swing.JFrame {
 
         generalProperties.add(typeProperty);
 
-        keyProperties.add(generalProperties);
+        KeyProperties.add(generalProperties);
 
         jSeparator1.setMinimumSize(new java.awt.Dimension(0, 5));
-        keyProperties.add(jSeparator1);
+        KeyProperties.add(jSeparator1);
 
         noteProperties.setBackground(new java.awt.Color(204, 204, 204));
         noteProperties.setLayout(new javax.swing.BoxLayout(noteProperties, javax.swing.BoxLayout.Y_AXIS));
@@ -360,52 +433,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         noteProperties.add(tuningProperty);
 
-        noteNameProperty.setLayout(new javax.swing.BoxLayout(noteNameProperty, javax.swing.BoxLayout.LINE_AXIS));
-
-        noteNameLabel.setText("Nom de note :");
-        noteNameProperty.add(noteNameLabel);
-        noteNameProperty.add(noteNameChoice);
-        noteNameProperty.add(filler1);
-
-        octaveLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        octaveLabel.setText("Octave :");
-        noteNameProperty.add(octaveLabel);
-
-        octaveSpinner.setModel(new javax.swing.SpinnerNumberModel(2, -2, 8, 1));
-        noteNameProperty.add(octaveSpinner);
-
-        noteProperties.add(noteNameProperty);
-
-        alterationProperty.setLayout(new java.awt.GridLayout());
-
-        alterationLabel.setText("Altération :");
-        alterationProperty.add(alterationLabel);
-
-        alterationButtonGroup.add(sharpRadioButton);
-        sharpRadioButton.setText("Dièse");
-        alterationProperty.add(sharpRadioButton);
-
-        alterationButtonGroup.add(naturalRadioButton);
-        naturalRadioButton.setSelected(true);
-        naturalRadioButton.setText("Naturel");
-        naturalRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                naturalRadioButtonActionPerformed(evt);
-            }
-        });
-        alterationProperty.add(naturalRadioButton);
-
-        alterationButtonGroup.add(flatRadioButton);
-        flatRadioButton.setText("Bémol");
-        flatRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flatRadioButtonActionPerformed(evt);
-            }
-        });
-        alterationProperty.add(flatRadioButton);
-
-        noteProperties.add(alterationProperty);
-
         waveFormProperty.setLayout(new java.awt.GridLayout(1, 0));
 
         waveFormLabel.setText("Forme d'onde :");
@@ -414,10 +441,10 @@ public class MainWindow extends javax.swing.JFrame {
 
         noteProperties.add(waveFormProperty);
 
-        keyProperties.add(noteProperties);
+        KeyProperties.add(noteProperties);
 
         jSeparator2.setPreferredSize(new java.awt.Dimension(50, 5));
-        keyProperties.add(jSeparator2);
+        KeyProperties.add(jSeparator2);
 
         audioClipProperties.setLayout(new javax.swing.BoxLayout(audioClipProperties, javax.swing.BoxLayout.Y_AXIS));
 
@@ -448,13 +475,79 @@ public class MainWindow extends javax.swing.JFrame {
 
         audioClipProperties.add(readSpeedProperty);
 
-        keyProperties.add(audioClipProperties);
+        KeyProperties.add(audioClipProperties);
 
-        jScrollPane1.setViewportView(keyProperties);
+        PropertyPanel.add(KeyProperties);
+
+        KeyShapeProperties.setLayout(new javax.swing.BoxLayout(KeyShapeProperties, javax.swing.BoxLayout.Y_AXIS));
+
+        backgroundProperty.setLayout(new java.awt.GridLayout());
+
+        backgroundLabel.setText("Couleur de touche :");
+        backgroundProperty.add(backgroundLabel);
+
+        backgroundDisplayLabel.setBackground(new java.awt.Color(255, 255, 255));
+        backgroundDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        backgroundDisplayLabel.setText("(255, 255, 255)");
+        backgroundDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        backgroundDisplayLabel.setOpaque(true);
+        backgroundProperty.add(backgroundDisplayLabel);
+
+        backgroundColorButton.setLabel("Choisir une couleur");
+        backgroundProperty.add(backgroundColorButton);
+
+        backgroundImageButton.setLabel("Choisir une image");
+        backgroundProperty.add(backgroundImageButton);
+        backgroundImageButton.getAccessibleContext().setAccessibleName("Choisir une image");
+
+        KeyShapeProperties.add(backgroundProperty);
+
+        backgroundSunkenProperty.setLayout(new java.awt.GridLayout());
+
+        backgroundSunkenLabel.setText("Couleur de touche enfoncée :");
+        backgroundSunkenProperty.add(backgroundSunkenLabel);
+
+        backgroundSunkenDisplayLabel.setBackground(new java.awt.Color(255, 255, 255));
+        backgroundSunkenDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        backgroundSunkenDisplayLabel.setText("(255, 255, 255)");
+        backgroundSunkenDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        backgroundSunkenDisplayLabel.setOpaque(true);
+        backgroundSunkenProperty.add(backgroundSunkenDisplayLabel);
+
+        backgroundSunkenColorButton.setLabel("Choisir une couleur");
+        backgroundSunkenProperty.add(backgroundSunkenColorButton);
+
+        backgroundSunkenImageButton.setLabel("Choisir une image");
+        backgroundSunkenProperty.add(backgroundSunkenImageButton);
+
+        KeyShapeProperties.add(backgroundSunkenProperty);
+
+        linesColorProperty.setLayout(new java.awt.GridLayout());
+
+        linesColorLabel.setText("Couleur du contour :");
+        linesColorProperty.add(linesColorLabel);
+
+        linesColorDisplay.setBackground(new java.awt.Color(255, 255, 255));
+        linesColorDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        linesColorDisplay.setText("Custom");
+        linesColorDisplay.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        linesColorDisplay.setOpaque(true);
+        linesColorProperty.add(linesColorDisplay);
+
+        linesColorButton.setLabel("Choisir une couleur");
+        linesColorProperty.add(linesColorButton);
+
+        KeyShapeProperties.add(linesColorProperty);
+
+        PropertyPanel.add(KeyShapeProperties);
+
+        jScrollPane1.setViewportView(PropertyPanel);
 
         splitWindow.setRightComponent(jScrollPane1);
 
         getContentPane().add(splitWindow, java.awt.BorderLayout.CENTER);
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -463,9 +556,9 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_flatRadioButtonActionPerformed
 
-    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
+    private void keyNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyNameFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_nameFieldActionPerformed
+    }//GEN-LAST:event_keyNameFieldActionPerformed
 
     private void audioClipRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioClipRadioButtonActionPerformed
         // TODO add your handling code here:
@@ -485,21 +578,36 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel KeyProperties;
+    private javax.swing.JPanel KeyShapeProperties;
+    private javax.swing.JPanel PropertyPanel;
     private javax.swing.ButtonGroup alterationButtonGroup;
     private javax.swing.JLabel alterationLabel;
     private javax.swing.JPanel alterationProperty;
     private javax.swing.JLabel attackLabel;
     private javax.swing.JSlider attackSlider;
     private javax.swing.JPanel attackSliderPanel;
+    private javax.swing.JSpinner attackSpinner;
     private javax.swing.JLabel audioClipFileLabel;
     private javax.swing.JPanel audioClipFileProperty;
     private javax.swing.JLabel audioClipPathLabel;
     private javax.swing.JPanel audioClipProperties;
     private javax.swing.JRadioButton audioClipRadioButton;
     private java.awt.Button audioClipSelectButton;
+    private java.awt.Button backgroundColorButton;
+    private javax.swing.JLabel backgroundDisplayLabel;
+    private java.awt.Button backgroundImageButton;
+    private javax.swing.JLabel backgroundLabel;
+    private javax.swing.JPanel backgroundProperty;
+    private java.awt.Button backgroundSunkenColorButton;
+    private javax.swing.JLabel backgroundSunkenDisplayLabel;
+    private java.awt.Button backgroundSunkenImageButton;
+    private javax.swing.JLabel backgroundSunkenLabel;
+    private javax.swing.JPanel backgroundSunkenProperty;
     private javax.swing.JLabel decayLabel;
     private javax.swing.JSlider decaySlider;
     private javax.swing.JPanel decaySliderPanel;
+    private javax.swing.JSpinner decaySpinner;
     private javax.swing.JPanel envelopeGraph;
     private javax.swing.JLabel envelopeLabel;
     private javax.swing.JPanel envelopeProperties;
@@ -516,11 +624,15 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JPanel keyProperties;
+    private javax.swing.JSlider jSlider1;
+    private javax.swing.JTextField keyNameField;
+    private javax.swing.JLabel keyNameLabel;
+    private javax.swing.JPanel keyNameProperty;
     private javax.swing.ButtonGroup keyTypeButtonGroup;
-    private javax.swing.JTextField nameField;
-    private javax.swing.JLabel nameLabel;
-    private javax.swing.JPanel nameProperty;
+    private java.awt.Button linesColorButton;
+    private javax.swing.JLabel linesColorDisplay;
+    private javax.swing.JLabel linesColorLabel;
+    private javax.swing.JPanel linesColorProperty;
     private javax.swing.JRadioButton naturalRadioButton;
     private java.awt.Choice noteNameChoice;
     private javax.swing.JLabel noteNameLabel;
@@ -534,11 +646,17 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel releaseLabel;
     private javax.swing.JSlider releaseSlider;
     private javax.swing.JPanel releaseSliderPanel;
+    private javax.swing.JSpinner releaseSpinner;
     private javax.swing.JRadioButton sharpRadioButton;
+    private java.awt.Checkbox showKeyNameCheckbox;
+    private javax.swing.JPanel showNameProperty;
+    private java.awt.Checkbox showNoteNameCheckbox;
+    private javax.swing.JLabel showNoteNameLabel;
     private javax.swing.JSplitPane splitWindow;
     private javax.swing.JLabel sustainLabel;
     private javax.swing.JSlider sustainSlider;
     private javax.swing.JPanel sustainSliderPanel;
+    private javax.swing.JSpinner sustainSpinner;
     private javax.swing.JRadioButton synthRadioButton;
     private javax.swing.JLabel tuningLabel;
     private javax.swing.JPanel tuningProperty;
@@ -550,5 +668,6 @@ public class MainWindow extends javax.swing.JFrame {
     private java.awt.Choice waveFormChoice;
     private javax.swing.JLabel waveFormLabel;
     private javax.swing.JPanel waveFormProperty;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
