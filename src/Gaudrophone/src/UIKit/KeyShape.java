@@ -21,44 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package UIKit;
 
 /**
  *
  * @author frigon
  */
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
-    
-    // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
-    }
-    
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
-    }
-    
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
-    }
-    
-    // Getters
-    public double getVolume() {
-        return volume;
-    }
-    
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
-    }
-    
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
-    }
+public class KeyShape {
     
 }

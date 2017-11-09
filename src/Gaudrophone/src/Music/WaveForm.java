@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,14 @@ package Music;
 
 /**
  *
- * @author frigon
+ * @author Olivier
  */
-public enum Alteration {
-    SHARP,
-    FLAT
+public abstract class WaveForm {
+    protected byte[] buffer;
+    
+    public abstract void setBuffer(double frequency);
+    
+    public byte[] getBuffer(double frequency) {
+        return buffer;
+    }
 }
