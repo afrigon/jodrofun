@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,31 @@
  * THE SOFTWARE.
  */
 package Music;
-<<<<<<< HEAD:src/Gaudrophone/src/Music/WaveForm.java
-
+<<<<<<< HEAD
+import UIKit.UIKey;
 =======
 import UIKit.KeyShape;
->>>>>>> a3531796a3160cf734808f4f553add1c2f4e15e5:src/Gaudrophone/src/Music/Key.java
+>>>>>>> f6dd937a9df67bbeab4e046f91f53e1603ab5880
 /**
  *
- * @author Olivier
+ * @author frigon
  */
-<<<<<<< HEAD:src/Gaudrophone/src/Music/WaveForm.java
-public abstract class WaveForm {
-    protected byte[] buffer;
-    
-    public abstract void setBuffer(double frequency);
-    
-    public byte[] getBuffer(double frequency) {
-        return buffer;
-=======
 public class Key {
     private final Sound sound;
+<<<<<<< HEAD
+    private final UIKey shape;
+    
+    public Key(Sound sound, UIKey shape) {
+=======
     private final KeyShape shape;
     
     public Key(Sound sound, KeyShape shape) {
+>>>>>>> f6dd937a9df67bbeab4e046f91f53e1603ab5880
         this.sound = sound;
         this.shape = shape;
     }
     
     public void play() {
         this.sound.play();
->>>>>>> a3531796a3160cf734808f4f553add1c2f4e15e5:src/Gaudrophone/src/Music/Key.java
     }
 }
