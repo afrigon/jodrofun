@@ -25,6 +25,7 @@ package Gaudrophone;
 import Music.*;
 import Music.Synth.*;
 import UIKit.MainWindow;
+import UIKit.UIWindow;
 
 public class AppDelegate {
     public static void main(String[] args) {
@@ -37,8 +38,10 @@ public class AppDelegate {
         int index1 = Instrument.shared.addKey(square);
         int index2 = Instrument.shared.addKey(saw);
         int index4 = Instrument.shared.addKey(random);
-        MainWindow window = new MainWindow();
-        window.setVisible();
+        UIWindow window = new UIWindow();
+//        MainWindow window = new MainWindow();
+//        window.setVisible();
+        window.makeKeyAndVisible();
         
         SoundTest sound = new SoundTest();
         
