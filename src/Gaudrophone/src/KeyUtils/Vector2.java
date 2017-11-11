@@ -21,15 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package UIKit;
+package KeyUtils;
 
 /**
  *
  * @author Olivier
  */
 public class Vector2 {
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
     
     
     // Constructors
@@ -43,13 +43,13 @@ public class Vector2 {
     }
     
     // Methods
-    double getX() {  return x; }
+    public double getX() {  return x; }
     
-    double getY() { return y; }
+    public double getY() { return y; }
     
-    double length() { return Math.sqrt(x * x + y * y); }
+    public double length() { return Math.sqrt(x * x + y * y); }
     
-    static Vector2 fromPolarCoord(double ray, double angle) {
+    public static Vector2 fromPolarCoord(double ray, double angle) {
         return new Vector2(ray * Math.cos(angle), ray * Math.sin(angle));
     }
     
@@ -77,12 +77,16 @@ public class Vector2 {
     public Vector2 rotate(Vector2 anchor, double angle) {
         Complex complex = new Complex(x - anchor.getX(), y - anchor.getY());
         Complex rotated = complex.multiply(Complex.fromPolarCoord(1, angle));
-        return new Vector2(x + rotated.getReal(), y + rotated.getImaginary());
+        return new Vector2(anchor.getX() + rotated.getReal(), anchor.getY() + rotated.getImaginary());
     }
     
     public Vector2 unit() {
         double magnitude = length();
-        return new Vector2(x / length(), y / length());
+        if (magnitude > 0) {
+            return new Vector2(x / length(), y / length());
+        } else {
+            throw new java.lang.ArithmeticException("Can not normalized a null vector.");
+        }
     }
     
     public double dotProduct(Vector2 otherVector) {

@@ -22,28 +22,58 @@
  * THE SOFTWARE.
  */
 package Gaudrophone;
+import Instrument.Key;
 import Music.*;
 import Music.Synth.*;
+<<<<<<< HEAD
+
+//import UIKit.UIWindow;
+
+//import UIKit.MainWindow;
+
+=======
 import UIKit.MainWindow;
-import UIKit.UIWindow;
+>>>>>>> a3531796a3160cf734808f4f553add1c2f4e15e5
 
 public class AppDelegate {
     public static void main(String[] args) {
         Note note = new Note(NoteName.C, 4);
+<<<<<<< HEAD
+        /*/
+        Key sin = new Key(new Sound(new SineSynth(note, 100)), null);
+        Key square = new Key(new Sound(new SquareSynth(note, 100)), null);
+        Key saw = new Key(new Sound(new SawSynth(note, 100)), null);
+        Key random = new Key(new Sound(new RandomSynth(100)), null);
+        Key triangle = new Key(new Sound(new TriangleSynth(note, 100)), null);
+        int index = Instrument.shared.addKey(sin);
+        int index1 = Instrument.shared.addKey(square);
+        int index2 = Instrument.shared.addKey(saw);
+        int index3 = Instrument.shared.addKey(random);
+        int index4 = Instrument.shared.addKey(triangle);
+        UIWindow window = new UIWindow();
+        window.makeKeyAndVisible();
+        /*/
+        
+        /*/Key sin = new Key(new Sound(new SinusSynth(note, 100)), null);
+=======
         Key sin = new Key(new Sound(new SinusSynth(note, 100)), null);
+>>>>>>> a3531796a3160cf734808f4f553add1c2f4e15e5
         Key square = new Key(new Sound(new SquareSynth(note, 100)), null);
         Key saw = new Key(new Sound(new SawSynth(note, 100)), null);
         Key random = new Key(new Sound(new RandomSynth(100)), null);
         int index = Instrument.shared.addKey(sin);
         int index1 = Instrument.shared.addKey(square);
         int index2 = Instrument.shared.addKey(saw);
-        int index4 = Instrument.shared.addKey(random);
-        UIWindow window = new UIWindow();
-//        MainWindow window = new MainWindow();
-//        window.setVisible();
-        window.makeKeyAndVisible();
+        int index4 = Instrument.shared.addKey(random);/*/
+        //MainWindow window = new MainWindow();
+        
+        //window.setVisible();
         
         SoundTest sound = new SoundTest();
         
+<<<<<<< HEAD
+        
+=======
+>>>>>>> a3531796a3160cf734808f4f553add1c2f4e15e5
     }
 }

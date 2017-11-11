@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +22,35 @@
  * THE SOFTWARE.
  */
 package Music;
+<<<<<<< HEAD:src/Gaudrophone/src/Music/WaveForm.java
 
+=======
+import UIKit.KeyShape;
+>>>>>>> a3531796a3160cf734808f4f553add1c2f4e15e5:src/Gaudrophone/src/Music/Key.java
 /**
  *
- * @author frigon
+ * @author Olivier
  */
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+<<<<<<< HEAD:src/Gaudrophone/src/Music/WaveForm.java
+public abstract class WaveForm {
+    protected byte[] buffer;
     
-    // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    public abstract void setBuffer(double frequency);
+    
+    public byte[] getBuffer(double frequency) {
+        return buffer;
+=======
+public class Key {
+    private final Sound sound;
+    private final KeyShape shape;
+    
+    public Key(Sound sound, KeyShape shape) {
+        this.sound = sound;
+        this.shape = shape;
     }
     
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
+    public void play() {
+        this.sound.play();
+>>>>>>> a3531796a3160cf734808f4f553add1c2f4e15e5:src/Gaudrophone/src/Music/Key.java
     }
-    
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
-    }
-    
-    // Getters
-    public double getVolume() {
-        return volume;
-    }
-    
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
-    }
-    
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
-    }
-    
 }

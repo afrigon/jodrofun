@@ -23,6 +23,7 @@
  */
 package Music;
 
+import Instrument.Key;
 import java.util.ArrayList;
 
 /**
@@ -42,9 +43,4 @@ public class Instrument {
         return this.keys.size()-1;
     }
     
-    public void playKey(int index) {
-        if (this.keys.size() > index) {
-            this.keys.get(index).play();
-        }
-    }
 }

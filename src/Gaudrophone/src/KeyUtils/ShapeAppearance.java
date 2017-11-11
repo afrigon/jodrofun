@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils;
 
 /**
  *
- * @author frigon
+ * @author Olivier
  */
-public enum Alteration {
-    SHARP,
-    FLAT
+public class ShapeAppearance {
+    //private Color backgroundColor;
+    private String backgroundImage;
+    
+    public ShapeAppearance() {
+        //backgroundColor = 
+        backgroundImage = null;
+    }
+    
+    /*/public void setColor(Color color) {
+        backgroundColor = color
+    }/*/
+    
+    public void setImage(String pathToImage) {
+        backgroundImage = pathToImage;
+    }
+    
+    public void removeImage() {
+        backgroundImage = null;
+    }
+    
+    /*/public Color getColor() {
+        
+    }/*/
+    
+    public String getImage() {
+        return backgroundImage;
+    }
 }

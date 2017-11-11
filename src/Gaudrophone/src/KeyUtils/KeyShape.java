@@ -21,18 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package UIKit;
+package KeyUtils;
 
-import KeyUtils.Vector2;
-import java.util.Arrays;
 import java.util.List;
+
 /**
  *
  * @author Olivier
  */
-public class Shape {
-    private List<Vector2> points;
-    private Vector2 position;
+public class KeyShape {
+    private List<Vector2> points = null;
+    
+    private ShapeAppearance idleAppearance = null;
+    private ShapeAppearance clickedAppearance = null;
     
     public static enum Corner {
         TopLeft, TopCenter, TopRight,
@@ -41,12 +42,10 @@ public class Shape {
     }
     
     // Constructors
-    public Shape(List<Vector2> pointsList) {
+    public KeyShape(List<Vector2> pointsList) {
         points = pointsList;
-    }
-    
-    public Shape(Vector2[] vectorArray) {
-        points.addAll(Arrays.asList(vectorArray));
+        idleAppearance = new ShapeAppearance();
+        clickedAppearance = new ShapeAppearance();
     }
     
     // Methods
@@ -145,5 +144,5 @@ public class Shape {
             }
         }
     }
-            
+    
 }

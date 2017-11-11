@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
-import UIKit.KeyShape;
+package Instrument;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
- * @author frigon
+ * @author Olivier
  */
-public class Key {
-    private final Sound sound;
-    private final KeyShape shape;
+public class Instrument {
     
-    public Key(Sound sound, KeyShape shape) {
-        this.sound = sound;
-        this.shape = shape;
+    private List<Key> keys = null;
+    private String name = null;
+    private String path = null;
+    
+    public Instrument(String instrumentName, String instrumentPath) {
+        keys = new ArrayList<>();
+        name = instrumentName;
+        path = instrumentPath;
     }
     
-    public void play() {
-        this.sound.play();
+    public String getName() {
+        return name;
+    }
+    
+    public String getPath() {
+        return path;
+    }
+    
+    public List<Key> getKeys() {
+        return keys;
+    }
+    
+    public void setName(String newName) {
+        name = newName;
+    }
+    
+    public void addKey(Key newKey) {
+        keys.add(newKey);
+    }
+    
+    public void removeKey(Key keyToRemove) {
+        keys.remove(keyToRemove);
     }
 }

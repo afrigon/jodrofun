@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,40 +25,49 @@ package Music;
 
 /**
  *
- * @author frigon
+ * @author Olivier
  */
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+public class SynthesizedSound extends Sound {
+    private double frequency;
+    private int tuning;
+    private WaveForm waveForm = null;
     
     // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    public SynthesizedSound() {
+        frequency = 440.0;
+        tuning = 0;
+        waveForm = new SineWaveForm();
+    }
+    
+    public SynthesizedSound(double freq) {
+        frequency = freq;
+        tuning = 0;
+        waveForm = new SineWaveForm();
+    }
+    
+    // Implement abstract methods
+    @Override
+    public byte[] getBuffer() {
+        return waveForm.getBuffer(frequency);
     }
     
     // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
+    public void setFrequency(double newFrequency) {
+        frequency = newFrequency;
+        // update tuning
     }
     
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
+    public void setTuning(int newTuning) {
+        tuning = newTuning;
     }
     
     // Getters
-    public double getVolume() {
-        return volume;
+    public double getFrequency() {
+        return frequency;
     }
     
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
-    }
-    
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
+    public int getTuning() {
+        return tuning;
     }
     
 }

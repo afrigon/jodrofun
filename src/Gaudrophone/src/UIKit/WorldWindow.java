@@ -23,6 +23,8 @@
  */
 package UIKit;
 
+import KeyUtils.Vector2;
+
 /**
  *
  * @author Olivier
