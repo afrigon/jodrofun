@@ -39,15 +39,10 @@ public class Instrument {
     public Instrument(String instrumentName, String instrumentPath) {
         keys = new ArrayList<>();
         name = instrumentName;
-        path = instrumentPath;
     }
     
     public String getName() {
         return name;
-    }
-    
-    public String getPath() {
-        return path;
     }
     
     public List<Key> getKeys() {
