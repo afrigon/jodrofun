@@ -2,3 +2,5 @@
 /src/Gaudrophone/build/
 .DS_Store
 /src/Gaudrophone/dist/
+/src/KeyUtils/nbproject/private/
+/src/Gaudrophone/dist

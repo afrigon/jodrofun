@@ -23,7 +23,6 @@
  */
 package Music;
 
-import Music.Synth.MidiReceiver;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.MidiSystem;

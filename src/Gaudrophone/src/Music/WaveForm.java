@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,11 @@
  */
 package Music;
 
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+public abstract class WaveForm {
+    protected byte[] buffer;
     
-    // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    public abstract void setBuffer(double frequency);
+    public byte[] getBuffer(double frequency) {
+        return buffer;        
     }
-    
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
-    }
-    
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
-    }
-    
-    // Getters
-    public double getVolume() {
-        return volume;
-    }
-    
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
-    }
-    
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
-    }
-    
 }

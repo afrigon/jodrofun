@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,41 @@
  */
 package Music;
 
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+/**
+ *
+ * @author Olivier
+ */
+public class AudioClip extends Sound {
+    private String path = null;
+    private double speed;
     
     // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    public AudioClip(String newPath) {
+        path = newPath;
+        speed = 1;
     }
     
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
-    }
-    
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
+    @Override
+    public byte[] getBuffer() {
+        // get buffer from file
+        return new byte[2];
     }
     
     // Getters
-    public double getVolume() {
-        return volume;
+    public String getPath() {
+        return path;
     }
     
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
+    public double getSpeed() {
+        return speed;
     }
     
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
+    // Setters
+    public void setPath(String newPath) {
+        path = newPath;
     }
     
+    public void setSpeed(double newSpeed) {
+        speed = newSpeed;
+    }
 }

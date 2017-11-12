@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils;
 
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
-    
-    // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Olivier
+ */
+public class TriangleKeyShape implements KeyShapeGenerator {
+
+    @Override
+    public KeyShape generate() {
+        return generate(15);
     }
     
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
+    public KeyShape generate(double height) {
+        List<Vector2> pointList = new ArrayList<>();
+        pointList.add(new Vector2(0, 0));
+        pointList.add(new Vector2(1.732 * height, height));
+        pointList.add(new Vector2(height, 0));
+        
+        return new KeyShape(pointList);
     }
     
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
-    }
-    
-    // Getters
-    public double getVolume() {
-        return volume;
-    }
-    
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
-    }
-    
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
+    public KeyShape generate(double height, Vector2 position) {
+        KeyShape key = generate(height);
+        key.setPosition(position, KeyShape.Corner.Center);
+        return key;
     }
     
 }

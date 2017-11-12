@@ -21,40 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager;
 
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+import Instrument.Key;
+
+public class SelectionManager {
+    private Key selectedKey = null;
+    private int selectedLine = -1;
+    private int selectedPoint = -1;
     
-    // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    public void setKey(Key key) {
+        this.selectedKey = key;
     }
     
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
+    public void setLine(int line) {
+        this.selectedLine = line;
     }
     
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
+    public void setPoint(int point) {
+        this.selectedPoint = point;
     }
     
-    // Getters
-    public double getVolume() {
-        return volume;
+    public Key getSelectedKey() {
+        return this.selectedKey;
     }
     
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
+    public int getSelectedLine() {
+        return this.selectedLine;
     }
     
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
+    public int getSelectedPoint() {
+        return this.selectedPoint;
     }
-    
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Instrument;
 
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+import java.util.ArrayList;
+
+public class Instrument {
+    private String name;
+    private ArrayList<Key> keys;
     
-    // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    public Instrument() {
+        this.name = "New Instrument";
+        this.keys = new ArrayList<Key>();
     }
     
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
+    public String getName() {
+        return name;
     }
     
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
+    public ArrayList<Key> getKeys() {
+        return keys;
     }
     
-    // Getters
-    public double getVolume() {
-        return volume;
+    public void setName(String newName) {
+        name = newName;
     }
     
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
+    public void addKey(Key newKey) {
+        keys.add(newKey);
     }
     
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
+    public void removeKey(Key keyToRemove) {
+        keys.remove(keyToRemove);
     }
-    
 }

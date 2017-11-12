@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +24,63 @@
 package Music;
 
 public class Envelope {
-    private double attack;
-    private double decay;
-    private double sustain;
-    private double release;
+    private double attack; // milliseconds
+    private double decay; // milliseconds
+    private double sustain; // between 0 and 1
+    private double release; // milliseconds
+    private double attackAndDecay;
     
-    public Envelope(double attack, double decay, double sustain, double release) {
-        this.attack = Math.max(0, attack);
-        this.decay = Math.max(0, decay);
-        this.sustain = Math.max(0, Math.min(1, sustain));
-        this.release = Math.max(0, release);
+    public Envelope() {
+        attack = 100;
+        decay = 100;
+        sustain = 0.8;
+        release = 400;
     }
     
-    public double getAmplitude(double time) {
-        return 1;
+    public Envelope(double newAttack, double newDecay, double newSustain, double newRelease) {
+        attack = newAttack;
+        decay = newDecay;
+        sustain = newSustain;
+        release = newRelease;
+        attackAndDecay = newAttack + newDecay;
+    }
+    
+    public void setAttack(double newAttack) {
+        attack = newAttack;
+        attackAndDecay = attack + decay;
+    }
+    
+    public void setDecay(double newDecay) {
+        decay = newDecay;
+        attackAndDecay = attack + decay;
+    }
+    
+    public void setSustain(double newSustain) {
+        sustain = newSustain;
+    }
+    
+    public void setRelease(double newRelease) {
+        release = newRelease;
+    }
+    
+    public double getPlayingAmplitude(double time) {
+        if (time <= attack) {
+            return time / attack;
+        } else {
+            if (time < attackAndDecay) {
+                return (time - attack) * (sustain - 1) / decay + 1;
+            } else {
+                return sustain;
+            }
+        }
+    }
+    
+    public double getReleaseAmplitude(double time) {
+        if (time < release) {
+            double powThis = time / release - 1;
+            return sustain * powThis * powThis;
+        } else {
+            return 0;
+        } 
     }
 }

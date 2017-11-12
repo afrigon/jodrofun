@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils;
 
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+/**
+ *
+ * @author Olivier
+ */
+public class KeyLine {
+    //private Color lineColor;
+    private double lineThickness;
     
     // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    public KeyLine() {
+        lineThickness = 0.1;
     }
     
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
+    public KeyLine(double thickness) {
+        lineThickness = thickness;
     }
     
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
+    // Methods
+    
+    /*/public void setColor(Color newColor) {
+        lineColor = newColor;
+    }/*/
+    
+    public void setThickness(double thickness) {
+        lineThickness = thickness;
     }
     
-    // Getters
-    public double getVolume() {
-        return volume;
+    /*/public Color getColor() {
+        return lineColor;
+    }/*/
+    
+    public double getThickness() {
+        return lineThickness;
     }
-    
-    public abstract byte[] getBuffer();
-    
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
-    }
-    
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
-    }
-    
 }
