@@ -1,0 +1,10 @@
+/src/Gaudrophone/nbproject/private/
+/src/Gaudrophone/build/
+<<<<<<< HEAD
+.DS_Store
+/src/Gaudrophone/dist/
+=======
+/src/Gaudrophone/dist/
+/src/KeyUtils/nbproject/private/
+/src/Gaudrophone/dist
+>>>>>>> 1195602a9f5bc98666806770dd5754aa3050fd1c
