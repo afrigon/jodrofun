@@ -23,7 +23,7 @@
  */
 package Music;
 
-public class Envelope {
+public class Envelope implements java.io.Serializable {
     private double attack; // milliseconds
     private double decay; // milliseconds
     private double sustain; // between 0 and 1

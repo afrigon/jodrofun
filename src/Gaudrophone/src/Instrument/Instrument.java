@@ -25,7 +25,7 @@ package Instrument;
 
 import java.util.ArrayList;
 
-public class Instrument {
+public class Instrument implements java.io.Serializable {
     private String name;
     private ArrayList<Key> keys;
     

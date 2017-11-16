@@ -578,14 +578,6 @@ public class Window extends javax.swing.JFrame {
     public void setVisible() {
         java.awt.EventQueue.invokeLater(() -> {
             this.setVisible(true);
-
-            InstrumentManager manager = new InstrumentManager();
-            manager.newInstrument();
-            manager.getInstrument().setName("Test Instrument");
-            Sound sound = new SynthesizedSound(440);
-            manager.getInstrument().addKey(new Key(sound, new RectangleKeyShape().generateSquare(10), "Key one"));
-            
-            manager.saveInstrument("./test.xml");
         });
     }
 

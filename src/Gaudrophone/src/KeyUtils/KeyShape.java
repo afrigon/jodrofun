@@ -25,11 +25,7 @@ package KeyUtils;
 
 import java.util.List;
 
-/**
- *
- * @author Olivier
- */
-public class KeyShape {
+public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
     
     private ShapeAppearance idleAppearance = null;

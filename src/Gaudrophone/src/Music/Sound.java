@@ -23,7 +23,7 @@
  */
 package Music;
 
-public abstract class Sound {
+public abstract class Sound implements java.io.Serializable {
     private double volume;
     private Envelope envelope = null;
     
