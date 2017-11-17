@@ -32,36 +32,44 @@ import Music.SoundService;
 import Music.Envelope;
 //import Music.Note;
 import Instrument.Key;
+import Instrument.Instrument;
+import KeyUtils.KeyShape;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
+import java.awt.Color;
 
 public class GaudrophoneController {
+    private Instrument instrument;
     private CanvasManager canvas;
     private SoundService soundService;
+    private SelectionManager selection;
     
     public GaudrophoneController() {
-        canvas = new CanvasManager();
+        canvas = new CanvasManager(this);
         soundService = new SoundService();
     }
     
     public void createKey(KeyShapeGenerator key, Vector2 position) {
+        KeyShape newShape = key.generate();
         
+        newShape.setPosition(position, KeyShape.Corner.Center);
+        instrument.addKey(new Key(newShape));
     }
     
     public void duplicateKey() {
-        
+        instrument.addKey(new Key(selection.getSelectedKey()));
     }
     
     public void deleteKey() {
-        
+        instrument.removeKey(selection.getSelectedKey());
     }
     
     public void moveKey(Vector2 translation) {
-        
+        selection.getSelectedKey().getShape().translate(translation);
     }
     
-    public void resizeKey(Vector2 delta) {
-        
+    public void resizeKey(KeyShape.Corner corner, Vector2 delta) {
+        selection.getSelectedKey().getShape().stretch(delta);
     }
     
     public void pressKey(Key key) {
@@ -81,47 +89,47 @@ public class GaudrophoneController {
     }
     
     public void movePoint(Vector2 oldMousePosition, Vector2 newMousePosition) {
-        
+
     }
     
     public void curveLine(Vector2 oldMousePosition, Vector2 newMousePosition) {
         
     }
     
-    public void setKeyColor(/*Color newColor*/) {
-        
+    public void setKeyColor(Color newColor) {
+        selection.getSelectedKey().getShape();
     }
     
-    public void setKeySunkenColor(/*Color newColor*/) {
-    
+    public void setKeySunkenColor(Color newColor) {
+        selection.getSelectedKey().getShape();
     }
     
     public void setKeyImage(String path) {
-        
+        selection.getSelectedKey().getShape();
     }
     
     public void setKeySunkenImage(String path) {
-        
+        selection.getSelectedKey().getShape();
     }
     
-    public void setLineColor(/*Color newColor*/) {
-        
+    public void setLineColor(Color newColor) {
+        selection.getSelectedKey().getShape();
     }
     
     public void setLineThickness(int newThickness) {
-        
+        selection.getSelectedKey().getShape();
     }
     
     public void setSoundName(String newName) {
-        
+        selection.getSelectedKey().getSound();
     }
     
     public void setAudioClip(String path) {
-        
+     //   selection.getSelectedKey().setNote(path);
     }
     
     public void removeAudioClip() {
-        
+        selection.getSelectedKey();
     }
     
     public void setAudioClipReadSpeed(double newSpeed) {
@@ -133,7 +141,7 @@ public class GaudrophoneController {
     }
     
     public void setDisplayOctave(int newOctave) {
-        
+        selection.getSelectedKey().setOctave(newOctave);
     }
     
     public void setTuning (double newTuning) {
@@ -141,22 +149,22 @@ public class GaudrophoneController {
     }
     
     public void setAttack (double newAttack) {
-        
+        selection.getSelectedKey().getSound().getEnvelope().setAttack(newAttack);
     }
         
     public void setDecay (double newDecay) {
-        
+        selection.getSelectedKey().getSound().getEnvelope().setAttack(newDecay);
     }
         
     public void setSustain (double newSustain) {
-        
+        selection.getSelectedKey().getSound().getEnvelope().setAttack(newSustain);
     }
         
     public void setRelease (double newRelease) {
-        
+        selection.getSelectedKey().getSound().getEnvelope().setAttack(newRelease);
     }
         
     public void setVolume (double newVolume) {
-        
+        selection.getSelectedKey().getSound().setVolume(newVolume);
     }
 }

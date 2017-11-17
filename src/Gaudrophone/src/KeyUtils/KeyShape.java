@@ -134,7 +134,7 @@ public class KeyShape {
         return distantPoint;
     }
     
-    public void strech(Vector2 delta) {
+    public void stretch(Vector2 delta) {
         Vector2 distantPoint = getDistantPoint(delta);
         Vector2 closestPoint = getDistantPoint(delta.negate());
         Vector2 size = distantPoint.sub(closestPoint);
