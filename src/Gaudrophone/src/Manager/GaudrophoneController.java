@@ -40,22 +40,34 @@ import java.awt.Color;
 
 public class GaudrophoneController {
     private Instrument instrument;
-    private CanvasManager canvas;
+    private CanvasManager canvasManager;
     private SoundService soundService;
-    private SelectionManager selection;
+    private SelectionManager selectionManager;
     
     private static GaudrophoneController controller = null;
     
     public GaudrophoneController() {
-        canvas = new CanvasManager(this);
+        canvasManager = new CanvasManager(this);
         soundService = new SoundService();
-        selection = new SelectionManager();
+        selectionManager = new SelectionManager();
     }
     
     public static GaudrophoneController getController() {
         if (controller == null)
             controller = new GaudrophoneController();
         return controller;
+    }
+    
+    public CanvasManager getCanvasManager() {
+        return canvas;
+    }
+    
+    public SoundService getSoundService() {
+        return soundService;
+    }
+    
+    public SelectionManager getSelectionManager() {
+        return selectionManager;
     }
     
     public void createKey(KeyShapeGenerator key, Vector2 position) {
