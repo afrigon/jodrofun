@@ -29,7 +29,7 @@ package Manager;
  */
 
 import Music.SoundService;
-import Music.Envelope;
+    import Music.Envelope;
 //import Music.Note;
 import Instrument.Key;
 import Instrument.Instrument;
@@ -44,9 +44,18 @@ public class GaudrophoneController {
     private SoundService soundService;
     private SelectionManager selection;
     
+    private static GaudrophoneController controller = null;
+    
     public GaudrophoneController() {
         canvas = new CanvasManager(this);
         soundService = new SoundService();
+        selection = new SelectionManager();
+    }
+    
+    public static GaudrophoneController getController() {
+        if (controller == null)
+            controller = new GaudrophoneController();
+        return controller;
     }
     
     public void createKey(KeyShapeGenerator key, Vector2 position) {
