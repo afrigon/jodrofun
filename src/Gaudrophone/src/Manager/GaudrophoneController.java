@@ -59,7 +59,7 @@ public class GaudrophoneController {
     }
     
     public CanvasManager getCanvasManager() {
-        return canvas;
+        return canvasManager;
     }
     
     public SoundService getSoundService() {
