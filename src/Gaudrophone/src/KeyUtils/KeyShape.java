@@ -48,6 +48,14 @@ public class KeyShape {
         clickedAppearance = new ShapeAppearance();
     }
     
+    public ShapeAppearance getIdleAppearance() {
+        return idleAppearance;
+    }
+    
+    public ShapeAppearance getSunkenAppearance() {
+        return clickedAppearance;
+    }
+    
     public List<Vector2> getPoints() {
         return this.points;
     }

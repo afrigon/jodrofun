@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 Alexandre.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package KeyUtils;
+package UI;
 
 import java.awt.Color;
+import java.awt.geom.Line2D;
+import KeyUtils.KeyLine;
 
 /**
  *
- * @author Olivier
+ * @author Alexandre
  */
-public class ShapeAppearance {
-    private Color backgroundColor;
-    private String backgroundImage;
+public class DrawableLine {
+    Color lineColor;
+    int lineThickness;
+    Line2D.Double line;
     
-    public ShapeAppearance() {
-        backgroundColor = Color.GRAY;
-        backgroundImage = null;
-    }
+    public void DrawableLine() { }
     
-    public void setColor(Color color) {
-        backgroundColor = color;
-    }
+    public Color getColor() { return lineColor; }
+    public int getThickness() { return lineThickness; }
+    public Line2D.Double getLine() { return line; }
     
-    public void setImage(String pathToImage) {
-        backgroundImage = pathToImage;
-    }
-    
-    public void removeImage() {
-        backgroundImage = null;
-    }
-    
-    public Color getColor() {
-        return backgroundColor;
-    }
-    
-    public String getImage() {
-        return backgroundImage;
-    }
+    public void setColor(Color p_color) { lineColor = p_color; }
+    public void setThickness(int p_thickness) { lineThickness = p_thickness; }
+    public void setLine(Line2D.Double p_line) { line = p_line; }
 }

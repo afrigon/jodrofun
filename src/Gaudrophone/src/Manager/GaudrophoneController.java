@@ -78,19 +78,19 @@ public class GaudrophoneController {
     }
     
     public void duplicateKey() {
-        instrument.addKey(new Key(selection.getSelectedKey()));
+        instrument.addKey(new Key(selectionManager.getSelectedKey()));
     }
     
     public void deleteKey() {
-        instrument.removeKey(selection.getSelectedKey());
+        instrument.removeKey(selectionManager.getSelectedKey());
     }
     
     public void moveKey(Vector2 translation) {
-        selection.getSelectedKey().getShape().translate(translation);
+        selectionManager.getSelectedKey().getShape().translate(translation);
     }
     
     public void resizeKey(KeyShape.Corner corner, Vector2 delta) {
-        selection.getSelectedKey().getShape().stretch(delta);
+        selectionManager.getSelectedKey().getShape().stretch(delta);
     }
     
     public void pressKey(Key key) {
@@ -118,39 +118,39 @@ public class GaudrophoneController {
     }
     
     public void setKeyColor(Color newColor) {
-        selection.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape();
     }
     
     public void setKeySunkenColor(Color newColor) {
-        selection.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape();
     }
     
     public void setKeyImage(String path) {
-        selection.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape();
     }
     
     public void setKeySunkenImage(String path) {
-        selection.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape();
     }
     
     public void setLineColor(Color newColor) {
-        selection.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape();
     }
     
     public void setLineThickness(int newThickness) {
-        selection.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape();
     }
     
     public void setSoundName(String newName) {
-        selection.getSelectedKey().getSound();
+        selectionManager.getSelectedKey().getSound();
     }
     
     public void setAudioClip(String path) {
-     //   selection.getSelectedKey().setNote(path);
+     //   selectionManager.getSelectedKey().setNote(path);
     }
     
     public void removeAudioClip() {
-        selection.getSelectedKey();
+        selectionManager.getSelectedKey();
     }
     
     public void setAudioClipReadSpeed(double newSpeed) {
@@ -162,7 +162,7 @@ public class GaudrophoneController {
     }
     
     public void setDisplayOctave(int newOctave) {
-        selection.getSelectedKey().setOctave(newOctave);
+        selectionManager.getSelectedKey().setOctave(newOctave);
     }
     
     public void setTuning (double newTuning) {
@@ -170,22 +170,22 @@ public class GaudrophoneController {
     }
     
     public void setAttack (double newAttack) {
-        selection.getSelectedKey().getSound().getEnvelope().setAttack(newAttack);
+        selectionManager.getSelectedKey().getSound().getEnvelope().setAttack(newAttack);
     }
         
     public void setDecay (double newDecay) {
-        selection.getSelectedKey().getSound().getEnvelope().setAttack(newDecay);
+        selectionManager.getSelectedKey().getSound().getEnvelope().setAttack(newDecay);
     }
         
     public void setSustain (double newSustain) {
-        selection.getSelectedKey().getSound().getEnvelope().setAttack(newSustain);
+        selectionManager.getSelectedKey().getSound().getEnvelope().setAttack(newSustain);
     }
         
     public void setRelease (double newRelease) {
-        selection.getSelectedKey().getSound().getEnvelope().setAttack(newRelease);
+        selectionManager.getSelectedKey().getSound().getEnvelope().setAttack(newRelease);
     }
         
     public void setVolume (double newVolume) {
-        selection.getSelectedKey().getSound().setVolume(newVolume);
+        selectionManager.getSelectedKey().getSound().setVolume(newVolume);
     }
 }

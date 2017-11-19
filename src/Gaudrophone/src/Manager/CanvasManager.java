@@ -23,6 +23,13 @@
  */
 package Manager;
 
+import UI.DrawableShape;
+import UI.DrawableLine;
+import KeyUtils.KeyShapeGenerator;
+import KeyUtils.Vector2;
+import java.util.List;
+import Instrument.Key;
+
 /**
  *
  * @author frigon
@@ -31,29 +38,29 @@ package Manager;
 import Instrument.Key;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
-import UI.Shape;
+import UI.DrawableShape;
 import java.util.List;
 
 public class CanvasManager {
-    private GaudrophoneController controller;
-    private List<Shape> shapes;
-    private State state;
-    private KeyShapeGenerator storedKeyShape;
+    GaudrophoneController controller;
+    List<DrawableShape> shapes;
+    State state;
+    KeyShapeGenerator storedKeyShape;
     
     public CanvasManager(GaudrophoneController p_controller) {
         controller = p_controller;
     }
     
     public Vector2 convertPixelToWorld(int x, int y) {
-        return (new Vector2());
+       return null;
     }
     
-    public int convertThickness(double thickness) {
-        return (0);
+    public int convertWorldToPixel(Vector2 vector) {
+        return -1;
     }
     
-    public Vector2 convertWorldToPixel(Vector2 vector) {
-        return (new Vector2());
+    public int convertThicknessToPixel(double thickness) {
+        return -1;
     }
     
     public void drawKeys(List<Key> keyList) {
@@ -64,15 +71,23 @@ public class CanvasManager {
         
     }
     
-    public void clicked(/*Key key, HandleType handleType, int linkNumber*/) {
-        
-    }
-    
     public void clicked(int x, int y) {
-        
+        System.out.println("Click");
     }
     
-    public List<Shape> getShapes() {
-        return (shapes);
+    public void released(int x, int y) {
+        System.out.println("Release");
     }
+    
+    public void dragged(int x, int y) {
+        System.out.println("Drag");
+    }
+    
+    public List<DrawableShape> getDrawableShapes() {
+        return shapes;
+    }
+    
+    
+    public State getState() { return state; }
+    public void setState(State value) { state = value; }
 }
