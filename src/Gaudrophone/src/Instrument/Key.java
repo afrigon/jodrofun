@@ -41,6 +41,16 @@ public class Key {
         this.name = keyName;
     }
     
+    public Key(KeyShape keyShape) {
+        this.shape = keyShape;
+    }
+    
+    public Key(Key key) {
+        this.sound = key.sound;
+        this.shape = key.shape;
+        this.name = key.name;
+    }
+    
     // Setters
     public void setSound(Sound newSound) {
         this.sound = newSound;

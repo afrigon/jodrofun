@@ -47,6 +47,10 @@ public abstract class Sound {
         return volume;
     }
     
+    public Envelope getEnvelope() {
+        return envelope;
+    }
+    
     public abstract byte[] getBuffer();
     
     public double getPlayingAmplitude(double time) {
