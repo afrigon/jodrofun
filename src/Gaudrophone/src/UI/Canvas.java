@@ -24,7 +24,6 @@
 package UI;
 
 import Manager.CanvasManager;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -96,27 +95,27 @@ public class Canvas extends javax.swing.JPanel {
             path.lineTo(10+i*100, 200);
             path.closePath();
             DrawableShape shape = new DrawableShape(key);
-            
+            getLineWithThickness(new Line2D.Double(10+i*100, 200, 10+i*100, 100), 5);
             shape.setShape(path);
             List<DrawableLine> lines = new java.util.ArrayList<>();
             DrawableLine line = new DrawableLine();
             line.setColor(Color.BLACK);
-            line.setThickness(50);
+            line.setThickness(25);
             line.setLine(new Line2D.Double(10+i*100, 100, 110+i*100, 100));
             lines.add(line);
             line = new DrawableLine();
             line.setColor(Color.BLUE);
-            line.setThickness(10);
+            line.setThickness(5);
             line.setLine(new Line2D.Double(110+i*100, 100, 110+i*100, 200));
             lines.add(line);
             line = new DrawableLine();
             line.setColor(Color.RED);
-            line.setThickness(10);
+            line.setThickness(5);
             line.setLine(new Line2D.Double(110+i*100, 200, 10+i*100, 200));
             lines.add(line);
             line = new DrawableLine();
             line.setColor(Color.ORANGE);
-            line.setThickness(10);
+            line.setThickness(5);
             line.setLine(new Line2D.Double(10+i*100, 200, 10+i*100, 100));
             lines.add(line);
             
@@ -126,15 +125,16 @@ public class Canvas extends javax.swing.JPanel {
         
         for(DrawableShape s : shapes)
         {
-            g2.setClip(s.getShape());
+            //g2.setClip(s.getShape());
             g2.setPaint(s.getKey().getShape().getIdleAppearance().getColor());
             g2.fill(s.getShape());
-            for(DrawableLine l : s.getLines()) {
+            /*for(DrawableLine l : s.getLines()) {
                 g2.setPaint(l.getColor());
                 g2.setStroke(new java.awt.BasicStroke(l.getThickness(),java.awt.BasicStroke.CAP_BUTT,java.awt.BasicStroke.JOIN_BEVEL));
                 g2.draw(l.getLine());
-            }
-            /*Point2D corner = null, firstCorner = null;
+            }*/
+            Point2D corner = null, firstCorner = null;
+            java.awt.Polygon pClip = new java.awt.Polygon();
             List<DrawableLine> lines = s.getLines();
             if(lines.size() > 1) {
                 DrawableLine first = lines.get(0), last = lines.get(lines.size() - 1),
@@ -151,16 +151,18 @@ public class Canvas extends javax.swing.JPanel {
                     else {
                         next = lines.get(i + 1);
                         if(current == first) {
+                            Line2D.Double l = getExtendedLine(getLineWithThickness(current.getLine(), current.getThickness()));
                             firstCorner = getIntersection(
-                                    getExtendedLine(getLineWithThickness(current.getLine(), current.getThickness())),
+                                    l,
                                     getExtendedLine(getLineWithThickness(last.getLine(), last.getThickness())));
                             corner = getIntersection(
-                                    getExtendedLine(getLineWithThickness(current.getLine(), current.getThickness())),
+                                    l,
                                     getExtendedLine(getLineWithThickness(next.getLine(), next.getThickness())));
                             p.addPoint((int)corner.getX(), (int)corner.getY());
                             p.addPoint((int)firstCorner.getX(), (int)firstCorner.getY());
-                            System.out.println(firstCorner.getX());
-                            System.out.println(firstCorner.getY());
+                            
+                            pClip.addPoint((int)l.getX1(), (int)l.getY1());
+                            pClip.addPoint((int)l.getX2(), (int)l.getY2());
                         }
                         else {
                             Point2D nextCorner = getIntersection(
@@ -175,24 +177,24 @@ public class Canvas extends javax.swing.JPanel {
                     }
                     
                     g2.setPaint(current.getColor());
-                    g2.draw(p);
-                    
+                    g2.fill(p);
                     current = next;
                 }
-            }*/
+            }
         }
     }
     
-    private Line2D getLineWithThickness(Line2D line, double thickness) {
+    private Line2D.Double getLineWithThickness(Line2D.Double line, double thickness) {
         if (line == null) return null;
         else if (thickness == 0) return line;
         
         double angle = Math.atan2(
-            line.getX2() - line.getX1(),
-            line.getY1() - line.getY2());
-        double xThickness = (Math.abs(angle) - Math.toRadians(90)) / Math.toRadians(90),
-                yThickness = -angle / Math.toRadians(90);
-        
+            line.getY2() - line.getY1(),
+            line.getX2() - line.getX1());
+        double xThickness = angle / Math.toRadians(90),
+                yThickness = (Math.abs(angle) - Math.toRadians(90)) / Math.toRadians(90);
+        if(xThickness > 1) xThickness = 2 - xThickness;
+        if(xThickness < -1) xThickness = -2 + xThickness;
         return new Line2D.Double(
                 line.getX1() + Math.ceil(xThickness * thickness),
                 line.getY1() + Math.ceil(yThickness * thickness),
@@ -200,13 +202,13 @@ public class Canvas extends javax.swing.JPanel {
                 line.getY2() + Math.ceil(yThickness * thickness));
     }
     
-    private Line2D getExtendedLine(Line2D line) {
-        if (line.getY2() == line.getY1()) {
+    private Line2D.Double getExtendedLine(Line2D.Double line) {
+        if (line.getX2() == line.getX1()) {
             return new Line2D.Double(
-                Double.NEGATIVE_INFINITY,
-                line.getY1(),
-                Double.NEGATIVE_INFINITY,
-                line.getY2());
+                line.getX1(),
+                -1000000,
+                line.getX2(),
+                1000000);
         }
         double a, b;
         a = line.getX2() == line.getX1() ? 0 : (line.getY2() - line.getY1()) / (line.getX2() - line.getX1());
@@ -219,7 +221,7 @@ public class Canvas extends javax.swing.JPanel {
         a * (line.getX2() + 10000) + b);
     }
     
-    private Point2D getIntersection(Line2D line1, Line2D line2) {
+    private Point2D getIntersection(Line2D.Double line1, Line2D.Double line2) {
         if(!line1.intersectsLine(line2)) return null;
         
         double a1, a2, b1, b2, x, y;
@@ -229,12 +231,12 @@ public class Canvas extends javax.swing.JPanel {
         b1 = line1.getY1() - a1 * line1.getX1();
         b2 = line2.getY1() - a2 * line2.getX1();
         
-        if(line1.getY2() == line1.getY1()) {
-            x = line1.getY1();
+        if(line1.getX2() == line1.getX1()) {
+            x = line1.getX1();
             y = a2 * x + b2;
         }
-        else if(line2.getY2() == line2.getY1()) {
-            x = line2.getY1();
+        else if(line2.getX2() == line2.getX1()) {
+            x = line2.getX1();
             y = a1 * x + b1;
         }
         else {
