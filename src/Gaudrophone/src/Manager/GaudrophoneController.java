@@ -23,14 +23,7 @@
  */
 package Manager;
 
-/**
- *
- * @author frigon
- */
-
 import Music.SoundService;
-    import Music.Envelope;
-//import Music.Note;
 import Instrument.Key;
 import Instrument.Instrument;
 import KeyUtils.KeyShape;

@@ -56,11 +56,11 @@ public abstract class Sound implements java.io.Serializable {
     public abstract AudioInputStream getAudioInputStream();
     
     public double getPlayingAmplitude(double time) {
-        return volume * envelope.getPlayingAmplitude(time);
+        return envelope.getPlayingVolume(time);
     }
     
     public double getReleaseAmplitude(double time) {
-        return volume * envelope.getReleaseAmplitude(time);
+        return envelope.getReleaseVolume(time);
     }
     
 }

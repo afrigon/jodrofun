@@ -35,7 +35,7 @@ public class SoundService {
     private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
     private final int polyphony = 32;
     
-    private SoundService() {
+    public SoundService() {
         if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {
             System.out.println("OUPUT IS NOT SUPPORTED");
         }
