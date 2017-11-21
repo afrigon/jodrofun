@@ -23,17 +23,24 @@
  */
 package Music;
 
+
 /**
  *
  * @author Olivier
  */
 public class SineWaveForm extends WaveForm {
-
+    
     @Override
-    public void setBuffer(double frequency) {
-        buffer = new byte[1];
+    public void updateBuffer(double frequency) {
+        int frames = (int) (SAMPLE_RATE * WAVES / frequency);
         
-        // générer l'onde
+        buffer = new byte[2 * frames];
+        double doublePi = 2 * Math.PI;
+        
+        for (int i = 0; i < frames; i++) {
+            buffer[2 * i] = (byte) (120.0 * Math.sin(doublePi * frequency * i / SAMPLE_RATE));
+            buffer[2 * i + 1] = buffer[2 * i];
+        }
     }
     
 }

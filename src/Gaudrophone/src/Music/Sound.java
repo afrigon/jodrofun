@@ -23,6 +23,8 @@
  */
 package Music;
 
+import javax.sound.sampled.AudioInputStream;
+
 public abstract class Sound {
     private double volume;
     private Envelope envelope = null;
@@ -47,14 +49,18 @@ public abstract class Sound {
         return volume;
     }
     
-    public abstract byte[] getBuffer();
+    public Envelope getEnvelope() {
+        return envelope;
+    }
+    
+    public abstract AudioInputStream getAudioInputStream();
     
     public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
+        return volume * envelope.getPlayingAmplitude(time);
     }
     
     public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
+        return volume * envelope.getReleaseAmplitude(time);
     }
     
 }

@@ -28,9 +28,13 @@ import Instrument.Key;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.Vector2;
 import Manager.InstrumentManager;
+import Music.AudioClip;
 import Music.Sound;
+import Music.SoundService;
 import Music.SynthesizedSound;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Window extends javax.swing.JFrame {
 
@@ -582,10 +586,29 @@ public class Window extends javax.swing.JFrame {
             InstrumentManager manager = new InstrumentManager();
             manager.newInstrument();
             manager.getInstrument().setName("Test Instrument");
-            Sound sound = new SynthesizedSound(440);
+            Sound sound = new AudioClip("Audio001.wav");
             manager.getInstrument().addKey(new Key(sound, new RectangleKeyShape().generateSquare(10), "Key one"));
             
             manager.saveInstrument("./test.xml");
+            
+            SoundService soundService = SoundService.shared;
+            
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Sound synthSound = new SynthesizedSound();
+            soundService.play(synthSound);
+            
+            try {
+                Thread.sleep(8000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            soundService.release(synthSound);
         });
     }
 
