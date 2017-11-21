@@ -23,11 +23,20 @@
  */
 package Music;
 
+import java.io.ByteArrayInputStream;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+
 public abstract class WaveForm {
-    protected byte[] buffer;
+    static protected int SAMPLE_RATE = 44100;
+    static protected int WAVES = 880;
     
-    public abstract void setBuffer(double frequency);
-    public byte[] getBuffer(double frequency) {
-        return buffer;        
+    protected byte[] buffer;
+    protected AudioFormat audioFormat = new AudioFormat(SAMPLE_RATE, 8, 2, true, false);
+    
+    public AudioInputStream getAudioInputStream() {
+        return new AudioInputStream(new ByteArrayInputStream(buffer, buffer.length/2, buffer.length/2), audioFormat, buffer.length);
     }
+    
+    public abstract void updateBuffer(double frequency);
 }

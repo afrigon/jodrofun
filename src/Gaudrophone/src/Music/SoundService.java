@@ -23,26 +23,53 @@
  */
 package Music;
 
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Port;
 
 public class SoundService {
     public static SoundService shared = new SoundService();
-    private final LinkedList<Sound> sounds = new LinkedList();
-    private Boolean isPlaying = true;
+    private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
+    private final int polyphony = 32;
     
-    public void add(Sound sound) {
-        this.sounds.add(sound);
-        this.play();
+    public SoundService() {
+        if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {
+            System.out.println("OUPUT IS NOT SUPPORTED");
+        }
     }
     
-    private void play() {
-        if (this.isPlaying) {
-            return;
+    public void play(Sound sound) {
+        if (clips.size() < polyphony) {
+            try {
+                EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getAudioInputStream(), sound.getEnvelope());
+                
+                clips.put(sound, clip);
+                clip.start();
+                
+            } catch (LineUnavailableException ex) {
+                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Sound firstSound = clips.keySet().iterator().next();
+            EnvelopedClip firstClip = clips.remove(firstSound);
+            firstClip.end();
+            play(sound);
         }
-        
-        this.isPlaying = true;
-        while (this.sounds.size() > 0) {
-            
+    }
+    
+    public void release(Sound sound) {
+        EnvelopedClip clip = clips.get(sound);
+        clip.release();
+    }
+    
+    public void close() {
+        while (clips.size() > 0) {
+            Sound firstSound = clips.keySet().iterator().next();
+            EnvelopedClip firstClip = clips.remove(firstSound);
+            firstClip.end();
         }
     }
 }

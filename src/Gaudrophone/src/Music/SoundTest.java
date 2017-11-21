@@ -74,10 +74,10 @@ public class SoundTest {
                     Clip clip = AudioSystem.getClip();
                     ais.read(clipBuffer, 0, bufferLen);
                     
-                    for (int i = 0; i < bufferLen; i++) {
+                    /*for (int i = 0; i < bufferLen; i++) {
                         byte result = (byte) (clipBuffer[i] * 0.1);
                         newBuffer[i] = result;
-                    }
+                    }*/
                     
                     clip.open(af, clipBuffer, 0, bufferLen);
                     
@@ -89,13 +89,10 @@ public class SoundTest {
                     FloatControl vol = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                     vol.setValue(0.0f);
                     
-                    clip.addLineListener(new LineListener() {
-                        @Override
-                        public void update(LineEvent le) {
-                            if (le.getType() == LineEvent.Type.STOP) {
-                                System.out.println("clip close");
-                                clip.close();
-                            }
+                    clip.addLineListener((LineEvent le) -> {
+                        if (le.getType() == LineEvent.Type.STOP) {
+                            System.out.println("clip close");
+                            clip.close();
                         }
                     });
                     
