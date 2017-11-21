@@ -26,7 +26,7 @@ package Instrument;
 import KeyUtils.KeyShape;
 import Music.Sound;
 
-public class Key {
+public class Key implements java.io.Serializable {
     private KeyShape shape = null;
     private Sound sound = null;
     private String name = null;

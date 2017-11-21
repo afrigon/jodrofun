@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,36 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package Music;
 
-import java.util.ArrayList;
+<<<<<<< HEAD
+public abstract class Sound implements java.io.Serializable {
+=======
+import javax.sound.sampled.AudioInputStream;
 
-public class Instrument implements java.io.Serializable {
-    private String name;
-    private ArrayList<Key> keys;
+public abstract class Sound {
+>>>>>>> d93e14cdb94e3ab656a610f65a3e1edfaaa68045
+    private double volume;
+    private Envelope envelope = null;
     
-    public Instrument() {
-        this.name = "New Instrument";
-        this.keys = new ArrayList<Key>();
+    // Constructors
+    public Sound() {
+        volume = 1;
+        envelope = new Envelope();
     }
     
-    public String getName() {
-        return name;
+    // Setters
+    public void setVolume(double newVolume) {
+        volume = newVolume;
     }
     
-    public ArrayList<Key> getKeys() {
-        return keys;
+    public void setEnvelope(Envelope newEnvelope) {
+        envelope = newEnvelope;
     }
     
-    public void setName(String newName) {
-        name = newName;
+    // Getters
+    public double getVolume() {
+        return volume;
     }
     
-    public void addKey(Key newKey) {
-        keys.add(newKey);
+    public Envelope getEnvelope() {
+        return envelope;
     }
     
-    public void removeKey(Key keyToRemove) {
-        keys.remove(keyToRemove);
+<<<<<<< HEAD
+    public abstract byte[] getBuffer();
+=======
+    public abstract AudioInputStream getAudioInputStream();
+>>>>>>> d93e14cdb94e3ab656a610f65a3e1edfaaa68045
+    
+    public double getPlayingAmplitude(double time) {
+        return volume * envelope.getPlayingAmplitude(time);
     }
+    
+    public double getReleaseAmplitude(double time) {
+        return volume * envelope.getReleaseAmplitude(time);
+    }
+    
 }

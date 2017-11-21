@@ -25,11 +25,7 @@ package KeyUtils;
 
 import java.awt.Color;
 
-/**
- *
- * @author Olivier
- */
-public class ShapeAppearance {
+public class ShapeAppearance implements java.io.Serializable {
     private Color backgroundColor;
     private String backgroundImage;
     

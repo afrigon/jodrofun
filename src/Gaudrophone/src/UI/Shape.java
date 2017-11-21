@@ -21,15 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package KeyUtils;
+package UI;
 
+import KeyUtils.Vector2;
+import java.util.Arrays;
 import java.util.List;
-
-public class KeyShape implements java.io.Serializable {
-    private List<Vector2> points = null;
-    
-    private ShapeAppearance idleAppearance = null;
-    private ShapeAppearance clickedAppearance = null;
+/**
+ *
+ * @author Olivier
+ */
+public class Shape {
+    private List<Vector2> points;
+    private Vector2 position;
     
     public static enum Corner {
         TopLeft, TopCenter, TopRight,
@@ -38,22 +41,12 @@ public class KeyShape implements java.io.Serializable {
     }
     
     // Constructors
-    public KeyShape(List<Vector2> pointsList) {
+    public Shape(List<Vector2> pointsList) {
         points = pointsList;
-        idleAppearance = new ShapeAppearance();
-        clickedAppearance = new ShapeAppearance();
     }
     
-    public ShapeAppearance getIdleAppearance() {
-        return idleAppearance;
-    }
-    
-    public ShapeAppearance getSunkenAppearance() {
-        return clickedAppearance;
-    }
-    
-    public List<Vector2> getPoints() {
-        return this.points;
+    public Shape(Vector2[] vectorArray) {
+        points.addAll(Arrays.asList(vectorArray));
     }
     
     // Methods
@@ -138,7 +131,7 @@ public class KeyShape implements java.io.Serializable {
         return distantPoint;
     }
     
-    public void stretch(Vector2 delta) {
+    public void strech(Vector2 delta) {
         Vector2 distantPoint = getDistantPoint(delta);
         Vector2 closestPoint = getDistantPoint(delta.negate());
         Vector2 size = distantPoint.sub(closestPoint);
@@ -152,4 +145,5 @@ public class KeyShape implements java.io.Serializable {
             }
         }
     }
+            
 }

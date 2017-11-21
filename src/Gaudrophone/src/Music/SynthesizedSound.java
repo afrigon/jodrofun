@@ -23,6 +23,8 @@
  */
 package Music;
 
+import javax.sound.sampled.AudioInputStream;
+
 public class SynthesizedSound extends Sound {
     private double frequency;
     private int tuning;
@@ -33,24 +35,27 @@ public class SynthesizedSound extends Sound {
         frequency = 440.0;
         tuning = 0;
         waveForm = new SineWaveForm();
+        waveForm.updateBuffer(frequency);
     }
     
     public SynthesizedSound(double freq) {
         frequency = freq;
         tuning = 0;
         waveForm = new SineWaveForm();
+        waveForm.updateBuffer(frequency);
     }
     
     // Implement abstract methods
     @Override
-    public byte[] getBuffer() {
-        return waveForm.getBuffer(frequency);
+    public AudioInputStream getAudioInputStream() {
+        return waveForm.getAudioInputStream();
     }
     
     // Setters
     public void setFrequency(double newFrequency) {
         this.frequency = newFrequency;
         // update tuning
+        waveForm.updateBuffer(frequency);
     }
     
     public void setTuning(int newTuning) {
