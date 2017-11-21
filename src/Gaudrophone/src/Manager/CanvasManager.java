@@ -23,10 +23,71 @@
  */
 package Manager;
 
+import UI.DrawableShape;
+import UI.DrawableLine;
+import KeyUtils.KeyShapeGenerator;
+import KeyUtils.Vector2;
+import java.util.List;
+import Instrument.Key;
+
 /**
  *
  * @author frigon
  */
+
+import Instrument.Key;
+import KeyUtils.KeyShapeGenerator;
+import KeyUtils.Vector2;
+import UI.DrawableShape;
+import java.util.List;
+
 public class CanvasManager {
+    GaudrophoneController controller;
+    List<DrawableShape> shapes;
+    State state;
+    KeyShapeGenerator storedKeyShape;
     
+    public CanvasManager(GaudrophoneController p_controller) {
+        controller = p_controller;
+    }
+    
+    public Vector2 convertPixelToWorld(int x, int y) {
+       return null;
+    }
+    
+    public int convertWorldToPixel(Vector2 vector) {
+        return -1;
+    }
+    
+    public int convertThicknessToPixel(double thickness) {
+        return -1;
+    }
+    
+    public void drawKeys(List<Key> keyList) {
+        
+    }
+    
+    public void clicked(Key key) {
+        
+    }
+    
+    public void clicked(int x, int y) {
+        System.out.println("Click");
+    }
+    
+    public void released(int x, int y) {
+        System.out.println("Release");
+    }
+    
+    public void dragged(int x, int y) {
+        System.out.println("Drag");
+    }
+    
+    public List<DrawableShape> getDrawableShapes() {
+        return shapes;
+    }
+    
+    
+    public State getState() { return state; }
+    public void setState(State value) { state = value; }
 }

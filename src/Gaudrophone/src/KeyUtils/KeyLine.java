@@ -23,12 +23,14 @@
  */
 package KeyUtils;
 
+import java.awt.Color;
+
 /**
  *
  * @author Olivier
  */
 public class KeyLine {
-    //private Color lineColor;
+    private Color lineColor;
     private double lineThickness;
     
     // Constructors
@@ -42,17 +44,17 @@ public class KeyLine {
     
     // Methods
     
-    /*/public void setColor(Color newColor) {
+    public void setColor(Color newColor) {
         lineColor = newColor;
-    }/*/
+    }
     
     public void setThickness(double thickness) {
         lineThickness = thickness;
     }
     
-    /*/public Color getColor() {
+    public Color getColor() {
         return lineColor;
-    }/*/
+    }
     
     public double getThickness() {
         return lineThickness;

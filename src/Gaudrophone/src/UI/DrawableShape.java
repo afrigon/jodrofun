@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 Alexandre.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,34 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package KeyUtils;
+package UI;
 
-public class ShapeAppearance implements java.io.Serializable {
-    //private Color backgroundColor;
-    private String backgroundImage;
+import Instrument.Key;
+import java.awt.geom.GeneralPath;
+import java.util.List;
+
+/**
+ *
+ * @author Alexandre
+ */
+public class DrawableShape {
+    Key key;
+    GeneralPath.Double generalPath;
+    List<DrawableLine> lines;
     
-    public ShapeAppearance() {
-        backgroundColor = Color.GRAY;
-        backgroundImage = null;
+    public DrawableShape (Key p_key) {
+        key = p_key;
     }
     
-    public void setColor(Color color) {
-        backgroundColor = color;
-    }
+    public boolean clicked(int x, int y) { return generalPath.contains(x, y); }
     
-    public void setImage(String pathToImage) {
-        backgroundImage = pathToImage;
-    }
+    public Key getKey() { return key; }
+    public GeneralPath.Double getShape() { return generalPath; }
+    public List<DrawableLine> getLines() { return lines; }
     
-    public void removeImage() {
-        backgroundImage = null;
-    }
-    
-    public Color getColor() {
-        return backgroundColor;
-    }
-    
-    public String getImage() {
-        return backgroundImage;
-    }
+    public void setShape(GeneralPath.Double p_shape) { generalPath = p_shape; }
+    public void setLines(List<DrawableLine> p_lines) { lines = p_lines; }
 }

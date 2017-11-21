@@ -44,6 +44,14 @@ public class KeyShape implements java.io.Serializable {
         clickedAppearance = new ShapeAppearance();
     }
     
+    public ShapeAppearance getIdleAppearance() {
+        return idleAppearance;
+    }
+    
+    public ShapeAppearance getSunkenAppearance() {
+        return clickedAppearance;
+    }
+    
     public List<Vector2> getPoints() {
         return this.points;
     }
@@ -130,7 +138,7 @@ public class KeyShape implements java.io.Serializable {
         return distantPoint;
     }
     
-    public void strech(Vector2 delta) {
+    public void stretch(Vector2 delta) {
         Vector2 distantPoint = getDistantPoint(delta);
         Vector2 closestPoint = getDistantPoint(delta.negate());
         Vector2 size = distantPoint.sub(closestPoint);

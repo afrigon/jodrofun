@@ -23,8 +23,19 @@
  */
 package KeyUtils;
 
+<<<<<<< HEAD
 public class ShapeAppearance implements java.io.Serializable {
     //private Color backgroundColor;
+=======
+import java.awt.Color;
+
+/**
+ *
+ * @author Olivier
+ */
+public class ShapeAppearance {
+    private Color backgroundColor;
+>>>>>>> e054c0c2180c731040d1632b3da387f169e44fd4
     private String backgroundImage;
     
     public ShapeAppearance() {

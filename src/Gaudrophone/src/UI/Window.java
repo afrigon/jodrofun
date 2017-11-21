@@ -577,6 +577,8 @@ public class Window extends javax.swing.JFrame {
      */
     public void setVisible() {
         java.awt.EventQueue.invokeLater(() -> {
+            Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
+            this.splitWindow.setLeftComponent(canvas);
             this.setVisible(true);
         });
     }
