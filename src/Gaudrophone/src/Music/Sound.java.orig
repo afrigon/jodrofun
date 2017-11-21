@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,52 @@
  */
 package Music;
 
-import java.io.ByteArrayInputStream;
-import javax.sound.sampled.AudioFormat;
+<<<<<<< HEAD
+public abstract class Sound implements java.io.Serializable {
+=======
 import javax.sound.sampled.AudioInputStream;
 
-public abstract class WaveForm {
-    static protected int SAMPLE_RATE = 44100;
-    static protected int WAVES = 880;
+public abstract class Sound {
+>>>>>>> d93e14cdb94e3ab656a610f65a3e1edfaaa68045
+    private double volume;
+    private Envelope envelope = null;
     
-    protected byte[] buffer;
-    protected AudioFormat audioFormat = new AudioFormat(SAMPLE_RATE, 8, 2, true, false);
-    
-    public AudioInputStream getAudioInputStream() {
-        return new AudioInputStream(new ByteArrayInputStream(buffer, buffer.length/2, buffer.length/2), audioFormat, buffer.length);
+    // Constructors
+    public Sound() {
+        volume = 1;
+        envelope = new Envelope();
     }
     
-    public abstract void updateBuffer(double frequency);
+    // Setters
+    public void setVolume(double newVolume) {
+        volume = newVolume;
+    }
+    
+    public void setEnvelope(Envelope newEnvelope) {
+        envelope = newEnvelope;
+    }
+    
+    // Getters
+    public double getVolume() {
+        return volume;
+    }
+    
+    public Envelope getEnvelope() {
+        return envelope;
+    }
+    
+<<<<<<< HEAD
+    public abstract byte[] getBuffer();
+=======
+    public abstract AudioInputStream getAudioInputStream();
+>>>>>>> d93e14cdb94e3ab656a610f65a3e1edfaaa68045
+    
+    public double getPlayingAmplitude(double time) {
+        return volume * envelope.getPlayingAmplitude(time);
+    }
+    
+    public double getReleaseAmplitude(double time) {
+        return volume * envelope.getReleaseAmplitude(time);
+    }
+    
 }

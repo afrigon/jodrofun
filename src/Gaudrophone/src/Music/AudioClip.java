@@ -23,6 +23,18 @@
  */
 package Music;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 /**
  *
  * @author Olivier
@@ -31,16 +43,33 @@ public class AudioClip extends Sound {
     private String path = null;
     private double speed;
     
+    private AudioInputStream audioInputStream = null;
     // Constructors
     public AudioClip(String newPath) {
         path = newPath;
         speed = 1;
+        
+        try {
+            File file = new File(newPath);
+            
+            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+            AudioFormat audioFormat = format.getFormat();
+            
+            InputStream inputStream = new FileInputStream(file);
+            audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("error clip");
+            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println("error clip");
+            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
     @Override
-    public byte[] getBuffer() {
-        // get buffer from file
-        return new byte[2];
+    public AudioInputStream getAudioInputStream() {
+        return audioInputStream;
     }
     
     // Getters

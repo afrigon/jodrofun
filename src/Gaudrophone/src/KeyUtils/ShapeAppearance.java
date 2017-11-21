@@ -23,8 +23,10 @@
  */
 package KeyUtils;
 
+import java.awt.Color;
+
 public class ShapeAppearance implements java.io.Serializable {
-    //private Color backgroundColor;
+    private Color backgroundColor;
     private String backgroundImage;
     
     public ShapeAppearance() {
