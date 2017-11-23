@@ -26,10 +26,6 @@ package KeyUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Olivier
- */
 public class RectangleKeyShape implements KeyShapeGenerator {
 
     @Override

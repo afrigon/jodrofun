@@ -23,26 +23,36 @@
  */
 package UI;
 
-import Instrument.Instrument;
+import Instrument.Guitar;
 import Instrument.Key;
+import KeyUtils.KeyShape;
+import KeyUtils.KeyShape.Corner;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.Vector2;
+import Manager.GaudrophoneController;
 import Manager.InstrumentManager;
 import Music.AudioClip;
+import Music.SineWaveForm;
 import Music.Sound;
 import Music.SoundService;
 import Music.SynthesizedSound;
-import java.util.ArrayList;
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Window extends javax.swing.JFrame {
-
+    Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
+    
     /**
      * Creates new form MainWindow
      */
     public Window() {
         initComponents();
+        FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
+        fileDialog.setFileFilter(filter);
     }
 
     /**
@@ -57,6 +67,7 @@ public class Window extends javax.swing.JFrame {
 
         keyTypeButtonGroup = new javax.swing.ButtonGroup();
         alterationButtonGroup = new javax.swing.ButtonGroup();
+        fileDialog = new javax.swing.JFileChooser();
         splitWindow = new javax.swing.JSplitPane();
         instrumentPanel = new javax.swing.JPanel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(250, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(250, 32767));
@@ -145,8 +156,23 @@ public class Window extends javax.swing.JFrame {
         linesColorLabel = new javax.swing.JLabel();
         linesColorDisplay = new javax.swing.JLabel();
         linesColorButton = new java.awt.Button();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        newMenu = new javax.swing.JMenu();
+        newBlankMenuItem = new javax.swing.JMenuItem();
+        newGuitarMenuItem = new javax.swing.JMenuItem();
+        openMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
+        saveAsMenuItem = new javax.swing.JMenuItem();
+        quitMenuItem = new javax.swing.JMenuItem();
+        insertMenu = new javax.swing.JMenu();
+        createRectangleMenuItem = new javax.swing.JMenuItem();
+        createTriangleMenuItem = new javax.swing.JMenuItem();
+
+        fileDialog.setCurrentDirectory(new java.io.File("/"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gaudrophone");
         setMinimumSize(new java.awt.Dimension(650, 500));
 
         splitWindow.setDividerLocation(250);
@@ -267,7 +293,7 @@ public class Window extends javax.swing.JFrame {
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 112, Short.MAX_VALUE)
+            .addGap(0, 116, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -555,6 +581,84 @@ public class Window extends javax.swing.JFrame {
 
         getContentPane().add(splitWindow, java.awt.BorderLayout.CENTER);
 
+        fileMenu.setText("Fichier");
+
+        newMenu.setText("Nouveau");
+
+        newBlankMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        newBlankMenuItem.setText("Vide");
+        newBlankMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newBlankMenuItemActionPerformed(evt);
+            }
+        });
+        newMenu.add(newBlankMenuItem);
+
+        newGuitarMenuItem.setText("Guitare");
+        newGuitarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newGuitarMenuItemActionPerformed(evt);
+            }
+        });
+        newMenu.add(newGuitarMenuItem);
+
+        fileMenu.add(newMenu);
+
+        openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openMenuItem.setText("Ouvrir");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openMenuItem);
+
+        saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenuItem.setText("Enregistrer");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveMenuItem);
+
+        saveAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        saveAsMenuItem.setText("Enregistrer sous");
+        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveAsMenuItem);
+
+        quitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        quitMenuItem.setText("Quitter");
+        quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(quitMenuItem);
+
+        jMenuBar1.add(fileMenu);
+
+        insertMenu.setText("Insérer");
+
+        createRectangleMenuItem.setText("Rectangle");
+        createRectangleMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createRectangleMenuItemActionPerformed(evt);
+            }
+        });
+        insertMenu.add(createRectangleMenuItem);
+
+        createTriangleMenuItem.setText("Triangle");
+        insertMenu.add(createTriangleMenuItem);
+
+        jMenuBar1.add(insertMenu);
+
+        setJMenuBar(jMenuBar1);
+
         bindingGroup.bind();
 
         pack();
@@ -576,41 +680,103 @@ public class Window extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_naturalRadioButtonActionPerformed
 
+    private void newBlankMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBlankMenuItemActionPerformed
+        GaudrophoneController.getController().getInstrumentManager().newInstrument();
+        this.refresh();
+    }//GEN-LAST:event_newBlankMenuItemActionPerformed
+
+    private void newGuitarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGuitarMenuItemActionPerformed
+        GaudrophoneController.getController().getInstrumentManager().newInstrument(new Guitar());
+        this.refresh();
+    }//GEN-LAST:event_newGuitarMenuItemActionPerformed
+
+    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_quitMenuItemActionPerformed
+
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        fileDialog.setDialogTitle("Sélectionner un fichier");
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().getInstrumentManager().openInstrument(fileDialog.getSelectedFile().getAbsolutePath());
+            this.refresh();
+        }
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        if (!GaudrophoneController.getController().getInstrumentManager().saveInstrument()) {
+            saveInstrument();
+        }
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
+    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
+        saveInstrument();
+    }//GEN-LAST:event_saveAsMenuItemActionPerformed
+
+    private void createRectangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRectangleMenuItemActionPerformed
+        Sound sound = new SynthesizedSound(440);
+        Key key = new Key(sound, new RectangleKeyShape().generateRectangle(150, 80), "Rectangle");
+        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
+        this.refresh();
+    }//GEN-LAST:event_createRectangleMenuItemActionPerformed
+    
+    private void saveInstrument() {
+        fileDialog.setDialogTitle("Sélectionner un emplacement");
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().getInstrumentManager().saveInstrument(fileDialog.getSelectedFile().getAbsolutePath());
+        }
+    }
+    
+    private void refresh() {
+        GaudrophoneController.getController().getCanvasManager().drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+        this.canvas.repaint();
+    }
+    
     /**
      * @param args the command line arguments
      */
     public void setVisible() {
         java.awt.EventQueue.invokeLater(() -> {
-            Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
             this.splitWindow.setLeftComponent(canvas);
             this.setVisible(true);
+            
+            GaudrophoneController.getController().getInstrumentManager().newInstrument();
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().setName("Test Instrument");
+            Sound sound = new SynthesizedSound(440);
+            Key key = new Key(sound, new RectangleKeyShape().generateSquare(120), "Key one");
+            key.getShape().getIdleAppearance().setColor(Color.yellow);
+            
+            KeyShape shape = new RectangleKeyShape().generateSquare(105);
+            Key key1 = new Key(sound, shape, "Key one");
+            key1.getShape().getIdleAppearance().setColor(Color.PINK);
+            
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
+            //GaudrophoneController.getController().getInstrumentManager().openInstrument("/Users/frigon/Desktop/test1.gaud");
+            //this.refresh();
+            
+//            SoundService soundService = SoundService.shared;
+//            
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//            Sound synthSound = new SynthesizedSound();
+//            soundService.play(synthSound);
+//            
+//            try {
+//                Thread.sleep(8000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//            soundService.release(synthSound);
 
-            InstrumentManager manager = new InstrumentManager();
-            manager.newInstrument();
-            manager.getInstrument().setName("Test Instrument");
-            Sound sound = new AudioClip("Audio001.wav");
-            manager.getInstrument().addKey(new Key(sound, new RectangleKeyShape().generateSquare(10), "Key one"));
-            
-            manager.saveInstrument("./test.xml");
-            
-            SoundService soundService = SoundService.shared;
-            
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            Sound synthSound = new SynthesizedSound();
-            soundService.play(synthSound);
-            
-            try {
-                Thread.sleep(8000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            soundService.release(synthSound);
         });
     }
 
@@ -641,6 +807,8 @@ public class Window extends javax.swing.JFrame {
     private java.awt.Button backgroundSunkenImageButton;
     private javax.swing.JLabel backgroundSunkenLabel;
     private javax.swing.JPanel backgroundSunkenProperty;
+    private javax.swing.JMenuItem createRectangleMenuItem;
+    private javax.swing.JMenuItem createTriangleMenuItem;
     private javax.swing.JLabel decayLabel;
     private javax.swing.JSlider decaySlider;
     private javax.swing.JPanel decaySliderPanel;
@@ -650,6 +818,8 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JPanel envelopeProperties;
     private javax.swing.JPanel envelopeSliders;
     private javax.swing.JPanel envelopeTitlePanel;
+    private javax.swing.JFileChooser fileDialog;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JRadioButton flatRadioButton;
@@ -657,7 +827,9 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JPanel frequencyProperty;
     private javax.swing.JSpinner frequencySpinner;
     private javax.swing.JPanel generalProperties;
+    private javax.swing.JMenu insertMenu;
     private javax.swing.JPanel instrumentPanel;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -671,12 +843,17 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JLabel linesColorLabel;
     private javax.swing.JPanel linesColorProperty;
     private javax.swing.JRadioButton naturalRadioButton;
+    private javax.swing.JMenuItem newBlankMenuItem;
+    private javax.swing.JMenuItem newGuitarMenuItem;
+    private javax.swing.JMenu newMenu;
     private java.awt.Choice noteNameChoice;
     private javax.swing.JLabel noteNameLabel;
     private javax.swing.JPanel noteNameProperty;
     private javax.swing.JPanel noteProperties;
     private javax.swing.JLabel octaveLabel;
     private javax.swing.JSpinner octaveSpinner;
+    private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JLabel readSpeedLabel;
     private javax.swing.JPanel readSpeedProperty;
     private javax.swing.JSpinner readSpeedSpinner;
@@ -684,6 +861,8 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JSlider releaseSlider;
     private javax.swing.JPanel releaseSliderPanel;
     private javax.swing.JSpinner releaseSpinner;
+    private javax.swing.JMenuItem saveAsMenuItem;
+    private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JRadioButton sharpRadioButton;
     private java.awt.Checkbox showKeyNameCheckbox;
     private javax.swing.JPanel showNameProperty;

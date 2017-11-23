@@ -25,11 +25,7 @@ package KeyUtils;
 
 import java.awt.Color;
 
-/**
- *
- * @author Olivier
- */
-public class KeyLine {
+public class KeyLine implements java.io.Serializable {
     private Color lineColor;
     private double lineThickness;
     
@@ -38,8 +34,9 @@ public class KeyLine {
         lineThickness = 0.1;
     }
     
-    public KeyLine(double thickness) {
+    public KeyLine(double thickness, Color color) {
         lineThickness = thickness;
+        lineColor = color;
     }
     
     // Methods

@@ -25,16 +25,11 @@ package UI;
 
 import java.awt.Color;
 import java.awt.geom.Line2D;
-import KeyUtils.KeyLine;
 
-/**
- *
- * @author Alexandre
- */
 public class DrawableLine {
-    Color lineColor;
-    int lineThickness;
-    Line2D.Double line;
+    private Color lineColor;
+    private int lineThickness;
+    private Line2D.Double line;
     
     public void DrawableLine() { }
     
