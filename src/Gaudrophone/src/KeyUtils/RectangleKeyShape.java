@@ -36,9 +36,9 @@ public class RectangleKeyShape implements KeyShapeGenerator {
     public KeyShape generateSquare(double squareSize) {
         List<Vector2> pointList = new ArrayList<>();
         pointList.add(new Vector2(0, 0));
-        pointList.add(new Vector2(0, squareSize));
-        pointList.add(new Vector2(squareSize, squareSize));
         pointList.add(new Vector2(squareSize, 0));
+        pointList.add(new Vector2(squareSize, squareSize));
+        pointList.add(new Vector2(0, squareSize));
         
         return new KeyShape(pointList);
     }
@@ -51,10 +51,10 @@ public class RectangleKeyShape implements KeyShapeGenerator {
     
     public KeyShape generateRectangle(double sizeX, double sizeY) {
         List<Vector2> pointList = new ArrayList<>();
-        pointList.add(new Vector2(0, 0));
-        pointList.add(new Vector2(0, sizeY));
-        pointList.add(new Vector2(sizeX, sizeY));
+        pointList.add(new Vector2(10, 10));
         pointList.add(new Vector2(sizeX, 0));
+        pointList.add(new Vector2(sizeX, sizeY));
+        pointList.add(new Vector2(0, sizeY));
         
         return new KeyShape(pointList);
     }

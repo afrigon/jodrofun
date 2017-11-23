@@ -29,6 +29,7 @@ import KeyUtils.Vector2;
 import Manager.GaudrophoneController;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class DrawableShape {
                 Vector2 next = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(i));
                 this.generalPath.lineTo(next.getX(), next.getY());
                 DrawableLine dl = new DrawableLine();
-                dl.setLine(new Line2D.Double(previous.getX(), previous.getY(), next.getY(), next.getY()));
+                dl.setLine(new Line2D.Double(previous.getX(), previous.getY(), next.getX(), next.getY()));
                 dl.setColor(keyLines.get(i-1).getColor());
                 dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(i-1).getThickness()));
                 this.lines.add(dl);
@@ -73,11 +74,9 @@ public class DrawableShape {
             
             Vector2 last = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(points.size()-1));
             
-            System.out.println(last.getX());
-            System.out.println(last.getY());
             this.generalPath.closePath();
             DrawableLine dl = new DrawableLine();
-            dl.setLine(new Line2D.Double(last.getX(), last.getY(), first.getY(), first.getY()));
+            dl.setLine(new Line2D.Double(last.getX(), last.getY(), first.getX(), first.getY()));
             dl.setColor(keyLines.get(keyLines.size()-1).getColor());
             dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(keyLines.size()-1).getThickness()));
             this.lines.add(dl);
