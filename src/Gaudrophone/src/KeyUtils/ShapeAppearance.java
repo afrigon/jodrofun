@@ -50,12 +50,12 @@ public class ShapeAppearance implements java.io.Serializable {
     
     private void setImage() {
         try {
-            if (backgroundImagePath == null || "".equals(backgroundImagePath))
-                throw new java.lang.NullPointerException("ShapeAppearance.setImage : backgroundImagePath is null or empty.");
-            if (java.nio.file.Files.notExists(java.nio.file.Paths.get(backgroundImagePath)))
-                throw new java.io.FileNotFoundException("ShapeAppearance.setImage : Not file found according to backgroundImagePath.");
-            
-            backgroundImage = javax.imageio.ImageIO.read(new java.io.File(backgroundImagePath));
+            if (backgroundImagePath != null && !"".equals(backgroundImagePath)) {
+                if (java.nio.file.Files.notExists(java.nio.file.Paths.get(backgroundImagePath)))
+                    throw new java.io.FileNotFoundException("ShapeAppearance.setImage : Not file found according to backgroundImagePath.");
+
+                backgroundImage = javax.imageio.ImageIO.read(new java.io.File(backgroundImagePath));
+            }
         }
         catch (java.io.IOException ex) {
             System.out.println(ex);

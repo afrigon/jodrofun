@@ -115,19 +115,19 @@ public class GaudrophoneController {
     }
     
     public void setKeyColor(Color newColor) {
-        selectionManager.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape().getIdleAppearance().setColor(newColor);
     }
     
     public void setKeySunkenColor(Color newColor) {
-        selectionManager.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape().getSunkenAppearance().setColor(newColor);
     }
     
     public void setKeyImage(String path) {
-        selectionManager.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape().getIdleAppearance().setImage(path);
     }
     
     public void setKeySunkenImage(String path) {
-        selectionManager.getSelectedKey().getShape();
+        selectionManager.getSelectedKey().getShape().getSunkenAppearance().setImage(path);
     }
     
     public void setLineColor(Color newColor) {
