@@ -35,15 +35,13 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-/**
- *
- * @author Olivier
- */
+
 public class AudioClip extends Sound {
     private String path = null;
     private double speed;
     
-    private AudioInputStream audioInputStream = null;
+    private transient AudioInputStream audioInputStream = null;
+    
     // Constructors
     public AudioClip(String newPath) {
         path = newPath;

@@ -24,28 +24,62 @@
 package UI;
 
 import Instrument.Key;
+import KeyUtils.KeyLine;
+import KeyUtils.Vector2;
+import Manager.GaudrophoneController;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- *
- * @author Alexandre
- */
 public class DrawableShape {
     Key key;
     GeneralPath.Double generalPath;
     List<DrawableLine> lines;
     
-    public DrawableShape (Key p_key) {
-        key = p_key;
+    public DrawableShape (Key key) {
+        this.key = key;
+        this.lines = new LinkedList<>();
+        this.generalPath = new GeneralPath.Double();
+        this.generatePath();
     }
     
     public boolean checkClick(int x, int y) { return generalPath.contains(x, y); }
     
-    public Key getKey() { return key; }
-    public GeneralPath.Double getShape() { return generalPath; }
-    public List<DrawableLine> getLines() { return lines; }
+    public Key getKey() { return this.key; }
+    public GeneralPath.Double getShape() { return this.generalPath; }
+    public List<DrawableLine> getLines() { return this.lines; }
     
-    public void setShape(GeneralPath.Double p_shape) { generalPath = p_shape; }
-    public void setLines(List<DrawableLine> p_lines) { lines = p_lines; }
+    public void setShape(GeneralPath.Double shape) { this.generalPath = shape; }
+    public void setLines(List<DrawableLine> lines) { this.lines = lines; }
+    
+    private void generatePath() {
+        List<Vector2> points = this.key.getShape().getPoints();
+        List<KeyLine> keyLines = this.key.getShape().getLines();
+        
+        if (points.size() > 1) {
+            Vector2 first = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(0));
+            this.generalPath.moveTo(first.getX(), first.getY());
+            for (int i = 1; i < points.size(); i++) {
+                Vector2 previous = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(i-1));
+                Vector2 next = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(i));
+                this.generalPath.lineTo(next.getX(), next.getY());
+                DrawableLine dl = new DrawableLine();
+                dl.setLine(new Line2D.Double(previous.getX(), previous.getY(), next.getX(), next.getY()));
+                dl.setColor(keyLines.get(i-1).getColor());
+                dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(i-1).getThickness()));
+                this.lines.add(dl);
+            }
+            
+            Vector2 last = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(points.size()-1));
+            
+            this.generalPath.closePath();
+            DrawableLine dl = new DrawableLine();
+            dl.setLine(new Line2D.Double(last.getX(), last.getY(), first.getX(), first.getY()));
+            dl.setColor(keyLines.get(keyLines.size()-1).getColor());
+            dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(keyLines.size()-1).getThickness()));
+            this.lines.add(dl);
+        }
+    }
 }

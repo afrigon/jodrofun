@@ -23,16 +23,15 @@
  */
 package Manager;
 
-import Music.SoundService;
 import Instrument.Key;
-import Instrument.Instrument;
+import Music.SoundService;
 import KeyUtils.KeyShape;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import java.awt.Color;
 
 public class GaudrophoneController {
-    private Instrument instrument;
+    private InstrumentManager instrumentManager;
     private CanvasManager canvasManager;
     private SoundService soundService;
     private SelectionManager selectionManager;
@@ -40,6 +39,7 @@ public class GaudrophoneController {
     private static GaudrophoneController controller = null;
     
     public GaudrophoneController() {
+        instrumentManager = new InstrumentManager();
         canvasManager = new CanvasManager(this);
         soundService = new SoundService();
         selectionManager = new SelectionManager();
@@ -49,6 +49,10 @@ public class GaudrophoneController {
         if (controller == null)
             controller = new GaudrophoneController();
         return controller;
+    }
+    
+    public InstrumentManager getInstrumentManager() {
+        return instrumentManager;
     }
     
     public CanvasManager getCanvasManager() {
@@ -67,15 +71,15 @@ public class GaudrophoneController {
         KeyShape newShape = key.generate();
         
         newShape.setPosition(position, KeyShape.Corner.Center);
-        instrument.addKey(new Key(newShape));
+        instrumentManager.getInstrument().addKey(new Key(newShape));
     }
     
     public void duplicateKey() {
-        instrument.addKey(new Key(selectionManager.getSelectedKey()));
+        instrumentManager.getInstrument().addKey(new Key(selectionManager.getSelectedKey()));
     }
     
     public void deleteKey() {
-        instrument.removeKey(selectionManager.getSelectedKey());
+        instrumentManager.getInstrument().removeKey(selectionManager.getSelectedKey());
     }
     
     public void moveKey(Vector2 translation) {

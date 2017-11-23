@@ -41,6 +41,7 @@ public class InstrumentFileIO {
             fileOut.close();
             return true;
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Could not save instrument.");
             return false;
         }

@@ -29,23 +29,19 @@ import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import java.util.List;
 import Instrument.Key;
-
-/**
- *
- * @author frigon
- */
-
 import Instrument.Key;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import UI.DrawableShape;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CanvasManager {
-    GaudrophoneController controller;
-    List<DrawableShape> shapes;
-    State state;
-    KeyShapeGenerator storedKeyShape;
+    private GaudrophoneController controller;
+    private List<DrawableShape> shapes;
+    private State state;
+    private KeyShapeGenerator storedKeyShape;
+    private Vector2 windowSize = new Vector2(0, 0);
     
     public CanvasManager(GaudrophoneController p_controller) {
         controller = p_controller;
@@ -55,16 +51,19 @@ public class CanvasManager {
        return null;
     }
     
-    public int convertWorldToPixel(Vector2 vector) {
-        return -1;
+    public Vector2 convertWorldToPixel(Vector2 vector) {
+        return vector;
     }
     
     public int convertThicknessToPixel(double thickness) {
-        return -1;
+        return 10;
     }
     
     public void drawKeys(List<Key> keyList) {
-        
+        this.shapes = new LinkedList<>();
+        keyList.forEach((key) -> {
+            this.shapes.add(new DrawableShape(key));
+        });
     }
     
     public void clicked(Key key) {
@@ -87,7 +86,10 @@ public class CanvasManager {
         return shapes;
     }
     
-    
     public State getState() { return state; }
     public void setState(State value) { state = value; }
+    
+    public void setWindowSize(int x, int y) {
+        this.windowSize = new Vector2(x, y);
+    }
 }

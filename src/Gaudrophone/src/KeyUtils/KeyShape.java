@@ -23,10 +23,13 @@
  */
 package KeyUtils;
 
+import java.awt.Color;
+import java.util.LinkedList;
 import java.util.List;
 
 public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
+    private List<KeyLine> lines = null;
     
     private ShapeAppearance idleAppearance = null;
     private ShapeAppearance clickedAppearance = null;
@@ -40,6 +43,10 @@ public class KeyShape implements java.io.Serializable {
     // Constructors
     public KeyShape(List<Vector2> pointsList) {
         points = pointsList;
+        lines = new LinkedList<>();
+        for (int i = 0; i < points.size(); i++) {
+            lines.add(new KeyLine(2, Color.BLACK));
+        }
         idleAppearance = new ShapeAppearance();
         clickedAppearance = new ShapeAppearance();
     }
@@ -54,6 +61,14 @@ public class KeyShape implements java.io.Serializable {
     
     public List<Vector2> getPoints() {
         return this.points;
+    }
+    
+    public List<KeyLine> getLines() {
+        return this.lines;
+    }
+    
+    public void setLines(List<KeyLine> lines) {
+        this.lines = lines;
     }
     
     // Methods

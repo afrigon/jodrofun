@@ -24,7 +24,6 @@
 package Manager;
 
 import Instrument.*;
-import java.util.ArrayList;
 
 public class InstrumentManager {
     private Instrument currentInstrument;
@@ -49,9 +48,11 @@ public class InstrumentManager {
     public void openInstrument(String path) {
         this.currentInstrumentPath = path;
         InstrumentFileIO instrumentIO = new InstrumentFileIO(this.currentInstrumentPath);
-        this.currentInstrument = instrumentIO.load();
-        if (this.currentInstrument == null) {
+        Instrument temp = instrumentIO.load();
+        if (temp == null) {
             //show error loading instrument
+        } else {
+            this.currentInstrument = temp;
         }
     }
     
