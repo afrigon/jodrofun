@@ -44,7 +44,7 @@ public class DrawableShape {
         this.generatePath();
     }
     
-    public boolean clicked(int x, int y) { return generalPath.contains(x, y); }
+    public boolean checkClick(int x, int y) { return generalPath.contains(x, y); }
     
     public Key getKey() { return this.key; }
     public GeneralPath.Double getShape() { return this.generalPath; }

@@ -24,14 +24,44 @@
 package KeyUtils;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class ShapeAppearance implements java.io.Serializable {
     private Color backgroundColor;
-    private String backgroundImage;
+    private String backgroundImagePath;
+    private transient BufferedImage backgroundImage = null;
     
     public ShapeAppearance() {
         backgroundColor = Color.GRAY;
-        backgroundImage = null;
+        backgroundImagePath = null;
+    }
+    
+    private void readObject(java.io.ObjectInputStream in) {
+        try {
+            in.defaultReadObject();
+            setImage();
+        }
+        catch (IOException | ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+    }
+    
+    private void setImage() {
+        try {
+            if (backgroundImagePath == null || "".equals(backgroundImagePath))
+                throw new java.lang.NullPointerException("ShapeAppearance.setImage : backgroundImagePath is null or empty.");
+            if (java.nio.file.Files.notExists(java.nio.file.Paths.get(backgroundImagePath)))
+                throw new java.io.FileNotFoundException("ShapeAppearance.setImage : Not file found according to backgroundImagePath.");
+            
+            backgroundImage = javax.imageio.ImageIO.read(new java.io.File(backgroundImagePath));
+        }
+        catch (java.io.IOException ex) {
+            System.out.println(ex);
+            backgroundImage = null;
+            backgroundImagePath = null;
+        }
     }
     
     public void setColor(Color color) {
@@ -39,10 +69,12 @@ public class ShapeAppearance implements java.io.Serializable {
     }
     
     public void setImage(String pathToImage) {
-        backgroundImage = pathToImage;
+        backgroundImagePath = pathToImage;
+        setImage();
     }
     
     public void removeImage() {
+        backgroundImagePath = null;
         backgroundImage = null;
     }
     
@@ -50,7 +82,11 @@ public class ShapeAppearance implements java.io.Serializable {
         return backgroundColor;
     }
     
-    public String getImage() {
+    public String getImagePath() {
+        return backgroundImagePath;
+    }
+    
+    public BufferedImage getImage() {
         return backgroundImage;
     }
 }
