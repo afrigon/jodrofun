@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 Alexandre.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
-
-<<<<<<< HEAD
-public class SineWaveForm extends WaveForm implements java.io.Serializable {
-
-=======
+package Instrument;
 
 /**
  *
- * @author Olivier
+ * @author Alexandre
  */
-public class SineWaveForm extends WaveForm {
-    
->>>>>>> d93e14cdb94e3ab656a610f65a3e1edfaaa68045
-    @Override
-    public void updateBuffer(double frequency) {
-        int frames = (int) (SAMPLE_RATE * WAVES / frequency);
-        
-        buffer = new byte[2 * frames];
-        double doublePi = 2 * Math.PI;
-        
-        for (int i = 0; i < frames; i++) {
-            buffer[2 * i] = (byte) (120.0 * Math.sin(doublePi * frequency * i / SAMPLE_RATE));
-            buffer[2 * i + 1] = buffer[2 * i];
-        }
+public enum KeyState {
+    hover(1),
+    clicked(2),
+    selected(4),
+    searched(8),
+    displayNote(16),
+    displayAlteration(32),
+    displayOctave(64),
+    displayName(128);
+
+    private final int value;
+    private KeyState(int value) {
+        this.value = value;
     }
-    
+
+    public int getValue() {
+        return value;
+    }
 }

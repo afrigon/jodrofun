@@ -40,7 +40,7 @@ public class DrawableShape {
         key = p_key;
     }
     
-    public boolean clicked(int x, int y) { return generalPath.contains(x, y); }
+    public boolean checkClick(int x, int y) { return generalPath.contains(x, y); }
     
     public Key getKey() { return key; }
     public GeneralPath.Double getShape() { return generalPath; }
