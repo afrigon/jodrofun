@@ -26,24 +26,26 @@ package UI;
 import Instrument.Guitar;
 import Instrument.Key;
 import KeyUtils.KeyShape;
-import KeyUtils.KeyShape.Corner;
 import KeyUtils.RectangleKeyShape;
+import KeyUtils.TriangleKeyShape;
 import KeyUtils.Vector2;
+import Manager.CanvasManagerDelegate;
 import Manager.GaudrophoneController;
-import Manager.InstrumentManager;
-import Music.AudioClip;
-import Music.SineWaveForm;
+import Manager.SelectionManagerDelegate;
+import Manager.State;
 import Music.Sound;
-import Music.SoundService;
 import Music.SynthesizedSound;
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Window extends javax.swing.JFrame {
+public class Window extends javax.swing.JFrame implements ComponentListener, MouseListener, SelectionManagerDelegate, CanvasManagerDelegate {
     Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
     
     /**
@@ -51,8 +53,7 @@ public class Window extends javax.swing.JFrame {
      */
     public Window() {
         initComponents();
-        FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
-        fileDialog.setFileFilter(filter);
+        fileDialog.setCurrentDirectory(new File(System.getProperty("user.home")));
     }
 
     /**
@@ -68,9 +69,10 @@ public class Window extends javax.swing.JFrame {
         keyTypeButtonGroup = new javax.swing.ButtonGroup();
         alterationButtonGroup = new javax.swing.ButtonGroup();
         fileDialog = new javax.swing.JFileChooser();
+        colorPicker = new javax.swing.JColorChooser();
         splitWindow = new javax.swing.JSplitPane();
         instrumentPanel = new javax.swing.JPanel();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(250, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(250, 32767));
+        canvasPannel = new javax.swing.Box.Filler(new java.awt.Dimension(250, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(250, 32767));
         jScrollPane1 = new javax.swing.JScrollPane();
         PropertyPanel = new javax.swing.JPanel();
         KeyProperties = new javax.swing.JPanel();
@@ -156,6 +158,9 @@ public class Window extends javax.swing.JFrame {
         linesColorLabel = new javax.swing.JLabel();
         linesColorDisplay = new javax.swing.JLabel();
         linesColorButton = new java.awt.Button();
+        jToolBar1 = new javax.swing.JToolBar();
+        buttonPlayMode = new javax.swing.JButton();
+        buttonEditKey = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenu();
@@ -181,7 +186,7 @@ public class Window extends javax.swing.JFrame {
 
         instrumentPanel.setBackground(new java.awt.Color(255, 255, 255));
         instrumentPanel.setLayout(new java.awt.BorderLayout());
-        instrumentPanel.add(filler2, java.awt.BorderLayout.CENTER);
+        instrumentPanel.add(canvasPannel, java.awt.BorderLayout.CENTER);
 
         splitWindow.setLeftComponent(instrumentPanel);
 
@@ -203,9 +208,9 @@ public class Window extends javax.swing.JFrame {
 
         keyNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         keyNameField.setText("Nom de note");
-        keyNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keyNameFieldActionPerformed(evt);
+        keyNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                keyNameFieldKeyReleased(evt);
             }
         });
         keyNameProperty.add(keyNameField);
@@ -289,11 +294,11 @@ public class Window extends javax.swing.JFrame {
         envelopeGraph.setLayout(envelopeGraphLayout);
         envelopeGraphLayout.setHorizontalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 708, Short.MAX_VALUE)
+            .addGap(0, 733, Short.MAX_VALUE)
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 116, Short.MAX_VALUE)
+            .addGap(0, 113, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -529,9 +534,19 @@ public class Window extends javax.swing.JFrame {
         backgroundProperty.add(backgroundDisplayLabel);
 
         backgroundColorButton.setLabel("Choisir une couleur");
+        backgroundColorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundColorButtonActionPerformed(evt);
+            }
+        });
         backgroundProperty.add(backgroundColorButton);
 
         backgroundImageButton.setLabel("Choisir une image");
+        backgroundImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundImageButtonActionPerformed(evt);
+            }
+        });
         backgroundProperty.add(backgroundImageButton);
 
         KeyShapeProperties.add(backgroundProperty);
@@ -549,9 +564,19 @@ public class Window extends javax.swing.JFrame {
         backgroundSunkenProperty.add(backgroundSunkenDisplayLabel);
 
         backgroundSunkenColorButton.setLabel("Choisir une couleur");
+        backgroundSunkenColorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundSunkenColorButtonActionPerformed(evt);
+            }
+        });
         backgroundSunkenProperty.add(backgroundSunkenColorButton);
 
         backgroundSunkenImageButton.setLabel("Choisir une image");
+        backgroundSunkenImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundSunkenImageButtonActionPerformed(evt);
+            }
+        });
         backgroundSunkenProperty.add(backgroundSunkenImageButton);
 
         KeyShapeProperties.add(backgroundSunkenProperty);
@@ -580,6 +605,35 @@ public class Window extends javax.swing.JFrame {
         splitWindow.setRightComponent(jScrollPane1);
 
         getContentPane().add(splitWindow, java.awt.BorderLayout.CENTER);
+
+        jToolBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jToolBar1.setRollover(true);
+
+        buttonPlayMode.setForeground(new java.awt.Color(0, 0, 255));
+        buttonPlayMode.setText("Jeu");
+        buttonPlayMode.setActionCommand("");
+        buttonPlayMode.setFocusable(false);
+        buttonPlayMode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonPlayMode.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonPlayMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPlayModeActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonPlayMode);
+
+        buttonEditKey.setText("Édition");
+        buttonEditKey.setFocusable(false);
+        buttonEditKey.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonEditKey.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonEditKey.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditKeyActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonEditKey);
+
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         fileMenu.setText("Fichier");
 
@@ -653,6 +707,11 @@ public class Window extends javax.swing.JFrame {
         insertMenu.add(createRectangleMenuItem);
 
         createTriangleMenuItem.setText("Triangle");
+        createTriangleMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createTriangleMenuItemActionPerformed(evt);
+            }
+        });
         insertMenu.add(createTriangleMenuItem);
 
         jMenuBar1.add(insertMenu);
@@ -667,10 +726,6 @@ public class Window extends javax.swing.JFrame {
     private void flatRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flatRadioButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_flatRadioButtonActionPerformed
-
-    private void keyNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyNameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_keyNameFieldActionPerformed
 
     private void audioClipRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioClipRadioButtonActionPerformed
         // TODO add your handling code here:
@@ -696,6 +751,9 @@ public class Window extends javax.swing.JFrame {
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         fileDialog.setDialogTitle("Sélectionner un fichier");
+        FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(filter);
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -715,24 +773,92 @@ public class Window extends javax.swing.JFrame {
     }//GEN-LAST:event_saveAsMenuItemActionPerformed
 
     private void createRectangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRectangleMenuItemActionPerformed
-        Sound sound = new SynthesizedSound(440);
-        Key key = new Key(sound, new RectangleKeyShape().generateRectangle(150, 80), "Rectangle");
-        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
-        this.refresh();
+        this.resetButtons();
+        GaudrophoneController.getController().getCanvasManager().setState(State.CreatingShape);
+        GaudrophoneController.getController().getCanvasManager().setStoredKeyGenerator(new RectangleKeyShape());
     }//GEN-LAST:event_createRectangleMenuItemActionPerformed
+
+    private void createTriangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTriangleMenuItemActionPerformed
+        this.resetButtons();
+        GaudrophoneController.getController().getCanvasManager().setState(State.CreatingShape);
+        GaudrophoneController.getController().getCanvasManager().setStoredKeyGenerator(new TriangleKeyShape());
+    }//GEN-LAST:event_createTriangleMenuItemActionPerformed
+
+    private void buttonPlayModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPlayModeActionPerformed
+        GaudrophoneController.getController().getCanvasManager().setState(State.Play);
+        this.resetButtons();
+        buttonPlayMode.setForeground(Color.blue);
+    }//GEN-LAST:event_buttonPlayModeActionPerformed
+
+    private void buttonEditKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditKeyActionPerformed
+        GaudrophoneController.getController().getCanvasManager().setState(State.EditKey);
+        this.resetButtons();
+        buttonEditKey.setForeground(Color.blue);
+    }//GEN-LAST:event_buttonEditKeyActionPerformed
+
+    private void backgroundColorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundColorButtonActionPerformed
+        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        if (color != null) {
+            GaudrophoneController.getController().setKeyColor(color);
+        }
+    }//GEN-LAST:event_backgroundColorButtonActionPerformed
+
+    private void backgroundSunkenColorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundSunkenColorButtonActionPerformed
+        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        if (color != null) {
+            GaudrophoneController.getController().setKeySunkenColor(color);
+        }
+    }//GEN-LAST:event_backgroundSunkenColorButtonActionPerformed
+
+    private void backgroundImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundImageButtonActionPerformed
+        fileDialog.setDialogTitle("Sélectionner une image");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().setKeyImage(fileDialog.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_backgroundImageButtonActionPerformed
+
+    private void backgroundSunkenImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundSunkenImageButtonActionPerformed
+        fileDialog.setDialogTitle("Sélectionner une image");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().setKeySunkenImage(fileDialog.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_backgroundSunkenImageButtonActionPerformed
+
+    private void keyNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyNameFieldKeyReleased
+        GaudrophoneController.getController().setName(keyNameField.getText());
+    }//GEN-LAST:event_keyNameFieldKeyReleased
+    
+    private void resetButtons() {
+        buttonPlayMode.setForeground(Color.black);
+        buttonEditKey.setForeground(Color.black);
+    }
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
+        FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(filter);
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            GaudrophoneController.getController().getInstrumentManager().saveInstrument(fileDialog.getSelectedFile().getAbsolutePath());
+            String filepath = fileDialog.getSelectedFile().getAbsolutePath();
+            if (!filepath.endsWith(".gaud")) {
+                filepath += ".gaud";
+            }
+            GaudrophoneController.getController().getInstrumentManager().saveInstrument(filepath);
         }
     }
     
     private void refresh() {
         GaudrophoneController.getController().getCanvasManager().drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
-        this.canvas.repaint();
     }
     
     /**
@@ -743,40 +869,42 @@ public class Window extends javax.swing.JFrame {
             this.splitWindow.setLeftComponent(canvas);
             this.setVisible(true);
             
+            this.canvas.addComponentListener(this);
+            this.canvas.addMouseListener(this);
+            GaudrophoneController.getController().getCanvasManager().setCanvasSize(this.canvasPannel.getWidth(), this.canvasPannel.getHeight());
+            GaudrophoneController.getController().getSelectionManager().delegate = this;
+            GaudrophoneController.getController().getCanvasManager().delegate = this;
+            
             GaudrophoneController.getController().getInstrumentManager().newInstrument();
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().setName("Test Instrument");
-            Sound sound = new SynthesizedSound(440);
-            Key key = new Key(sound, new RectangleKeyShape().generateSquare(120), "Key one");
-            key.getShape().getIdleAppearance().setColor(Color.yellow);
             
-            KeyShape shape = new RectangleKeyShape().generateSquare(105);
-            Key key1 = new Key(sound, shape, "Key one");
-            key1.getShape().getIdleAppearance().setColor(Color.PINK);
             
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
-            //GaudrophoneController.getController().getInstrumentManager().openInstrument("/Users/frigon/Desktop/test1.gaud");
-            //this.refresh();
-            
-//            SoundService soundService = SoundService.shared;
-//            
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            
-//            Sound synthSound = new SynthesizedSound();
-//            soundService.play(synthSound);
-//            
-//            try {
-//                Thread.sleep(8000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            
-//            soundService.release(synthSound);
-
+//            MINI-PIANO
+//            Key key = new Key(new SynthesizedSound(440), new RectangleKeyShape().generateSquare(50, new Vector2(2, 2)), "A");
+//            key.getShape().getIdleAppearance().setColor(Color.yellow);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
+//
+//            Key key1 = new Key(new SynthesizedSound(493.88), new RectangleKeyShape().generateSquare(50, new Vector2(52, 2)), "B");
+//            key1.getShape().getIdleAppearance().setColor(Color.PINK);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
+//
+//            Key key2 = new Key(new SynthesizedSound(523.25), new RectangleKeyShape().generateSquare(50, new Vector2(104, 2)), "C");
+//            key2.getShape().getIdleAppearance().setColor(Color.CYAN);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key2);
+//
+//            Key key3 = new Key(new SynthesizedSound(587.33), new RectangleKeyShape().generateSquare(50, new Vector2(156, 2)), "D");
+//            key3.getShape().getIdleAppearance().setColor(Color.MAGENTA);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key3);
+//
+//            Sound sound = new SynthesizedSound(659.25);
+//            sound.getEnvelope().setAttack(50);
+//            sound.getEnvelope().setDecay(250);
+//            sound.getEnvelope().setSustain(0.9);
+//            sound.getEnvelope().setRelease(100);
+//            Key key4 = new Key(sound, new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
+//            key4.getShape().getIdleAppearance().setColor(Color.green);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
+//
+//            this.refresh();
         });
     }
 
@@ -807,6 +935,10 @@ public class Window extends javax.swing.JFrame {
     private java.awt.Button backgroundSunkenImageButton;
     private javax.swing.JLabel backgroundSunkenLabel;
     private javax.swing.JPanel backgroundSunkenProperty;
+    private javax.swing.JButton buttonEditKey;
+    private javax.swing.JButton buttonPlayMode;
+    private javax.swing.Box.Filler canvasPannel;
+    private javax.swing.JColorChooser colorPicker;
     private javax.swing.JMenuItem createRectangleMenuItem;
     private javax.swing.JMenuItem createTriangleMenuItem;
     private javax.swing.JLabel decayLabel;
@@ -821,7 +953,6 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JFileChooser fileDialog;
     private javax.swing.JMenu fileMenu;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.JRadioButton flatRadioButton;
     private javax.swing.JLabel frequencyLabel;
     private javax.swing.JPanel frequencyProperty;
@@ -834,6 +965,7 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSlider jSlider1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField keyNameField;
     private javax.swing.JLabel keyNameLabel;
     private javax.swing.JPanel keyNameProperty;
@@ -886,4 +1018,66 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JPanel waveFormProperty;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        GaudrophoneController.getController().getCanvasManager().setCanvasSize(e.getComponent().getWidth(), e.getComponent().getHeight());
+        this.refresh();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+        
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+        
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+        
+    }
+
+    @Override
+    public void didSelectKey(Key key) {
+        this.keyNameField.setText(key.getName());
+        //TODO: fill in other fields
+    }
+    
+    @Override
+    public void didUnselectKey() {
+        this.keyNameField.setText("Nom de la touche");
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        this.refresh();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        this.refresh();
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void shouldRedraw() {
+        this.canvas.repaint();
+    }
 }

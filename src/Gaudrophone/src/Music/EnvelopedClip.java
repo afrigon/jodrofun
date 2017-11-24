@@ -24,116 +24,62 @@
 package Music;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 
 /**
  *
  * @author Olivier
  */
-public class EnvelopedClip extends Thread {
+public class EnvelopedClip {
     private Clip clip = null;
-    private Envelope envelope = null;
-    private FloatControl volumeControl = null;
     private long startInstant = 0;
     private long releaseInstant = 0;
     private boolean released = false;
     
-    public EnvelopedClip(Clip newClip, AudioInputStream audioInputStream, Envelope newEnvelope) {
-        try {
-            clip = newClip;
-            envelope = newEnvelope;
-            
-            
-            clip.open(audioInputStream);
-            
+    public EnvelopedClip(Clip newClip, AudioInputStream audioInputStream, int loopFrame) throws LineUnavailableException, IOException {
+        clip = newClip;
+
+        clip.open(audioInputStream);
+        if (loopFrame > 0) {
+            clip.setLoopPoints(loopFrame, -1);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-            
-            clip.addLineListener((LineEvent le) -> {
-                if (le.getType() == LineEvent.Type.STOP) {
-                    System.out.println("clip close");
-                    end();
-                }
-            });
-            
-            // set a loop
-            //clip.setLoopPoints(0, 20000);
-            
-            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            setVolume(-80.0f);
-            
-            
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(EnvelopedClip.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(EnvelopedClip.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    @Override
-    public void run() {
+    public void start() {
         released = false;
         startInstant = System.nanoTime();
         
-        
-        setVolume(-80.0f);
-        volumeControl.shift(-80.0f, 0f, 4000000);
-        
         clip.start();
-        
-//        while (clip != null && clip.isOpen()) {
-//            if (released) { // if key is released
-//                double timePassed = ((double) System.nanoTime() - releaseInstant) / 1000000;
-//                float newVolume = envelope.getReleaseVolume(timePassed); 
-//                if (newVolume <= -80.0f) {
-//                    end();
-//                } else {
-//                    setVolume(newVolume);
-//                }
-//                System.out.println("new volume : " + newVolume);
-//
-//            } else { // while key is played
-//                if (startInstant != 0) {
-//                    double timePassed = ((double) System.nanoTime() - startInstant) / 1000000;
-//                    System.out.println("timePassed : " + timePassed);
-//                    setVolume(envelope.getPlayingVolume(timePassed));
-//                }
-//            }
-//            
-//        }
-        
-        System.out.println("while loop done");
     }
     
-    public void release() {
+    public double getTimePlayed() {
+        return ((double)(System.nanoTime() - startInstant))/1000000000;
+    }
+    
+    public void release(Clip newClip, AudioInputStream audioInputStream) throws LineUnavailableException, IOException {
+        newClip.open(audioInputStream);
+            
         releaseInstant = System.nanoTime();
+        double timePlayed = ((double)(releaseInstant - startInstant))/1000000000;
+        newClip.start();
+
+        clip.close();
+
+        clip = newClip;
         released = true;
-        System.out.println("eclip release");
+        System.out.println("clip release");
     }
     
     public void end() {
         System.out.println("clip stop");
-        clip.stop();
+        clip.close();
         startInstant = 0;
         releaseInstant = 0;
         released = false;
         clip = null;
-    }
-    
-    private void setVolume(float vol) {
-        volumeControl.setValue(vol);
-    }
-    
-    // convert the alpha (0 to 1) given by the amplitude to decibels
-    private static float convertAmplitudeToDecibels(double alpha) { 
-        return 10.0f * (float) (Math.log10(alpha));
     }
 }
 

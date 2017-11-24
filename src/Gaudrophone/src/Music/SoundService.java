@@ -23,6 +23,7 @@
  */
 package Music;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,13 +44,18 @@ public class SoundService {
     
     public void play(Sound sound) {
         if (clips.size() < polyphony) {
+            
+            // VERIFY IF SOUND IS ALREADY MAPPED
+            
             try {
-                EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getAudioInputStream(), sound.getEnvelope());
+                EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getPlayingStream(), sound.getLoopFrame());
                 
                 clips.put(sound, clip);
                 clip.start();
                 
             } catch (LineUnavailableException ex) {
+                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -62,7 +68,13 @@ public class SoundService {
     
     public void release(Sound sound) {
         EnvelopedClip clip = clips.get(sound);
-        clip.release();
+        try {
+            clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void close() {

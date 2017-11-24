@@ -24,18 +24,10 @@
 package Music;
 
 public class SineWaveForm extends WaveForm implements java.io.Serializable {
-
+    
     @Override
-    public void updateBuffer(double frequency) {
-        int frames = (int) (SAMPLE_RATE * WAVES / frequency);
-        
-        buffer = new byte[2 * frames];
-        double doublePi = 2 * Math.PI;
-        
-        for (int i = 0; i < frames; i++) {
-            buffer[2 * i] = (byte) (120.0 * Math.sin(doublePi * frequency * i / SAMPLE_RATE));
-            buffer[2 * i + 1] = buffer[2 * i];
-        }
+    public double getAmplitude(double frequency, double time) {
+        return Math.sin(2 * Math.PI * frequency * time);
     }
     
 }

@@ -32,8 +32,8 @@ public class ShapeAppearance implements java.io.Serializable {
     private String backgroundImagePath;
     private transient BufferedImage backgroundImage = null;
     
-    public ShapeAppearance() {
-        backgroundColor = Color.GRAY;
+    public ShapeAppearance(Color color) {
+        backgroundColor = color;
         backgroundImagePath = null;
     }
     

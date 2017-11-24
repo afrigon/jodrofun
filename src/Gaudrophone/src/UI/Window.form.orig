@@ -13,8 +13,6 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JColorChooser" name="colorPicker">
-    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
@@ -111,9 +109,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Triangle"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createTriangleMenuItemActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -177,7 +172,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
           <SubComponents>
-            <Component class="javax.swing.Box$Filler" name="canvasPannel">
+            <Component class="javax.swing.Box$Filler" name="filler2">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[250, 32767]"/>
@@ -263,7 +258,7 @@
                                 <Property name="text" type="java.lang.String" value="Nom de note"/>
                               </Properties>
                               <Events>
-                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="keyNameFieldKeyReleased"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keyNameFieldActionPerformed"/>
                               </Events>
                             </Component>
                           </SubComponents>
@@ -422,7 +417,11 @@
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <EmptySpace min="0" pref="113" max="32767" attributes="0"/>
+<<<<<<< HEAD
+                                      <EmptySpace min="0" pref="116" max="32767" attributes="0"/>
+=======
+                                      <EmptySpace min="0" pref="123" max="32767" attributes="0"/>
+>>>>>>> 0dd471663659c4e1e50bab19d16d20fd91bb1953
                                   </Group>
                                 </DimensionLayout>
                               </Layout>
@@ -914,17 +913,11 @@
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une couleur"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundColorButtonActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="java.awt.Button" name="backgroundImageButton">
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une image"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundImageButtonActionPerformed"/>
-                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -955,17 +948,11 @@
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une couleur"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundSunkenColorButtonActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="java.awt.Button" name="backgroundSunkenImageButton">
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une image"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundSunkenImageButtonActionPerformed"/>
-                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -1009,11 +996,6 @@
     </Container>
     <Container class="javax.swing.JToolBar" name="jToolBar1">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-            <BevelBorder/>
-          </Border>
-        </Property>
         <Property name="rollover" type="boolean" value="true"/>
       </Properties>
       <Constraints>
@@ -1026,18 +1008,12 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="buttonPlayMode">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Jeu"/>
             <Property name="actionCommand" type="java.lang.String" value=""/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonPlayModeActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonEditKey">
           <Properties>
@@ -1046,9 +1022,6 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonEditKeyActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

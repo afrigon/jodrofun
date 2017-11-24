@@ -23,10 +23,9 @@
  */
 package KeyUtils;
 
-/**
- *
- * @author Olivier
- */
+
 public interface KeyShapeGenerator {
-    public KeyShape generate();
+    public String getName();
+    public KeyShape generate(int size, Vector2 clickPosition);
+    public KeyShape generate(Vector2 startClickPosition, Vector2 endClickPosition);
 }
