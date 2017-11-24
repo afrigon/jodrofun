@@ -56,15 +56,21 @@ public class ShapeDrawer {
             //  FALSE use idle appearence (same here)
             if((keyState & KeyState.clicked.getValue()) != 0) {
                 BufferedImage img = shape.getKey().getShape().getSunkenAppearance().getImage();
-                if(img != null)
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth(), img.getHeight())));
+                if(img != null) {
+                    double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
+                    System.out.println(max);
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth() * max, img.getHeight() * max)));
+                }
                 else
                     g2.setColor(shape.getKey().getShape().getSunkenAppearance().getColor());
             }
             else {
                 BufferedImage img = shape.getKey().getShape().getIdleAppearance().getImage();
-                if(img != null)
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth(), img.getHeight())));
+                if(img != null) {
+                    double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
+                    System.out.println(max);
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth() * max, img.getHeight() * max)));
+                }
                 else
                     g2.setColor(shape.getKey().getShape().getIdleAppearance().getColor());
             }
