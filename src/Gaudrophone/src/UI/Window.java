@@ -145,6 +145,9 @@ public class Window extends javax.swing.JFrame {
         linesColorLabel = new javax.swing.JLabel();
         linesColorDisplay = new javax.swing.JLabel();
         linesColorButton = new java.awt.Button();
+        jToolBar1 = new javax.swing.JToolBar();
+        buttonPlayMode = new javax.swing.JButton();
+        buttonEditKey = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(650, 500));
@@ -263,11 +266,11 @@ public class Window extends javax.swing.JFrame {
         envelopeGraph.setLayout(envelopeGraphLayout);
         envelopeGraphLayout.setHorizontalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 708, Short.MAX_VALUE)
+            .addGap(0, 733, Short.MAX_VALUE)
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 112, Short.MAX_VALUE)
+            .addGap(0, 123, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -555,6 +558,23 @@ public class Window extends javax.swing.JFrame {
 
         getContentPane().add(splitWindow, java.awt.BorderLayout.CENTER);
 
+        jToolBar1.setRollover(true);
+
+        buttonPlayMode.setText("Jeu");
+        buttonPlayMode.setActionCommand("");
+        buttonPlayMode.setFocusable(false);
+        buttonPlayMode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonPlayMode.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(buttonPlayMode);
+
+        buttonEditKey.setText("Édition");
+        buttonEditKey.setFocusable(false);
+        buttonEditKey.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonEditKey.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(buttonEditKey);
+
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
         bindingGroup.bind();
 
         pack();
@@ -641,6 +661,8 @@ public class Window extends javax.swing.JFrame {
     private java.awt.Button backgroundSunkenImageButton;
     private javax.swing.JLabel backgroundSunkenLabel;
     private javax.swing.JPanel backgroundSunkenProperty;
+    private javax.swing.JButton buttonEditKey;
+    private javax.swing.JButton buttonPlayMode;
     private javax.swing.JLabel decayLabel;
     private javax.swing.JSlider decaySlider;
     private javax.swing.JPanel decaySliderPanel;
@@ -662,6 +684,7 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSlider jSlider1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField keyNameField;
     private javax.swing.JLabel keyNameLabel;
     private javax.swing.JPanel keyNameProperty;

@@ -26,19 +26,21 @@ package Music;
 public class Envelope implements java.io.Serializable {
     private double attack; // milliseconds
     private double decay; // milliseconds
-    private float sustain; // between -80 and 0
+    private double sustain; // between 0 and 1
     private double release; // milliseconds
     private double attackAndDecay;
     
+    public static final double SUSTAIN_TIME = 50;
+    
     public Envelope() {
-        attack = 3000;
+        attack = 100;
         decay = 500;
-        sustain = -15f;
-        release = 3000;
+        sustain = .9;
+        release = 1000;
         attackAndDecay = attack + decay;
     }
     
-    public Envelope(double newAttack, double newDecay, float newSustain, double newRelease) {
+    public Envelope(double newAttack, double newDecay, double newSustain, double newRelease) {
         attack = newAttack;
         decay = newDecay;
         sustain = newSustain;
@@ -46,6 +48,7 @@ public class Envelope implements java.io.Serializable {
         attackAndDecay = attack + decay;
     }
     
+    // setters
     public void setAttack(double newAttack) {
         attack = newAttack;
         attackAndDecay = attack + decay;
@@ -56,7 +59,7 @@ public class Envelope implements java.io.Serializable {
         attackAndDecay = attack + decay;
     }
     
-    public void setSustain(float newSustain) {
+    public void setSustain(double newSustain) {
         sustain = newSustain;
     }
     
@@ -64,31 +67,69 @@ public class Envelope implements java.io.Serializable {
         release = newRelease;
     }
     
-    public float getPlayingVolume(double time) {
+    // methods
+    private double getAttackAmplitude(double time) {
+        return time / attack;
+    }
+    
+    private double getDecayAmplitude(double time) {
+        return time * (sustain - 1) / decay + 1;
+    }
+    
+    public double getPlayingAmplitude(double time) {
         if (time <= attack) {
-            return getAttackVolume(time);
+            return getAttackAmplitude(time);
         } else {
             if (time < attackAndDecay) {
-                return getDecayVolume(time - attack);
+                return getDecayAmplitude(time - attack);
             } else {
                 return sustain;
             }
         }
     }
-    
-    public float getReleaseVolume(double time) {
+    public double getReleasedAmplitude(double time, double timePlayed) {
         if (time < release) {
-            return sustain + (- sustain - 80.0f) * (float) (time/release);
+            double powThis = time / release - 1;
+            return getPlayingAmplitude(timePlayed) * powThis * powThis;
         } else {
-            return -80.0f;
+            return 0;
         } 
     }
     
-    private float getAttackVolume(double time) {
-        return 80.0f * (float) (time/attack - 1);
+    public double getPlayingTimeLength() {
+        return attackAndDecay + SUSTAIN_TIME;
     }
     
-    private float getDecayVolume(double time) {
-        return sustain * (float) (time/decay);
+    public double getReleaseTime() {
+        return release;
     }
+
+    
+//    public float getPlayingVolume(double time) {
+//        if (time <= attack) {
+//            return getAttackVolume(time);
+//        } else {
+//            if (time < attackAndDecay) {
+//                return getDecayVolume(time - attack);
+//            } else {
+//                return sustain;
+//            }
+//        }
+//    }
+//    
+//    public float getReleaseVolume(double time) {
+//        if (time < release) {
+//            return sustain + (- sustain - 80.0f) * (float) (time/release);
+//        } else {
+//            return -80.0f;
+//        } 
+//    }
+//    
+//    private float getAttackVolume(double time) {
+//        return 80.0f * (float) (time/attack - 1);
+//    }
+//    
+//    private float getDecayVolume(double time) {
+//        return sustain * (float) (time/decay);
+//    }
 }
