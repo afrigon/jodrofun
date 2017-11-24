@@ -58,8 +58,11 @@ public class ShapeDrawer {
                 BufferedImage img = shape.getKey().getShape().getSunkenAppearance().getImage();
                 if(img != null) {
                     double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
-                    System.out.println(max);
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth() * max, img.getHeight() * max)));
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(
+                            boundingBox.getX() + (boundingBox.getWidth() - img.getWidth() * max) / 2,
+                            boundingBox.getY() + (boundingBox.getHeight() - img.getHeight() * max) / 2,
+                            img.getWidth() * max,
+                            img.getHeight() * max)));
                 }
                 else
                     g2.setColor(shape.getKey().getShape().getSunkenAppearance().getColor());
@@ -68,8 +71,11 @@ public class ShapeDrawer {
                 BufferedImage img = shape.getKey().getShape().getIdleAppearance().getImage();
                 if(img != null) {
                     double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
-                    System.out.println(max);
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth() * max, img.getHeight() * max)));
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(
+                            boundingBox.getX() + (boundingBox.getWidth() - img.getWidth() * max) / 2,
+                            boundingBox.getY() + (boundingBox.getHeight() - img.getHeight() * max) / 2,
+                            img.getWidth() * max,
+                            img.getHeight() * max)));
                 }
                 else
                     g2.setColor(shape.getKey().getShape().getIdleAppearance().getColor());
@@ -214,13 +220,13 @@ public class ShapeDrawer {
         
         //Find the flags and if they are set, add the information
         if((keyState & KeyState.displayName.getValue()) != 0)
-            text += "\n" +shape.getKey().getName();
+            text += shape.getKey().getName() + "\n";
         if((keyState & KeyState.displayNote.getValue()) != 0)
-            text += "\n" +shape.getKey().getNote();
-        if((keyState & KeyState.displayAlteration.getValue()) != 0)
-            text += "\n" +shape.getKey().getAlteration();
+            text += shape.getKey().getNote();
         if((keyState & KeyState.displayOctave.getValue()) != 0)
-            text += "\n" +shape.getKey().getOctave();
+            text += shape.getKey().getOctave();
+        if((keyState & KeyState.displayAlteration.getValue()) != 0)
+            text += shape.getKey().getAlteration();
         
         //If there is something (at least one flag)
         if(!"".equals(text)) {
