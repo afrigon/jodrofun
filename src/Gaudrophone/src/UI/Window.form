@@ -13,6 +13,8 @@
         </Property>
       </Properties>
     </Component>
+    <Component class="javax.swing.JColorChooser" name="colorPicker">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
@@ -261,7 +263,7 @@
                                 <Property name="text" type="java.lang.String" value="Nom de note"/>
                               </Properties>
                               <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keyNameFieldActionPerformed"/>
+                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="keyNameFieldKeyReleased"/>
                               </Events>
                             </Component>
                           </SubComponents>
@@ -912,11 +914,17 @@
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une couleur"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundColorButtonActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="java.awt.Button" name="backgroundImageButton">
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une image"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundImageButtonActionPerformed"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -947,11 +955,17 @@
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une couleur"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundSunkenColorButtonActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="java.awt.Button" name="backgroundSunkenImageButton">
                           <Properties>
                             <Property name="label" type="java.lang.String" value="Choisir une image"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backgroundSunkenImageButtonActionPerformed"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>

@@ -53,8 +53,6 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
      */
     public Window() {
         initComponents();
-        FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
-        fileDialog.setFileFilter(filter);
         fileDialog.setCurrentDirectory(new File(System.getProperty("user.home")));
     }
 
@@ -71,6 +69,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         keyTypeButtonGroup = new javax.swing.ButtonGroup();
         alterationButtonGroup = new javax.swing.ButtonGroup();
         fileDialog = new javax.swing.JFileChooser();
+        colorPicker = new javax.swing.JColorChooser();
         splitWindow = new javax.swing.JSplitPane();
         instrumentPanel = new javax.swing.JPanel();
         canvasPannel = new javax.swing.Box.Filler(new java.awt.Dimension(250, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(250, 32767));
@@ -209,9 +208,9 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
 
         keyNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         keyNameField.setText("Nom de note");
-        keyNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keyNameFieldActionPerformed(evt);
+        keyNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                keyNameFieldKeyReleased(evt);
             }
         });
         keyNameProperty.add(keyNameField);
@@ -535,9 +534,19 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         backgroundProperty.add(backgroundDisplayLabel);
 
         backgroundColorButton.setLabel("Choisir une couleur");
+        backgroundColorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundColorButtonActionPerformed(evt);
+            }
+        });
         backgroundProperty.add(backgroundColorButton);
 
         backgroundImageButton.setLabel("Choisir une image");
+        backgroundImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundImageButtonActionPerformed(evt);
+            }
+        });
         backgroundProperty.add(backgroundImageButton);
 
         KeyShapeProperties.add(backgroundProperty);
@@ -555,9 +564,19 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         backgroundSunkenProperty.add(backgroundSunkenDisplayLabel);
 
         backgroundSunkenColorButton.setLabel("Choisir une couleur");
+        backgroundSunkenColorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundSunkenColorButtonActionPerformed(evt);
+            }
+        });
         backgroundSunkenProperty.add(backgroundSunkenColorButton);
 
         backgroundSunkenImageButton.setLabel("Choisir une image");
+        backgroundSunkenImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backgroundSunkenImageButtonActionPerformed(evt);
+            }
+        });
         backgroundSunkenProperty.add(backgroundSunkenImageButton);
 
         KeyShapeProperties.add(backgroundSunkenProperty);
@@ -708,10 +727,6 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         // TODO add your handling code here:
     }//GEN-LAST:event_flatRadioButtonActionPerformed
 
-    private void keyNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyNameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_keyNameFieldActionPerformed
-
     private void audioClipRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioClipRadioButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_audioClipRadioButtonActionPerformed
@@ -736,6 +751,9 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         fileDialog.setDialogTitle("Sélectionner un fichier");
+        FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(filter);
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -777,6 +795,46 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         this.resetButtons();
         buttonEditKey.setForeground(Color.blue);
     }//GEN-LAST:event_buttonEditKeyActionPerformed
+
+    private void backgroundColorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundColorButtonActionPerformed
+        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        if (color != null) {
+            GaudrophoneController.getController().setKeyColor(color);
+        }
+    }//GEN-LAST:event_backgroundColorButtonActionPerformed
+
+    private void backgroundSunkenColorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundSunkenColorButtonActionPerformed
+        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        if (color != null) {
+            GaudrophoneController.getController().setKeySunkenColor(color);
+        }
+    }//GEN-LAST:event_backgroundSunkenColorButtonActionPerformed
+
+    private void backgroundImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundImageButtonActionPerformed
+        fileDialog.setDialogTitle("Sélectionner une image");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().setKeyImage(fileDialog.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_backgroundImageButtonActionPerformed
+
+    private void backgroundSunkenImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundSunkenImageButtonActionPerformed
+        fileDialog.setDialogTitle("Sélectionner une image");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().setKeySunkenImage(fileDialog.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_backgroundSunkenImageButtonActionPerformed
+
+    private void keyNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyNameFieldKeyReleased
+        GaudrophoneController.getController().setName(keyNameField.getText());
+    }//GEN-LAST:event_keyNameFieldKeyReleased
     
     private void resetButtons() {
         buttonPlayMode.setForeground(Color.black);
@@ -785,6 +843,9 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
+        FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.setFileFilter(filter);
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -877,6 +938,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     private javax.swing.JButton buttonEditKey;
     private javax.swing.JButton buttonPlayMode;
     private javax.swing.Box.Filler canvasPannel;
+    private javax.swing.JColorChooser colorPicker;
     private javax.swing.JMenuItem createRectangleMenuItem;
     private javax.swing.JMenuItem createTriangleMenuItem;
     private javax.swing.JLabel decayLabel;

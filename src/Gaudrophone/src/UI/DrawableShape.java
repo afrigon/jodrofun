@@ -63,7 +63,7 @@ public class DrawableShape {
             for (int i = 1; i < points.size(); i++) {
                 Vector2 previous = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(i-1));
                 Vector2 next = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(i));
-                System.out.println("( " + previous.getX() + ", " + previous.getY() + ") -> (" + next.getX() + ", " + next.getY() + ")");
+                //System.out.println(i + " -> ( " + previous.getX() + ", " + previous.getY() + ") -> (" + next.getX() + ", " + next.getY() + ")");
                 this.generalPath.lineTo(next.getX(), next.getY());
                 DrawableLine dl = new DrawableLine();
                 dl.setLine(new Line2D.Double(previous.getX(), previous.getY(), next.getX(), next.getY()));
@@ -74,7 +74,7 @@ public class DrawableShape {
             
             Vector2 last = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(points.size()-1));
          
-            System.out.println("( " + last.getX() + ", " + last.getY() + ") -> (" + first.getX() + ", " + first.getY() + ")");
+            //System.out.println("last -> ( " + last.getX() + ", " + last.getY() + ") -> (" + first.getX() + ", " + first.getY() + ")");
             this.generalPath.closePath();
             DrawableLine dl = new DrawableLine();
             dl.setLine(new Line2D.Double(last.getX(), last.getY(), first.getX(), first.getY()));

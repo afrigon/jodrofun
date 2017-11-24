@@ -137,6 +137,7 @@ public class CanvasManager {
                     if (this.lastKey == null) {
                         GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());
                         ds.getKey().addState(KeyState.clicked);
+                        if (this.delegate != null) { this.delegate.shouldRedraw(); }
                         this.lastKey = ds.getKey();
                     } else {
                         if (this.lastKey != ds.getKey()) {
@@ -144,6 +145,7 @@ public class CanvasManager {
                             GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());
                             ds.getKey().addState(KeyState.clicked);
                             this.lastKey.removeState(KeyState.clicked);
+                            if (this.delegate != null) { this.delegate.shouldRedraw(); }
                             this.lastKey = ds.getKey();
                         }
                     }
@@ -151,6 +153,7 @@ public class CanvasManager {
                     if (this.lastKey != null) {
                         GaudrophoneController.getController().getSoundService().release(this.lastKey.getSound());
                         this.lastKey.removeState(KeyState.clicked);
+                        if (this.delegate != null) { this.delegate.shouldRedraw(); }
                         this.lastKey = null;
                     }
                 }

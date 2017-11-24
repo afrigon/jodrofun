@@ -107,10 +107,10 @@ public class Key implements java.io.Serializable {
     }
     
     public void addState(KeyState state) {
-        this.states += state.getValue();
+        this.states |= state.getValue();
     }
     
     public void removeState(KeyState state) {
-        this.states -= state.getValue();
+        this.states -= (this.states & state.getValue());
     }
 }
