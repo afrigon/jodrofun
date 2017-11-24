@@ -35,7 +35,7 @@ public class RectangleKeyShape implements KeyShapeGenerator {
     }
     
     public KeyShape generateSquare(int squareSize) {
-        int size = (int)GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
+        double size = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
         List<Vector2> pointList = new ArrayList<>();
         pointList.add(new Vector2(0, 0));
         pointList.add(new Vector2(size, 0));
@@ -47,7 +47,7 @@ public class RectangleKeyShape implements KeyShapeGenerator {
     
     public KeyShape generateSquare(int squareSize, Vector2 position) {
         position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
-        int size = (int)GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
+        double size = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
         List<Vector2> pointList = new ArrayList<>();
         pointList.add(new Vector2(position.getX(), position.getY()));
         pointList.add(new Vector2(position.getX()+ size, position.getY()));

@@ -65,9 +65,20 @@ public class AudioClip extends Sound {
         } 
     }
     
+    
     @Override
-    public AudioInputStream getAudioInputStream() {
-        return audioInputStream;
+    public AudioInputStream getPlayingStream() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AudioInputStream getReleasedStream(double timePlayed) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getLoopFrame() {
+        return -1;
     }
     
     // Getters

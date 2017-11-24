@@ -109,9 +109,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Triangle"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createTriangleMenuItemActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -420,7 +417,11 @@
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
                                   <Group type="103" groupAlignment="0" attributes="0">
+<<<<<<< HEAD
+                                      <EmptySpace min="0" pref="116" max="32767" attributes="0"/>
+=======
                                       <EmptySpace min="0" pref="123" max="32767" attributes="0"/>
+>>>>>>> 0dd471663659c4e1e50bab19d16d20fd91bb1953
                                   </Group>
                                 </DimensionLayout>
                               </Layout>

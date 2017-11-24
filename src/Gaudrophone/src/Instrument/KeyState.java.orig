@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Alexandre.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Instrument;
 
-import javax.sound.sampled.AudioInputStream;
+/**
+ *
+ * @author Alexandre
+ */
+public enum KeyState {
+    hover(1),
+    clicked(2),
+    selected(4),
+    searched(8),
+    displayNote(16),
+    displayAlteration(32),
+    displayOctave(64),
+    displayName(128);
 
-public abstract class Sound implements java.io.Serializable {
-    protected double volume;
-    protected Envelope envelope = null;
-    
-    // Constructors
-    public Sound() {
-        volume = 1;
-        envelope = new Envelope();
+    private final int value;
+    private KeyState(int value) {
+        this.value = value;
     }
-    
-    // Setters
-    public void setVolume(double newVolume) {
-        volume = newVolume;
+
+    public int getValue() {
+        return value;
     }
-    
-    public void setEnvelope(Envelope newEnvelope) {
-        envelope = newEnvelope;
-    }
-    
-    // Getters
-    public double getVolume() {
-        return volume;
-    }
-    
-    public Envelope getEnvelope() {
-        return envelope;
-    }
-    
-    public abstract AudioInputStream getPlayingStream();
-    public abstract AudioInputStream getReleasedStream(double timePlayed);
-    
-    public abstract int getLoopFrame();
 }

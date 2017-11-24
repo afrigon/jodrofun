@@ -34,13 +34,13 @@ public class CanvasManager {
     private List<DrawableShape> shapes;
     private State state = State.Play;
     private KeyShapeGenerator storedKeyShape;
-    private Vector2 canvasSize = new Vector2(0, 0);
+    private Vector2 canvasSize = new Vector2(1, 1);
     
     private Key lastKey;
     private Vector2 clickPosition;
     
     public Vector2 convertPixelToWorld(int x, int y) {
-       return new Vector2(x/this.canvasSize.getX(), y/this.canvasSize.getY());
+       return new Vector2(x*100/this.canvasSize.getX()/100, y*100/this.canvasSize.getY()/100);
     }
     
     public Vector2 convertWorldToPixel(Vector2 vector) {
@@ -62,6 +62,7 @@ public class CanvasManager {
         switch (this.state) {
             case Play:
                 GaudrophoneController.getController().getSoundService().play(key.getSound());
+                this.lastKey = key;
                 break;
             case EditKey:
                 

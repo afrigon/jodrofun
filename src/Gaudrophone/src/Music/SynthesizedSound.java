@@ -23,6 +23,7 @@
  */
 package Music;
 
+import java.io.ByteArrayInputStream;
 import javax.sound.sampled.AudioInputStream;
 
 public class SynthesizedSound extends Sound {
@@ -35,27 +36,68 @@ public class SynthesizedSound extends Sound {
         frequency = 440.0;
         tuning = 0;
         waveForm = new SineWaveForm();
-        waveForm.updateBuffer(frequency);
+//        waveForm.updateBuffer(frequency);
     }
     
     public SynthesizedSound(double freq) {
         frequency = freq;
         tuning = 0;
         waveForm = new SineWaveForm();
-        waveForm.updateBuffer(frequency);
+//        waveForm.updateBuffer(frequency);
     }
     
     // Implement abstract methods
+//    @Override
+//    public AudioInputStream getAudioInputStream() {
+//        return waveForm.getAudioInputStream();
+//    }
+
     @Override
-    public AudioInputStream getAudioInputStream() {
-        return waveForm.getAudioInputStream();
+    public AudioInputStream getPlayingStream() {
+        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
+        
+        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
+        
+        byte[] buffer = new byte[2 * frames];
+        
+        for (int i = 0; i < frames; i++) {
+            double time = ((double) i)/WaveForm.SAMPLE_RATE;
+            buffer[2 * i] = (byte) (120.0 * volume * envelope.getPlayingAmplitude(time * 1000.0) * waveForm.getAmplitude(frequency, time));
+            buffer[2 * i + 1] = buffer[2 * i];
+        }
+        
+        return new AudioInputStream(new ByteArrayInputStream(buffer, 0, buffer.length), WaveForm.AUDIO_FORMAT, buffer.length);
+    }
+    
+    @Override
+    public int getLoopFrame() {
+        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
+        return (int) (WaveForm.SAMPLE_RATE * ((timeLength - Envelope.SUSTAIN_TIME/2) / 1000.0));
+    }
+
+    @Override
+    public AudioInputStream getReleasedStream(double timePlayed) { // timePlayed must be in seconds
+        double timeLength = envelope.getReleaseTime(); // in milliseconds
+        
+        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
+        byte[] buffer = new byte[2 * frames];
+        
+        double milliTimePlayed = timePlayed * 1000;
+        
+        for (int i = 0; i < frames; i++) {
+            double time = ((double) i)/WaveForm.SAMPLE_RATE;
+            buffer[2 * i] = (byte) (120.0 * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
+            buffer[2 * i + 1] = buffer[2 * i];
+        }
+        
+        return new AudioInputStream(new ByteArrayInputStream(buffer, 0, buffer.length), WaveForm.AUDIO_FORMAT, buffer.length);
     }
     
     // Setters
     public void setFrequency(double newFrequency) {
         this.frequency = newFrequency;
         // update tuning
-        waveForm.updateBuffer(frequency);
+//        waveForm.updateBuffer(frequency);
     }
     
     public void setTuning(int newTuning) {
