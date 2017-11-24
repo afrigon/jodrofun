@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Alexandre.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package Manager;
 
-/**
- *
- * @author Alexandre
- */
-public enum KeyState {
-    hover(1),
-    clicked(2),
-    selected(4),
-    searched(8),
-    displayNote(16),
-    displayAlteration(32),
-    displayOctave(64),
-    displayName(128);
+import Instrument.Key;
 
-    private final int value;
-    private KeyState(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
+public interface SelectionManagerDelegate {
+    public void didSelectKey(Key key);
+    public void didUnselectKey();
 }

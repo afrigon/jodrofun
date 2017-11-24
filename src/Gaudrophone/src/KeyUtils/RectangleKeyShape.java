@@ -23,6 +23,7 @@
  */
 package KeyUtils;
 
+import Manager.GaudrophoneController;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,36 +34,50 @@ public class RectangleKeyShape implements KeyShapeGenerator {
         return generateSquare(15);
     }
     
-    public KeyShape generateSquare(double squareSize) {
+    public KeyShape generateSquare(int squareSize) {
+        int size = (int)GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
         List<Vector2> pointList = new ArrayList<>();
         pointList.add(new Vector2(0, 0));
-        pointList.add(new Vector2(squareSize, 0));
-        pointList.add(new Vector2(squareSize, squareSize));
-        pointList.add(new Vector2(0, squareSize));
+        pointList.add(new Vector2(size, 0));
+        pointList.add(new Vector2(size, size));
+        pointList.add(new Vector2(0, size));
         
         return new KeyShape(pointList);
     }
     
-    public KeyShape generateSquare(double squareSize, Vector2 position) {
-        KeyShape key = generateSquare(squareSize);
-        key.setPosition(position, KeyShape.Corner.Center);
-        return key;
-    }
-    
-    public KeyShape generateRectangle(double sizeX, double sizeY) {
+    public KeyShape generateSquare(int squareSize, Vector2 position) {
+        position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
+        int size = (int)GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
         List<Vector2> pointList = new ArrayList<>();
-        pointList.add(new Vector2(10, 10));
-        pointList.add(new Vector2(sizeX, 0));
-        pointList.add(new Vector2(sizeX, sizeY));
-        pointList.add(new Vector2(0, sizeY));
+        pointList.add(new Vector2(position.getX(), position.getY()));
+        pointList.add(new Vector2(position.getX()+ size, position.getY()));
+        pointList.add(new Vector2(position.getX()+ size, position.getY() + size));
+        pointList.add(new Vector2(position.getX(), position.getY() + size));
         
         return new KeyShape(pointList);
     }
     
-    public KeyShape generateRectangle(double sizeX, double sizeY, Vector2 position) {
-        KeyShape key = generateRectangle(sizeX, sizeY);
-        key.setPosition(position, KeyShape.Corner.Center);
-        return key;
+    public KeyShape generateRectangle(int sizeX, int sizeY) {
+        Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
+        List<Vector2> pointList = new ArrayList<>();
+        pointList.add(new Vector2(0, 0));
+        pointList.add(new Vector2(sizes.getX(), 0));
+        pointList.add(new Vector2(sizes.getX(), sizes.getY()));
+        pointList.add(new Vector2(0, sizes.getY()));
+        
+        return new KeyShape(pointList);
+    }
+    
+    public KeyShape generateRectangle(int sizeX, int sizeY, Vector2 position) {
+        position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
+        Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
+        List<Vector2> pointList = new ArrayList<>();
+        pointList.add(new Vector2(position.getX(), position.getY()));
+        pointList.add(new Vector2(position.getX() + sizes.getX(), position.getY()));
+        pointList.add(new Vector2(position.getX() + sizes.getX(), position.getY() + sizes.getY()));
+        pointList.add(new Vector2(position.getX(), position.getY() + sizes.getY()));
+        
+        return new KeyShape(pointList);
     }
     
 }

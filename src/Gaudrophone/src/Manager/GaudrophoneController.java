@@ -40,7 +40,7 @@ public class GaudrophoneController {
     
     public GaudrophoneController() {
         instrumentManager = new InstrumentManager();
-        canvasManager = new CanvasManager(this);
+        canvasManager = new CanvasManager();
         soundService = new SoundService();
         selectionManager = new SelectionManager();
     }

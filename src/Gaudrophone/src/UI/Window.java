@@ -26,24 +26,21 @@ package UI;
 import Instrument.Guitar;
 import Instrument.Key;
 import KeyUtils.KeyShape;
-import KeyUtils.KeyShape.Corner;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.Vector2;
 import Manager.GaudrophoneController;
-import Manager.InstrumentManager;
-import Music.AudioClip;
-import Music.SineWaveForm;
+import Manager.SelectionManagerDelegate;
 import Music.Sound;
-import Music.SoundService;
 import Music.SynthesizedSound;
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Window extends javax.swing.JFrame {
+public class Window extends javax.swing.JFrame implements ComponentListener, SelectionManagerDelegate {
     Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
     
     /**
@@ -53,6 +50,7 @@ public class Window extends javax.swing.JFrame {
         initComponents();
         FileFilter filter = new FileNameExtensionFilter("Fichier Gaudrophone","gaud");
         fileDialog.setFileFilter(filter);
+        fileDialog.setCurrentDirectory(new File(System.getProperty("user.home")));
     }
 
     /**
@@ -716,7 +714,7 @@ public class Window extends javax.swing.JFrame {
 
     private void createRectangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRectangleMenuItemActionPerformed
         Sound sound = new SynthesizedSound(440);
-        Key key = new Key(sound, new RectangleKeyShape().generateRectangle(150, 80), "Rectangle");
+        Key key = new Key(sound, new RectangleKeyShape().generateRectangle(150, 80, new Vector2(10, 25)), "Rectangle");
         GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
         this.refresh();
     }//GEN-LAST:event_createRectangleMenuItemActionPerformed
@@ -726,7 +724,11 @@ public class Window extends javax.swing.JFrame {
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            GaudrophoneController.getController().getInstrumentManager().saveInstrument(fileDialog.getSelectedFile().getAbsolutePath());
+            String filepath = fileDialog.getSelectedFile().getAbsolutePath();
+            if (!filepath.endsWith(".gaud")) {
+                filepath += ".gaud";
+            }
+            GaudrophoneController.getController().getInstrumentManager().saveInstrument(filepath);
         }
     }
     
@@ -742,6 +744,9 @@ public class Window extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             this.splitWindow.setLeftComponent(canvas);
             this.setVisible(true);
+            
+            this.canvas.addComponentListener(this);
+            GaudrophoneController.getController().getSelectionManager().delegate = this;
             
             GaudrophoneController.getController().getInstrumentManager().newInstrument();
             GaudrophoneController.getController().getInstrumentManager().getInstrument().setName("Test Instrument");
@@ -886,4 +891,36 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JPanel waveFormProperty;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        GaudrophoneController.getController().getCanvasManager().setCanvasSize(e.getComponent().getWidth(), e.getComponent().getHeight());
+        this.refresh();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+        
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+        
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+        
+    }
+
+    @Override
+    public void didSelectKey(Key key) {
+        this.keyNameField.setText(key.getName());
+        //TODO: fill in other fields
+    }
+    
+    @Override
+    public void didUnselectKey() {
+        this.keyNameField.setText("Nom de la touche");
+    }
 }
