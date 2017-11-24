@@ -33,10 +33,14 @@ public class Envelope implements java.io.Serializable {
     public static final double SUSTAIN_TIME = 50;
     
     public Envelope() {
+//        attack = 100;
+//        decay = 500;
+//        sustain = .9;
+//        release = 1000;
         attack = 100;
-        decay = 500;
+        decay = 100;
         sustain = .9;
-        release = 1000;
+        release = 250;
         attackAndDecay = attack + decay;
     }
     

@@ -67,13 +67,6 @@ public class GaudrophoneController {
         return selectionManager;
     }
     
-    public void createKey(KeyShapeGenerator key, Vector2 position) {
-        KeyShape newShape = key.generate();
-        
-        newShape.setPosition(position, KeyShape.Corner.Center);
-        instrumentManager.getInstrument().addKey(new Key(newShape));
-    }
-    
     public void duplicateKey() {
         instrumentManager.getInstrument().addKey(new Key(selectionManager.getSelectedKey()));
     }

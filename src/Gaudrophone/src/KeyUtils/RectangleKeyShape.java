@@ -24,14 +24,32 @@
 package KeyUtils;
 
 import Manager.GaudrophoneController;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RectangleKeyShape implements KeyShapeGenerator {
-
+    private Color defaultColor = new Color(0x5a98fc);
+    
     @Override
-    public KeyShape generate() {
-        return generateSquare(15);
+    public String getName() {
+        return "Rectangle";
+    }
+    
+    @Override
+    public KeyShape generate(Vector2 startClickPosition, Vector2 endClickPosition) {
+        int x = (int)Math.abs(endClickPosition.getX() - startClickPosition.getX());
+        int y = (int)Math.abs(endClickPosition.getY() - startClickPosition.getY());
+        
+        int leftX = (int)Math.min(startClickPosition.getX(), endClickPosition.getX());
+        int leftY = (int)Math.min(startClickPosition.getY(), endClickPosition.getY());
+        
+        return this.generateRectangle(x, y, new Vector2(leftX, leftY));
+    }
+    
+    @Override
+    public KeyShape generate(int size, Vector2 clickPosition) {
+        return this.generateSquare(size, clickPosition);
     }
     
     public KeyShape generateSquare(int squareSize) {
@@ -42,7 +60,7 @@ public class RectangleKeyShape implements KeyShapeGenerator {
         pointList.add(new Vector2(size, size));
         pointList.add(new Vector2(0, size));
         
-        return new KeyShape(pointList);
+        return new KeyShape(pointList, this.defaultColor);
     }
     
     public KeyShape generateSquare(int squareSize, Vector2 position) {
@@ -54,7 +72,7 @@ public class RectangleKeyShape implements KeyShapeGenerator {
         pointList.add(new Vector2(position.getX()+ size, position.getY() + size));
         pointList.add(new Vector2(position.getX(), position.getY() + size));
         
-        return new KeyShape(pointList);
+        return new KeyShape(pointList, this.defaultColor);
     }
     
     public KeyShape generateRectangle(int sizeX, int sizeY) {
@@ -65,7 +83,7 @@ public class RectangleKeyShape implements KeyShapeGenerator {
         pointList.add(new Vector2(sizes.getX(), sizes.getY()));
         pointList.add(new Vector2(0, sizes.getY()));
         
-        return new KeyShape(pointList);
+        return new KeyShape(pointList, this.defaultColor);
     }
     
     public KeyShape generateRectangle(int sizeX, int sizeY, Vector2 position) {
@@ -77,7 +95,7 @@ public class RectangleKeyShape implements KeyShapeGenerator {
         pointList.add(new Vector2(position.getX() + sizes.getX(), position.getY() + sizes.getY()));
         pointList.add(new Vector2(position.getX(), position.getY() + sizes.getY()));
         
-        return new KeyShape(pointList);
+        return new KeyShape(pointList, this.defaultColor);
     }
     
 }

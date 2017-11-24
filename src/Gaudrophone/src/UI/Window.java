@@ -27,20 +27,25 @@ import Instrument.Guitar;
 import Instrument.Key;
 import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
+import KeyUtils.TriangleKeyShape;
 import KeyUtils.Vector2;
+import Manager.CanvasManagerDelegate;
 import Manager.GaudrophoneController;
 import Manager.SelectionManagerDelegate;
+import Manager.State;
 import Music.Sound;
 import Music.SynthesizedSound;
 import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Window extends javax.swing.JFrame implements ComponentListener, SelectionManagerDelegate {
+public class Window extends javax.swing.JFrame implements ComponentListener, MouseListener, SelectionManagerDelegate, CanvasManagerDelegate {
     Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
     
     /**
@@ -68,7 +73,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
         fileDialog = new javax.swing.JFileChooser();
         splitWindow = new javax.swing.JSplitPane();
         instrumentPanel = new javax.swing.JPanel();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(250, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(250, 32767));
+        canvasPannel = new javax.swing.Box.Filler(new java.awt.Dimension(250, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(250, 32767));
         jScrollPane1 = new javax.swing.JScrollPane();
         PropertyPanel = new javax.swing.JPanel();
         KeyProperties = new javax.swing.JPanel();
@@ -182,7 +187,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
 
         instrumentPanel.setBackground(new java.awt.Color(255, 255, 255));
         instrumentPanel.setLayout(new java.awt.BorderLayout());
-        instrumentPanel.add(filler2, java.awt.BorderLayout.CENTER);
+        instrumentPanel.add(canvasPannel, java.awt.BorderLayout.CENTER);
 
         splitWindow.setLeftComponent(instrumentPanel);
 
@@ -294,7 +299,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 123, Short.MAX_VALUE)
+            .addGap(0, 113, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -582,19 +587,31 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
 
         getContentPane().add(splitWindow, java.awt.BorderLayout.CENTER);
 
+        jToolBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jToolBar1.setRollover(true);
 
+        buttonPlayMode.setForeground(new java.awt.Color(0, 0, 255));
         buttonPlayMode.setText("Jeu");
         buttonPlayMode.setActionCommand("");
         buttonPlayMode.setFocusable(false);
         buttonPlayMode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonPlayMode.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonPlayMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPlayModeActionPerformed(evt);
+            }
+        });
         jToolBar1.add(buttonPlayMode);
 
         buttonEditKey.setText("Édition");
         buttonEditKey.setFocusable(false);
         buttonEditKey.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonEditKey.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonEditKey.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditKeyActionPerformed(evt);
+            }
+        });
         jToolBar1.add(buttonEditKey);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
@@ -738,35 +755,33 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
     }//GEN-LAST:event_saveAsMenuItemActionPerformed
 
     private void createRectangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRectangleMenuItemActionPerformed
-        Sound sound = new SynthesizedSound(440);
-        Key key = new Key(sound, new RectangleKeyShape().generateRectangle(150, 80, new Vector2(10, 25)), "Rectangle");
-        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
-        this.refresh();
+        this.resetButtons();
+        GaudrophoneController.getController().getCanvasManager().setState(State.CreatingShape);
+        GaudrophoneController.getController().getCanvasManager().setStoredKeyGenerator(new RectangleKeyShape());
     }//GEN-LAST:event_createRectangleMenuItemActionPerformed
 
     private void createTriangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTriangleMenuItemActionPerformed
-        Key key = new Key(new SynthesizedSound(440), new RectangleKeyShape().generateSquare(50, new Vector2(2, 2)), "A");
-        key.getShape().getIdleAppearance().setColor(Color.yellow);
-        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
-
-        Key key1 = new Key(new SynthesizedSound(493.88), new RectangleKeyShape().generateSquare(50, new Vector2(52, 2)), "B");
-        key1.getShape().getIdleAppearance().setColor(Color.PINK);
-        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
-        
-        Key key2 = new Key(new SynthesizedSound(523.25), new RectangleKeyShape().generateSquare(50, new Vector2(104, 2)), "C");
-        key2.getShape().getIdleAppearance().setColor(Color.CYAN);
-        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key2);
-        
-        Key key3 = new Key(new SynthesizedSound(587.33), new RectangleKeyShape().generateSquare(50, new Vector2(156, 2)), "D");
-        key3.getShape().getIdleAppearance().setColor(Color.MAGENTA);
-        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key3);
-        
-        Key key4 = new Key(new SynthesizedSound(659.25), new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
-        key4.getShape().getIdleAppearance().setColor(Color.green);
-        GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
-        
-        this.refresh();
+        this.resetButtons();
+        GaudrophoneController.getController().getCanvasManager().setState(State.CreatingShape);
+        GaudrophoneController.getController().getCanvasManager().setStoredKeyGenerator(new TriangleKeyShape());
     }//GEN-LAST:event_createTriangleMenuItemActionPerformed
+
+    private void buttonPlayModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPlayModeActionPerformed
+        GaudrophoneController.getController().getCanvasManager().setState(State.Play);
+        this.resetButtons();
+        buttonPlayMode.setForeground(Color.blue);
+    }//GEN-LAST:event_buttonPlayModeActionPerformed
+
+    private void buttonEditKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditKeyActionPerformed
+        GaudrophoneController.getController().getCanvasManager().setState(State.EditKey);
+        this.resetButtons();
+        buttonEditKey.setForeground(Color.blue);
+    }//GEN-LAST:event_buttonEditKeyActionPerformed
+    
+    private void resetButtons() {
+        buttonPlayMode.setForeground(Color.black);
+        buttonEditKey.setForeground(Color.black);
+    }
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
@@ -783,7 +798,6 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
     
     private void refresh() {
         GaudrophoneController.getController().getCanvasManager().drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
-        this.canvas.repaint();
     }
     
     /**
@@ -795,31 +809,41 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
             this.setVisible(true);
             
             this.canvas.addComponentListener(this);
-            GaudrophoneController.getController().getCanvasManager().setCanvasSize(this.canvas.getWidth(), this.canvas.getHeight());
+            this.canvas.addMouseListener(this);
+            GaudrophoneController.getController().getCanvasManager().setCanvasSize(this.canvasPannel.getWidth(), this.canvasPannel.getHeight());
             GaudrophoneController.getController().getSelectionManager().delegate = this;
+            GaudrophoneController.getController().getCanvasManager().delegate = this;
             
             GaudrophoneController.getController().getInstrumentManager().newInstrument();
             
             
-//            SoundService soundService = SoundService.shared;
-//            
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            
-//            Sound synthSound = new SynthesizedSound();
-//            soundService.play(synthSound);
-//            
-//            try {
-//                Thread.sleep(8000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            
-//            soundService.release(synthSound);
-
+//            MINI-PIANO
+//            Key key = new Key(new SynthesizedSound(440), new RectangleKeyShape().generateSquare(50, new Vector2(2, 2)), "A");
+//            key.getShape().getIdleAppearance().setColor(Color.yellow);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
+//
+//            Key key1 = new Key(new SynthesizedSound(493.88), new RectangleKeyShape().generateSquare(50, new Vector2(52, 2)), "B");
+//            key1.getShape().getIdleAppearance().setColor(Color.PINK);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
+//
+//            Key key2 = new Key(new SynthesizedSound(523.25), new RectangleKeyShape().generateSquare(50, new Vector2(104, 2)), "C");
+//            key2.getShape().getIdleAppearance().setColor(Color.CYAN);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key2);
+//
+//            Key key3 = new Key(new SynthesizedSound(587.33), new RectangleKeyShape().generateSquare(50, new Vector2(156, 2)), "D");
+//            key3.getShape().getIdleAppearance().setColor(Color.MAGENTA);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key3);
+//
+//            Sound sound = new SynthesizedSound(659.25);
+//            sound.getEnvelope().setAttack(50);
+//            sound.getEnvelope().setDecay(250);
+//            sound.getEnvelope().setSustain(0.9);
+//            sound.getEnvelope().setRelease(100);
+//            Key key4 = new Key(sound, new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
+//            key4.getShape().getIdleAppearance().setColor(Color.green);
+//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
+//
+//            this.refresh();
         });
     }
 
@@ -852,6 +876,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
     private javax.swing.JPanel backgroundSunkenProperty;
     private javax.swing.JButton buttonEditKey;
     private javax.swing.JButton buttonPlayMode;
+    private javax.swing.Box.Filler canvasPannel;
     private javax.swing.JMenuItem createRectangleMenuItem;
     private javax.swing.JMenuItem createTriangleMenuItem;
     private javax.swing.JLabel decayLabel;
@@ -866,7 +891,6 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
     private javax.swing.JFileChooser fileDialog;
     private javax.swing.JMenu fileMenu;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.JRadioButton flatRadioButton;
     private javax.swing.JLabel frequencyLabel;
     private javax.swing.JPanel frequencyProperty;
@@ -963,5 +987,35 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Sel
     @Override
     public void didUnselectKey() {
         this.keyNameField.setText("Nom de la touche");
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        this.refresh();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        this.refresh();
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void shouldRedraw() {
+        this.canvas.repaint();
     }
 }

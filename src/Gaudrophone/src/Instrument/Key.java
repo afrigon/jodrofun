@@ -33,7 +33,7 @@ public class Key implements java.io.Serializable {
     private Alteration displayAlteration = Alteration.Natural;
     private Note displayNote = Note.A;
     private int displayOctave = 4;
-    private int states = 0;
+    private int states = 144;
     
     // Constructors
     public Key(Sound keySound, KeyShape keyShape, String keyName) {
@@ -104,5 +104,13 @@ public class Key implements java.io.Serializable {
     
     public int getStates() {
         return this.states;
+    }
+    
+    public void addState(KeyState state) {
+        this.states += state.getValue();
+    }
+    
+    public void removeState(KeyState state) {
+        this.states -= state.getValue();
     }
 }

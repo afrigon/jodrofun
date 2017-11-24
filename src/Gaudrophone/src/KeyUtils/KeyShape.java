@@ -41,14 +41,24 @@ public class KeyShape implements java.io.Serializable {
     }
     
     // Constructors
-    public KeyShape(List<Vector2> pointsList) {
+    public KeyShape(List<Vector2> pointsList, Color color) {
         points = pointsList;
         lines = new LinkedList<>();
         for (int i = 0; i < points.size(); i++) {
-            lines.add(new KeyLine(2, Color.BLACK));
+            lines.add(new KeyLine(2, new Color(0x979899)));
         }
-        idleAppearance = new ShapeAppearance();
-        clickedAppearance = new ShapeAppearance();
+        idleAppearance = new ShapeAppearance(color);
+        clickedAppearance = new ShapeAppearance(color.darker());
+    }
+    
+    public KeyShape(List<Vector2> pointsList, Color color, Color clickedColor) {
+        points = pointsList;
+        lines = new LinkedList<>();
+        for (int i = 0; i < points.size(); i++) {
+            lines.add(new KeyLine(2, new Color(0x979899)));
+        }
+        idleAppearance = new ShapeAppearance(color);
+        clickedAppearance = new ShapeAppearance(clickedColor);
     }
     
     public ShapeAppearance getIdleAppearance() {
