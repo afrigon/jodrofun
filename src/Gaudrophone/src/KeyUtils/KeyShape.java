@@ -108,7 +108,7 @@ public class KeyShape implements java.io.Serializable {
             case TopCenter:
                 return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMaxBound(false));
             case TopRight:
-                return new Vector2(getMaxBound(true), getMaxBound(false));
+                return new Vector2(getMaxBound(true), getMinBound(false));
             case CenterLeft:
                 return new Vector2(getMinBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
             case Center:
@@ -120,7 +120,7 @@ public class KeyShape implements java.io.Serializable {
             case BottomCenter:
                 return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMinBound(false));
             case BottomRight:
-                return new Vector2(getMaxBound(true), getMinBound(false));
+                return new Vector2(getMaxBound(true), getMaxBound(false));
             default:
                 break; // or throw error ?
         }
@@ -176,5 +176,9 @@ public class KeyShape implements java.io.Serializable {
                 point = point.add(unitDelta.multiply(product * scale));
             }
         }
+    }
+    
+    public void setPoints(List<Vector2> newPoints) {
+        points = newPoints;
     }
 }
