@@ -63,7 +63,11 @@ public class CanvasManager {
     }
     
     public int convertThicknessToPixel(double thickness) {
-        return (int)thickness;
+        ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
+        ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
+        double newThickness = ratioX > ratioY ? thickness * ratioX : thickness * ratioY;
+        
+        return (int)newThickness;
     }
     
     public void drawKeys(List<Key> keyList) {
