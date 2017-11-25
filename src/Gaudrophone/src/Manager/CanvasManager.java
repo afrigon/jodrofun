@@ -173,9 +173,9 @@ public class CanvasManager {
     }
     
     private DrawableShape clickedShape(int x, int y) {
-        for (int i = this.shapes.size() - 1; i >= 0; --i) {
-            if (shapes.get(i).checkClick(x, y)) {
-                return shapes.get(i);
+        for (int i = this.shapes.size()-1; i >= 0; --i) {
+            if (this.shapes.get(i).checkClick(x, y)) {
+                return this.shapes.get(i);
             }
         }
         return null;

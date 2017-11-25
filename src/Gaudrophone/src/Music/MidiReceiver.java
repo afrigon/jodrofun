@@ -25,19 +25,10 @@ package Music;
  */
 
 
-import Music.NoteTranslator;
 import javax.sound.midi.MidiMessage;
 
-/**
- *
- * @author Olivier
- */
 public class MidiReceiver implements javax.sound.midi.Receiver {
     private final NoteTranslator translator = new NoteTranslator();
-    
-    public MidiReceiver() {
-        // pass the sound service, so the send method can call it
-    }
     
     @Override
     public void send(MidiMessage mm, long l) {

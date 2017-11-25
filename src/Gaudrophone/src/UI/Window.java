@@ -26,30 +26,27 @@ package UI;
 import Instrument.Guitar;
 import Instrument.Key;
 import Instrument.KeyState;
+import Instrument.Note;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.TriangleKeyShape;
+import KeyUtils.Vector2;
 import Manager.CanvasManagerDelegate;
 import Manager.GaudrophoneController;
 import Manager.SelectionManagerDelegate;
 import Manager.State;
+import Music.Sound;
+import Music.SynthesizedSound;
 import java.awt.Color;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Window extends javax.swing.JFrame implements ComponentListener, MouseListener, SelectionManagerDelegate, CanvasManagerDelegate {
+public class Window extends javax.swing.JFrame implements SelectionManagerDelegate, CanvasManagerDelegate {
     Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
-    
-    /**
-     * Creates new form MainWindow
-     */
+
     public Window() {
         initComponents();
         fileDialog.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -83,7 +80,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         keyNameField = new javax.swing.JTextField();
         noteNameProperty = new javax.swing.JPanel();
         noteNameLabel = new javax.swing.JLabel();
-        noteNameChoice = new java.awt.Choice();
+        noteComboBox = new javax.swing.JComboBox(Note.values());
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(200, 32767));
         octaveLabel = new javax.swing.JLabel();
         octaveSpinner = new javax.swing.JSpinner();
@@ -94,7 +91,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         flatRadioButton = new javax.swing.JRadioButton();
         volumeProperty = new javax.swing.JPanel();
         volumeLabel = new javax.swing.JLabel();
-        jSlider1 = new javax.swing.JSlider();
+        volumeSlider = new javax.swing.JSlider();
         volumeSpinner = new javax.swing.JSpinner();
         envelopeProperties = new javax.swing.JPanel();
         envelopeTitlePanel = new javax.swing.JPanel();
@@ -134,7 +131,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         tuningSpinner = new javax.swing.JSpinner();
         waveFormProperty = new javax.swing.JPanel();
         waveFormLabel = new javax.swing.JLabel();
-        waveFormChoice = new java.awt.Choice();
+        waveformComboBox = new javax.swing.JComboBox<>();
         audioClipProperties = new javax.swing.JPanel();
         audioClipFileProperty = new javax.swing.JPanel();
         audioClipFileLabel = new javax.swing.JLabel();
@@ -169,6 +166,10 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         jToolBar1 = new javax.swing.JToolBar();
         buttonPlayMode = new javax.swing.JButton();
         buttonEditKey = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
+        selectedKeyTools = new javax.swing.JPanel();
+        buttonDuplicate = new javax.swing.JButton();
+        buttonDelete = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenu();
@@ -182,7 +183,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         createRectangleMenuItem = new javax.swing.JMenuItem();
         createTriangleMenuItem = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
+        fileDialog.setCurrentDirectory(new java.io.File("/"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -226,6 +227,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         keyNameLabel.setPreferredSize(new java.awt.Dimension(119, 26));
         keyNameProperty.add(keyNameLabel);
 
+        keyNameField.setBackground(new java.awt.Color(238, 238, 238));
         keyNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         keyNameField.setText("Nom de la touche");
         keyNameField.setBorder(null);
@@ -246,7 +248,8 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         noteNameLabel.setForeground(new java.awt.Color(255, 255, 255));
         noteNameLabel.setText("Nom de note :");
         noteNameProperty.add(noteNameLabel);
-        noteNameProperty.add(noteNameChoice);
+
+        noteNameProperty.add(noteComboBox);
         noteNameProperty.add(filler1);
 
         octaveLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -307,12 +310,22 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         volumeLabel.setOpaque(true);
         volumeProperty.add(volumeLabel);
 
-        jSlider1.setBackground(new java.awt.Color(65, 65, 65));
-        jSlider1.setForeground(new java.awt.Color(255, 255, 255));
-        jSlider1.setValue(100);
-        volumeProperty.add(jSlider1);
+        volumeSlider.setBackground(new java.awt.Color(65, 65, 65));
+        volumeSlider.setForeground(new java.awt.Color(255, 255, 255));
+        volumeSlider.setValue(100);
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, volumeSpinner, org.jdesktop.beansbinding.ELProperty.create("${value}"), volumeSlider, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        volumeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                volumeSliderStateChanged(evt);
+            }
+        });
+        volumeProperty.add(volumeSlider);
 
         volumeSpinner.setModel(new javax.swing.SpinnerNumberModel(100.0d, 0.0d, 100.0d, 1.0d));
+        volumeSpinner.setValue(100);
         volumeProperty.add(volumeSpinner);
 
         generalProperties.add(volumeProperty);
@@ -343,7 +356,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 113, Short.MAX_VALUE)
+            .addGap(0, 112, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -356,13 +369,14 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
 
         attackSlider.setBackground(new java.awt.Color(65, 65, 65));
         attackSlider.setForeground(new java.awt.Color(255, 255, 255));
+        attackSlider.setMaximum(5000);
         attackSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        attackSlider.setToolTipText("Attack");
+        attackSlider.setValue(100);
         attackSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         attackSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         attackSlider.setPreferredSize(new java.awt.Dimension(50, 200));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, attackSpinner, org.jdesktop.beansbinding.ELProperty.create("${value}"), attackSlider, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, attackSpinner, org.jdesktop.beansbinding.ELProperty.create("${value}"), attackSlider, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
         attackSliderPanel.add(attackSlider, java.awt.BorderLayout.CENTER);
@@ -395,8 +409,9 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
 
         decaySlider.setBackground(new java.awt.Color(65, 65, 65));
         decaySlider.setForeground(new java.awt.Color(255, 255, 255));
+        decaySlider.setMaximum(5000);
         decaySlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        decaySlider.setToolTipText("Attack");
+        decaySlider.setValue(100);
         decaySlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         decaySlider.setMinimumSize(new java.awt.Dimension(50, 36));
         decaySlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -434,7 +449,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         sustainSlider.setBackground(new java.awt.Color(65, 65, 65));
         sustainSlider.setForeground(new java.awt.Color(255, 255, 255));
         sustainSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        sustainSlider.setToolTipText("Substain");
+        sustainSlider.setValue(80);
         sustainSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         sustainSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         sustainSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -471,9 +486,9 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
 
         releaseSlider.setBackground(new java.awt.Color(65, 65, 65));
         releaseSlider.setForeground(new java.awt.Color(255, 255, 255));
-        releaseSlider.setMaximum(250);
+        releaseSlider.setMaximum(5000);
         releaseSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        releaseSlider.setToolTipText("Release");
+        releaseSlider.setValue(100);
         releaseSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         releaseSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         releaseSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -612,7 +627,9 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         waveFormLabel.setText("Forme d'onde :");
         waveFormLabel.setOpaque(true);
         waveFormProperty.add(waveFormLabel);
-        waveFormProperty.add(waveFormChoice);
+
+        waveformComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sine", "Square", "Triangle", "Saw" }));
+        waveFormProperty.add(waveformComboBox);
 
         noteProperties.add(waveFormProperty);
 
@@ -836,6 +853,40 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
             }
         });
         jToolBar1.add(buttonEditKey);
+        jToolBar1.add(filler7);
+
+        selectedKeyTools.setOpaque(false);
+        selectedKeyTools.setLayout(new javax.swing.BoxLayout(selectedKeyTools, javax.swing.BoxLayout.LINE_AXIS));
+
+        buttonDuplicate.setBackground(new java.awt.Color(65, 65, 65));
+        buttonDuplicate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnDuplicate.png"))); // NOI18N
+        buttonDuplicate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        buttonDuplicate.setBorderPainted(false);
+        buttonDuplicate.setFocusable(false);
+        buttonDuplicate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonDuplicate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonDuplicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDuplicateActionPerformed(evt);
+            }
+        });
+        selectedKeyTools.add(buttonDuplicate);
+
+        buttonDelete.setBackground(new java.awt.Color(65, 65, 65));
+        buttonDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnDelete.png"))); // NOI18N
+        buttonDelete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        buttonDelete.setBorderPainted(false);
+        buttonDelete.setFocusable(false);
+        buttonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
+        selectedKeyTools.add(buttonDelete);
+
+        jToolBar1.add(selectedKeyTools);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -1075,6 +1126,18 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
             audioClipProperties.setVisible(true);
         }
     }//GEN-LAST:event_synthRadioButtonItemStateChanged
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        GaudrophoneController.getController().deleteKey();
+    }//GEN-LAST:event_buttonDeleteActionPerformed
+
+    private void buttonDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDuplicateActionPerformed
+        GaudrophoneController.getController().duplicateKey();
+    }//GEN-LAST:event_buttonDuplicateActionPerformed
+
+    private void volumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_volumeSliderStateChanged
+        GaudrophoneController.getController().setVolume((double)volumeSlider.getValue()/100);
+    }//GEN-LAST:event_volumeSliderStateChanged
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -1110,14 +1173,33 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     public void setVisible() {
         java.awt.EventQueue.invokeLater(() -> {
             this.splitWindow.setLeftComponent(canvas);
-            this.splitWindow.remove(rightScrollPane);
+            this.splitWindow.remove(this.rightScrollPane);
+            this.selectedKeyTools.setVisible(false);
             this.setVisible(true);
             canvas.setFocusable(true);
             canvas.requestFocusInWindow();
             
             this.canvas.setBackground(new Color(102,102,102));
-            this.canvas.addComponentListener(this);
-            this.canvas.addMouseListener(this);
+            this.canvas.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mousePressed(java.awt.event.MouseEvent e) {
+                    refresh();
+                }
+
+                @Override
+                public void mouseReleased(java.awt.event.MouseEvent e) {
+                    refresh();
+                }
+            });
+            
+            this.canvas.addComponentListener(new java.awt.event.ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    GaudrophoneController.getController().getCanvasManager().setCanvasSize(e.getComponent().getWidth(), e.getComponent().getHeight());
+                    refresh();
+                }
+            });
+            
             GaudrophoneController.getController().getCanvasManager().setCanvasSize(this.canvasPannel.getWidth(), this.canvasPannel.getHeight());
             GaudrophoneController.getController().getSelectionManager().delegate = this;
             GaudrophoneController.getController().getCanvasManager().delegate = this;
@@ -1126,32 +1208,28 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
             
             
 //            MINI-PIANO
-//            Key key = new Key(new SynthesizedSound(440), new RectangleKeyShape().generateSquare(50, new Vector2(2, 2)), "A");
-//            key.getShape().getIdleAppearance().setColor(Color.yellow);
-//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
-//
-//            Key key1 = new Key(new SynthesizedSound(493.88), new RectangleKeyShape().generateSquare(50, new Vector2(52, 2)), "B");
-//            key1.getShape().getIdleAppearance().setColor(Color.PINK);
-//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
-//
-//            Key key2 = new Key(new SynthesizedSound(523.25), new RectangleKeyShape().generateSquare(50, new Vector2(104, 2)), "C");
-//            key2.getShape().getIdleAppearance().setColor(Color.CYAN);
-//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key2);
-//
-//            Key key3 = new Key(new SynthesizedSound(587.33), new RectangleKeyShape().generateSquare(50, new Vector2(156, 2)), "D");
-//            key3.getShape().getIdleAppearance().setColor(Color.MAGENTA);
-//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key3);
-//
-//            Sound sound = new SynthesizedSound(659.25);
-//            sound.getEnvelope().setAttack(50);
-//            sound.getEnvelope().setDecay(250);
-//            sound.getEnvelope().setSustain(0.9);
-//            sound.getEnvelope().setRelease(100);
-//            Key key4 = new Key(sound, new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
-//            key4.getShape().getIdleAppearance().setColor(Color.green);
-//            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
-//
-//            this.refresh();
+            Key key = new Key(new SynthesizedSound(440), new RectangleKeyShape().generateSquare(50, new Vector2(2, 2)), "A");
+            key.getShape().getIdleAppearance().setColor(Color.yellow);
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
+
+            Key key1 = new Key(new SynthesizedSound(493.88), new RectangleKeyShape().generateSquare(50, new Vector2(52, 2)), "B");
+            key1.getShape().getIdleAppearance().setColor(Color.PINK);
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
+
+            Key key2 = new Key(new SynthesizedSound(523.25), new RectangleKeyShape().generateSquare(50, new Vector2(104, 2)), "C");
+            key2.getShape().getIdleAppearance().setColor(Color.CYAN);
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key2);
+
+            Key key3 = new Key(new SynthesizedSound(587.33), new RectangleKeyShape().generateSquare(50, new Vector2(156, 2)), "D");
+            key3.getShape().getIdleAppearance().setColor(Color.MAGENTA);
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key3);
+
+            Sound sound = new SynthesizedSound(659.25);
+            Key key4 = new Key(sound, new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
+            key4.getShape().getIdleAppearance().setColor(Color.green);
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
+
+            this.refresh();
         });
     }
 
@@ -1183,6 +1261,8 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     private java.awt.Button backgroundSunkenImageButton;
     private javax.swing.JLabel backgroundSunkenLabel;
     private javax.swing.JPanel backgroundSunkenProperty;
+    private javax.swing.JButton buttonDelete;
+    private javax.swing.JButton buttonDuplicate;
     private javax.swing.JButton buttonEditKey;
     private javax.swing.JButton buttonPlayMode;
     private javax.swing.Box.Filler canvasPannel;
@@ -1206,6 +1286,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
     private javax.swing.JRadioButton flatRadioButton;
     private javax.swing.JLabel frequencyLabel;
     private javax.swing.JPanel frequencyProperty;
@@ -1216,7 +1297,6 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSlider jSlider1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField keyNameField;
     private javax.swing.JLabel keyNameLabel;
@@ -1230,7 +1310,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     private javax.swing.JMenuItem newBlankMenuItem;
     private javax.swing.JMenuItem newGuitarMenuItem;
     private javax.swing.JMenu newMenu;
-    private java.awt.Choice noteNameChoice;
+    private javax.swing.JComboBox<String> noteComboBox;
     private javax.swing.JLabel noteNameLabel;
     private javax.swing.JPanel noteNameProperty;
     private javax.swing.JPanel noteProperties;
@@ -1248,6 +1328,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     private javax.swing.JScrollPane rightScrollPane;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JPanel selectedKeyTools;
     private javax.swing.JRadioButton sharpRadioButton;
     private java.awt.Checkbox showKeyNameCheckbox;
     private javax.swing.JPanel showNameProperty;
@@ -1266,33 +1347,13 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     private javax.swing.JPanel typeProperty;
     private javax.swing.JLabel volumeLabel;
     private javax.swing.JPanel volumeProperty;
+    private javax.swing.JSlider volumeSlider;
     private javax.swing.JSpinner volumeSpinner;
-    private java.awt.Choice waveFormChoice;
     private javax.swing.JLabel waveFormLabel;
     private javax.swing.JPanel waveFormProperty;
+    private javax.swing.JComboBox<String> waveformComboBox;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void componentResized(ComponentEvent e) {
-        GaudrophoneController.getController().getCanvasManager().setCanvasSize(e.getComponent().getWidth(), e.getComponent().getHeight());
-        this.refresh();
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent e) {
-        
-    }
-
-    @Override
-    public void componentShown(ComponentEvent e) {
-        
-    }
-
-    @Override
-    public void componentHidden(ComponentEvent e) {
-        
-    }
 
     @Override
     public void didSelectKey(Key key) {
@@ -1301,8 +1362,12 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         this.decaySpinner.setValue(key.getSound().getEnvelope().getDecay());
         this.sustainSpinner.setValue(key.getSound().getEnvelope().getSustain());
         this.releaseSpinner.setValue(key.getSound().getEnvelope().getRelease());
+        this.volumeSpinner.setValue((int)(key.getSound().getVolume()*100));
         this.showKeyNameCheckbox.setState((key.getStates() & KeyState.displayName.getValue()) != 0);
         this.showNoteNameCheckbox.setState((key.getStates() & KeyState.displayNote.getValue()) != 0);
+        
+        this.selectedKeyTools.setVisible(true);
+        
         if (this.splitWindow.getRightComponent() == null) {
             this.splitWindow.setRightComponent(this.rightScrollPane);
             this.splitWindow.setDividerLocation(Math.max(this.splitWindow.getWidth()/2, this.splitWindow.getWidth()-500));
@@ -1312,34 +1377,12 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     @Override
     public void didUnselectKey() {
         this.keyNameField.setText("Nom de la touche");
+        
+        this.selectedKeyTools.setVisible(false);
+        
         if (this.splitWindow.getRightComponent() != null) {
             this.splitWindow.setRightComponent(null);
         }
-        
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        this.refresh();
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        this.refresh();
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
         
     }
 

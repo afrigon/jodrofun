@@ -23,11 +23,6 @@
  */
 package Music;
 
-/**
- *
- * @author Olivier
- */
-
 public class NoteTranslator {
     
     public double getFrequencyFromMIDI(int n) {

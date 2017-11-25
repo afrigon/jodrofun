@@ -213,7 +213,6 @@ public class GaudrophoneController {
             key.setNote(Note.A);
             key.setOctave(4);
             key.setAlteration(Alteration.Natural);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
     
@@ -226,7 +225,6 @@ public class GaudrophoneController {
             key.setNote(Note.A);
             key.setOctave(4);
             key.setAlteration(Alteration.Natural);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
     
@@ -234,7 +232,6 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             ((AudioClip)key.getSound()).setSpeed(newSpeed);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
     
@@ -259,7 +256,6 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             ((SynthesizedSound)key.getSound()).setTuning(newTuning);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
     
@@ -267,7 +263,6 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setAttack(newAttack);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
         
@@ -275,7 +270,6 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setAttack(newDecay);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
         
@@ -283,7 +277,6 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setSustain((double)newSustain/100);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
         
@@ -291,7 +284,6 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setRelease(newRelease);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
         
@@ -299,7 +291,6 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().setVolume(newVolume);
-            this.canvasManager.delegate.shouldRedraw();
         }
     }
 }
