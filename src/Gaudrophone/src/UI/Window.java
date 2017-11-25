@@ -434,7 +434,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         sustainSlider.setBackground(new java.awt.Color(65, 65, 65));
         sustainSlider.setForeground(new java.awt.Color(255, 255, 255));
         sustainSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        sustainSlider.setToolTipText("Attack");
+        sustainSlider.setToolTipText("Substain");
         sustainSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         sustainSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         sustainSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -473,7 +473,7 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         releaseSlider.setForeground(new java.awt.Color(255, 255, 255));
         releaseSlider.setMaximum(250);
         releaseSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        releaseSlider.setToolTipText("Attack");
+        releaseSlider.setToolTipText("Release");
         releaseSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         releaseSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         releaseSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -1110,8 +1110,10 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
     public void setVisible() {
         java.awt.EventQueue.invokeLater(() -> {
             this.splitWindow.setLeftComponent(canvas);
-            this.splitWindow.remove(this.rightScrollPane);
+            this.splitWindow.remove(rightScrollPane);
             this.setVisible(true);
+            canvas.setFocusable(true);
+            canvas.requestFocusInWindow();
             
             this.canvas.setBackground(new Color(102,102,102));
             this.canvas.addComponentListener(this);
@@ -1301,7 +1303,6 @@ public class Window extends javax.swing.JFrame implements ComponentListener, Mou
         this.releaseSpinner.setValue(key.getSound().getEnvelope().getRelease());
         this.showKeyNameCheckbox.setState((key.getStates() & KeyState.displayName.getValue()) != 0);
         this.showNoteNameCheckbox.setState((key.getStates() & KeyState.displayNote.getValue()) != 0);
-        
         if (this.splitWindow.getRightComponent() == null) {
             this.splitWindow.setRightComponent(this.rightScrollPane);
             this.splitWindow.setDividerLocation(Math.max(this.splitWindow.getWidth()/2, this.splitWindow.getWidth()-500));

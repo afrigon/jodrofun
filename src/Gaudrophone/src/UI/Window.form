@@ -779,7 +779,7 @@
                                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                                         </Property>
                                         <Property name="orientation" type="int" value="1"/>
-                                        <Property name="toolTipText" type="java.lang.String" value="Attack"/>
+                                        <Property name="toolTipText" type="java.lang.String" value="Substain"/>
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[50, 32767]"/>
                                         </Property>
@@ -864,7 +864,7 @@
                                         </Property>
                                         <Property name="maximum" type="int" value="250"/>
                                         <Property name="orientation" type="int" value="1"/>
-                                        <Property name="toolTipText" type="java.lang.String" value="Attack"/>
+                                        <Property name="toolTipText" type="java.lang.String" value="Release"/>
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[50, 32767]"/>
                                         </Property>

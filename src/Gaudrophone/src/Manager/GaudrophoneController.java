@@ -82,7 +82,8 @@ public class GaudrophoneController {
     public void deleteKey() {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            instrumentManager.getInstrument().removeKey(new Key(key));
+            instrumentManager.getInstrument().removeKey(key);
+            selectionManager.setKey(null);
             this.canvasManager.delegate.shouldRedraw();
         }
     }
