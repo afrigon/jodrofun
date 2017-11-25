@@ -30,6 +30,7 @@ import java.util.List;
 public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
     private List<KeyLine> lines = null;
+    private KeyLine[] crossLines = new KeyLine[4];
     
     private ShapeAppearance idleAppearance = null;
     private ShapeAppearance clickedAppearance = null;
@@ -77,8 +78,20 @@ public class KeyShape implements java.io.Serializable {
         return this.lines;
     }
     
+    public KeyLine[] getCrossLines() {
+        return this.crossLines;
+    }
+    
     public void setLines(List<KeyLine> lines) {
         this.lines = lines;
+    }
+    
+    public void setCrossLineColor(Color newColor, int index) {
+        this.crossLines[index].setColor(newColor);
+    }
+    
+    public void setCrossLineThickness(double newThickness, int index) {
+        this.crossLines[index].setThickness(newThickness);
     }
     
     // Methods

@@ -33,8 +33,10 @@ import java.awt.image.BufferedImage;
 import java.awt.TexturePaint;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
+import java.awt.BasicStroke;
 import java.util.List;
 import Instrument.KeyState;
+import Manager.GaudrophoneController;
 
 /**
  *
@@ -56,21 +58,36 @@ public class ShapeDrawer {
             //  FALSE use idle appearence (same here)
             if((keyState & KeyState.clicked.getValue()) != 0) {
                 BufferedImage img = shape.getKey().getShape().getSunkenAppearance().getImage();
-                if(img != null)
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth(), img.getHeight())));
+                if(img != null) {
+                    double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(
+                            boundingBox.getX() + (boundingBox.getWidth() - img.getWidth() * max) / 2,
+                            boundingBox.getY() + (boundingBox.getHeight() - img.getHeight() * max) / 2,
+                            img.getWidth() * max,
+                            img.getHeight() * max)));
+                }
                 else
                     g2.setColor(shape.getKey().getShape().getSunkenAppearance().getColor());
             }
             else {
                 BufferedImage img = shape.getKey().getShape().getIdleAppearance().getImage();
-                if(img != null)
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth(), img.getHeight())));
+                if(img != null) {
+                    double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(
+                            boundingBox.getX() + (boundingBox.getWidth() - img.getWidth() * max) / 2,
+                            boundingBox.getY() + (boundingBox.getHeight() - img.getHeight() * max) / 2,
+                            img.getWidth() * max,
+                            img.getHeight() * max)));
+                }
                 else
                     g2.setColor(shape.getKey().getShape().getIdleAppearance().getColor());
             }
             
             //Draw the shape
             g2.fill(shape.getShape());
+            
+            //Draw weird cross-lines in the middle
+            drawCrossLines(g2, shape.getKey().getShape().getCrossLines(), shape);
             
             //Draw each border lines
             drawLines(g2, shape.getLines());
@@ -109,9 +126,10 @@ public class ShapeDrawer {
             }
             //Place the black mask if searching
             if(searching) {
-                g2.clip(clip);
+                g2.setClip(clip);
                 g2.setColor(new Color(0, 0, 0, 60));
                 g2.fill(canvasSize);
+                g2.setClip(null);
             }
         }
         catch (Exception ex) {
@@ -194,6 +212,40 @@ public class ShapeDrawer {
         }
     }
     
+    private static void drawCrossLines(Graphics2D g2, KeyUtils.KeyLine[] lines, DrawableShape shape) {
+        if(g2 == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : g2 is undefined.");
+        if(shape == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : shape is undefined.");
+        if(lines == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : lines is undefined.");
+        if(lines.length != 4)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : lines size expected 4, got " + lines.length + ".");
+        
+        g2.setClip(shape.getShape());
+        for(int i = 0; i < lines.length; ++i) {
+            if(lines[i] != null) {
+                //Set color and thickness
+                g2.setColor(lines[i].getColor());
+                g2.setStroke(new BasicStroke(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(lines[i].getThickness()),
+                        BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                //VARIABLES
+                Line2D line = new Line2D.Double();
+                Rectangle2D bounds = shape.getShape().getBounds2D();
+                //Create line according to index
+                switch(i) {
+                    case 0: line.setLine(bounds.getCenterX(), bounds.getMinY(), bounds.getCenterX(), bounds.getMaxY()); break;
+                    case 1: line.setLine(bounds.getMinX(), bounds.getCenterY(), bounds.getMaxX(), bounds.getCenterY()); break;
+                    case 2: line.setLine(bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()); break;
+                    case 3: line.setLine(bounds.getMaxX(), bounds.getMinY(), bounds.getMinX(), bounds.getMaxY()); break;
+                }
+                //Draw previewsly set line
+                g2.draw(line);
+            }
+        }
+        g2.setClip(null);
+    }
+    
     //Draw the key information (name, etc.)
     private static void drawText(Graphics2D g2, DrawableShape shape) {
         if(g2 == null)
@@ -208,13 +260,13 @@ public class ShapeDrawer {
         
         //Find the flags and if they are set, add the information
         if((keyState & KeyState.displayName.getValue()) != 0)
-            text += "\n" +shape.getKey().getName();
+            text += shape.getKey().getName() + "\n";
         if((keyState & KeyState.displayNote.getValue()) != 0)
-            text += "\n" +shape.getKey().getNote();
-        if((keyState & KeyState.displayAlteration.getValue()) != 0)
-            text += "\n" +shape.getKey().getAlteration();
+            text += shape.getKey().getNote();
         if((keyState & KeyState.displayOctave.getValue()) != 0)
-            text += "\n" +shape.getKey().getOctave();
+            text += shape.getKey().getOctave();
+        if((keyState & KeyState.displayAlteration.getValue()) != 0)
+            text += " " + shape.getKey().getAlteration();
         
         //If there is something (at least one flag)
         if(!"".equals(text)) {
