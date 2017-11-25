@@ -24,20 +24,21 @@
 package UI;
 
 import java.awt.Color;
+import KeyUtils.KeyLine;
 import java.awt.geom.Line2D;
 
 public class DrawableLine {
-    private Color lineColor;
+    private KeyLine keyLine;
     private int lineThickness;
     private Line2D.Double line;
     
     public void DrawableLine() { }
     
-    public Color getColor() { return lineColor; }
+    public Color getColor() { return keyLine.getColor(); }
     public int getThickness() { return lineThickness; }
     public Line2D.Double getLine() { return line; }
     
-    public void setColor(Color p_color) { lineColor = p_color; }
+    public void setKeyLine(KeyLine p_keyLine) { keyLine = p_keyLine; }
     public void setThickness(int p_thickness) { lineThickness = p_thickness; }
     public void setLine(Line2D.Double p_line) { line = p_line; }
 }

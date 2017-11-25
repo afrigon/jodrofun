@@ -67,7 +67,7 @@ public class DrawableShape {
                 this.generalPath.lineTo(next.getX(), next.getY());
                 DrawableLine dl = new DrawableLine();
                 dl.setLine(new Line2D.Double(previous.getX(), previous.getY(), next.getX(), next.getY()));
-                dl.setColor(keyLines.get(i-1).getColor());
+                dl.setKeyLine(keyLines.get(i-1));
                 dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(i-1).getThickness()));
                 this.lines.add(dl);
             }
@@ -78,7 +78,7 @@ public class DrawableShape {
             this.generalPath.closePath();
             DrawableLine dl = new DrawableLine();
             dl.setLine(new Line2D.Double(last.getX(), last.getY(), first.getX(), first.getY()));
-            dl.setColor(keyLines.get(keyLines.size()-1).getColor());
+            dl.setKeyLine(keyLines.get(keyLines.size()-1));
             dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(keyLines.size()-1).getThickness()));
             this.lines.add(dl);
         }

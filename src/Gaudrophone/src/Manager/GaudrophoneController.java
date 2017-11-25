@@ -169,15 +169,37 @@ public class GaudrophoneController {
     }
     
     public void setLineColor(Color newColor) {
-        List<KeyUtils.KeyLine> shapeLines = selectionManager.getSelectedKey().getShape().getLines();
-        shapeLines.get(selectionManager.getSelectedLine()).setColor(newColor);
-        selectionManager.getSelectedKey().getShape().setLines(shapeLines);
+        Key key = selectionManager.getSelectedKey();
+        if (key != null) {
+            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
+            shapeLines.get(selectionManager.getSelectedLine()).setColor(newColor);
+            key.getShape().setLines(shapeLines);
+            this.canvasManager.delegate.shouldRedraw();
+        }
+        
+    }
+    
+    public void setAllLineColor(Color newColor) {
+        Key key = selectionManager.getSelectedKey();
+        if (key != null) {
+            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
+            for(KeyUtils.KeyLine line : shapeLines) {
+                line.setColor(newColor);
+            }
+            key.getShape().setLines(shapeLines);
+            this.canvasManager.delegate.shouldRedraw();
+        }
+        
     }
     
     public void setLineThickness(double newThickness) {
-        List<KeyUtils.KeyLine> shapeLines = selectionManager.getSelectedKey().getShape().getLines();
-        shapeLines.get(selectionManager.getSelectedLine()).setThickness(newThickness);
-        selectionManager.getSelectedKey().getShape().setLines(shapeLines);
+        Key key = selectionManager.getSelectedKey();
+        if (key != null) {
+            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
+            shapeLines.get(selectionManager.getSelectedLine()).setThickness(newThickness);
+            key.getShape().setLines(shapeLines);
+            this.canvasManager.delegate.shouldRedraw();
+        }
     }
     
     public void setCrossLineColor(Color newColor) {

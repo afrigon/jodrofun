@@ -59,9 +59,7 @@ public class Canvas extends javax.swing.JPanel {
         
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_DELETE &&
-                        GaudrophoneController.getController().getCanvasManager().getState() == State.EditKey)
-                    GaudrophoneController.getController().deleteKey();
+                
             }
             
             public void keyReleased(java.awt.event.KeyEvent e) {

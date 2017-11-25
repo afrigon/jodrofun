@@ -39,6 +39,7 @@ import Music.SynthesizedSound;
 import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -116,8 +117,10 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         releaseLabel = new javax.swing.JLabel();
         showNameProperty = new javax.swing.JPanel();
         showNoteNameLabel = new javax.swing.JLabel();
-        showKeyNameCheckbox = new java.awt.Checkbox();
-        showNoteNameCheckbox = new java.awt.Checkbox();
+        displayNameCheckBox = new javax.swing.JCheckBox();
+        displayNoteCheckBox = new javax.swing.JCheckBox();
+        displayOctaveCheckBox = new javax.swing.JCheckBox();
+        displayAlterationCheckBox = new javax.swing.JCheckBox();
         typeProperty = new javax.swing.JPanel();
         synthRadioButton = new javax.swing.JRadioButton();
         audioClipRadioButton = new javax.swing.JRadioButton();
@@ -183,7 +186,7 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         createRectangleMenuItem = new javax.swing.JMenuItem();
         createTriangleMenuItem = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -312,7 +315,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
 
         volumeSlider.setBackground(new java.awt.Color(65, 65, 65));
         volumeSlider.setForeground(new java.awt.Color(255, 255, 255));
-        volumeSlider.setValue(100);
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, volumeSpinner, org.jdesktop.beansbinding.ELProperty.create("${value}"), volumeSlider, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
@@ -371,7 +373,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         attackSlider.setForeground(new java.awt.Color(255, 255, 255));
         attackSlider.setMaximum(5000);
         attackSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        attackSlider.setValue(100);
         attackSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         attackSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         attackSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -411,7 +412,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         decaySlider.setForeground(new java.awt.Color(255, 255, 255));
         decaySlider.setMaximum(5000);
         decaySlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        decaySlider.setValue(100);
         decaySlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         decaySlider.setMinimumSize(new java.awt.Dimension(50, 36));
         decaySlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -449,7 +449,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         sustainSlider.setBackground(new java.awt.Color(65, 65, 65));
         sustainSlider.setForeground(new java.awt.Color(255, 255, 255));
         sustainSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        sustainSlider.setValue(80);
         sustainSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         sustainSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         sustainSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -488,7 +487,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         releaseSlider.setForeground(new java.awt.Color(255, 255, 255));
         releaseSlider.setMaximum(5000);
         releaseSlider.setOrientation(javax.swing.JSlider.VERTICAL);
-        releaseSlider.setValue(100);
         releaseSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         releaseSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         releaseSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -536,18 +534,48 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         showNoteNameLabel.setPreferredSize(new java.awt.Dimension(68, 26));
         showNameProperty.add(showNoteNameLabel);
 
-        showKeyNameCheckbox.setBackground(new java.awt.Color(65, 65, 65));
-        showKeyNameCheckbox.setForeground(new java.awt.Color(255, 255, 255));
-        showKeyNameCheckbox.setLabel("Nom de la touche");
-        showKeyNameCheckbox.setState(true);
-        showNameProperty.add(showKeyNameCheckbox);
-        showNameProperty.setBackground(new java.awt.Color(65, 65, 65));
+        displayNameCheckBox.setBackground(new java.awt.Color(65, 65, 65));
+        displayNameCheckBox.setForeground(new java.awt.Color(255, 255, 255));
+        displayNameCheckBox.setSelected(true);
+        displayNameCheckBox.setText("Nom");
+        displayNameCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                displayNameCheckBoxItemStateChanged(evt);
+            }
+        });
+        showNameProperty.add(displayNameCheckBox);
 
-        showNoteNameCheckbox.setBackground(new java.awt.Color(65, 65, 65));
-        showNoteNameCheckbox.setForeground(new java.awt.Color(255, 255, 255));
-        showNoteNameCheckbox.setLabel("Nom de la note");
-        showNoteNameCheckbox.setState(true);
-        showNameProperty.add(showNoteNameCheckbox);
+        displayNoteCheckBox.setBackground(new java.awt.Color(65, 65, 65));
+        displayNoteCheckBox.setForeground(new java.awt.Color(255, 255, 255));
+        displayNoteCheckBox.setSelected(true);
+        displayNoteCheckBox.setText("Note");
+        displayNoteCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                displayNoteCheckBoxItemStateChanged(evt);
+            }
+        });
+        showNameProperty.add(displayNoteCheckBox);
+
+        displayOctaveCheckBox.setBackground(new java.awt.Color(65, 65, 65));
+        displayOctaveCheckBox.setForeground(new java.awt.Color(255, 255, 255));
+        displayOctaveCheckBox.setSelected(true);
+        displayOctaveCheckBox.setText("Octave");
+        displayOctaveCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                displayOctaveCheckBoxItemStateChanged(evt);
+            }
+        });
+        showNameProperty.add(displayOctaveCheckBox);
+
+        displayAlterationCheckBox.setBackground(new java.awt.Color(65, 65, 65));
+        displayAlterationCheckBox.setForeground(new java.awt.Color(255, 255, 255));
+        displayAlterationCheckBox.setText("Altération");
+        displayAlterationCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                displayAlterationCheckBoxItemStateChanged(evt);
+            }
+        });
+        showNameProperty.add(displayAlterationCheckBox);
 
         generalProperties.add(showNameProperty);
 
@@ -808,6 +836,11 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         linesColorButton.setBackground(new java.awt.Color(102, 102, 102));
         linesColorButton.setForeground(new java.awt.Color(65, 65, 65));
         linesColorButton.setLabel("Couleur...");
+        linesColorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linesColorButtonActionPerformed(evt);
+            }
+        });
         linesColorProperty.add(linesColorButton);
 
         KeyShapeProperties.add(linesColorProperty);
@@ -1138,6 +1171,57 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
     private void volumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_volumeSliderStateChanged
         GaudrophoneController.getController().setVolume((double)volumeSlider.getValue()/100);
     }//GEN-LAST:event_volumeSliderStateChanged
+
+    private void displayNameCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_displayNameCheckBoxItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().addState(KeyState.displayName);
+            canvas.repaint();
+        }
+        else if(evt.getStateChange() == ItemEvent.DESELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().removeState(KeyState.displayName);
+            canvas.repaint();
+        }
+    }//GEN-LAST:event_displayNameCheckBoxItemStateChanged
+
+    private void displayNoteCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_displayNoteCheckBoxItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().addState(KeyState.displayNote);
+            canvas.repaint();
+        }
+        else if(evt.getStateChange() == ItemEvent.DESELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().removeState(KeyState.displayNote);
+            canvas.repaint();
+        }
+    }//GEN-LAST:event_displayNoteCheckBoxItemStateChanged
+
+    private void displayOctaveCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_displayOctaveCheckBoxItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().addState(KeyState.displayOctave);
+            canvas.repaint();
+        }
+        else if(evt.getStateChange() == ItemEvent.DESELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().removeState(KeyState.displayOctave);
+            canvas.repaint();
+        }
+    }//GEN-LAST:event_displayOctaveCheckBoxItemStateChanged
+
+    private void displayAlterationCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_displayAlterationCheckBoxItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().addState(KeyState.displayAlteration);
+            canvas.repaint();
+        }
+        else if(evt.getStateChange() == ItemEvent.DESELECTED) {
+            GaudrophoneController.getController().getSelectionManager().getSelectedKey().removeState(KeyState.displayAlteration);
+            canvas.repaint();
+        }
+    }//GEN-LAST:event_displayAlterationCheckBoxItemStateChanged
+
+    private void linesColorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linesColorButtonActionPerformed
+        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        if (color != null) {
+            GaudrophoneController.getController().setAllLineColor(color);
+        }
+    }//GEN-LAST:event_linesColorButtonActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -1189,6 +1273,15 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
                 @Override
                 public void mouseReleased(java.awt.event.MouseEvent e) {
                     refresh();
+                }
+            });
+            
+            addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyPressed(java.awt.event.KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_DELETE &&
+                        GaudrophoneController.getController().getCanvasManager().getState() == State.EditKey)
+                        GaudrophoneController.getController().deleteKey();
                 }
             });
             
@@ -1273,6 +1366,10 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
     private javax.swing.JSlider decaySlider;
     private javax.swing.JPanel decaySliderPanel;
     private javax.swing.JSpinner decaySpinner;
+    private javax.swing.JCheckBox displayAlterationCheckBox;
+    private javax.swing.JCheckBox displayNameCheckBox;
+    private javax.swing.JCheckBox displayNoteCheckBox;
+    private javax.swing.JCheckBox displayOctaveCheckBox;
     private javax.swing.JPanel envelopeGraph;
     private javax.swing.JLabel envelopeLabel;
     private javax.swing.JPanel envelopeProperties;
@@ -1330,9 +1427,7 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JPanel selectedKeyTools;
     private javax.swing.JRadioButton sharpRadioButton;
-    private java.awt.Checkbox showKeyNameCheckbox;
     private javax.swing.JPanel showNameProperty;
-    private java.awt.Checkbox showNoteNameCheckbox;
     private javax.swing.JLabel showNoteNameLabel;
     private javax.swing.JSplitPane splitWindow;
     private javax.swing.JPanel sunkenSpacer;
@@ -1363,8 +1458,10 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         this.sustainSpinner.setValue(key.getSound().getEnvelope().getSustain());
         this.releaseSpinner.setValue(key.getSound().getEnvelope().getRelease());
         this.volumeSpinner.setValue((int)(key.getSound().getVolume()*100));
-        this.showKeyNameCheckbox.setState((key.getStates() & KeyState.displayName.getValue()) != 0);
-        this.showNoteNameCheckbox.setState((key.getStates() & KeyState.displayNote.getValue()) != 0);
+        this.displayNameCheckBox.setSelected((key.getStates() & KeyState.displayName.getValue()) != 0);
+        this.displayNoteCheckBox.setSelected((key.getStates() & KeyState.displayNote.getValue()) != 0);
+        this.displayOctaveCheckBox.setSelected((key.getStates() & KeyState.displayOctave.getValue()) != 0);
+        this.displayAlterationCheckBox.setSelected((key.getStates() & KeyState.displayAlteration.getValue()) != 0);
         
         this.selectedKeyTools.setVisible(true);
         
