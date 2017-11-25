@@ -29,12 +29,6 @@ public class AppDelegate {
     private static Window window = new Window();
     
     public static void main(String [] args) {
-        try { 
-            String osName = System.getProperty("os.name").toLowerCase();
-            if (!osName.contains("mac")) {
-                UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); 
-            }
-        } catch(Exception e){}
         AppDelegate.window.setVisible();
     }
 }
