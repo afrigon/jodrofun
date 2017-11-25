@@ -77,7 +77,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         instrumentPanel = new javax.swing.JPanel();
         canvasPannel = new javax.swing.Box.Filler(new java.awt.Dimension(300, 100), new java.awt.Dimension(600, 600), new java.awt.Dimension(3000, 3000));
         rightScrollPane = new javax.swing.JScrollPane();
-        PropertyPanel = new javax.swing.JPanel();
+        tabbedPane = new javax.swing.JTabbedPane();
+        propertyPanel = new javax.swing.JPanel();
         KeyProperties = new javax.swing.JPanel();
         generalProperties = new javax.swing.JPanel();
         keyNameProperty = new javax.swing.JPanel();
@@ -91,9 +92,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         octaveSpinner = new javax.swing.JSpinner();
         alterationProperty = new javax.swing.JPanel();
         alterationLabel = new javax.swing.JLabel();
-        sharpRadioButton = new javax.swing.JRadioButton();
-        naturalRadioButton = new javax.swing.JRadioButton();
         flatRadioButton = new javax.swing.JRadioButton();
+        naturalRadioButton = new javax.swing.JRadioButton();
+        sharpRadioButton = new javax.swing.JRadioButton();
         volumeProperty = new javax.swing.JPanel();
         volumeLabel = new javax.swing.JLabel();
         volumeSlider = new javax.swing.JSlider();
@@ -162,6 +163,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         backgroundSunkenDisplayLabel = new javax.swing.JLabel();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        bordersPanel = new javax.swing.JPanel();
+        fullLineEditionPanel = new javax.swing.JPanel();
         linesColorProperty = new javax.swing.JPanel();
         linesColorLabel = new javax.swing.JLabel();
         borderSpacer = new javax.swing.JPanel();
@@ -209,6 +212,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         splitWindow.setPreferredSize(new java.awt.Dimension(959, 700));
 
         instrumentPanel.setBackground(new java.awt.Color(102, 102, 102));
+        instrumentPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 4));
         instrumentPanel.setLayout(new java.awt.BorderLayout());
         instrumentPanel.add(canvasPannel, java.awt.BorderLayout.CENTER);
 
@@ -220,11 +224,18 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         rightScrollPane.setAutoscrolls(true);
         rightScrollPane.setMinimumSize(new java.awt.Dimension(350, 250));
         rightScrollPane.setPreferredSize(new java.awt.Dimension(350, 226));
+        rightScrollPane.setViewportView(tabbedPane);
 
-        PropertyPanel.setBackground(new java.awt.Color(65, 65, 65));
-        PropertyPanel.setMinimumSize(new java.awt.Dimension(600, 655));
-        PropertyPanel.setPreferredSize(new java.awt.Dimension(400, 655));
-        PropertyPanel.setLayout(new javax.swing.BoxLayout(PropertyPanel, javax.swing.BoxLayout.Y_AXIS));
+        tabbedPane.setBackground(new java.awt.Color(65, 65, 65));
+        tabbedPane.setForeground(new java.awt.Color(255, 255, 255));
+        tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabbedPane.setMinimumSize(new java.awt.Dimension(125, 296));
+        tabbedPane.setOpaque(true);
+
+        propertyPanel.setBackground(new java.awt.Color(65, 65, 65));
+        propertyPanel.setMinimumSize(new java.awt.Dimension(600, 655));
+        propertyPanel.setPreferredSize(new java.awt.Dimension(400, 655));
+        propertyPanel.setLayout(new javax.swing.BoxLayout(propertyPanel, javax.swing.BoxLayout.Y_AXIS));
 
         KeyProperties.setBackground(new java.awt.Color(65, 65, 65));
         KeyProperties.setMinimumSize(new java.awt.Dimension(128, 557));
@@ -304,16 +315,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         alterationLabel.setText("Altération :");
         alterationProperty.add(alterationLabel);
 
-        sharpRadioButton.setBackground(new java.awt.Color(65, 65, 65));
-        alterationButtonGroup.add(sharpRadioButton);
-        sharpRadioButton.setForeground(new java.awt.Color(255, 255, 255));
-        sharpRadioButton.setText("Dièse");
-        sharpRadioButton.addActionListener(new java.awt.event.ActionListener() {
+        flatRadioButton.setBackground(new java.awt.Color(65, 65, 65));
+        alterationButtonGroup.add(flatRadioButton);
+        flatRadioButton.setForeground(new java.awt.Color(255, 255, 255));
+        flatRadioButton.setText("Bémol");
+        flatRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sharpRadioButtonActionPerformed(evt);
+                flatRadioButtonActionPerformed(evt);
             }
         });
-        alterationProperty.add(sharpRadioButton);
+        alterationProperty.add(flatRadioButton);
 
         naturalRadioButton.setBackground(new java.awt.Color(65, 65, 65));
         alterationButtonGroup.add(naturalRadioButton);
@@ -327,16 +338,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         });
         alterationProperty.add(naturalRadioButton);
 
-        flatRadioButton.setBackground(new java.awt.Color(65, 65, 65));
-        alterationButtonGroup.add(flatRadioButton);
-        flatRadioButton.setForeground(new java.awt.Color(255, 255, 255));
-        flatRadioButton.setText("Bémol");
-        flatRadioButton.addActionListener(new java.awt.event.ActionListener() {
+        sharpRadioButton.setBackground(new java.awt.Color(65, 65, 65));
+        alterationButtonGroup.add(sharpRadioButton);
+        sharpRadioButton.setForeground(new java.awt.Color(255, 255, 255));
+        sharpRadioButton.setText("Dièse");
+        sharpRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flatRadioButtonActionPerformed(evt);
+                sharpRadioButtonActionPerformed(evt);
             }
         });
-        alterationProperty.add(flatRadioButton);
+        alterationProperty.add(sharpRadioButton);
 
         generalProperties.add(alterationProperty);
 
@@ -396,11 +407,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         envelopeGraph.setLayout(envelopeGraphLayout);
         envelopeGraphLayout.setHorizontalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGap(0, 354, Short.MAX_VALUE)
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 101, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -800,12 +811,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         KeyProperties.add(audioClipProperties);
 
-        PropertyPanel.add(KeyProperties);
+        propertyPanel.add(KeyProperties);
 
         jSeparator2.setBackground(new java.awt.Color(65, 65, 65));
         jSeparator2.setForeground(new java.awt.Color(65, 65, 65));
         jSeparator2.setPreferredSize(new java.awt.Dimension(50, 5));
-        PropertyPanel.add(jSeparator2);
+        propertyPanel.add(jSeparator2);
 
         KeyShapeProperties.setBackground(new java.awt.Color(65, 65, 65));
         KeyShapeProperties.setLayout(new javax.swing.BoxLayout(KeyShapeProperties, javax.swing.BoxLayout.Y_AXIS));
@@ -887,10 +898,18 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         KeyShapeProperties.add(backgroundSunkenProperty);
 
+        propertyPanel.add(KeyShapeProperties);
+
+        tabbedPane.addTab("Général", propertyPanel);
+
+        bordersPanel.setBackground(new java.awt.Color(65, 65, 65));
+
+        fullLineEditionPanel.setLayout(new java.awt.GridLayout());
+
         linesColorProperty.setBackground(new java.awt.Color(65, 65, 65));
         linesColorProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         linesColorProperty.setMinimumSize(new java.awt.Dimension(125, 32));
-        linesColorProperty.setPreferredSize(new java.awt.Dimension(375, 32));
+        linesColorProperty.setPreferredSize(new java.awt.Dimension(125, 32));
         linesColorProperty.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
         linesColorLabel.setBackground(new java.awt.Color(65, 65, 65));
@@ -924,11 +943,28 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         linesColorProperty.add(borderSpacer);
 
-        KeyShapeProperties.add(linesColorProperty);
+        javax.swing.GroupLayout bordersPanelLayout = new javax.swing.GroupLayout(bordersPanel);
+        bordersPanel.setLayout(bordersPanelLayout);
+        bordersPanelLayout.setHorizontalGroup(
+            bordersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(fullLineEditionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(bordersPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(linesColorProperty, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        bordersPanelLayout.setVerticalGroup(
+            bordersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bordersPanelLayout.createSequentialGroup()
+                .addComponent(linesColorProperty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)
+                .addComponent(fullLineEditionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(328, Short.MAX_VALUE))
+        );
 
-        PropertyPanel.add(KeyShapeProperties);
+        tabbedPane.addTab("Lignes", bordersPanel);
 
-        rightScrollPane.setViewportView(PropertyPanel);
+        rightScrollPane.setViewportView(tabbedPane);
+        tabbedPane.getAccessibleContext().setAccessibleName("Général");
 
         splitWindow.setRightComponent(rightScrollPane);
 
@@ -1523,7 +1559,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel KeyProperties;
     private javax.swing.JPanel KeyShapeProperties;
-    private javax.swing.JPanel PropertyPanel;
     private javax.swing.ButtonGroup alterationButtonGroup;
     private javax.swing.JLabel alterationLabel;
     private javax.swing.JPanel alterationProperty;
@@ -1545,6 +1580,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel backgroundSunkenLabel;
     private javax.swing.JPanel backgroundSunkenProperty;
     private javax.swing.JPanel borderSpacer;
+    private javax.swing.JPanel bordersPanel;
     private javax.swing.JButton buttonAddImage;
     private javax.swing.JButton buttonAddSunkenImage;
     private javax.swing.JButton buttonDelete;
@@ -1584,6 +1620,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel frequencyLabel;
     private javax.swing.JPanel frequencyProperty;
     private javax.swing.JSpinner frequencySpinner;
+    private javax.swing.JPanel fullLineEditionPanel;
     private javax.swing.JPanel generalProperties;
     private javax.swing.JMenu insertMenuItem;
     private javax.swing.JPanel instrumentPanel;
@@ -1609,6 +1646,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JSpinner octaveSpinner;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JLabel outlineDisplayLabel;
+    private javax.swing.JPanel propertyPanel;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JLabel readSpeedLabel;
     private javax.swing.JPanel readSpeedProperty;
@@ -1631,6 +1669,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel sustainSliderPanel;
     private javax.swing.JSpinner sustainSpinner;
     private javax.swing.JRadioButton synthRadioButton;
+    private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JLabel tuningLabel;
     private javax.swing.JPanel tuningProperty;
     private javax.swing.JSpinner tuningSpinner;
