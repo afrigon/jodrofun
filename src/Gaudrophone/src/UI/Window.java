@@ -904,7 +904,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         bordersPanel.setBackground(new java.awt.Color(65, 65, 65));
 
-        fullLineEditionPanel.setLayout(new java.awt.GridLayout());
+        fullLineEditionPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         linesColorProperty.setBackground(new java.awt.Color(65, 65, 65));
         linesColorProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
