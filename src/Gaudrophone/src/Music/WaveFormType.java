@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,15 @@
  */
 package Music;
 
-import javax.sound.sampled.AudioFormat;
+public enum WaveFormType {
+    Sine(new SineWaveForm()), Square(new SquareWaveForm());
 
-public abstract class WaveForm {
-    static final int SAMPLE_RATE = 44100;
-    static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, 8, 2, true, false);
-    
-    public abstract double getAmplitude(double frequency, double frame);
+    private final WaveForm value;
+    private WaveFormType(WaveForm value) {
+        this.value = value;
+    }
+
+    public WaveForm getWaveForm() {
+        return value;
+    }
 }

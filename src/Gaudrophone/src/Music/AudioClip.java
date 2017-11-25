@@ -44,6 +44,7 @@ public class AudioClip extends Sound {
     
     // Constructors
     public AudioClip(String newPath) {
+        typeString = "clip";
         path = newPath;
         speed = 1;
         

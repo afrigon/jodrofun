@@ -30,16 +30,20 @@ public class NoteTranslator {
     //private final String[] NOTE_NAMES = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"};
     private static final int BASE_OCTAVE = 4;
     private static final double REFERENCE_FREQUENCY = 440.0;
-    private static final double CALCULUS_CONSTANT = 12 / Math.log(2);
+    private static final double CALCULUS_CONSTANT = Math.pow(2, ((double)1/12));
     
     public static double getFrequencyFromKey(Note note, Alteration alteration, int octave, int tuning) {
-        int halfStepsFromReference = ((octave-NoteTranslator.BASE_OCTAVE) * 12) + note.getValue();
-        if (alteration != Alteration.Natural) { halfStepsFromReference += (alteration == Alteration.Sharp ? 1 : -1); }
-        double frequency = (double)Math.round(REFERENCE_FREQUENCY * Math.pow(CALCULUS_CONSTANT, halfStepsFromReference) * 100) / 100;
-        frequency += tuning*(4/Math.pow(2, octave)); // Good enough for jazz.
+        int halfStepsFromReference = ((octave-BASE_OCTAVE) * 12) + note.getValue() + alteration.getValue();
+        double frequency = Math.round(REFERENCE_FREQUENCY * Math.pow(CALCULUS_CONSTANT, halfStepsFromReference) * 100.0) / 100.0;
+        
+        // Good enough for jazz.
+        frequency += tuning*(4/Math.pow(2, octave)); 
         return frequency;
     }
 
+    
+    
+    
 //    public double getFrequencyFromMIDI(int n) {
 //        return 440.0 * Math.pow(2.0, ((double)(n - NOTE_REFERENCE))/12);
 //    }
