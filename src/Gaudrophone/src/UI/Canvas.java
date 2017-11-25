@@ -24,6 +24,7 @@
 package UI;
 
 import Manager.CanvasManager;
+import Manager.GaudrophoneController;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -32,7 +33,6 @@ import java.util.List;
 public class Canvas extends javax.swing.JPanel {
     
     CanvasManager manager;
-    List<DrawableShape> shapes;
     public Canvas(CanvasManager p_manager) {
         
         manager = p_manager;
@@ -65,7 +65,7 @@ public class Canvas extends javax.swing.JPanel {
         
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent e) {
-                
+                GaudrophoneController.getController().getCanvasManager().setCanvasSize(e.getComponent().getWidth(), e.getComponent().getWidth());
             }
         });
     }
@@ -85,10 +85,10 @@ public class Canvas extends javax.swing.JPanel {
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         
         //Get all shapes from canvasManager
-        List<DrawableShape> shapes = manager.getDrawableShapes();
-        if (shapes == null) return; //error prevention
+        List<DrawableShape> drawableShapes = manager.getDrawableShapes();
+        if (drawableShapes == null) return; //error prevention
         
         //Drawing time :)
-        ShapeDrawer.drawShapes(g2, shapes, this.getBounds());
+        ShapeDrawer.drawShapes(g2, drawableShapes, this.getBounds());
     }
 }

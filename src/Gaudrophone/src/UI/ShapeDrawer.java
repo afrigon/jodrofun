@@ -33,8 +33,10 @@ import java.awt.image.BufferedImage;
 import java.awt.TexturePaint;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
+import java.awt.BasicStroke;
 import java.util.List;
 import Instrument.KeyState;
+import Manager.GaudrophoneController;
 
 /**
  *
@@ -84,6 +86,9 @@ public class ShapeDrawer {
             //Draw the shape
             g2.fill(shape.getShape());
             
+            //Draw weird cross-lines in the middle
+            drawCrossLines(g2, shape.getKey().getShape().getCrossLines(), shape);
+            
             //Draw each border lines
             drawLines(g2, shape.getLines());
             
@@ -121,9 +126,10 @@ public class ShapeDrawer {
             }
             //Place the black mask if searching
             if(searching) {
-                g2.clip(clip);
+                g2.setClip(clip);
                 g2.setColor(new Color(0, 0, 0, 60));
                 g2.fill(canvasSize);
+                g2.setClip(null);
             }
         }
         catch (Exception ex) {
@@ -204,6 +210,40 @@ public class ShapeDrawer {
         catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    
+    private static void drawCrossLines(Graphics2D g2, KeyUtils.KeyLine[] lines, DrawableShape shape) {
+        if(g2 == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : g2 is undefined.");
+        if(shape == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : shape is undefined.");
+        if(lines == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : lines is undefined.");
+        if(lines.length != 4)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : lines size expected 4, got " + lines.length + ".");
+        
+        g2.setClip(shape.getShape());
+        for(int i = 0; i < lines.length; ++i) {
+            if(lines[i] != null) {
+                //Set color and thickness
+                g2.setColor(lines[i].getColor());
+                g2.setStroke(new BasicStroke(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(lines[i].getThickness()),
+                        BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                //VARIABLES
+                Line2D line = new Line2D.Double();
+                Rectangle2D bounds = shape.getShape().getBounds2D();
+                //Create line according to index
+                switch(i) {
+                    case 0: line.setLine(bounds.getCenterX(), bounds.getMinY(), bounds.getCenterX(), bounds.getMaxY()); break;
+                    case 1: line.setLine(bounds.getMinX(), bounds.getCenterY(), bounds.getMaxX(), bounds.getCenterY()); break;
+                    case 2: line.setLine(bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()); break;
+                    case 3: line.setLine(bounds.getMaxX(), bounds.getMinY(), bounds.getMinX(), bounds.getMaxY()); break;
+                }
+                //Draw previewsly set line
+                g2.draw(line);
+            }
+        }
+        g2.setClip(null);
     }
     
     //Draw the key information (name, etc.)
