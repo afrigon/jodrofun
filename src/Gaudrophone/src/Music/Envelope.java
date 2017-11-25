@@ -33,13 +33,9 @@ public class Envelope implements java.io.Serializable {
     public static final double SUSTAIN_TIME = 50;
     
     public Envelope() {
-//        attack = 100;
-//        decay = 500;
-//        sustain = .9;
-//        release = 1000;
         attack = 100;
         decay = 100;
-        sustain = .9;
+        sustain = 0.8;
         release = 250;
         attackAndDecay = attack + decay;
     }
@@ -50,6 +46,22 @@ public class Envelope implements java.io.Serializable {
         sustain = newSustain;
         release = newRelease;
         attackAndDecay = attack + decay;
+    }
+    
+    public int getAttack() {
+        return (int)this.attack;
+    }
+    
+    public int getDecay() {
+        return (int)this.decay;
+    }
+    
+    public int getSustain() {
+        return (int)(this.sustain*100);
+    }
+    
+    public int getRelease() {
+        return (int)this.release;
     }
     
     // setters

@@ -100,8 +100,10 @@ public class CanvasManager {
                     key.addState(KeyState.selected);
                     this.lastKey = key;
                 } else {
-                    this.lastKey.removeState(KeyState.selected);
-                    this.lastKey = null;
+                    if (this.lastKey != null) {
+                        this.lastKey.removeState(KeyState.selected);
+                        this.lastKey = null;
+                    }
                 }
                 break;
         }
@@ -168,6 +170,7 @@ public class CanvasManager {
     }
     
     private DrawableShape clickedShape(int x, int y) {
+        
         for (DrawableShape ds: this.shapes) {
             if (ds.checkClick(x, y)) {
                 return ds;
