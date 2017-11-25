@@ -23,9 +23,9 @@
  */
 package Music;
 
-public class SineWaveForm extends WaveForm implements java.io.Serializable {
+public class RandomWaveForm extends WaveForm implements java.io.Serializable {
     @Override
     public double getAmplitude(double frequency, double time) {
-        return Math.sin(2 * Math.PI * frequency * time);
+        return Math.random();
     }
 }

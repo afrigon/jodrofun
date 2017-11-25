@@ -45,6 +45,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -72,7 +73,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         keyTypeButtonGroup = new javax.swing.ButtonGroup();
         alterationButtonGroup = new javax.swing.ButtonGroup();
         fileDialog = new javax.swing.JFileChooser();
-        colorPicker = new javax.swing.JColorChooser();
         splitWindow = new javax.swing.JSplitPane();
         instrumentPanel = new javax.swing.JPanel();
         canvasPannel = new javax.swing.Box.Filler(new java.awt.Dimension(300, 100), new java.awt.Dimension(600, 600), new java.awt.Dimension(3000, 3000));
@@ -425,7 +425,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         attackSliderPanel.add(attackSlider, java.awt.BorderLayout.CENTER);
         attackSlider.setBackground(new Color(65, 65, 65));
 
-        attackSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        attackSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5000, 1));
         attackSpinner.setMinimumSize(new java.awt.Dimension(20, 26));
         attackSpinner.setPreferredSize(new java.awt.Dimension(20, 26));
         attackSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -465,7 +465,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         decaySliderPanel.add(decaySlider, java.awt.BorderLayout.CENTER);
 
-        decaySpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        decaySpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5000, 1));
         decaySpinner.setMinimumSize(new java.awt.Dimension(20, 26));
         decaySpinner.setPreferredSize(new java.awt.Dimension(20, 26));
         decaySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -544,7 +544,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         releaseSliderPanel.add(releaseSlider, java.awt.BorderLayout.CENTER);
 
-        releaseSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        releaseSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5000, 1));
         releaseSpinner.setMinimumSize(new java.awt.Dimension(20, 26));
         releaseSpinner.setPreferredSize(new java.awt.Dimension(20, 26));
         releaseSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -1187,8 +1187,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            GaudrophoneController.getController().getInstrumentManager().openInstrument(fileDialog.getSelectedFile().getAbsolutePath());
-            this.refresh();
+            if (GaudrophoneController.getController().getInstrumentManager().openInstrument(fileDialog.getSelectedFile().getAbsolutePath())) {
+                this.refresh();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Impossible d'ouvrir cet instrument");
+            }
         }
     }//GEN-LAST:event_openMenuItemActionPerformed
 
@@ -1349,7 +1352,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_buttonAddSunkenImageActionPerformed
 
     private void backgroundDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundDisplayLabelMouseClicked
-        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
         if (color != null) {
             GaudrophoneController.getController().setKeyColor(color);
             this.backgroundDisplayLabel.setBackground(color);
@@ -1357,7 +1360,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_backgroundDisplayLabelMouseClicked
 
     private void backgroundSunkenDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundSunkenDisplayLabelMouseClicked
-        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
         if (color != null) {
             GaudrophoneController.getController().setKeySunkenColor(color);
             this.backgroundSunkenDisplayLabel.setBackground(color);
@@ -1365,7 +1368,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_backgroundSunkenDisplayLabelMouseClicked
 
     private void outlineDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outlineDisplayLabelMouseClicked
-        Color color = colorPicker.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
         if (color != null) {
             GaudrophoneController.getController().setAllLineColor(color);
             this.outlineDisplayLabel.setBackground(color);
@@ -1551,7 +1554,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JButton buttonRemoveImage;
     private javax.swing.JButton buttonRemoveSunkenImage;
     private javax.swing.Box.Filler canvasPannel;
-    private javax.swing.JColorChooser colorPicker;
     private javax.swing.JMenuItem createRectangleMenuItem;
     private javax.swing.JMenuItem createTriangleMenuItem;
     private javax.swing.JLabel decayLabel;

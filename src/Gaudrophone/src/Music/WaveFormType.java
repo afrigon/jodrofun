@@ -24,7 +24,11 @@
 package Music;
 
 public enum WaveFormType {
-    Sine(new SineWaveForm()), Square(new SquareWaveForm());
+    Sine(new SineWaveForm()), 
+    Square(new SquareWaveForm()), 
+    Triangle(new TriangleWaveForm()), 
+    Saw(new SawWaveForm()), 
+    Random(new RandomWaveForm());
 
     private final WaveForm value;
     private WaveFormType(WaveForm value) {

@@ -106,6 +106,10 @@ public class Key implements java.io.Serializable {
         return this.states;
     }
     
+    public void setStates(int states) {
+        this.states = states;
+    }
+    
     public void addState(KeyState state) {
         this.states |= state.getValue();
     }

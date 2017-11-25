@@ -23,9 +23,10 @@
  */
 package Music;
 
-public class SineWaveForm extends WaveForm implements java.io.Serializable {
+public class SawWaveForm extends WaveForm implements java.io.Serializable {
     @Override
     public double getAmplitude(double frequency, double time) {
+        //TODO: 
         return Math.sin(2 * Math.PI * frequency * time);
     }
 }
