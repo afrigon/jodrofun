@@ -26,7 +26,6 @@ package Music;
 public class SquareWaveForm extends WaveForm implements java.io.Serializable {
     @Override
     public double getAmplitude(double frequency, double time) {
-        return Math.sin(2 * Math.PI * frequency/2 * time);
+        return Math.signum(Math.sin(2 * Math.PI * frequency * time));
     }
-    
 }

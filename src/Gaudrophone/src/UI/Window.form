@@ -13,8 +13,6 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JColorChooser" name="colorPicker">
-    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenuItem">
@@ -760,7 +758,7 @@
                                     <Component class="javax.swing.JSpinner" name="attackSpinner">
                                       <Properties>
                                         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                                          <SpinnerModel initial="0" maximum="100" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                          <SpinnerModel initial="0" maximum="5000" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                                         </Property>
                                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[20, 26]"/>
@@ -850,7 +848,7 @@
                                     <Component class="javax.swing.JSpinner" name="decaySpinner">
                                       <Properties>
                                         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                                          <SpinnerModel initial="0" maximum="100" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                          <SpinnerModel initial="0" maximum="5000" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                                         </Property>
                                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[20, 26]"/>
@@ -1029,7 +1027,7 @@
                                     <Component class="javax.swing.JSpinner" name="releaseSpinner">
                                       <Properties>
                                         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                                          <SpinnerModel initial="0" maximum="100" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                          <SpinnerModel initial="0" maximum="5000" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                                         </Property>
                                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[20, 26]"/>

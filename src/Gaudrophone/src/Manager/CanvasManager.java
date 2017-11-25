@@ -36,22 +36,38 @@ public class CanvasManager {
     private List<DrawableShape> shapes;
     private State state = State.Play;
     private KeyShapeGenerator storedKeyShape;
+    
+    private double ratioX = 1;
+    private double ratioY = 1;
+    private Vector2 originalCanvas = new Vector2(950, 600);
     private Vector2 canvasSize = new Vector2(1, 1);
+    private Vector2 boundingBoxPixels = new Vector2(1, 1); 
+    
     public CanvasManagerDelegate delegate;
     
     private Key lastKey;
     private Vector2 clickPosition;
     
     public Vector2 convertPixelToWorld(int x, int y) {
-       return new Vector2(x*100/this.canvasSize.getX()/100, y*100/this.canvasSize.getY()/100);
+        ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
+        ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
+
+            return new Vector2(x*100/this.canvasSize.getX()/100*ratioX, y*100/this.canvasSize.getY()/100*ratioY);
     }
     
     public Vector2 convertWorldToPixel(Vector2 vector) {
-        return new Vector2(vector.getX()*this.canvasSize.getX(), vector.getY()*this.canvasSize.getY());
+        ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
+        ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
+
+    return new Vector2(vector.getX()*this.canvasSize.getX()/ratioX, vector.getY()*this.canvasSize.getY()/ratioY);
     }
     
     public int convertThicknessToPixel(double thickness) {
-        return (int)thickness;
+        ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
+        ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
+        double newThickness = ratioX > ratioY ? thickness * ratioX : thickness * ratioY;
+        
+        return (int)newThickness;
     }
     
     public void drawKeys(List<Key> keyList) {
@@ -113,6 +129,7 @@ public class CanvasManager {
                 Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
                 GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
                 this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
             } else {
                 Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(10, this.clickPosition), this.storedKeyShape.getName());
                 GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
@@ -163,6 +180,7 @@ public class CanvasManager {
                 GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
                 this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                 GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().remove(key);
+                //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
                 break;
         }
     }
