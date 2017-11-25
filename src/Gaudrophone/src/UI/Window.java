@@ -1260,8 +1260,8 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
             this.splitWindow.remove(this.rightScrollPane);
             this.selectedKeyTools.setVisible(false);
             this.setVisible(true);
-            canvas.setFocusable(true);
-            canvas.requestFocusInWindow();
+            this.setFocusable(true);
+            this.requestFocusInWindow();
             
             this.canvas.setBackground(new Color(102,102,102));
             this.canvas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1280,7 +1280,9 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
                 @Override
                 public void keyPressed(java.awt.event.KeyEvent e) {
                     if(e.getKeyCode() == KeyEvent.VK_DELETE &&
-                        GaudrophoneController.getController().getCanvasManager().getState() == State.EditKey)
+                            (GaudrophoneController.getController().getCanvasManager().getState() == Manager.State.EditKey ||
+                            GaudrophoneController.getController().getCanvasManager().getState() == Manager.State.EditLine ||
+                            GaudrophoneController.getController().getCanvasManager().getState() == Manager.State.EditPoint))
                         GaudrophoneController.getController().deleteKey();
                 }
             });
