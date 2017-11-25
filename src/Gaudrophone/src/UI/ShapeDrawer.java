@@ -46,6 +46,8 @@ public class ShapeDrawer {
     //Construtor
     public ShapeDrawer() {}
     
+    Rectangle2D cs = new Rectangle2D.Double();
+    
     //Draw a single shape on the graphic object
     public void drawShape(Graphics2D g2, DrawableShape shape) {
         try {
@@ -100,20 +102,12 @@ public class ShapeDrawer {
                 g2.setColor(new Color(255, 255, 255, 60));
                 g2.fill(shape.getShape());
             }
-            
-            //Draw a dashed border around the selected shape
-            if((keyState & KeyState.selected.getValue()) != 0) {
-                float[] f = {4, 2};
-                g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
-                g2.setColor(new Color(0xf9a825));
-                g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
-            }
         }
         catch (Exception ex) {
             System.out.println("ShapeDrawer.drawShape : " + ex.getMessage());
         }
     }
-    Rectangle2D cs = new Rectangle2D.Double();
+    
     //Draw mutliple shapes on a size X canvas
     public void drawShapes(Graphics2D g2, List<DrawableShape> shapes, Rectangle2D canvasSize) {
         try {
@@ -131,6 +125,15 @@ public class ShapeDrawer {
                     //Remove the shape from the mask and place searching to TRUE
                     clip.subtract(new Area(s.getShape()));
                     searching = true;
+                }
+                
+                if((s.getKey().getStates() & KeyState.selected.getValue()) != 0) {
+                    //Draw a dashed border around the selected shape
+                    Rectangle2D boundingBox = s.getShape().getBounds2D();
+                    float[] f = {4, 2};
+                    g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
+                    g2.setColor(new Color(0xf9a825));
+                    g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
                 }
             }
             //Place the black mask if searching
