@@ -21,49 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package Music;
 
-import Instrument.Key;
-import Instrument.KeyState;
+public enum WaveFormType {
+    Sine(new SineWaveForm()), 
+    Square(new SquareWaveForm()), 
+    Triangle(new TriangleWaveForm()), 
+    Saw(new SawWaveForm()), 
+    Random(new RandomWaveForm());
 
-public class SelectionManager {
-    private Key selectedKey = null;
-    private int selectedLine = -1;
-    private int selectedPoint = -1;
-    public SelectionManagerDelegate delegate;
-    
-    public void setKey(Key key) {
-        if (this.selectedKey != null) {
-            this.selectedKey.removeState(KeyState.selected);
-        }
-        this.selectedKey = key;
-        if (key != null) { key.addState(KeyState.selected); }
-        if (this.delegate != null) {
-            if (key != null) {   
-                this.delegate.didSelectKey(key);
-            } else {
-                this.delegate.didUnselectKey();
-            }
-        }
+    private final WaveForm value;
+    private WaveFormType(WaveForm value) {
+        this.value = value;
     }
-    
-    public void setLine(int line) {
-        this.selectedLine = line;
-    }
-    
-    public void setPoint(int point) {
-        this.selectedPoint = point;
-    }
-    
-    public Key getSelectedKey() {
-        return this.selectedKey;
-    }
-    
-    public int getSelectedLine() {
-        return this.selectedLine;
-    }
-    
-    public int getSelectedPoint() {
-        return this.selectedPoint;
+
+    public WaveForm getWaveForm() {
+        return value;
     }
 }

@@ -47,6 +47,7 @@ public class ShapeDrawer {
     public ShapeDrawer() {}
     
     Rectangle2D cs = new Rectangle2D.Double();
+    DrawableShape selectedKey = null;
     
     //Draw a single shape on the graphic object
     public void drawShape(Graphics2D g2, DrawableShape shape) {
@@ -128,14 +129,19 @@ public class ShapeDrawer {
                 }
                 
                 if((s.getKey().getStates() & KeyState.selected.getValue()) != 0) {
-                    //Draw a dashed border around the selected shape
-                    Rectangle2D boundingBox = s.getShape().getBounds2D();
-                    float[] f = {4, 2};
-                    g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
-                    g2.setColor(new Color(0xf9a825));
-                    g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
+                    this.selectedKey = s;
                 }
             }
+            
+            if(this.selectedKey != null) {
+                //Draw a dashed border around the selected shape
+                Rectangle2D boundingBox = selectedKey.getShape().getBounds2D();
+                float[] f = {4, 2};
+                g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
+                g2.setColor(new Color(0xf9a825));
+                g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
+            }
+            
             //Place the black mask if searching
             if(searching) {
                 g2.setClip(clip);

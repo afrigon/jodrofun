@@ -24,5 +24,14 @@
 package Instrument;
 
 public enum Note {
-    A, B, C, D, E, F, G
+    C(-9), D(-7), E(-5), F(-4), G(-2), A(0), B(2);
+
+    private final int value;
+    private Note(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 } 

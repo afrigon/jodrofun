@@ -24,5 +24,14 @@
 package Instrument;
 
 public enum Alteration {
-    Flat, Natural, Sharp
+    Flat(-1), Natural(0), Sharp(1);
+    
+    private final int value;
+    private Alteration(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

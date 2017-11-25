@@ -24,46 +24,7 @@
 package Manager;
 
 import Instrument.Key;
-import Instrument.KeyState;
 
-public class SelectionManager {
-    private Key selectedKey = null;
-    private int selectedLine = -1;
-    private int selectedPoint = -1;
-    public SelectionManagerDelegate delegate;
-    
-    public void setKey(Key key) {
-        if (this.selectedKey != null) {
-            this.selectedKey.removeState(KeyState.selected);
-        }
-        this.selectedKey = key;
-        if (key != null) { key.addState(KeyState.selected); }
-        if (this.delegate != null) {
-            if (key != null) {   
-                this.delegate.didSelectKey(key);
-            } else {
-                this.delegate.didUnselectKey();
-            }
-        }
-    }
-    
-    public void setLine(int line) {
-        this.selectedLine = line;
-    }
-    
-    public void setPoint(int point) {
-        this.selectedPoint = point;
-    }
-    
-    public Key getSelectedKey() {
-        return this.selectedKey;
-    }
-    
-    public int getSelectedLine() {
-        return this.selectedLine;
-    }
-    
-    public int getSelectedPoint() {
-        return this.selectedPoint;
-    }
+public interface GaudrophoneControllerDelegate {
+    public void shouldUpdateProprietyPannelFor(Key key);
 }

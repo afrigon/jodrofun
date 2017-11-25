@@ -33,6 +33,7 @@ public class SynthesizedSound extends Sound {
     
     // Constructors
     public SynthesizedSound() {
+        typeString = "synth";
         frequency = 440.0;
         tuning = 0;
         waveForm = new SineWaveForm();
@@ -40,6 +41,7 @@ public class SynthesizedSound extends Sound {
     }
     
     public SynthesizedSound(double freq) {
+        typeString = "synth";
         frequency = freq;
         tuning = 0;
         waveForm = new SineWaveForm();
@@ -102,6 +104,10 @@ public class SynthesizedSound extends Sound {
     
     public void setTuning(int newTuning) {
         this.tuning = newTuning;
+    }
+    
+    public void setWaveForm(WaveForm waveform) {
+        this.waveForm = waveform;
     }
     
     // Getters
