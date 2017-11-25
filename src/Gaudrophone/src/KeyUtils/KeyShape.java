@@ -23,14 +23,13 @@
  */
 package KeyUtils;
 
+import java.awt.Color;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- *
- * @author Olivier
- */
-public class KeyShape {
+public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
+    private List<KeyLine> lines = null;
     
     private ShapeAppearance idleAppearance = null;
     private ShapeAppearance clickedAppearance = null;
@@ -42,14 +41,44 @@ public class KeyShape {
     }
     
     // Constructors
-    public KeyShape(List<Vector2> pointsList) {
+    public KeyShape(List<Vector2> pointsList, Color color) {
         points = pointsList;
-        idleAppearance = new ShapeAppearance();
-        clickedAppearance = new ShapeAppearance();
+        lines = new LinkedList<>();
+        for (int i = 0; i < points.size(); i++) {
+            lines.add(new KeyLine(2, new Color(0x979899)));
+        }
+        idleAppearance = new ShapeAppearance(color);
+        clickedAppearance = new ShapeAppearance(color.darker());
+    }
+    
+    public KeyShape(List<Vector2> pointsList, Color color, Color clickedColor) {
+        points = pointsList;
+        lines = new LinkedList<>();
+        for (int i = 0; i < points.size(); i++) {
+            lines.add(new KeyLine(2, new Color(0x979899)));
+        }
+        idleAppearance = new ShapeAppearance(color);
+        clickedAppearance = new ShapeAppearance(clickedColor);
+    }
+    
+    public ShapeAppearance getIdleAppearance() {
+        return idleAppearance;
+    }
+    
+    public ShapeAppearance getSunkenAppearance() {
+        return clickedAppearance;
     }
     
     public List<Vector2> getPoints() {
         return this.points;
+    }
+    
+    public List<KeyLine> getLines() {
+        return this.lines;
+    }
+    
+    public void setLines(List<KeyLine> lines) {
+        this.lines = lines;
     }
     
     // Methods

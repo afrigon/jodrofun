@@ -23,17 +23,11 @@
  */
 package Music;
 
-/**
- *
- * @author Olivier
- */
-public class SineWaveForm extends WaveForm {
-
+public class SineWaveForm extends WaveForm implements java.io.Serializable {
+    
     @Override
-    public void setBuffer(double frequency) {
-        buffer = new byte[1];
-        
-        // générer l'onde
+    public double getAmplitude(double frequency, double time) {
+        return Math.sin(2 * Math.PI * frequency * time);
     }
     
 }

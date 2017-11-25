@@ -23,36 +23,70 @@
  */
 package KeyUtils;
 
-/**
- *
- * @author Olivier
- */
-public class ShapeAppearance {
-    //private Color backgroundColor;
-    private String backgroundImage;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+public class ShapeAppearance implements java.io.Serializable {
+    private Color backgroundColor;
+    private String backgroundImagePath;
+    private transient BufferedImage backgroundImage = null;
     
-    public ShapeAppearance() {
-        //backgroundColor = 
-        backgroundImage = null;
+    public ShapeAppearance(Color color) {
+        backgroundColor = color;
+        backgroundImagePath = null;
     }
     
-    /*/public void setColor(Color color) {
-        backgroundColor = color
-    }/*/
+    private void readObject(java.io.ObjectInputStream in) {
+        try {
+            in.defaultReadObject();
+            setImage();
+        }
+        catch (IOException | ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+    }
+    
+    private void setImage() {
+        try {
+            if (backgroundImagePath != null && !"".equals(backgroundImagePath)) {
+                if (java.nio.file.Files.notExists(java.nio.file.Paths.get(backgroundImagePath)))
+                    throw new java.io.FileNotFoundException("ShapeAppearance.setImage : Not file found according to backgroundImagePath.");
+
+                backgroundImage = javax.imageio.ImageIO.read(new java.io.File(backgroundImagePath));
+            }
+        }
+        catch (java.io.IOException ex) {
+            System.out.println(ex);
+            backgroundImage = null;
+            backgroundImagePath = null;
+        }
+    }
+    
+    public void setColor(Color color) {
+        backgroundColor = color;
+    }
     
     public void setImage(String pathToImage) {
-        backgroundImage = pathToImage;
+        backgroundImagePath = pathToImage;
+        setImage();
     }
     
     public void removeImage() {
+        backgroundImagePath = null;
         backgroundImage = null;
     }
     
-    /*/public Color getColor() {
-        
-    }/*/
+    public Color getColor() {
+        return backgroundColor;
+    }
     
-    public String getImage() {
+    public String getImagePath() {
+        return backgroundImagePath;
+    }
+    
+    public BufferedImage getImage() {
         return backgroundImage;
     }
 }

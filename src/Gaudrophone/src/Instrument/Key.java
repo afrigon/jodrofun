@@ -26,13 +26,14 @@ package Instrument;
 import KeyUtils.KeyShape;
 import Music.Sound;
 
-public class Key {
+public class Key implements java.io.Serializable {
     private KeyShape shape = null;
     private Sound sound = null;
     private String name = null;
     private Alteration displayAlteration = Alteration.Natural;
     private Note displayNote = Note.A;
     private int displayOctave = 4;
+    private int states = 144;
     
     // Constructors
     public Key(Sound keySound, KeyShape keyShape, String keyName) {
@@ -72,6 +73,10 @@ public class Key {
         this.displayOctave = newOctave;
     }
     
+    public void changeState(int keyState) {
+        this.states = this.states ^ keyState;
+    }
+    
     // Getters
     public Sound getSound() {
         return this.sound;
@@ -95,5 +100,17 @@ public class Key {
     
     public KeyShape getShape() {
         return this.shape;
+    }
+    
+    public int getStates() {
+        return this.states;
+    }
+    
+    public void addState(KeyState state) {
+        this.states |= state.getValue();
+    }
+    
+    public void removeState(KeyState state) {
+        this.states -= (this.states & state.getValue());
     }
 }

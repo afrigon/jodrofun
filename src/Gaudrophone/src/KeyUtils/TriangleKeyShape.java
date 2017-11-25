@@ -23,33 +23,68 @@
  */
 package KeyUtils;
 
+import Manager.GaudrophoneController;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Olivier
- */
 public class TriangleKeyShape implements KeyShapeGenerator {
-
+    private Color defaultColor = new Color(0x5a98fc);
+    
     @Override
-    public KeyShape generate() {
-        return generate(15);
+    public String getName() {
+        return "Triangle";
     }
     
-    public KeyShape generate(double height) {
-        List<Vector2> pointList = new ArrayList<>();
-        pointList.add(new Vector2(0, 0));
-        pointList.add(new Vector2(1.732 * height, height));
-        pointList.add(new Vector2(height, 0));
+    @Override
+    public KeyShape generate(Vector2 startClickPosition, Vector2 endClickPosition) {
+        int x = (int)Math.abs(endClickPosition.getX() - startClickPosition.getX());
+        int y = (int)Math.abs(endClickPosition.getY() - startClickPosition.getY());
         
-        return new KeyShape(pointList);
+        int leftX = (int)Math.min(startClickPosition.getX(), endClickPosition.getX());
+        int leftY = (int)Math.min(startClickPosition.getY(), endClickPosition.getY());
+        
+        return this.generate(x, y, new Vector2(leftX, leftY), endClickPosition.getY() < startClickPosition.getY());
     }
     
-    public KeyShape generate(double height, Vector2 position) {
-        KeyShape key = generate(height);
-        key.setPosition(position, KeyShape.Corner.Center);
-        return key;
+    @Override
+    public KeyShape generate(int size, Vector2 clickPosition) {
+        return this.generate(size, size, clickPosition, false);
     }
     
+    public KeyShape generate(int sizeX, int sizeY, Boolean flipY) {
+        Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
+        List<Vector2> pointList = new ArrayList<>();
+
+        
+        if (!flipY) {
+            pointList.add(new Vector2(0, sizes.getY()));
+            pointList.add(new Vector2(sizes.getX()/2, 0));
+            pointList.add(new Vector2(sizes.getX(), sizes.getY()));
+        } else {
+            pointList.add(new Vector2(0, 0));
+            pointList.add(new Vector2(sizes.getX()/2, sizes.getY()));
+            pointList.add(new Vector2(sizes.getX(), 0));
+        }
+        
+        return new KeyShape(pointList, this.defaultColor);
+    }
+    
+    public KeyShape generate(int sizeX, int sizeY, Vector2 position, Boolean flipY) {
+        position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
+        Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
+        List<Vector2> pointList = new ArrayList<>();
+        if (!flipY) {
+            pointList.add(new Vector2(position.getX(), position.getY() + sizes.getY()));
+            pointList.add(new Vector2(position.getX() + sizes.getX()/2, position.getY()));
+            pointList.add(new Vector2(position.getX() + sizes.getX(), position.getY() + sizes.getY()));
+        } else {
+            pointList.add(new Vector2(position.getX(), position.getY()));
+            pointList.add(new Vector2(position.getX() + sizes.getX()/2, position.getY() + sizes.getY()));
+            pointList.add(new Vector2(position.getX() + sizes.getX(), position.getY()));
+        }
+        
+        
+        return new KeyShape(pointList, this.defaultColor);
+    }
 }

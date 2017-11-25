@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 Alexandre.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,36 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package UI;
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.geom.Line2D;
 
-public class Instrument implements java.io.Serializable {
-    private String name;
-    private ArrayList<Key> keys;
+public class DrawableLine {
+    private Color lineColor;
+    private int lineThickness;
+    private Line2D.Double line;
     
-    public Instrument() {
-        this.name = "New Instrument";
-        this.keys = new ArrayList<Key>();
-    }
+    public void DrawableLine() { }
     
-    public String getName() {
-        return name;
-    }
+    public Color getColor() { return lineColor; }
+    public int getThickness() { return lineThickness; }
+    public Line2D.Double getLine() { return line; }
     
-    public ArrayList<Key> getKeys() {
-        return keys;
-    }
-    
-    public void setName(String newName) {
-        name = newName;
-    }
-    
-    public void addKey(Key newKey) {
-        keys.add(newKey);
-    }
-    
-    public void removeKey(Key keyToRemove) {
-        keys.remove(keyToRemove);
-    }
+    public void setColor(Color p_color) { lineColor = p_color; }
+    public void setThickness(int p_thickness) { lineThickness = p_thickness; }
+    public void setLine(Line2D.Double p_line) { line = p_line; }
 }

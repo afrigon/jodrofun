@@ -23,9 +23,11 @@
  */
 package Music;
 
-public abstract class Sound {
-    private double volume;
-    private Envelope envelope = null;
+import javax.sound.sampled.AudioInputStream;
+
+public abstract class Sound implements java.io.Serializable {
+    protected double volume;
+    protected Envelope envelope = null;
     
     // Constructors
     public Sound() {
@@ -51,14 +53,8 @@ public abstract class Sound {
         return envelope;
     }
     
-    public abstract byte[] getBuffer();
+    public abstract AudioInputStream getPlayingStream();
+    public abstract AudioInputStream getReleasedStream(double timePlayed);
     
-    public double getPlayingAmplitude(double time) {
-        return envelope.getPlayingAmplitude(time);
-    }
-    
-    public double getReleaseAmplitude(double time) {
-        return envelope.getReleaseAmplitude(time);
-    }
-    
+    public abstract int getLoopFrame();
 }

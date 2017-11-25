@@ -23,11 +23,13 @@
  */
 package Music;
 
+import javax.sound.sampled.AudioFormat;
+
 public abstract class WaveForm {
-    protected byte[] buffer;
+    static final int SAMPLE_RATE = 44100;
     
-    public abstract void setBuffer(double frequency);
-    public byte[] getBuffer(double frequency) {
-        return buffer;        
-    }
+    static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, 8, 2, true, false);
+    
+    public abstract double getAmplitude(double frequency, double frame);
+    
 }

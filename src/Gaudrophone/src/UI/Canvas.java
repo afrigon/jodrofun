@@ -23,6 +23,72 @@
  */
 package UI;
 
-public class Canvas {
+import Manager.CanvasManager;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.List;
+
+public class Canvas extends javax.swing.JPanel {
     
+    CanvasManager manager;
+    List<DrawableShape> shapes;
+    public Canvas(CanvasManager p_manager) {
+        
+        manager = p_manager;
+        
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                manager.clicked(e.getX(), e.getY());
+            }
+            
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                manager.released(e.getX(), e.getY());
+            }
+        });
+        
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent e) {
+                manager.dragged(e.getX(), e.getY());
+            }
+        });
+        
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                
+            }
+            
+            public void keyReleased(java.awt.event.KeyEvent e) {
+                
+            }
+        });
+        
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                
+            }
+        });
+    }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g; //g2 > g en terme de performance
+        
+        //Rendering flags
+        //Some are currently set on Quality. Default or Speed might be needed if the canvas is hard to draw.
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        
+        //Get all shapes from canvasManager
+        List<DrawableShape> shapes = manager.getDrawableShapes();
+        if (shapes == null) return; //error prevention
+        
+        //Drawing time :)
+        ShapeDrawer.drawShapes(g2, shapes, this.getBounds());
+    }
 }

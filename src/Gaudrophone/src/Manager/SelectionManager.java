@@ -29,9 +29,17 @@ public class SelectionManager {
     private Key selectedKey = null;
     private int selectedLine = -1;
     private int selectedPoint = -1;
+    public SelectionManagerDelegate delegate;
     
     public void setKey(Key key) {
         this.selectedKey = key;
+        if (this.delegate != null) {
+            if (key != null) {   
+                this.delegate.didSelectKey(key);
+            } else {
+                this.delegate.didUnselectKey();
+            }
+        }
     }
     
     public void setLine(int line) {

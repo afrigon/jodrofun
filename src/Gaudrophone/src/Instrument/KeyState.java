@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 Alexandre.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,26 @@
  */
 package Instrument;
 
-import java.util.ArrayList;
+/**
+ *
+ * @author Alexandre
+ */
+public enum KeyState {
+    hover(1),
+    clicked(2),
+    selected(4),
+    searched(8),
+    displayNote(16),
+    displayAlteration(32),
+    displayOctave(64),
+    displayName(128);
 
-public class Instrument implements java.io.Serializable {
-    private String name;
-    private ArrayList<Key> keys;
-    
-    public Instrument() {
-        this.name = "New Instrument";
-        this.keys = new ArrayList<Key>();
+    private final int value;
+    private KeyState(int value) {
+        this.value = value;
     }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public ArrayList<Key> getKeys() {
-        return keys;
-    }
-    
-    public void setName(String newName) {
-        name = newName;
-    }
-    
-    public void addKey(Key newKey) {
-        keys.add(newKey);
-    }
-    
-    public void removeKey(Key keyToRemove) {
-        keys.remove(keyToRemove);
+
+    public int getValue() {
+        return value;
     }
 }

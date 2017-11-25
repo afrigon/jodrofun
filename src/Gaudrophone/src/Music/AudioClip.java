@@ -23,24 +23,62 @@
  */
 package Music;
 
-/**
- *
- * @author Olivier
- */
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+
 public class AudioClip extends Sound {
     private String path = null;
     private double speed;
+    
+    private transient AudioInputStream audioInputStream = null;
     
     // Constructors
     public AudioClip(String newPath) {
         path = newPath;
         speed = 1;
+        
+        try {
+            File file = new File(newPath);
+            
+            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+            AudioFormat audioFormat = format.getFormat();
+            
+            InputStream inputStream = new FileInputStream(file);
+            audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("error clip");
+            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println("error clip");
+            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
+    
     @Override
-    public byte[] getBuffer() {
-        // get buffer from file
-        return new byte[2];
+    public AudioInputStream getPlayingStream() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AudioInputStream getReleasedStream(double timePlayed) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getLoopFrame() {
+        return -1;
     }
     
     // Getters

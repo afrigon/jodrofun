@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,36 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package Manager;
 
-import java.util.ArrayList;
+import Instrument.Key;
 
-public class Instrument implements java.io.Serializable {
-    private String name;
-    private ArrayList<Key> keys;
-    
-    public Instrument() {
-        this.name = "New Instrument";
-        this.keys = new ArrayList<Key>();
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public ArrayList<Key> getKeys() {
-        return keys;
-    }
-    
-    public void setName(String newName) {
-        name = newName;
-    }
-    
-    public void addKey(Key newKey) {
-        keys.add(newKey);
-    }
-    
-    public void removeKey(Key keyToRemove) {
-        keys.remove(keyToRemove);
-    }
+public interface SelectionManagerDelegate {
+    public void didSelectKey(Key key);
+    public void didUnselectKey();
 }

@@ -23,12 +23,10 @@
  */
 package KeyUtils;
 
-/**
- *
- * @author Olivier
- */
-public class KeyLine {
-    //private Color lineColor;
+import java.awt.Color;
+
+public class KeyLine implements java.io.Serializable {
+    private Color lineColor;
     private double lineThickness;
     
     // Constructors
@@ -36,23 +34,24 @@ public class KeyLine {
         lineThickness = 0.1;
     }
     
-    public KeyLine(double thickness) {
+    public KeyLine(double thickness, Color color) {
         lineThickness = thickness;
+        lineColor = color;
     }
     
     // Methods
     
-    /*/public void setColor(Color newColor) {
+    public void setColor(Color newColor) {
         lineColor = newColor;
-    }/*/
+    }
     
     public void setThickness(double thickness) {
         lineThickness = thickness;
     }
     
-    /*/public Color getColor() {
+    public Color getColor() {
         return lineColor;
-    }/*/
+    }
     
     public double getThickness() {
         return lineThickness;

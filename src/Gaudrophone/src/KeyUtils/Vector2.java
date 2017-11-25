@@ -23,11 +23,7 @@
  */
 package KeyUtils;
 
-/**
- *
- * @author Olivier
- */
-public class Vector2 {
+public class Vector2 implements java.io.Serializable {
     private final double x;
     private final double y;
     
