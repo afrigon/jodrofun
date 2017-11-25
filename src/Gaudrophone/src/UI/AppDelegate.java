@@ -23,19 +23,12 @@
  */
 package UI;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.UIManager;
 
 public class AppDelegate {
     private static Window window = new Window();
     
     public static void main(String [] args) {
         AppDelegate.window.setVisible();
-        
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AppDelegate.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

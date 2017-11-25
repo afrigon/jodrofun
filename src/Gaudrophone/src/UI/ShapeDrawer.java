@@ -266,7 +266,7 @@ public class ShapeDrawer {
         if((keyState & KeyState.displayOctave.getValue()) != 0)
             text += shape.getKey().getOctave();
         if((keyState & KeyState.displayAlteration.getValue()) != 0)
-            text += shape.getKey().getAlteration();
+            text += " " + shape.getKey().getAlteration();
         
         //If there is something (at least one flag)
         if(!"".equals(text)) {

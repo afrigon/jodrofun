@@ -86,8 +86,12 @@ public class KeyShape implements java.io.Serializable {
         this.lines = lines;
     }
     
-    public void setCrossLine(KeyLine newLine, int index) {
-        this.crossLines[index] = newLine;
+    public void setCrossLineColor(Color newColor, int index) {
+        this.crossLines[index].setColor(newColor);
+    }
+    
+    public void setCrossLineThickness(double newThickness, int index) {
+        this.crossLines[index].setThickness(newThickness);
     }
     
     // Methods

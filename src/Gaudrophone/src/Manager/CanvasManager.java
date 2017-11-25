@@ -100,8 +100,10 @@ public class CanvasManager {
                     key.addState(KeyState.selected);
                     this.lastKey = key;
                 } else {
-                    this.lastKey.removeState(KeyState.selected);
-                    this.lastKey = null;
+                    if (this.lastKey != null) {
+                        this.lastKey.removeState(KeyState.selected);
+                        this.lastKey = null;
+                    }
                 }
                 break;
         }
