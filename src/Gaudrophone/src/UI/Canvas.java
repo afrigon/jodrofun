@@ -25,17 +25,21 @@ package UI;
 
 import Manager.CanvasManager;
 import Manager.GaudrophoneController;
+import Manager.State;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Canvas extends javax.swing.JPanel {
     
     CanvasManager manager;
+    ShapeDrawer shapeDrawer;
     public Canvas(CanvasManager p_manager) {
         
         manager = p_manager;
+        shapeDrawer = new ShapeDrawer();
         
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent e) {
@@ -55,7 +59,9 @@ public class Canvas extends javax.swing.JPanel {
         
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent e) {
-                
+                if(e.getKeyCode() == KeyEvent.VK_DELETE &&
+                        GaudrophoneController.getController().getCanvasManager().getState() == State.EditKey)
+                    GaudrophoneController.getController().deleteKey();
             }
             
             public void keyReleased(java.awt.event.KeyEvent e) {
@@ -89,6 +95,6 @@ public class Canvas extends javax.swing.JPanel {
         if (drawableShapes == null) return; //error prevention
         
         //Drawing time :)
-        ShapeDrawer.drawShapes(g2, drawableShapes, this.getBounds());
+        shapeDrawer.drawShapes(g2, drawableShapes, this.getBounds());
     }
 }

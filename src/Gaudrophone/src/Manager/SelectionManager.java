@@ -24,6 +24,7 @@
 package Manager;
 
 import Instrument.Key;
+import Instrument.KeyState;
 
 public class SelectionManager {
     private Key selectedKey = null;
@@ -32,7 +33,11 @@ public class SelectionManager {
     public SelectionManagerDelegate delegate;
     
     public void setKey(Key key) {
+        if (this.selectedKey != null) {
+            this.selectedKey.removeState(KeyState.selected);
+        }
         this.selectedKey = key;
+        if (key != null) { key.addState(KeyState.selected); }
         if (this.delegate != null) {
             if (key != null) {   
                 this.delegate.didSelectKey(key);

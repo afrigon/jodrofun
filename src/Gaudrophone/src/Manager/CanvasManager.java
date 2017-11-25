@@ -97,11 +97,9 @@ public class CanvasManager {
             case EditKey:
                 GaudrophoneController.getController().getSelectionManager().setKey(key);
                 if (key != null) {
-                    key.addState(KeyState.selected);
                     this.lastKey = key;
                 } else {
                     if (this.lastKey != null) {
-                        this.lastKey.removeState(KeyState.selected);
                         this.lastKey = null;
                     }
                 }
@@ -161,7 +159,7 @@ public class CanvasManager {
                 }
                 break;
             case CreatingShape:
-                Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
+                Key key = new Key(new SynthesizedSound(), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
                 GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
                 this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                 GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().remove(key);
@@ -184,7 +182,12 @@ public class CanvasManager {
     
     public State getState() { return state; }
     
-    public void setState(State value) { state = value; }
+    public void setState(State state) {
+        if (this.state == State.EditKey) {
+            GaudrophoneController.getController().getSelectionManager().setKey(null);
+        }
+        this.state = state;
+    }
     
     public void setCanvasSize(int x, int y) {
         this.canvasSize = new Vector2(x, y);

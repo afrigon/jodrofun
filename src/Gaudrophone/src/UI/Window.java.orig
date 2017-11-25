@@ -169,8 +169,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
         selectedKeyTools = new javax.swing.JPanel();
         buttonDuplicate = new javax.swing.JButton();
-        buttonRemoveImage = new javax.swing.JButton();
-        buttonRemoveSunkenImage = new javax.swing.JButton();
         buttonDelete = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
@@ -259,7 +257,7 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         octaveLabel.setText("Octave :");
         noteNameProperty.add(octaveLabel);
 
-        octaveSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 0, 8, 1));
+        octaveSpinner.setModel(new javax.swing.SpinnerNumberModel(2, -2, 8, 1));
         noteNameProperty.add(octaveSpinner);
 
         generalProperties.add(noteNameProperty);
@@ -314,6 +312,7 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
 
         volumeSlider.setBackground(new java.awt.Color(65, 65, 65));
         volumeSlider.setForeground(new java.awt.Color(255, 255, 255));
+        volumeSlider.setValue(100);
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, volumeSpinner, org.jdesktop.beansbinding.ELProperty.create("${value}"), volumeSlider, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
@@ -325,7 +324,7 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         });
         volumeProperty.add(volumeSlider);
 
-        volumeSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 0, 100, 1));
+        volumeSpinner.setModel(new javax.swing.SpinnerNumberModel(100.0d, 0.0d, 100.0d, 1.0d));
         volumeSpinner.setValue(100);
         volumeProperty.add(volumeSpinner);
 
@@ -372,6 +371,7 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         attackSlider.setForeground(new java.awt.Color(255, 255, 255));
         attackSlider.setMaximum(5000);
         attackSlider.setOrientation(javax.swing.JSlider.VERTICAL);
+        attackSlider.setValue(100);
         attackSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         attackSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         attackSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -411,6 +411,7 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         decaySlider.setForeground(new java.awt.Color(255, 255, 255));
         decaySlider.setMaximum(5000);
         decaySlider.setOrientation(javax.swing.JSlider.VERTICAL);
+        decaySlider.setValue(100);
         decaySlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         decaySlider.setMinimumSize(new java.awt.Dimension(50, 36));
         decaySlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -448,6 +449,11 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         sustainSlider.setBackground(new java.awt.Color(65, 65, 65));
         sustainSlider.setForeground(new java.awt.Color(255, 255, 255));
         sustainSlider.setOrientation(javax.swing.JSlider.VERTICAL);
+<<<<<<< HEAD
+        sustainSlider.setValue(80);
+=======
+        sustainSlider.setToolTipText("Substain");
+>>>>>>> 691fa4a4fdcb4dc2e50116c1d709171f81eebd10
         sustainSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         sustainSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         sustainSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -486,6 +492,11 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         releaseSlider.setForeground(new java.awt.Color(255, 255, 255));
         releaseSlider.setMaximum(5000);
         releaseSlider.setOrientation(javax.swing.JSlider.VERTICAL);
+<<<<<<< HEAD
+        releaseSlider.setValue(100);
+=======
+        releaseSlider.setToolTipText("Release");
+>>>>>>> 691fa4a4fdcb4dc2e50116c1d709171f81eebd10
         releaseSlider.setMaximumSize(new java.awt.Dimension(50, 32767));
         releaseSlider.setMinimumSize(new java.awt.Dimension(50, 36));
         releaseSlider.setPreferredSize(new java.awt.Dimension(50, 200));
@@ -825,7 +836,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         buttonPlayMode.setBackground(new java.awt.Color(65, 65, 65));
         buttonPlayMode.setForeground(new java.awt.Color(0, 0, 255));
         buttonPlayMode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlay.png"))); // NOI18N
-        buttonPlayMode.setToolTipText("Mode Jeu Libre");
         buttonPlayMode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonPlayMode.setBorderPainted(false);
         buttonPlayMode.setFocusable(false);
@@ -840,7 +850,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
 
         buttonEditKey.setBackground(new java.awt.Color(65, 65, 65));
         buttonEditKey.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnEdit.png"))); // NOI18N
-        buttonEditKey.setToolTipText("Mode Édition");
         buttonEditKey.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonEditKey.setBorderPainted(false);
         buttonEditKey.setFocusable(false);
@@ -859,7 +868,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
 
         buttonDuplicate.setBackground(new java.awt.Color(65, 65, 65));
         buttonDuplicate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnDuplicate.png"))); // NOI18N
-        buttonDuplicate.setToolTipText("Dupliquer la touche");
         buttonDuplicate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonDuplicate.setBorderPainted(false);
         buttonDuplicate.setFocusable(false);
@@ -872,39 +880,8 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         });
         selectedKeyTools.add(buttonDuplicate);
 
-        buttonRemoveImage.setBackground(new java.awt.Color(65, 65, 65));
-        buttonRemoveImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnDeleteImage.png"))); // NOI18N
-        buttonRemoveImage.setToolTipText("Supprimer l'image");
-        buttonRemoveImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
-        buttonRemoveImage.setBorderPainted(false);
-        buttonRemoveImage.setFocusable(false);
-        buttonRemoveImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonRemoveImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        buttonRemoveImage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonRemoveImageActionPerformed(evt);
-            }
-        });
-        selectedKeyTools.add(buttonRemoveImage);
-
-        buttonRemoveSunkenImage.setBackground(new java.awt.Color(65, 65, 65));
-        buttonRemoveSunkenImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnDeleteSunkenImage.png"))); // NOI18N
-        buttonRemoveSunkenImage.setToolTipText("Supprimer l'image pour l'état enfoncée");
-        buttonRemoveSunkenImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
-        buttonRemoveSunkenImage.setBorderPainted(false);
-        buttonRemoveSunkenImage.setFocusable(false);
-        buttonRemoveSunkenImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonRemoveSunkenImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        buttonRemoveSunkenImage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonRemoveSunkenImageActionPerformed(evt);
-            }
-        });
-        selectedKeyTools.add(buttonRemoveSunkenImage);
-
         buttonDelete.setBackground(new java.awt.Color(65, 65, 65));
         buttonDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnDelete.png"))); // NOI18N
-        buttonDelete.setToolTipText("Supprimer la touche");
         buttonDelete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonDelete.setBorderPainted(false);
         buttonDelete.setFocusable(false);
@@ -1108,30 +1085,22 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
     private void backgroundImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundImageButtonActionPerformed
         fileDialog.setDialogTitle("Sélectionner une image");
         fileDialog.resetChoosableFileFilters();
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier PNG","png"));
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier GIF","gif"));
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier Bitmap","bmp"));
+        fileDialog.setFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             GaudrophoneController.getController().setKeyImage(fileDialog.getSelectedFile().getAbsolutePath());
-            this.buttonRemoveImage.setVisible(true);
         }
     }//GEN-LAST:event_backgroundImageButtonActionPerformed
 
     private void backgroundSunkenImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundSunkenImageButtonActionPerformed
         fileDialog.setDialogTitle("Sélectionner une image");
         fileDialog.resetChoosableFileFilters();
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier PNG","png"));
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier GIF","gif"));
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier Bitmap","bmp"));
+        fileDialog.setFileFilter(new FileNameExtensionFilter("Fichier JPEG","jpg"));
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             GaudrophoneController.getController().setKeySunkenImage(fileDialog.getSelectedFile().getAbsolutePath());
-            this.buttonRemoveSunkenImage.setVisible(true);
         }
     }//GEN-LAST:event_backgroundSunkenImageButtonActionPerformed
 
@@ -1177,16 +1146,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
     private void volumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_volumeSliderStateChanged
         GaudrophoneController.getController().setVolume((double)volumeSlider.getValue()/100);
     }//GEN-LAST:event_volumeSliderStateChanged
-
-    private void buttonRemoveImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveImageActionPerformed
-        GaudrophoneController.getController().setKeyImage(null);
-        this.buttonRemoveImage.setVisible(false);
-    }//GEN-LAST:event_buttonRemoveImageActionPerformed
-
-    private void buttonRemoveSunkenImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveSunkenImageActionPerformed
-        GaudrophoneController.getController().setKeySunkenImage(null);
-        this.buttonRemoveSunkenImage.setVisible(false);
-    }//GEN-LAST:event_buttonRemoveSunkenImageActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -1216,22 +1175,18 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         GaudrophoneController.getController().getCanvasManager().drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
     }
     
-    private void hideControls() {
-        if (this.splitWindow.getRightComponent() != null) {
-            this.splitWindow.setRightComponent(null);
-        }
-        this.selectedKeyTools.setVisible(false);
-        this.buttonRemoveImage.setVisible(false);
-        this.buttonRemoveSunkenImage.setVisible(false);
-    }
-    
     /**
      * @param args the command line arguments
      */
     public void setVisible() {
         java.awt.EventQueue.invokeLater(() -> {
-            this.splitWindow.setLeftComponent(this.canvas);
-            this.hideControls();
+            this.splitWindow.setLeftComponent(canvas);
+<<<<<<< HEAD
+            this.splitWindow.remove(this.rightScrollPane);
+            this.selectedKeyTools.setVisible(false);
+=======
+            this.splitWindow.remove(rightScrollPane);
+>>>>>>> 691fa4a4fdcb4dc2e50116c1d709171f81eebd10
             this.setVisible(true);
             canvas.setFocusable(true);
             canvas.requestFocusInWindow();
@@ -1322,8 +1277,6 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
     private javax.swing.JButton buttonDuplicate;
     private javax.swing.JButton buttonEditKey;
     private javax.swing.JButton buttonPlayMode;
-    private javax.swing.JButton buttonRemoveImage;
-    private javax.swing.JButton buttonRemoveSunkenImage;
     private javax.swing.Box.Filler canvasPannel;
     private javax.swing.JColorChooser colorPicker;
     private javax.swing.JMenuItem createRectangleMenuItem;
@@ -1424,31 +1377,12 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
         this.volumeSpinner.setValue((int)(key.getSound().getVolume()*100));
         this.showKeyNameCheckbox.setState((key.getStates() & KeyState.displayName.getValue()) != 0);
         this.showNoteNameCheckbox.setState((key.getStates() & KeyState.displayNote.getValue()) != 0);
-        this.noteComboBox.setSelectedItem(key.getNote());
-        this.octaveSpinner.setValue(key.getOctave());
-        
-        switch (key.getAlteration()) {
-            case Natural:
-                this.naturalRadioButton.setSelected(true);
-                break;
-            case Sharp:
-                this.sharpRadioButton.setSelected(true);
-                break;
-            case Flat:
-                this.flatRadioButton.setSelected(true);
-                break;
-        }
-        
-        if (SynthesizedSound.class.isInstance(key.getSound())) {
-            SynthesizedSound sound = (SynthesizedSound)key.getSound();
-            this.tuningSpinner.setValue(sound.getTuning());
-            this.frequencySpinner.setValue(sound.getFrequency());
-        }
+<<<<<<< HEAD
         
         this.selectedKeyTools.setVisible(true);
-        this.buttonRemoveImage.setVisible(key.getShape().getIdleAppearance().getImagePath() != null);
-        this.buttonRemoveSunkenImage.setVisible(key.getShape().getSunkenAppearance().getImagePath() != null);
         
+=======
+>>>>>>> 691fa4a4fdcb4dc2e50116c1d709171f81eebd10
         if (this.splitWindow.getRightComponent() == null) {
             this.splitWindow.setRightComponent(this.rightScrollPane);
             this.splitWindow.setDividerLocation(Math.max(this.splitWindow.getWidth()/2, this.splitWindow.getWidth()-500));
@@ -1459,7 +1393,12 @@ public class Window extends javax.swing.JFrame implements SelectionManagerDelega
     public void didUnselectKey() {
         this.keyNameField.setText("Nom de la touche");
         
-        this.hideControls();
+        this.selectedKeyTools.setVisible(false);
+        
+        if (this.splitWindow.getRightComponent() != null) {
+            this.splitWindow.setRightComponent(null);
+        }
+        
     }
 
     @Override

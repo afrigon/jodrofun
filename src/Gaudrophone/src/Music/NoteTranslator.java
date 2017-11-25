@@ -23,53 +23,62 @@
  */
 package Music;
 
+import Instrument.Alteration;
+import Instrument.Note;
+
 public class NoteTranslator {
+    //private final String[] NOTE_NAMES = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"};
+    private static final int BASE_OCTAVE = 4;
+    private static final double REFERENCE_FREQUENCY = 440.0;
+    private static final double CALCULUS_CONSTANT = 12 / Math.log(2);
     
-    public double getFrequencyFromMIDI(int n) {
-        return 440.0 * Math.pow(2.0, ((double)(n - NOTE_REFERENCE))/12);
+    public static double getFrequencyFromKey(Note note, Alteration alteration, int octave, int tuning) {
+        int halfStepsFromReference = ((octave-NoteTranslator.BASE_OCTAVE) * 12) + note.getValue();
+        if (alteration != Alteration.Natural) { halfStepsFromReference += (alteration == Alteration.Sharp ? 1 : -1); }
+        double frequency = (double)Math.round(REFERENCE_FREQUENCY * Math.pow(CALCULUS_CONSTANT, halfStepsFromReference) * 100) / 100;
+        frequency += tuning*(4/Math.pow(2, octave)); // Good enough for jazz.
+        return frequency;
     }
-    
-    public double getFrequencyFromMIDI(int n, int tuning) {
-        return 440.0 * Math.pow(2.0, ((double)(n - NOTE_REFERENCE) + 0.01 * (double)tuning)/12);
-    }
-    
-    public double getFrequencyFromName(String name) {
-        return getFrequencyFromMIDI(getMIDIFromName(name));
-    }
-    
-    public double getFrequencyFromName(String name, int tuning) {
-        return getFrequencyFromMIDI(getMIDIFromName(name), tuning);
-    }
-    
-    public int getMIDIFromName(String name) {
-        if (name.length() > 1) {
-            int i = 0;
-            for (String noteName : NOTE_NAMES) {
-                System.out.println(name + " : compare " + noteName);
-                if (name.length() > noteName.length() && name.startsWith(noteName) && name.charAt(noteName.length()) != '#' && name.charAt(noteName.length()) != 'b') {
-                    return i + 12 * (Integer.parseInt(name.substring(noteName.length())) + 2);
-                }
-                i++;
-            }
-        }
-        throw new java.lang.Error("Invalid note name.");
-    }
-    
-    public int getMIDIFromFrequency(double frequency) {
-        return (int)Math.ceil(NOTE_REFERENCE + CALCULUS_CONSTANT * Math.log(frequency / FREQUENCY_REFERENCE));
-    }
-    
-    public int getTuningFromFrequency(double frequency) {
-        return (int)(((NOTE_REFERENCE + CALCULUS_CONSTANT * Math.log(frequency / FREQUENCY_REFERENCE)) % 1) * 100);
-    }
-    
-    public String getNameFromMIDI(int n) {
-        return NOTE_NAMES[n % 12] + String.valueOf((int)Math.ceil(n / 12) - 2);
-    }
-    
-    private final String[] NOTE_NAMES = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"};
-    private final int NOTE_REFERENCE = 69; // A3
-    private final double FREQUENCY_REFERENCE = 440.0;
-    private final double CALCULUS_CONSTANT = 12 / Math.log(2);
-       
+
+//    public double getFrequencyFromMIDI(int n) {
+//        return 440.0 * Math.pow(2.0, ((double)(n - NOTE_REFERENCE))/12);
+//    }
+//    
+//    public double getFrequencyFromMIDI(int n, int tuning) {
+//        return 440.0 * Math.pow(2.0, ((double)(n - NOTE_REFERENCE) + 0.01 * (double)tuning)/12);
+//    }
+//    
+//    public double getFrequencyFromName(String name) {
+//        return getFrequencyFromMIDI(getMIDIFromName(name));
+//    }
+//    
+//    public double getFrequencyFromName(String name, int tuning) {
+//        return getFrequencyFromMIDI(getMIDIFromName(name), tuning);
+//    }
+//    
+//    public int getMIDIFromName(String name) {
+//        if (name.length() > 1) {
+//            int i = 0;
+//            for (String noteName : NOTE_NAMES) {
+//                System.out.println(name + " : compare " + noteName);
+//                if (name.length() > noteName.length() && name.startsWith(noteName) && name.charAt(noteName.length()) != '#' && name.charAt(noteName.length()) != 'b') {
+//                    return i + 12 * (Integer.parseInt(name.substring(noteName.length())) + 2);
+//                }
+//                i++;
+//            }
+//        }
+//        throw new java.lang.Error("Invalid note name.");
+//    }
+//    
+//    public int getMIDIFromFrequency(double frequency) {
+//        return (int)Math.ceil(NOTE_REFERENCE + CALCULUS_CONSTANT * Math.log(frequency / FREQUENCY_REFERENCE));
+//    }
+//    
+//    public int getTuningFromFrequency(double frequency) {
+//        return (int)(((NOTE_REFERENCE + CALCULUS_CONSTANT * Math.log(frequency / FREQUENCY_REFERENCE)) % 1) * 100);
+//    }
+//    
+//    public String getNameFromMIDI(int n) {
+//        return NOTE_NAMES[n % 12] + String.valueOf((int)Math.ceil(n / 12) - 2);
+//    }   
 }

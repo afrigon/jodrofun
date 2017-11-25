@@ -35,22 +35,22 @@ public class Instrument implements java.io.Serializable {
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public ArrayList<Key> getKeys() {
-        return keys;
+        return this.keys;
     }
     
     public void setName(String newName) {
-        name = newName;
+        this.name = newName;
     }
     
     public void addKey(Key newKey) {
-        keys.add(newKey);
+        this.keys.add(newKey);
     }
     
     public void removeKey(Key keyToRemove) {
-        keys.remove(keyToRemove);
+        this.keys.remove(keyToRemove);
     }
 }

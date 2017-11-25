@@ -82,7 +82,8 @@ public class GaudrophoneController {
     public void deleteKey() {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            instrumentManager.getInstrument().removeKey(new Key(key));
+            instrumentManager.getInstrument().removeKey(key);
+            selectionManager.setKey(null);
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -154,7 +155,12 @@ public class GaudrophoneController {
     public void setKeyImage(String path) {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            key.getShape().getIdleAppearance().setImage(path);
+            if (path == null) {
+                key.getShape().getIdleAppearance().removeImage();
+            } else {
+                key.getShape().getIdleAppearance().setImage(path);
+            }
+            
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -162,7 +168,11 @@ public class GaudrophoneController {
     public void setKeySunkenImage(String path) {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            key.getShape().getSunkenAppearance().setImage(path);
+            if (path == null) {
+                key.getShape().getSunkenAppearance().removeImage();
+            } else {
+                key.getShape().getSunkenAppearance().setImage(path);
+            }
             this.canvasManager.delegate.shouldRedraw();
         }
     }

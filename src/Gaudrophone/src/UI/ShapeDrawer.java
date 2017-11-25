@@ -47,7 +47,7 @@ public class ShapeDrawer {
     public ShapeDrawer() {}
     
     //Draw a single shape on the graphic object
-    public static void drawShape(Graphics2D g2, DrawableShape shape) {
+    public void drawShape(Graphics2D g2, DrawableShape shape) {
         try {
             //Variables
             int keyState = shape.getKey().getStates();
@@ -100,15 +100,24 @@ public class ShapeDrawer {
                 g2.setColor(new Color(255, 255, 255, 60));
                 g2.fill(shape.getShape());
             }
+            
+            //Draw a dashed border around the selected shape
+            if((keyState & KeyState.selected.getValue()) != 0) {
+                float[] f = {4, 2};
+                g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
+                g2.setColor(new Color(0xf9a825));
+                g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
+            }
         }
         catch (Exception ex) {
             System.out.println("ShapeDrawer.drawShape : " + ex.getMessage());
         }
     }
-    
+    Rectangle2D cs = new Rectangle2D.Double();
     //Draw mutliple shapes on a size X canvas
-    public static void drawShapes(Graphics2D g2, List<DrawableShape> shapes, Rectangle2D canvasSize) {
+    public void drawShapes(Graphics2D g2, List<DrawableShape> shapes, Rectangle2D canvasSize) {
         try {
+            cs = canvasSize;
             //Get a clip of the size of the canvas (for the search mask)
             Area clip = new Area(canvasSize);
             //True if something is searched (at least one key is valid)
@@ -128,8 +137,8 @@ public class ShapeDrawer {
             if(searching) {
                 g2.setClip(clip);
                 g2.setColor(new Color(0, 0, 0, 60));
-                g2.fill(canvasSize);
-                g2.setClip(null);
+                g2.fill(cs);
+                g2.setClip(this.cs);
             }
         }
         catch (Exception ex) {
@@ -138,7 +147,7 @@ public class ShapeDrawer {
     }
     
     //Draw border lines of a shape
-    private static void drawLines(Graphics2D g2, List<DrawableLine> lines) {
+    private void drawLines(Graphics2D g2, List<DrawableLine> lines) {
         try {
             //First corner of all the shape, and the last corner used
             Point2D corner = null, firstCorner = null;
@@ -212,7 +221,7 @@ public class ShapeDrawer {
         }
     }
     
-    private static void drawCrossLines(Graphics2D g2, KeyUtils.KeyLine[] lines, DrawableShape shape) {
+    private void drawCrossLines(Graphics2D g2, KeyUtils.KeyLine[] lines, DrawableShape shape) {
         if(g2 == null)
             throw new java.lang.IllegalArgumentException("drawCrossLines : g2 is undefined.");
         if(shape == null)
@@ -222,7 +231,7 @@ public class ShapeDrawer {
         if(lines.length != 4)
             throw new java.lang.IllegalArgumentException("drawCrossLines : lines size expected 4, got " + lines.length + ".");
         
-        g2.setClip(shape.getShape());
+        g2.clip(shape.getShape());
         for(int i = 0; i < lines.length; ++i) {
             if(lines[i] != null) {
                 //Set color and thickness
@@ -243,11 +252,11 @@ public class ShapeDrawer {
                 g2.draw(line);
             }
         }
-        g2.setClip(null);
+        g2.setClip(this.cs);
     }
     
     //Draw the key information (name, etc.)
-    private static void drawText(Graphics2D g2, DrawableShape shape) {
+    private void drawText(Graphics2D g2, DrawableShape shape) {
         if(g2 == null)
             throw new java.lang.IllegalArgumentException("drawText : g2 is undefined.");
         if(shape == null)
@@ -294,7 +303,7 @@ public class ShapeDrawer {
     }
     
     //Get the line with the thickness applied (second line)
-    private static Line2D.Double getLineWithThickness(Line2D.Double line, int thickness) {
+    private Line2D.Double getLineWithThickness(Line2D.Double line, int thickness) {
         if (line == null) throw new java.lang.IllegalArgumentException("getLineWithThickness : Line argument is null.");
         else if (thickness == 0) return line;
         
@@ -317,7 +326,7 @@ public class ShapeDrawer {
     }
     
     //Get a close to infinity extended line
-    private static Line2D.Double getExtendedLine(Line2D.Double line) {
+    private Line2D.Double getExtendedLine(Line2D.Double line) {
         if (line == null) throw new java.lang.IllegalArgumentException("getExtendedLine : Line argument is null.");
         
         //Line is vertical, just return a big line
@@ -342,7 +351,7 @@ public class ShapeDrawer {
     }
     
     //Find the intersection point of two lines
-    private static Point2D getIntersection(Line2D.Double line1, Line2D.Double line2) {
+    private Point2D getIntersection(Line2D.Double line1, Line2D.Double line2) {
         //They don't collide, well shit.
         if(!line1.intersectsLine(line2)) return null;
         

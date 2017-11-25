@@ -399,7 +399,7 @@
                             <Component class="javax.swing.JSpinner" name="octaveSpinner">
                               <Properties>
                                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                                  <SpinnerModel initial="4" maximum="8" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                  <SpinnerModel initial="2" maximum="8" minimum="-2" numberType="java.lang.Integer" stepSize="1" type="number"/>
                                 </Property>
                               </Properties>
                             </Component>
@@ -511,6 +511,7 @@
                                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                                 </Property>
+                                <Property name="value" type="int" value="100"/>
                               </Properties>
                               <BindingProperties>
                                 <BindingProperty name="value" source="volumeSpinner" sourcePath="${value}" target="volumeSlider" targetPath="value" updateStrategy="0" immediately="false">
@@ -524,7 +525,7 @@
                             <Component class="javax.swing.JSpinner" name="volumeSpinner">
                               <Properties>
                                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                                  <SpinnerModel initial="100" maximum="100" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                  <SpinnerModel initial="100.0" maximum="100.0" minimum="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
                                 </Property>
                                 <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                                   <Connection code="100" type="code"/>
@@ -629,6 +630,7 @@
                                         </Property>
                                         <Property name="maximum" type="int" value="5000"/>
                                         <Property name="orientation" type="int" value="1"/>
+                                        <Property name="value" type="int" value="100"/>
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[50, 32767]"/>
                                         </Property>
@@ -718,6 +720,7 @@
                                         </Property>
                                         <Property name="maximum" type="int" value="5000"/>
                                         <Property name="orientation" type="int" value="1"/>
+                                        <Property name="value" type="int" value="100"/>
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[50, 32767]"/>
                                         </Property>
@@ -801,6 +804,11 @@
                                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                                         </Property>
                                         <Property name="orientation" type="int" value="1"/>
+<<<<<<< HEAD
+                                        <Property name="value" type="int" value="80"/>
+=======
+                                        <Property name="toolTipText" type="java.lang.String" value="Substain"/>
+>>>>>>> 691fa4a4fdcb4dc2e50116c1d709171f81eebd10
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[50, 32767]"/>
                                         </Property>
@@ -885,6 +893,11 @@
                                         </Property>
                                         <Property name="maximum" type="int" value="5000"/>
                                         <Property name="orientation" type="int" value="1"/>
+<<<<<<< HEAD
+                                        <Property name="value" type="int" value="100"/>
+=======
+                                        <Property name="toolTipText" type="java.lang.String" value="Release"/>
+>>>>>>> 691fa4a4fdcb4dc2e50116c1d709171f81eebd10
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[50, 32767]"/>
                                         </Property>
@@ -1665,7 +1678,6 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/resources/btnPlay.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Mode Jeu Libre"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="5"/>
@@ -1688,7 +1700,6 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/resources/btnEdit.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Mode &#xc9;dition"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="5"/>
@@ -1734,7 +1745,6 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/resources/btnDuplicate.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Dupliquer la touche"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder thickness="5"/>
@@ -1749,52 +1759,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonDuplicateActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="buttonRemoveImage">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="41" green="41" red="41" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/resources/btnDeleteImage.png"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Supprimer l&apos;image"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder thickness="5"/>
-                  </Border>
-                </Property>
-                <Property name="borderPainted" type="boolean" value="false"/>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRemoveImageActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="buttonRemoveSunkenImage">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="41" green="41" red="41" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/resources/btnDeleteSunkenImage.png"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Supprimer l&apos;image pour l&apos;&#xe9;tat enfonc&#xe9;e"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder thickness="5"/>
-                  </Border>
-                </Property>
-                <Property name="borderPainted" type="boolean" value="false"/>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRemoveSunkenImageActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="buttonDelete">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -1803,7 +1767,6 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/resources/btnDelete.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Supprimer la touche"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder thickness="5"/>
