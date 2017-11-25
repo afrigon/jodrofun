@@ -177,8 +177,4 @@ public class KeyShape implements java.io.Serializable {
             }
         }
     }
-    
-    public void setPoints(List<Vector2> newPoints) {
-        points = newPoints;
-    }
 }
