@@ -53,7 +53,7 @@ public class InstrumentManager {
             return false;
         } else {
             for (Key key: temp.getKeys()) {
-                key.setStates(0);
+                key.removeStates(KeyState.clicked.getValue() | KeyState.hover.getValue() | KeyState.searched.getValue() | KeyState.selected.getValue());
             }
             this.currentInstrument = temp;
             return true;
