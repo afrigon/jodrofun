@@ -117,9 +117,9 @@ public class KeyShape implements java.io.Serializable {
     public Vector2 getCorner(Corner corner) {
         if (null != corner) switch (corner) {
             case TopLeft:
-                return new Vector2(getMinBound(true), getMaxBound(false));
+                return new Vector2(getMinBound(true), getMinBound(false));
             case TopCenter:
-                return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMaxBound(false));
+                return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMinBound(false));
             case TopRight:
                 return new Vector2(getMaxBound(true), getMinBound(false));
             case CenterLeft:
@@ -129,9 +129,9 @@ public class KeyShape implements java.io.Serializable {
             case CenterRight:
                 return new Vector2(getMaxBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
             case BottomLeft:
-                return new Vector2(getMinBound(true), getMinBound(false));
+                return new Vector2(getMinBound(true), getMaxBound(false));
             case BottomCenter:
-                return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMinBound(false));
+                return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMaxBound(false));
             case BottomRight:
                 return new Vector2(getMaxBound(true), getMaxBound(false));
             default:
