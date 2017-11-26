@@ -207,7 +207,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         createRectangleMenuItem = new javax.swing.JMenuItem();
         createTriangleMenuItem = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -236,7 +236,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         rightScrollPane.setAutoscrolls(true);
         rightScrollPane.setMinimumSize(new java.awt.Dimension(350, 250));
         rightScrollPane.setPreferredSize(new java.awt.Dimension(350, 226));
-        rightScrollPane.setViewportView(tabbedPane);
 
         tabbedPane.setBackground(new java.awt.Color(65, 65, 65));
         tabbedPane.setForeground(new java.awt.Color(255, 255, 255));
@@ -609,7 +608,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         showNoteNameLabel.setMinimumSize(new java.awt.Dimension(40, 16));
         showNoteNameLabel.setOpaque(true);
         showNoteNameLabel.setPreferredSize(new java.awt.Dimension(40, 26));
-        showNoteNameLabel.setSize(new java.awt.Dimension(40, 26));
         showNameProperty.add(showNoteNameLabel);
 
         displayNameCheckBox.setBackground(new java.awt.Color(65, 65, 65));
@@ -618,7 +616,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayNameCheckBox.setText("Nom");
         displayNameCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayNameCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayNameCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayNameCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayNameCheckBoxItemStateChanged(evt);
@@ -632,15 +629,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayNoteCheckBox.setText("Note");
         displayNoteCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayNoteCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayNoteCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayNoteCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayNoteCheckBoxItemStateChanged(evt);
             }
         });
         showNameProperty.add(displayNoteCheckBox);
-
-        filler6.setSize(new java.awt.Dimension(40, 26));
         showNameProperty.add(filler6);
 
         displayOctaveCheckBox.setBackground(new java.awt.Color(65, 65, 65));
@@ -649,7 +643,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayOctaveCheckBox.setText("Octave");
         displayOctaveCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayOctaveCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayOctaveCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayOctaveCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayOctaveCheckBoxItemStateChanged(evt);
@@ -662,7 +655,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayAlterationCheckBox.setText("Altération");
         displayAlterationCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayAlterationCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayAlterationCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayAlterationCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayAlterationCheckBoxItemStateChanged(evt);

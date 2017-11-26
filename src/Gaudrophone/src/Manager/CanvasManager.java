@@ -25,6 +25,7 @@ package Manager;
 
 import Instrument.Key;
 import Instrument.KeyState;
+import KeyUtils.KeyShape;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import Music.SynthesizedSound;
@@ -36,6 +37,8 @@ public class CanvasManager {
     private List<DrawableShape> shapes;
     private State state = State.Play;
     private KeyShapeGenerator storedKeyShape;
+    
+    private DrawableShape draggedShape = null;
     
     private double ratioX = 1;
     private double ratioY = 1;
@@ -97,6 +100,9 @@ public class CanvasManager {
         this.clickPosition = new Vector2(x, y);
         DrawableShape ds = this.clickedShape(x, y);
         if (ds != null) {
+            if(this.state == State.EditKey && (ds.getKey().getStates() & KeyState.selected.getValue()) != 0) {
+                this.draggedShape = ds;
+            }
             this.clicked(ds.getKey());
             
         }
@@ -124,19 +130,25 @@ public class CanvasManager {
     }
     
     public void released(int x, int y) {
-        if (this.state == State.CreatingShape) {
-            if (this.clickPosition != new Vector2(x, y)) {
-                Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
-                GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
-                this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
-                //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
-            } else {
-                Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(10, this.clickPosition), this.storedKeyShape.getName());
-                GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
-                this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+        switch (this.state) {
+            case CreatingShape : 
+                if (this.clickPosition != new Vector2(x, y)) {
+                    Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
+                    GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
+                    this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                    //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
+                } else {
+                    Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(10, this.clickPosition), this.storedKeyShape.getName());
+                    GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
+                    this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                }
+                break;
+            case EditKey :
+                if(this.draggedShape != null) {
+                    this.draggedShape = null;
+                }
+                break;
             }
-            
-        }
         
         DrawableShape ds = this.clickedShape(x, y);
         if (ds != null) {
@@ -181,6 +193,17 @@ public class CanvasManager {
                 this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                 GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().remove(key);
                 //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
+                break;
+            case EditKey :
+                if(this.draggedShape != null) {
+                    this.draggedShape.getKey().getShape().translate(
+                            this.convertPixelToWorld(
+                            (int)(x - this.clickPosition.getX()),
+                            (int)(y - this.clickPosition.getY())));
+                            
+                    this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                    this.clickPosition = new Vector2(x, y);
+                }
                 break;
         }
     }
