@@ -48,6 +48,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.SpinnerModel;
@@ -148,17 +150,17 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         borderWrapper = new javax.swing.JPanel();
         borderTitle = new javax.swing.JLabel();
         linesSelectionWrapper = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        borderSelectLabel = new javax.swing.JLabel();
+        borderComboBox = new javax.swing.JComboBox<>();
         lineControlWrapper = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        borderSpacer1 = new javax.swing.JPanel();
+        lineThicknessWrapper = new javax.swing.JPanel();
+        lineThicknessLabel = new javax.swing.JLabel();
+        lineThicknessSpinner = new javax.swing.JSpinner();
+        lineColorWrapper = new javax.swing.JPanel();
+        lineColorLabel = new javax.swing.JLabel();
+        LineColorSpacer = new javax.swing.JPanel();
         filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        borderEditButton = new javax.swing.JLabel();
+        lineColorEditButton = new javax.swing.JLabel();
         filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         audioPanel = new javax.swing.JPanel();
         KeyProperties = new javax.swing.JPanel();
@@ -749,68 +751,67 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         flowLayout1.setAlignOnBaseline(true);
         linesSelectionWrapper.setLayout(flowLayout1);
 
-        jLabel1.setBackground(new java.awt.Color(65, 65, 65));
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Sélection de ligne :");
-        jLabel1.setPreferredSize(new java.awt.Dimension(150, 16));
-        linesSelectionWrapper.add(jLabel1);
+        borderSelectLabel.setBackground(new java.awt.Color(65, 65, 65));
+        borderSelectLabel.setForeground(new java.awt.Color(255, 255, 255));
+        borderSelectLabel.setText("Sélection de ligne :");
+        borderSelectLabel.setPreferredSize(new java.awt.Dimension(150, 16));
+        linesSelectionWrapper.add(borderSelectLabel);
 
-        jComboBox1.setBackground(new java.awt.Color(65, 65, 65));
-        jComboBox1.setMinimumSize(new java.awt.Dimension(100, 27));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(200, 27));
-        linesSelectionWrapper.add(jComboBox1);
+        borderComboBox.setMinimumSize(new java.awt.Dimension(100, 27));
+        borderComboBox.setPreferredSize(new java.awt.Dimension(200, 27));
+        linesSelectionWrapper.add(borderComboBox);
 
         linesWrapper.add(linesSelectionWrapper);
 
         lineControlWrapper.setBackground(new java.awt.Color(65, 65, 65));
         lineControlWrapper.setLayout(new javax.swing.BoxLayout(lineControlWrapper, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jPanel1.setBackground(new java.awt.Color(65, 65, 65));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        jPanel1.setPreferredSize(new java.awt.Dimension(0, 0));
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+        lineThicknessWrapper.setBackground(new java.awt.Color(65, 65, 65));
+        lineThicknessWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        lineThicknessWrapper.setPreferredSize(new java.awt.Dimension(0, 0));
+        lineThicknessWrapper.setLayout(new java.awt.GridLayout(1, 0));
 
-        jLabel2.setBackground(new java.awt.Color(65, 65, 65));
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Épaisseur :");
-        jPanel1.add(jLabel2);
+        lineThicknessLabel.setBackground(new java.awt.Color(65, 65, 65));
+        lineThicknessLabel.setForeground(new java.awt.Color(255, 255, 255));
+        lineThicknessLabel.setText("Épaisseur :");
+        lineThicknessWrapper.add(lineThicknessLabel);
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 20, 1));
-        jPanel1.add(jSpinner1);
+        lineThicknessSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 20, 1));
+        lineThicknessWrapper.add(lineThicknessSpinner);
 
-        lineControlWrapper.add(jPanel1);
+        lineControlWrapper.add(lineThicknessWrapper);
 
-        jPanel2.setBackground(new java.awt.Color(65, 65, 65));
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        jPanel2.setPreferredSize(new java.awt.Dimension(0, 0));
-        jPanel2.setLayout(new java.awt.GridLayout(1, 0));
+        lineColorWrapper.setBackground(new java.awt.Color(65, 65, 65));
+        lineColorWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        lineColorWrapper.setPreferredSize(new java.awt.Dimension(0, 0));
+        lineColorWrapper.setLayout(new java.awt.GridLayout(1, 0));
 
-        jLabel3.setBackground(new java.awt.Color(65, 65, 65));
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Couleur :");
-        jPanel2.add(jLabel3);
+        lineColorLabel.setBackground(new java.awt.Color(65, 65, 65));
+        lineColorLabel.setForeground(new java.awt.Color(255, 255, 255));
+        lineColorLabel.setText("Couleur :");
+        lineColorWrapper.add(lineColorLabel);
 
-        borderSpacer1.setBackground(new java.awt.Color(65, 65, 65));
-        borderSpacer1.setLayout(new java.awt.GridLayout(1, 0));
+        LineColorSpacer.setBackground(new java.awt.Color(65, 65, 65));
+        LineColorSpacer.setLayout(new java.awt.GridLayout(1, 0));
 
         filler14.setBackground(new java.awt.Color(65, 65, 65));
-        borderSpacer1.add(filler14);
+        LineColorSpacer.add(filler14);
 
-        borderEditButton.setBackground(new java.awt.Color(65, 65, 65));
-        borderEditButton.setForeground(new java.awt.Color(255, 255, 255));
-        borderEditButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        borderEditButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        borderEditButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        borderEditButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        borderEditButton.setOpaque(true);
-        borderSpacer1.add(borderEditButton);
+        lineColorEditButton.setBackground(new java.awt.Color(65, 65, 65));
+        lineColorEditButton.setForeground(new java.awt.Color(255, 255, 255));
+        lineColorEditButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lineColorEditButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        lineColorEditButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lineColorEditButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lineColorEditButton.setOpaque(true);
+        LineColorSpacer.add(lineColorEditButton);
 
         filler15.setBackground(new java.awt.Color(65, 65, 65));
-        borderSpacer1.add(filler15);
+        LineColorSpacer.add(filler15);
 
-        jPanel2.add(borderSpacer1);
+        lineColorWrapper.add(LineColorSpacer);
 
-        lineControlWrapper.add(jPanel2);
+        lineControlWrapper.add(lineColorWrapper);
 
         linesWrapper.add(lineControlWrapper);
 
@@ -1925,6 +1926,17 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 GaudrophoneController.getController().setNote((Note)this.noteComboBox.getSelectedItem());
             });
             
+            this.borderComboBox.addActionListener((ActionEvent e) -> {
+                this.lineControlWrapper.setVisible(this.borderComboBox.getSelectedIndex() == -1 || this.borderComboBox.getSelectedIndex() == 0);
+                
+                if (this.borderComboBox.getSelectedIndex() != -1) {
+                    if (this.borderComboBox.getSelectedIndex() == 0) {
+                        GaudrophoneController.getController().getSelectionManager().setLine(this.borderComboBox.getSelectedIndex()-1);
+                    }
+                    GaudrophoneController.getController().getSelectionManager().setLine(this.borderComboBox.getSelectedIndex()-1);
+                }
+            });
+            
             this.waveformComboBox.addActionListener((ActionEvent e) -> {
                 GaudrophoneController.getController().setWaveform((WaveFormType)this.waveformComboBox.getSelectedItem());
             });
@@ -1965,6 +1977,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel KeyProperties;
+    private javax.swing.JPanel LineColorSpacer;
     private javax.swing.ButtonGroup alterationButtonGroup;
     private javax.swing.JLabel alterationLabel;
     private javax.swing.JPanel alterationProperty;
@@ -1984,9 +1997,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel backgroundSpacer;
     private javax.swing.JLabel backgroundSunkenDisplayLabel;
     private javax.swing.JLabel backgroundSunkenLabel;
-    private javax.swing.JLabel borderEditButton;
+    private javax.swing.JComboBox<String> borderComboBox;
     private javax.swing.JPanel borderPanel;
-    private javax.swing.JPanel borderSpacer1;
+    private javax.swing.JLabel borderSelectLabel;
     private javax.swing.JLabel borderTitle;
     private javax.swing.JPanel borderWrapper;
     private javax.swing.JButton buttonAddImage;
@@ -2047,20 +2060,19 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel informationWrapper;
     private javax.swing.JMenu insertMenuItem;
     private javax.swing.JPanel instrumentPanel;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField keyNameField;
     private javax.swing.JLabel keyNameLabel;
     private javax.swing.JPanel keyNameProperty;
     private javax.swing.ButtonGroup keyTypeButtonGroup;
+    private javax.swing.JLabel lineColorEditButton;
+    private javax.swing.JLabel lineColorLabel;
+    private javax.swing.JPanel lineColorWrapper;
     private javax.swing.JPanel lineControlWrapper;
+    private javax.swing.JLabel lineThicknessLabel;
+    private javax.swing.JSpinner lineThicknessSpinner;
+    private javax.swing.JPanel lineThicknessWrapper;
     private javax.swing.JPanel linesSelectionWrapper;
     private javax.swing.JPanel linesWrapper;
     private javax.swing.JRadioButton naturalRadioButton;
@@ -2200,6 +2212,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.buttonRemoveImage.setVisible(key.getShape().getIdleAppearance().getImagePath() != null);
         this.buttonRemoveSunkenImage.setVisible(key.getShape().getSunkenAppearance().getImagePath() != null);
         
+        String[] borders = new String[key.getShape().getLines().size() + 1];
+        borders[0] = "Toutes";
+        for (int i = 1; i < borders.length; i++) {
+            borders[i] = "Line " + i;
+        }
+        this.borderComboBox.setModel(new DefaultComboBoxModel(borders));
+        this.borderComboBox.setSelectedIndex(-1);
+        
         if (this.splitWindow.getRightComponent() == null) {
             this.splitWindow.setRightComponent(this.rightScrollPane);
             this.splitWindow.setDividerLocation(Math.max(this.splitWindow.getWidth()/2, this.splitWindow.getWidth()-500));
@@ -2208,8 +2228,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     
     @Override
     public void didDeselectKey() {
-        this.keyNameField.setText("Nom de la touche");
-        
         this.hideControls();
     }
 

@@ -79,6 +79,8 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             Key k = new Key(key);
+            Vector2 translation = this.canvasManager.convertPixelToWorld(10, 10);
+            k.getShape().translate(translation);
             instrumentManager.getInstrument().addKey(k);
             this.selectionManager.setKey(k);
             this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
@@ -120,7 +122,8 @@ public class GaudrophoneController {
             Vector2 bottomRightOrigin = key.getShape().getCorner(KeyShape.Corner.BottomRight);
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
 
-            key.getShape().stretch(size.sub(oldSize));
+            //TODO: FIX this shit
+            //key.getShape().stretch(size.sub(oldSize));
         }
     }
     
@@ -220,9 +223,10 @@ public class GaudrophoneController {
     
     public void setLineColor(Color newColor) {
         Key key = selectionManager.getSelectedKey();
-        if (key != null) {
+        int line = selectionManager.getSelectedLine();
+        if (key != null && line != -1) {
             List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            shapeLines.get(selectionManager.getSelectedLine()).setColor(newColor);
+            shapeLines.get(line).setColor(newColor);
             key.getShape().setLines(shapeLines);
             this.canvasManager.delegate.shouldRedraw();
         }
@@ -244,9 +248,10 @@ public class GaudrophoneController {
     
     public void setLineThickness(double newThickness) {
         Key key = selectionManager.getSelectedKey();
-        if (key != null) {
+        int line = selectionManager.getSelectedLine();
+        if (key != null && line != -1) {
             List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            shapeLines.get(selectionManager.getSelectedLine()).setThickness(newThickness);
+            shapeLines.get(line).setThickness(newThickness);
             key.getShape().setLines(shapeLines);
             this.canvasManager.delegate.shouldRedraw();
         }

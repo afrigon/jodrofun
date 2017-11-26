@@ -36,6 +36,8 @@ public class SelectionManager {
         if (this.selectedKey != null) {
             this.selectedKey.removeState(KeyState.selected);
         }
+        this.selectedPoint = -1;
+        this.selectedLine = -1;
         this.selectedKey = key;
         if (key != null) { key.addState(KeyState.selected); }
         if (this.delegate != null) {
