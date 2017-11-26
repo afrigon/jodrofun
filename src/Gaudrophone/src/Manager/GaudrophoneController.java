@@ -77,7 +77,10 @@ public class GaudrophoneController {
     public void duplicateKey() {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            instrumentManager.getInstrument().addKey(new Key(key));
+            Key k = new Key(key);
+            instrumentManager.getInstrument().addKey(k);
+            this.selectionManager.setKey(k);
+            this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
             this.canvasManager.delegate.shouldRedraw();
         }
     }

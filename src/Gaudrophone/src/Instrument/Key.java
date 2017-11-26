@@ -25,6 +25,8 @@ package Instrument;
 
 import KeyUtils.KeyShape;
 import Music.Sound;
+import Music.SynthesizedSound;
+import Music.AudioClip;
 
 public class Key implements java.io.Serializable {
     private KeyShape shape = null;
@@ -43,12 +45,40 @@ public class Key implements java.io.Serializable {
     }
     
     public Key(KeyShape keyShape) {
-        this.shape = keyShape;
+        java.util.List<KeyUtils.Vector2> v = new java.util.ArrayList<>();
+        keyShape.getPoints().forEach((point)->{v.add(new KeyUtils.Vector2(point.getX(), point.getY()));});
+        this.shape = new KeyShape(v, keyShape.getIdleAppearance().getColor(), keyShape.getSunkenAppearance().getColor());
+        this.shape.getIdleAppearance().setImage(keyShape.getIdleAppearance().getImagePath());
+        this.shape.getSunkenAppearance().setImage(keyShape.getSunkenAppearance().getImagePath());
+        
+        this.sound = new SynthesizedSound();
+        this.name = "New Key";
     }
     
+    //Everything need to be brand new, otherwise it will use a referenced pointer
+    //Exemple, moving one key will move any duplicated because the points are the same pointers
     public Key(Key key) {
-        this.sound = key.sound;
-        this.shape = key.shape;
+        //Create new Sound, synthesized or audioclip
+        if(SynthesizedSound.class.isInstance(key.getSound())) {
+            SynthesizedSound s = (SynthesizedSound)key.getSound();
+            this.sound = new SynthesizedSound(s.getFrequency());
+            ((SynthesizedSound)this.sound).setTuning(s.getTuning());
+            ((SynthesizedSound)this.sound).setWaveForm(s.getWaveform());
+            this.sound.setEnvelope(new Music.Envelope(s.getEnvelope().getAttack(), s.getEnvelope().getDecay(), s.getEnvelope().getSustain(), s.getEnvelope().getRelease()));
+            this.sound.setVolume(s.getVolume());
+        }
+        else if(AudioClip.class.isInstance(key.getSound())) {
+            this.sound = new AudioClip(((AudioClip)key.getSound()).getPath());
+        }
+        
+        //Create new KeyShape
+        java.util.List<KeyUtils.Vector2> v = new java.util.ArrayList<>();
+        key.getShape().getPoints().forEach((point)->{v.add(new KeyUtils.Vector2(point.getX(), point.getY()));});
+        this.shape = new KeyShape(v, key.getShape().getIdleAppearance().getColor(), key.getShape().getSunkenAppearance().getColor());
+        this.shape.getIdleAppearance().setImage(key.getShape().getIdleAppearance().getImagePath());
+        this.shape.getSunkenAppearance().setImage(key.getShape().getSunkenAppearance().getImagePath());
+        
+        //Set name
         this.name = key.name;
     }
     

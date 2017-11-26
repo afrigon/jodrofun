@@ -210,7 +210,7 @@ public class CanvasManager {
                             this.convertPixelToWorld(
                             (int)(x - this.clickPosition.getX()),
                             (int)(y - this.clickPosition.getY())));
-                            
+                    
                     this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                     this.clickPosition = new Vector2(x, y);
                 }
