@@ -35,8 +35,8 @@ public class Envelope implements java.io.Serializable {
     public Envelope() {
         attack = 2000;
         decay = 500;
-        sustain = .2;
-        release = 1000;
+        sustain = .6;
+        release = 4000;
         attackAndDecay = attack + decay;
     }
     
