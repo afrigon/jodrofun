@@ -27,6 +27,7 @@ import KeyUtils.KeyShape;
 import Music.Sound;
 import Music.SynthesizedSound;
 import Music.AudioClip;
+import Music.SoundType;
 
 public class Key implements java.io.Serializable {
     private KeyShape shape = null;
@@ -44,31 +45,32 @@ public class Key implements java.io.Serializable {
         this.name = keyName;
     }
     
-    public Key(KeyShape keyShape) {
-        java.util.List<KeyUtils.Vector2> v = new java.util.ArrayList<>();
-        keyShape.getPoints().forEach((point)->{v.add(new KeyUtils.Vector2(point.getX(), point.getY()));});
-        this.shape = new KeyShape(v, keyShape.getIdleAppearance().getColor(), keyShape.getSunkenAppearance().getColor());
-        this.shape.getIdleAppearance().setImage(keyShape.getIdleAppearance().getImagePath());
-        this.shape.getSunkenAppearance().setImage(keyShape.getSunkenAppearance().getImagePath());
-        
-        this.sound = new SynthesizedSound();
-        this.name = "New Key";
-    }
+//    public Key(KeyShape keyShape) {
+//        java.util.List<KeyUtils.Vector2> v = new java.util.ArrayList<>();
+//        keyShape.getPoints().forEach((point)->{v.add(new KeyUtils.Vector2(point.getX(), point.getY()));});
+//        this.shape = new KeyShape(v, keyShape.getIdleAppearance().getColor(), keyShape.getSunkenAppearance().getColor());
+//        this.shape.getIdleAppearance().setImage(keyShape.getIdleAppearance().getImagePath());
+//        this.shape.getSunkenAppearance().setImage(keyShape.getSunkenAppearance().getImagePath());
+//        
+//        this.sound = new SynthesizedSound();
+//        this.name = "Nouvelle touche";
+//    }
     
     //Everything need to be brand new, otherwise it will use a referenced pointer
     //Exemple, moving one key will move any duplicated because the points are the same pointers
     public Key(Key key) {
         //Create new Sound, synthesized or audioclip
-        if(SynthesizedSound.class.isInstance(key.getSound())) {
+        
+        if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound s = (SynthesizedSound)key.getSound();
             this.sound = new SynthesizedSound(s.getFrequency());
             ((SynthesizedSound)this.sound).setTuning(s.getTuning());
             ((SynthesizedSound)this.sound).setWaveForm(s.getWaveform());
             this.sound.setEnvelope(new Music.Envelope(s.getEnvelope().getAttack(), s.getEnvelope().getDecay(), s.getEnvelope().getSustain(), s.getEnvelope().getRelease()));
             this.sound.setVolume(s.getVolume());
-        }
-        else if(AudioClip.class.isInstance(key.getSound())) {
-            this.sound = new AudioClip(((AudioClip)key.getSound()).getPath());
+        } else if(key.getSound().getType() == SoundType.audioClip) {
+            this.sound = new AudioClip();
+            ((AudioClip)this.sound).setPath(((AudioClip)key.getSound()).getPath());
         }
         
         //Create new KeyShape
@@ -80,6 +82,9 @@ public class Key implements java.io.Serializable {
         
         //Set name
         this.name = key.name;
+        this.displayNote = key.displayNote;
+        this.displayAlteration = key.displayAlteration;
+        this.displayOctave = key.displayOctave;
     }
     
     // Setters

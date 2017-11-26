@@ -42,6 +42,7 @@ import Music.SoundType;
 import Music.SynthesizedSound;
 import Music.WaveFormType;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
@@ -49,6 +50,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import javax.swing.SpinnerModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -107,6 +109,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         widthSpinner = new javax.swing.JSpinner();
         heightLabel = new javax.swing.JLabel();
         heightSpinner = new javax.swing.JSpinner();
+        depthProperty = new javax.swing.JPanel();
+        zLabel = new javax.swing.JLabel();
+        zSpinner = new javax.swing.JSpinner();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         colorsPanel = new javax.swing.JPanel();
         colorWrapper = new javax.swing.JPanel();
         colorTitle = new javax.swing.JLabel();
@@ -436,7 +443,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         xLabel.setOpaque(true);
         positionProperty.add(xLabel);
 
-        xSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        xSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
         xSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 xSpinnerStateChanged(evt);
@@ -451,7 +458,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         yLabel.setOpaque(true);
         positionProperty.add(yLabel);
 
-        ySpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        ySpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
         ySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 ySpinnerStateChanged(evt);
@@ -474,7 +481,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         widthLabel.setOpaque(true);
         sizeProperty.add(widthLabel);
 
-        widthSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        widthSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
         widthSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 widthSpinnerStateChanged(evt);
@@ -489,7 +496,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         heightLabel.setOpaque(true);
         sizeProperty.add(heightLabel);
 
-        heightSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        heightSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
         heightSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 heightSpinnerStateChanged(evt);
@@ -498,6 +505,31 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         sizeProperty.add(heightSpinner);
 
         sizeWrapper.add(sizeProperty);
+
+        depthProperty.setBackground(new java.awt.Color(65, 65, 65));
+        depthProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        depthProperty.setMinimumSize(new java.awt.Dimension(125, 32));
+        depthProperty.setPreferredSize(new java.awt.Dimension(0, 0));
+        depthProperty.setLayout(new java.awt.GridLayout(1, 10, 10, 0));
+
+        zLabel.setBackground(new java.awt.Color(65, 65, 65));
+        zLabel.setForeground(new java.awt.Color(255, 255, 255));
+        zLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        zLabel.setText("Z-index :");
+        zLabel.setOpaque(true);
+        depthProperty.add(zLabel);
+
+        zSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        zSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                zSpinnerStateChanged(evt);
+            }
+        });
+        depthProperty.add(zSpinner);
+        depthProperty.add(filler1);
+        depthProperty.add(filler8);
+
+        sizeWrapper.add(depthProperty);
 
         visualWrapper.add(sizeWrapper);
 
@@ -1787,18 +1819,27 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
     private void xSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSpinnerStateChanged
         GaudrophoneController.getController().setKeyPosition(new Vector2((double)this.xSpinner.getValue(), (double)this.ySpinner.getValue()));
+        this.refresh();
     }//GEN-LAST:event_xSpinnerStateChanged
 
     private void ySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ySpinnerStateChanged
         GaudrophoneController.getController().setKeyPosition(new Vector2((double)this.xSpinner.getValue(), (double)this.ySpinner.getValue()));
+        this.refresh();
     }//GEN-LAST:event_ySpinnerStateChanged
 
     private void widthSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_widthSpinnerStateChanged
         GaudrophoneController.getController().setKeySize(new Vector2((double)this.widthSpinner.getValue(), (double)this.heightSpinner.getValue()));
+        this.refresh();
     }//GEN-LAST:event_widthSpinnerStateChanged
+
+    private void zSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_zSpinnerStateChanged
+        GaudrophoneController.getController().setKeyDepth((int)this.zSpinner.getValue());
+        this.refresh();
+    }//GEN-LAST:event_zSpinnerStateChanged
 
     private void heightSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_heightSpinnerStateChanged
         GaudrophoneController.getController().setKeySize(new Vector2((double)this.widthSpinner.getValue(), (double)this.heightSpinner.getValue()));
+        this.refresh();
     }//GEN-LAST:event_heightSpinnerStateChanged
     
     private void resetButtons() {
@@ -1967,6 +2008,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JSlider decaySlider;
     private javax.swing.JPanel decaySliderPanel;
     private javax.swing.JSpinner decaySpinner;
+    private javax.swing.JPanel depthProperty;
     private javax.swing.JCheckBox displayAlterationCheckBox;
     private javax.swing.JCheckBox displayNameCheckBox;
     private javax.swing.JCheckBox displayNoteCheckBox;
@@ -1978,6 +2020,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel envelopeTitlePanel;
     private javax.swing.JFileChooser fileDialog;
     private javax.swing.JMenu fileMenuItem;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler11;
     private javax.swing.Box.Filler filler12;
@@ -1990,6 +2033,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
     private javax.swing.JRadioButton flatRadioButton;
     private javax.swing.JLabel frequencyLabel;
     private javax.swing.JPanel frequencyProperty;
@@ -2090,6 +2134,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JSpinner xSpinner;
     private javax.swing.JLabel yLabel;
     private javax.swing.JSpinner ySpinner;
+    private javax.swing.JLabel zLabel;
+    private javax.swing.JSpinner zSpinner;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
@@ -2141,6 +2187,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         }
         
         this.setPositionSpinners(key);
+        this.zSpinner.setValue(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().indexOf(key));
         
         this.backgroundDisplayLabel.setBackground(key.getShape().getIdleAppearance().getColor());
         this.backgroundSunkenDisplayLabel.setBackground(key.getShape().getSunkenAppearance().getColor());
