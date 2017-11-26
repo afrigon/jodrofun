@@ -631,7 +631,7 @@ public class Window extends javax.swing.JFrame {
                 Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            //soundService.release(synthSound);
+            soundService.release(synthSound);
         });
     }
 
