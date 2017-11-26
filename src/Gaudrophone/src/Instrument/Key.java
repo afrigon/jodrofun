@@ -33,9 +33,9 @@ public class Key implements java.io.Serializable {
     private KeyShape shape = null;
     private Sound sound = null;
     private String name = null;
-    private Alteration displayAlteration = Alteration.Natural;
-    private Note displayNote = Note.A;
-    private int displayOctave = 4;
+    private Alteration alteration = Alteration.Natural;
+    private Note note = Note.A;
+    private int octave = 4;
     private int states = 144;
     
     // Constructors
@@ -82,9 +82,9 @@ public class Key implements java.io.Serializable {
         
         //Set name
         this.name = key.name;
-        this.displayNote = key.displayNote;
-        this.displayAlteration = key.displayAlteration;
-        this.displayOctave = key.displayOctave;
+        this.note = key.note;
+        this.alteration = key.alteration;
+        this.octave = key.octave;
     }
     
     // Setters
@@ -97,15 +97,15 @@ public class Key implements java.io.Serializable {
     }
     
     public void setNote(Note newNote) {
-        this.displayNote = newNote;
+        this.note = newNote;
     }
     
     public void setAlteration(Alteration newAlteration) {
-        this.displayAlteration = newAlteration;
+        this.alteration = newAlteration;
     }
     
     public void setOctave(int newOctave) {
-        this.displayOctave = newOctave;
+        this.octave = newOctave;
     }
     
     public void changeState(int keyState) {
@@ -122,15 +122,15 @@ public class Key implements java.io.Serializable {
     }
     
     public Note getNote() {
-        return this.displayNote;
+        return this.note;
     }
     
     public Alteration getAlteration() {
-        return this.displayAlteration;
+        return this.alteration;
     }
     
     public int getOctave() {
-        return this.displayOctave;
+        return this.octave;
     }
     
     public KeyShape getShape() {
