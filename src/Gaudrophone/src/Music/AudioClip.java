@@ -23,6 +23,7 @@
  */
 package Music;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -42,8 +43,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioClip extends Sound {
     private String path = null;
     private double speed;
+    private AudioFormat audioFormat;
+    private byte[] buffer;
     
-    private AudioInputStream audioInputStream = null;
+    //private AudioInputStream audioInputStream = null;
+    
     // Constructors
     public AudioClip(String newPath) {
         path = newPath;
@@ -53,10 +57,25 @@ public class AudioClip extends Sound {
             File file = new File(newPath);
             
             AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-            AudioFormat audioFormat = format.getFormat();
+            audioFormat = format.getFormat();
             
             InputStream inputStream = new FileInputStream(file);
-            audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            
+            AudioInputStream audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            
+            int byteRead = 0;
+            int offset = 0;
+            int fileLength = (int) file.length();
+            buffer =  new byte[(int) file.length()];
+            System.out.println("file length : " + fileLength);
+            
+            while (byteRead <= 0) {
+                //System.out.println("reading byte : " + byteRead);
+                //System.out.println("offset byte : " + offset);
+                byteRead = audioInputStream.read(buffer, offset, fileLength - offset);
+                offset += byteRead;
+            }
+            
             
         } catch (UnsupportedAudioFileException ex) {
             System.out.println("error clip");
@@ -70,7 +89,47 @@ public class AudioClip extends Sound {
     
     @Override
     public AudioInputStream getPlayingStream() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        int channels = audioFormat.getChannels();
+        int frameSize = audioFormat.getFrameSize();
+        int sampleSizeInBits = audioFormat.getSampleSizeInBits();
+        double sampleRate = audioFormat.getSampleRate();
+        
+        int sampleSizeInByte = frameSize/channels;
+        boolean isBigEndian = audioFormat.isBigEndian();
+        
+        System.out.println("AUDIO FORMAT ///// Channels : " + channels + " //// Frame size : " + frameSize + " //// Sample size in bits : " + sampleSizeInBits);
+        System.out.println("//// Sample size in bytes : " + sampleSizeInByte + " //// Big Endian : " + isBigEndian);
+        
+        byte[] envelopedBuffer = new byte[buffer.length];
+        
+        for (int i = 0; i < buffer.length/frameSize; i++) {
+            double time = ((double) i)/sampleRate;
+            
+            double amp = volume * envelope.getPlayingAmplitude(time * 1000.0);
+            
+            for (int j = 0; j < channels; j++) {
+                if (sampleSizeInByte == 1) {
+                    envelopedBuffer[frameSize * i + j] = (byte) (((double) buffer[frameSize * i + j]) * amp);
+                    
+                } else if (sampleSizeInByte == 2) {
+                    int firstBytePosition = frameSize * i + j * channels;
+                    short value = (short) ((buffer[firstBytePosition + 1] << 8) + (buffer[firstBytePosition] & 0xff));
+                    
+                    value = (short) (amp * ((double) value));
+                    
+                    envelopedBuffer[firstBytePosition] = (byte) (value & 0xff);
+                    envelopedBuffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
+                }
+            }
+            
+            
+            //buffer[frameSize * i] = (byte) (volume * envelope.getPlayingAmplitude(time * 1000.0));
+            //buffer[frameSize * i + 1] = buffer[channels * i];
+        }
+        
+        System.out.println("sending stream");
+        return new AudioInputStream(new ByteArrayInputStream(envelopedBuffer, 0, envelopedBuffer.length), audioFormat, envelopedBuffer.length);
     }
 
     @Override

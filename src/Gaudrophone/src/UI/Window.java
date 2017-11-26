@@ -621,16 +621,17 @@ public class Window extends javax.swing.JFrame {
                 Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            Sound synthSound = new SynthesizedSound();
+            //Sound synthSound = new SynthesizedSound();
+            Sound synthSound = new AudioClip("Audio001.wav");
             soundService.play(synthSound);
             
             try {
-                Thread.sleep(8000);
+                Thread.sleep(4000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            soundService.release(synthSound);
+            //soundService.release(synthSound);
         });
     }
 

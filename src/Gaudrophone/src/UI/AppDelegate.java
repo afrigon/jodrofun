@@ -31,11 +31,5 @@ public class AppDelegate {
     
     public static void main(String [] args) {
         AppDelegate.window.setVisible();
-        
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AppDelegate.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }
