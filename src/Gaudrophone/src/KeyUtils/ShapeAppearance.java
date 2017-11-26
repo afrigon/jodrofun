@@ -29,12 +29,14 @@ import java.io.IOException;
 
 public class ShapeAppearance implements java.io.Serializable {
     private Color backgroundColor;
+    private Color textColor;
     private String backgroundImagePath;
     private transient BufferedImage backgroundImage = null;
     
     public ShapeAppearance(Color color) {
         backgroundColor = color;
         backgroundImagePath = null;
+        textColor = new Color(65, 65, 65);
     }
     
     private void readObject(java.io.ObjectInputStream in) {
@@ -68,6 +70,10 @@ public class ShapeAppearance implements java.io.Serializable {
         backgroundColor = color;
     }
     
+    public void setTextColor(Color color) {
+        textColor = color;
+    }
+    
     public void setImage(String pathToImage) {
         backgroundImagePath = pathToImage;
         setImage();
@@ -80,6 +86,10 @@ public class ShapeAppearance implements java.io.Serializable {
     
     public Color getColor() {
         return backgroundColor;
+    }
+    
+    public Color getTextColor() {
+        return textColor;
     }
     
     public String getImagePath() {

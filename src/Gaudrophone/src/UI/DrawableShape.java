@@ -33,9 +33,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DrawableShape {
-    Key key;
-    GeneralPath.Double generalPath;
-    List<DrawableLine> lines;
+    private Key key;
+    private GeneralPath.Double generalPath;
+    private List<DrawableLine> lines;
     
     public DrawableShape (Key key) {
         this.key = key;

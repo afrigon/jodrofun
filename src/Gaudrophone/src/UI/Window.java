@@ -163,6 +163,18 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         backgroundSunkenDisplayLabel = new javax.swing.JLabel();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        textColorProperty = new javax.swing.JPanel();
+        textColorInfoLabel = new javax.swing.JLabel();
+        textColorSpacer = new javax.swing.JPanel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        textColorDisplayLabel = new javax.swing.JLabel();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        textSunkenColorProperty = new javax.swing.JPanel();
+        textSunkenColorLabel = new javax.swing.JLabel();
+        textSunkenColorSpacer = new javax.swing.JPanel();
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        textSunkenColorDisplayLabel = new javax.swing.JLabel();
+        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         bordersPanel = new javax.swing.JPanel();
         fullLineEditionPanel = new javax.swing.JPanel();
         linesColorProperty = new javax.swing.JPanel();
@@ -411,7 +423,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 101, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -898,6 +910,82 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         KeyShapeProperties.add(backgroundSunkenProperty);
 
+        textColorProperty.setBackground(new java.awt.Color(65, 65, 65));
+        textColorProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        textColorProperty.setMinimumSize(new java.awt.Dimension(125, 32));
+        textColorProperty.setPreferredSize(new java.awt.Dimension(375, 32));
+        textColorProperty.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
+
+        textColorInfoLabel.setBackground(new java.awt.Color(65, 65, 65));
+        textColorInfoLabel.setForeground(new java.awt.Color(255, 255, 255));
+        textColorInfoLabel.setText("Couleur du texte :");
+        textColorInfoLabel.setOpaque(true);
+        textColorProperty.add(textColorInfoLabel);
+
+        textColorSpacer.setBackground(new java.awt.Color(65, 65, 65));
+        textColorSpacer.setLayout(new java.awt.GridLayout());
+
+        filler10.setBackground(new java.awt.Color(65, 65, 65));
+        textColorSpacer.add(filler10);
+
+        textColorDisplayLabel.setBackground(new java.awt.Color(65, 65, 65));
+        textColorDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        textColorDisplayLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        textColorDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        textColorDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        textColorDisplayLabel.setOpaque(true);
+        textColorDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textColorDisplayLabelMouseClicked(evt);
+            }
+        });
+        textColorSpacer.add(textColorDisplayLabel);
+
+        filler11.setBackground(new java.awt.Color(65, 65, 65));
+        textColorSpacer.add(filler11);
+
+        textColorProperty.add(textColorSpacer);
+
+        KeyShapeProperties.add(textColorProperty);
+
+        textSunkenColorProperty.setBackground(new java.awt.Color(65, 65, 65));
+        textSunkenColorProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        textSunkenColorProperty.setMinimumSize(new java.awt.Dimension(125, 32));
+        textSunkenColorProperty.setPreferredSize(new java.awt.Dimension(375, 32));
+        textSunkenColorProperty.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
+
+        textSunkenColorLabel.setBackground(new java.awt.Color(65, 65, 65));
+        textSunkenColorLabel.setForeground(new java.awt.Color(255, 255, 255));
+        textSunkenColorLabel.setText("Couleur du texte enfoncée :");
+        textSunkenColorLabel.setOpaque(true);
+        textSunkenColorProperty.add(textSunkenColorLabel);
+
+        textSunkenColorSpacer.setBackground(new java.awt.Color(65, 65, 65));
+        textSunkenColorSpacer.setLayout(new java.awt.GridLayout());
+
+        filler12.setBackground(new java.awt.Color(65, 65, 65));
+        textSunkenColorSpacer.add(filler12);
+
+        textSunkenColorDisplayLabel.setBackground(new java.awt.Color(65, 65, 65));
+        textSunkenColorDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        textSunkenColorDisplayLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        textSunkenColorDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        textSunkenColorDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        textSunkenColorDisplayLabel.setOpaque(true);
+        textSunkenColorDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textSunkenColorDisplayLabelMouseClicked(evt);
+            }
+        });
+        textSunkenColorSpacer.add(textSunkenColorDisplayLabel);
+
+        filler13.setBackground(new java.awt.Color(65, 65, 65));
+        textSunkenColorSpacer.add(filler13);
+
+        textSunkenColorProperty.add(textSunkenColorSpacer);
+
+        KeyShapeProperties.add(textSunkenColorProperty);
+
         propertyPanel.add(KeyShapeProperties);
 
         tabbedPane.addTab("Général", propertyPanel);
@@ -956,9 +1044,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             bordersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bordersPanelLayout.createSequentialGroup()
                 .addComponent(linesColorProperty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 342, Short.MAX_VALUE)
                 .addComponent(fullLineEditionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(328, Short.MAX_VALUE))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("Lignes", bordersPanel);
@@ -1027,7 +1115,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         buttonAddImage.setBackground(new java.awt.Color(65, 65, 65));
         buttonAddImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnAddImage.png"))); // NOI18N
-        buttonAddImage.setToolTipText("Supprimer l'image");
+        buttonAddImage.setToolTipText("Ajouter une image");
         buttonAddImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonAddImage.setBorderPainted(false);
         buttonAddImage.setFocusable(false);
@@ -1057,7 +1145,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         buttonAddSunkenImage.setBackground(new java.awt.Color(65, 65, 65));
         buttonAddSunkenImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnAddSunkenImage.png"))); // NOI18N
-        buttonAddSunkenImage.setToolTipText("Supprimer l'image");
+        buttonAddSunkenImage.setToolTipText("Ajouter une image pour l'état enfoncée");
         buttonAddSunkenImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonAddSunkenImage.setBorderPainted(false);
         buttonAddSunkenImage.setFocusable(false);
@@ -1388,7 +1476,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_buttonAddSunkenImageActionPerformed
 
     private void backgroundDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundDisplayLabelMouseClicked
-        Color color = JColorChooser.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundDisplayLabel.getBackground());
         if (color != null) {
             GaudrophoneController.getController().setKeyColor(color);
             this.backgroundDisplayLabel.setBackground(color);
@@ -1396,7 +1484,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_backgroundDisplayLabelMouseClicked
 
     private void backgroundSunkenDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundSunkenDisplayLabelMouseClicked
-        Color color = JColorChooser.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundSunkenDisplayLabel.getBackground());
         if (color != null) {
             GaudrophoneController.getController().setKeySunkenColor(color);
             this.backgroundSunkenDisplayLabel.setBackground(color);
@@ -1404,7 +1492,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_backgroundSunkenDisplayLabelMouseClicked
 
     private void outlineDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outlineDisplayLabelMouseClicked
-        Color color = JColorChooser.showDialog(this, "Choisir une couleur", GaudrophoneController.getController().getKeyColor());
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", outlineDisplayLabel.getBackground());
         if (color != null) {
             GaudrophoneController.getController().setAllLineColor(color);
             this.outlineDisplayLabel.setBackground(color);
@@ -1431,6 +1519,22 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void tuningSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tuningSpinnerStateChanged
         GaudrophoneController.getController().setTuning((int)this.tuningSpinner.getValue());
     }//GEN-LAST:event_tuningSpinnerStateChanged
+
+    private void textColorDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textColorDisplayLabelMouseClicked
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", textColorDisplayLabel.getBackground());
+        if (color != null) {
+            GaudrophoneController.getController().setKeyTextColor(color);
+            this.textColorDisplayLabel.setBackground(color);
+        }
+    }//GEN-LAST:event_textColorDisplayLabelMouseClicked
+
+    private void textSunkenColorDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSunkenColorDisplayLabelMouseClicked
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", textSunkenColorDisplayLabel.getBackground());
+        if (color != null) {
+            GaudrophoneController.getController().setKeySunkenTextColor(color);
+            this.textSunkenColorDisplayLabel.setBackground(color);
+        }
+    }//GEN-LAST:event_textSunkenColorDisplayLabelMouseClicked
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -1608,6 +1712,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JFileChooser fileDialog;
     private javax.swing.JMenu fileMenuItem;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler13;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
@@ -1670,6 +1778,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JSpinner sustainSpinner;
     private javax.swing.JRadioButton synthRadioButton;
     private javax.swing.JTabbedPane tabbedPane;
+    private javax.swing.JLabel textColorDisplayLabel;
+    private javax.swing.JLabel textColorInfoLabel;
+    private javax.swing.JPanel textColorProperty;
+    private javax.swing.JPanel textColorSpacer;
+    private javax.swing.JLabel textSunkenColorDisplayLabel;
+    private javax.swing.JLabel textSunkenColorLabel;
+    private javax.swing.JPanel textSunkenColorProperty;
+    private javax.swing.JPanel textSunkenColorSpacer;
     private javax.swing.JLabel tuningLabel;
     private javax.swing.JPanel tuningProperty;
     private javax.swing.JSpinner tuningSpinner;
@@ -1722,7 +1838,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         
         this.backgroundDisplayLabel.setBackground(key.getShape().getIdleAppearance().getColor());
         this.backgroundSunkenDisplayLabel.setBackground(key.getShape().getSunkenAppearance().getColor());
-        //TODO: Change the line edition interface (Maybe in a second tab ??)
+        this.textColorDisplayLabel.setBackground(key.getShape().getIdleAppearance().getTextColor());
+        this.textSunkenColorDisplayLabel.setBackground(key.getShape().getSunkenAppearance().getTextColor());
+        
+        //TODO: Change the line edition interface
         if (true/*if outile is a single color*/) {
             this.outlineDisplayLabel.setBackground(key.getShape().getLines().get(0).getColor());
             this.outlineDisplayLabel.setText("");

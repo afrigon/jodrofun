@@ -131,14 +131,6 @@ public class GaudrophoneController {
         }
     }
     
-    public Color getKeyColor() {
-        Key key = selectionManager.getSelectedKey();
-        if (key != null) {
-            return key.getShape().getIdleAppearance().getColor();
-        }
-        return new Color(0x5a98fc);
-    }
-    
     public void setKeySunkenColor(Color newColor) {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
@@ -147,12 +139,20 @@ public class GaudrophoneController {
         }
     }
     
-    public Color getKeySunkenColor() {
+    public void setKeyTextColor(Color newColor) {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            return key.getShape().getSunkenAppearance().getColor();
+            key.getShape().getIdleAppearance().setTextColor(newColor);
+            this.canvasManager.delegate.shouldRedraw();
         }
-        return new Color(0x5a98fc);
+    }
+    
+    public void setKeySunkenTextColor(Color newColor) {
+        Key key = selectionManager.getSelectedKey();
+        if (key != null) {
+            key.getShape().getSunkenAppearance().setTextColor(newColor);
+            this.canvasManager.delegate.shouldRedraw();
+        }
     }
     
     public void setKeyImage(String path) {

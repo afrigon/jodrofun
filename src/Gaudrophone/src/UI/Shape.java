@@ -26,10 +26,8 @@ package UI;
 import KeyUtils.Vector2;
 import java.util.Arrays;
 import java.util.List;
-/**
- *
- * @author Olivier
- */
+
+
 public class Shape {
     private List<Vector2> points;
     private Vector2 position;

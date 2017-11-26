@@ -292,7 +292,14 @@ public class ShapeDrawer {
             Rectangle2D boundsText = font.getStringBounds(text, frc);
             //Find the position of the first line in the shape (try to center it)
             int posY = (int)(boundingBox.getY() + (boundingBox.getHeight() - boundsText.getHeight() * (lines.length - 1)) / 2);
-            g2.setColor(Color.BLACK);
+            
+            //Get the text color acording to the shape state
+            if ((keyState & KeyState.clicked.getValue()) == 0) {
+                g2.setColor(shape.getKey().getShape().getIdleAppearance().getTextColor());
+            } else {
+                g2.setColor(shape.getKey().getShape().getSunkenAppearance().getTextColor());
+            }
+            
             //Draw the strings
             for (String line : lines) {
                 if(!"".equals(line)) {
