@@ -28,6 +28,7 @@ import Instrument.Guitar;
 import Instrument.Key;
 import Instrument.KeyState;
 import Instrument.Note;
+import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.TriangleKeyShape;
 import KeyUtils.Vector2;
@@ -93,6 +94,19 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         displayOctaveCheckBox = new javax.swing.JCheckBox();
         displayAlterationCheckBox = new javax.swing.JCheckBox();
+        sizeWrapper = new javax.swing.JPanel();
+        sizeTitleWrapper = new javax.swing.JPanel();
+        colorTitle1 = new javax.swing.JLabel();
+        positionProperty = new javax.swing.JPanel();
+        xLabel = new javax.swing.JLabel();
+        xSpinner = new javax.swing.JSpinner();
+        yLabel = new javax.swing.JLabel();
+        ySpinner = new javax.swing.JSpinner();
+        sizeProperty = new javax.swing.JPanel();
+        widthLabel = new javax.swing.JLabel();
+        widthSpinner = new javax.swing.JSpinner();
+        heightLabel = new javax.swing.JLabel();
+        heightSpinner = new javax.swing.JSpinner();
         colorsPanel = new javax.swing.JPanel();
         colorWrapper = new javax.swing.JPanel();
         colorTitle = new javax.swing.JLabel();
@@ -137,7 +151,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         jLabel3 = new javax.swing.JLabel();
         borderSpacer1 = new javax.swing.JPanel();
         filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        outlineDisplayLabel1 = new javax.swing.JLabel();
+        borderEditButton = new javax.swing.JLabel();
         filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         audioPanel = new javax.swing.JPanel();
         KeyProperties = new javax.swing.JPanel();
@@ -275,7 +289,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         informationWrapper.setBackground(new java.awt.Color(65, 65, 65));
         informationWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         informationWrapper.setPreferredSize(new java.awt.Dimension(50, 20));
-        informationWrapper.setLayout(new java.awt.GridLayout());
+        informationWrapper.setLayout(new java.awt.GridLayout(1, 0));
 
         informationTitle.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         informationTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -391,6 +405,102 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         visualWrapper.add(showNameProperty);
 
+        sizeWrapper.setBackground(new java.awt.Color(65, 65, 65));
+        sizeWrapper.setLayout(new javax.swing.BoxLayout(sizeWrapper, javax.swing.BoxLayout.PAGE_AXIS));
+
+        sizeTitleWrapper.setBackground(new java.awt.Color(65, 65, 65));
+        sizeTitleWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        sizeTitleWrapper.setPreferredSize(new java.awt.Dimension(50, 20));
+        sizeTitleWrapper.setLayout(new java.awt.GridLayout(1, 0));
+
+        colorTitle1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        colorTitle1.setForeground(new java.awt.Color(255, 255, 255));
+        colorTitle1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        colorTitle1.setText("Coordonnées");
+        colorTitle1.setToolTipText("");
+        colorTitle1.setPreferredSize(new java.awt.Dimension(72, 0));
+        sizeTitleWrapper.add(colorTitle1);
+
+        sizeWrapper.add(sizeTitleWrapper);
+
+        positionProperty.setBackground(new java.awt.Color(65, 65, 65));
+        positionProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        positionProperty.setMinimumSize(new java.awt.Dimension(125, 32));
+        positionProperty.setPreferredSize(new java.awt.Dimension(0, 0));
+        positionProperty.setLayout(new java.awt.GridLayout(1, 10, 10, 0));
+
+        xLabel.setBackground(new java.awt.Color(65, 65, 65));
+        xLabel.setForeground(new java.awt.Color(255, 255, 255));
+        xLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        xLabel.setText("X :");
+        xLabel.setOpaque(true);
+        positionProperty.add(xLabel);
+
+        xSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        xSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                xSpinnerStateChanged(evt);
+            }
+        });
+        positionProperty.add(xSpinner);
+
+        yLabel.setBackground(new java.awt.Color(65, 65, 65));
+        yLabel.setForeground(new java.awt.Color(255, 255, 255));
+        yLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        yLabel.setText("Y :");
+        yLabel.setOpaque(true);
+        positionProperty.add(yLabel);
+
+        ySpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        ySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ySpinnerStateChanged(evt);
+            }
+        });
+        positionProperty.add(ySpinner);
+
+        sizeWrapper.add(positionProperty);
+
+        sizeProperty.setBackground(new java.awt.Color(65, 65, 65));
+        sizeProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        sizeProperty.setMinimumSize(new java.awt.Dimension(125, 32));
+        sizeProperty.setPreferredSize(new java.awt.Dimension(0, 0));
+        sizeProperty.setLayout(new java.awt.GridLayout(1, 10, 10, 0));
+
+        widthLabel.setBackground(new java.awt.Color(65, 65, 65));
+        widthLabel.setForeground(new java.awt.Color(255, 255, 255));
+        widthLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        widthLabel.setText("Largeur :");
+        widthLabel.setOpaque(true);
+        sizeProperty.add(widthLabel);
+
+        widthSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        widthSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                widthSpinnerStateChanged(evt);
+            }
+        });
+        sizeProperty.add(widthSpinner);
+
+        heightLabel.setBackground(new java.awt.Color(65, 65, 65));
+        heightLabel.setForeground(new java.awt.Color(255, 255, 255));
+        heightLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        heightLabel.setText("Hauteur :");
+        heightLabel.setOpaque(true);
+        sizeProperty.add(heightLabel);
+
+        heightSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 4000.0d, 1.0d));
+        heightSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                heightSpinnerStateChanged(evt);
+            }
+        });
+        sizeProperty.add(heightSpinner);
+
+        sizeWrapper.add(sizeProperty);
+
+        visualWrapper.add(sizeWrapper);
+
         colorsPanel.setBackground(new java.awt.Color(65, 65, 65));
         colorsPanel.setPreferredSize(new java.awt.Dimension(0, 0));
         colorsPanel.setLayout(new javax.swing.BoxLayout(colorsPanel, javax.swing.BoxLayout.PAGE_AXIS));
@@ -398,12 +508,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         colorWrapper.setBackground(new java.awt.Color(65, 65, 65));
         colorWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         colorWrapper.setPreferredSize(new java.awt.Dimension(50, 20));
-        colorWrapper.setLayout(new java.awt.GridLayout());
+        colorWrapper.setLayout(new java.awt.GridLayout(1, 0));
 
         colorTitle.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         colorTitle.setForeground(new java.awt.Color(255, 255, 255));
         colorTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        colorTitle.setText("Couleur");
+        colorTitle.setText("Couleurs");
         colorTitle.setToolTipText("");
         colorTitle.setPreferredSize(new java.awt.Dimension(72, 0));
         colorWrapper.add(colorTitle);
@@ -413,7 +523,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         normalWrapper.setBackground(new java.awt.Color(65, 65, 65));
         normalWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         normalWrapper.setPreferredSize(new java.awt.Dimension(50, 0));
-        normalWrapper.setLayout(new java.awt.GridLayout());
+        normalWrapper.setLayout(new java.awt.GridLayout(1, 0));
 
         normalTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         normalTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -496,7 +606,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         sunkenWrapper.setBackground(new java.awt.Color(65, 65, 65));
         sunkenWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         sunkenWrapper.setPreferredSize(new java.awt.Dimension(50, 0));
-        sunkenWrapper.setLayout(new java.awt.GridLayout());
+        sunkenWrapper.setLayout(new java.awt.GridLayout(1, 0));
 
         sunkenTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         sunkenTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -587,7 +697,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         borderWrapper.setBackground(new java.awt.Color(65, 65, 65));
         borderWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         borderWrapper.setPreferredSize(new java.awt.Dimension(50, 20));
-        borderWrapper.setLayout(new java.awt.GridLayout());
+        borderWrapper.setLayout(new java.awt.GridLayout(1, 0));
 
         borderTitle.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         borderTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -626,12 +736,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         jPanel1.setBackground(new java.awt.Color(65, 65, 65));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         jPanel1.setPreferredSize(new java.awt.Dimension(0, 0));
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel2.setBackground(new java.awt.Color(65, 65, 65));
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Épaisseur :");
         jPanel1.add(jLabel2);
+
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 20, 1));
         jPanel1.add(jSpinner1);
 
         lineControlWrapper.add(jPanel1);
@@ -639,7 +751,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         jPanel2.setBackground(new java.awt.Color(65, 65, 65));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         jPanel2.setPreferredSize(new java.awt.Dimension(0, 0));
-        jPanel2.setLayout(new java.awt.GridLayout());
+        jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel3.setBackground(new java.awt.Color(65, 65, 65));
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -647,24 +759,19 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         jPanel2.add(jLabel3);
 
         borderSpacer1.setBackground(new java.awt.Color(65, 65, 65));
-        borderSpacer1.setLayout(new java.awt.GridLayout());
+        borderSpacer1.setLayout(new java.awt.GridLayout(1, 0));
 
         filler14.setBackground(new java.awt.Color(65, 65, 65));
         borderSpacer1.add(filler14);
 
-        outlineDisplayLabel1.setBackground(new java.awt.Color(65, 65, 65));
-        outlineDisplayLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        outlineDisplayLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        outlineDisplayLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        outlineDisplayLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        outlineDisplayLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        outlineDisplayLabel1.setOpaque(true);
-        outlineDisplayLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                outlineDisplayLabel1MouseClicked(evt);
-            }
-        });
-        borderSpacer1.add(outlineDisplayLabel1);
+        borderEditButton.setBackground(new java.awt.Color(65, 65, 65));
+        borderEditButton.setForeground(new java.awt.Color(255, 255, 255));
+        borderEditButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        borderEditButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        borderEditButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        borderEditButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        borderEditButton.setOpaque(true);
+        borderSpacer1.add(borderEditButton);
 
         filler15.setBackground(new java.awt.Color(65, 65, 65));
         borderSpacer1.add(filler15);
@@ -689,7 +796,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         audioPanel.setLayout(new javax.swing.BoxLayout(audioPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         KeyProperties.setBackground(new java.awt.Color(65, 65, 65));
-        KeyProperties.setAlignmentX(0.5F);
         KeyProperties.setMinimumSize(new java.awt.Dimension(300, 200));
         KeyProperties.setPreferredSize(new java.awt.Dimension(415, 200));
         KeyProperties.setLayout(new javax.swing.BoxLayout(KeyProperties, javax.swing.BoxLayout.Y_AXIS));
@@ -702,7 +808,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         hauteurTitlePanel.setBackground(new java.awt.Color(65, 65, 65));
         hauteurTitlePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         hauteurTitlePanel.setPreferredSize(new java.awt.Dimension(50, 46));
-        hauteurTitlePanel.setLayout(new java.awt.GridLayout());
+        hauteurTitlePanel.setLayout(new java.awt.GridLayout(1, 0));
 
         hauteurTitle.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         hauteurTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -719,7 +825,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         noteNameProperty.setForeground(new java.awt.Color(255, 255, 255));
         noteNameProperty.setMinimumSize(new java.awt.Dimension(125, 32));
         noteNameProperty.setPreferredSize(new java.awt.Dimension(50, 32));
-        noteNameProperty.setLayout(new java.awt.GridLayout());
+        noteNameProperty.setLayout(new java.awt.GridLayout(1, 0));
 
         noteNameLabel.setBackground(new java.awt.Color(65, 65, 65));
         noteNameLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -1036,7 +1142,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         timbreTitlePanel.setBackground(new java.awt.Color(65, 65, 65));
         timbreTitlePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         timbreTitlePanel.setPreferredSize(new java.awt.Dimension(50, 46));
-        timbreTitlePanel.setLayout(new java.awt.GridLayout());
+        timbreTitlePanel.setLayout(new java.awt.GridLayout(1, 0));
 
         timbreTitle.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         timbreTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -1679,9 +1785,21 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         }
     }//GEN-LAST:event_textSunkenColorDisplayLabelMouseClicked
 
-    private void outlineDisplayLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outlineDisplayLabel1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_outlineDisplayLabel1MouseClicked
+    private void xSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSpinnerStateChanged
+        GaudrophoneController.getController().setKeyPosition(new Vector2((double)this.xSpinner.getValue(), (double)this.ySpinner.getValue()));
+    }//GEN-LAST:event_xSpinnerStateChanged
+
+    private void ySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ySpinnerStateChanged
+        GaudrophoneController.getController().setKeyPosition(new Vector2((double)this.xSpinner.getValue(), (double)this.ySpinner.getValue()));
+    }//GEN-LAST:event_ySpinnerStateChanged
+
+    private void widthSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_widthSpinnerStateChanged
+        GaudrophoneController.getController().setKeySize(new Vector2((double)this.widthSpinner.getValue(), (double)this.heightSpinner.getValue()));
+    }//GEN-LAST:event_widthSpinnerStateChanged
+
+    private void heightSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_heightSpinnerStateChanged
+        GaudrophoneController.getController().setKeySize(new Vector2((double)this.widthSpinner.getValue(), (double)this.heightSpinner.getValue()));
+    }//GEN-LAST:event_heightSpinnerStateChanged
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -1825,6 +1943,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel backgroundSpacer;
     private javax.swing.JLabel backgroundSunkenDisplayLabel;
     private javax.swing.JLabel backgroundSunkenLabel;
+    private javax.swing.JLabel borderEditButton;
     private javax.swing.JPanel borderPanel;
     private javax.swing.JPanel borderSpacer1;
     private javax.swing.JLabel borderTitle;
@@ -1839,6 +1958,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JButton buttonRemoveSunkenImage;
     private javax.swing.Box.Filler canvasPannel;
     private javax.swing.JLabel colorTitle;
+    private javax.swing.JLabel colorTitle1;
     private javax.swing.JPanel colorWrapper;
     private javax.swing.JPanel colorsPanel;
     private javax.swing.JMenuItem createRectangleMenuItem;
@@ -1877,6 +1997,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel generalProperties;
     private javax.swing.JLabel hauteurTitle;
     private javax.swing.JPanel hauteurTitlePanel;
+    private javax.swing.JLabel heightLabel;
+    private javax.swing.JSpinner heightSpinner;
     private javax.swing.JLabel informationTitle;
     private javax.swing.JPanel informationWrapper;
     private javax.swing.JMenu insertMenuItem;
@@ -1911,7 +2033,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel octaveLabel;
     private javax.swing.JSpinner octaveSpinner;
     private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JLabel outlineDisplayLabel1;
+    private javax.swing.JPanel positionProperty;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JLabel readSpeedLabel;
     private javax.swing.JPanel readSpeedProperty;
@@ -1927,6 +2049,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JRadioButton sharpRadioButton;
     private javax.swing.JPanel showNameProperty;
     private javax.swing.JLabel showNoteNameLabel;
+    private javax.swing.JPanel sizeProperty;
+    private javax.swing.JPanel sizeTitleWrapper;
+    private javax.swing.JPanel sizeWrapper;
     private javax.swing.JSplitPane splitWindow;
     private javax.swing.JPanel sunkenProperty;
     private javax.swing.JPanel sunkenSpacer;
@@ -1959,9 +2084,26 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel waveFormLabel;
     private javax.swing.JPanel waveFormProperty;
     private javax.swing.JComboBox<String> waveformComboBox;
+    private javax.swing.JLabel widthLabel;
+    private javax.swing.JSpinner widthSpinner;
+    private javax.swing.JLabel xLabel;
+    private javax.swing.JSpinner xSpinner;
+    private javax.swing.JLabel yLabel;
+    private javax.swing.JSpinner ySpinner;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
+    //Set the X, Y, width and height spinners
+    private void setPositionSpinners(Key key) {
+        Vector2 origin = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(key.getShape().getCorner(KeyShape.Corner.TopLeft));
+        Vector2 bottomRightOrigin = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(key.getShape().getCorner(KeyShape.Corner.BottomRight));
+        Vector2 size = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
+        this.xSpinner.setValue((double)Math.round(origin.getX()));
+        this.ySpinner.setValue((double)Math.round(origin.getY()));
+        this.widthSpinner.setValue((double)Math.round(size.getX()));
+        this.heightSpinner.setValue((double)Math.round(size.getY()));
+    }
+    
     @Override
     public void didSelectKey(Key key) {
         this.keyNameField.setText(key.getName());
@@ -1998,6 +2140,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.waveformComboBox.setSelectedItem(sound.getWaveform());
         }
         
+        this.setPositionSpinners(key);
+        
         this.backgroundDisplayLabel.setBackground(key.getShape().getIdleAppearance().getColor());
         this.backgroundSunkenDisplayLabel.setBackground(key.getShape().getSunkenAppearance().getColor());
         this.textColorDisplayLabel.setBackground(key.getShape().getIdleAppearance().getTextColor());
@@ -2030,5 +2174,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     @Override
     public void shouldUpdateProprietyPannelFor(Key key) {
         this.didSelectKey(key);
+    }
+
+    @Override
+    public void didMoveKey(Key key) {
+        this.setPositionSpinners(key);
+    }
+
+    @Override
+    public void didMovePoint(Key key) {
+        this.setPositionSpinners(key);
     }
 }

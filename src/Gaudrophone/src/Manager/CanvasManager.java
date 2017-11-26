@@ -25,7 +25,6 @@ package Manager;
 
 import Instrument.Key;
 import Instrument.KeyState;
-import KeyUtils.KeyShape;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import Music.SynthesizedSound;
@@ -206,7 +205,7 @@ public class CanvasManager {
                 break;
             case EditKey :
                 if(this.draggedShape != null) {
-                    this.draggedShape.getKey().getShape().translate(
+                    GaudrophoneController.getController().moveKey(
                             this.convertPixelToWorld(
                             (int)(x - this.clickPosition.getX()),
                             (int)(y - this.clickPosition.getY())));

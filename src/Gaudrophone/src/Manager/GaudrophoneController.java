@@ -92,10 +92,33 @@ public class GaudrophoneController {
         }
     }
     
+    public void setKeyPosition(Vector2 position) {
+        Key key = selectionManager.getSelectedKey();
+        if (key != null) {
+            position = this.canvasManager.convertPixelToWorld((int)position.getX(), (int)position.getY());
+            key.getShape().translate(position.sub(key.getShape().getCorner(KeyShape.Corner.TopLeft)));
+            this.delegate.didMoveKey(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
+    }
+    
     public void moveKey(Vector2 translation) {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().translate(translation);
+            this.delegate.didMoveKey(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
+    }
+    
+    public void setKeySize(Vector2 size) {
+        Key key = selectionManager.getSelectedKey();
+        if (key != null) {
+            size = this.canvasManager.convertPixelToWorld((int)size.getX(), (int)size.getY());
+            Vector2 origin = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(key.getShape().getCorner(KeyShape.Corner.TopLeft));
+            Vector2 bottomRightOrigin = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(key.getShape().getCorner(KeyShape.Corner.BottomRight));
+            Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
+            key.getShape().stretch(size.sub(oldSize));
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -117,9 +140,13 @@ public class GaudrophoneController {
     }
     
     public void movePoint(Vector2 translation) {
-        this.selectionManager.getSelectedKey().getShape().getPoints().set(
-                this.selectionManager.getSelectedPoint(),
-                this.selectionManager.getSelectedKey().getShape().getPoints().get(this.selectionManager.getSelectedPoint()).add(translation));
+        Key key = selectionManager.getSelectedKey();
+        int point = selectionManager.getSelectedPoint();
+        if (key != null && point != -1) {
+            key.getShape().getPoints().set(point, key.getShape().getPoints().get(point).add(translation));
+            this.delegate.didMovePoint(key);
+        }
+        
     }
     
     public void curveLine(Vector2 translation) {
