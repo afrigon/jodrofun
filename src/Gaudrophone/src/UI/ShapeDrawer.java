@@ -33,19 +33,20 @@ import java.awt.image.BufferedImage;
 import java.awt.TexturePaint;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
+import java.awt.BasicStroke;
 import java.util.List;
 import Instrument.KeyState;
+import Manager.GaudrophoneController;
 
-/**
- *
- * @author Alexandre
- */
 public class ShapeDrawer {
-    //Construtor
-    public ShapeDrawer() {}
+    private final Color SELECTION_COLOR = new Color(0xf9a825);
+    private final Color POINTS_COLOR = new Color(0xe0e0e0);
+    
+    private Rectangle2D cs = new Rectangle2D.Double();
+    private DrawableShape selectedKey = null;
     
     //Draw a single shape on the graphic object
-    public static void drawShape(Graphics2D g2, DrawableShape shape) {
+    public void drawShape(Graphics2D g2, DrawableShape shape) {
         try {
             //Variables
             int keyState = shape.getKey().getStates();
@@ -56,21 +57,36 @@ public class ShapeDrawer {
             //  FALSE use idle appearence (same here)
             if((keyState & KeyState.clicked.getValue()) != 0) {
                 BufferedImage img = shape.getKey().getShape().getSunkenAppearance().getImage();
-                if(img != null)
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth(), img.getHeight())));
+                if(img != null) {
+                    double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(
+                            boundingBox.getX() + (boundingBox.getWidth() - img.getWidth() * max) / 2,
+                            boundingBox.getY() + (boundingBox.getHeight() - img.getHeight() * max) / 2,
+                            img.getWidth() * max,
+                            img.getHeight() * max)));
+                }
                 else
                     g2.setColor(shape.getKey().getShape().getSunkenAppearance().getColor());
             }
             else {
                 BufferedImage img = shape.getKey().getShape().getIdleAppearance().getImage();
-                if(img != null)
-                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(boundingBox.getX(), boundingBox.getY(), img.getWidth(), img.getHeight())));
+                if(img != null) {
+                    double max = Math.max(boundingBox.getWidth() / img.getWidth(), boundingBox.getHeight() / img.getHeight());
+                    g2.setPaint(new TexturePaint(img, new Rectangle2D.Double(
+                            boundingBox.getX() + (boundingBox.getWidth() - img.getWidth() * max) / 2,
+                            boundingBox.getY() + (boundingBox.getHeight() - img.getHeight() * max) / 2,
+                            img.getWidth() * max,
+                            img.getHeight() * max)));
+                }
                 else
                     g2.setColor(shape.getKey().getShape().getIdleAppearance().getColor());
             }
             
             //Draw the shape
             g2.fill(shape.getShape());
+            
+            //Draw weird cross-lines in the middle
+            drawCrossLines(g2, shape.getKey().getShape().getCrossLines(), shape);
             
             //Draw each border lines
             drawLines(g2, shape.getLines());
@@ -90,12 +106,14 @@ public class ShapeDrawer {
     }
     
     //Draw mutliple shapes on a size X canvas
-    public static void drawShapes(Graphics2D g2, List<DrawableShape> shapes, Rectangle2D canvasSize) {
+    public void drawShapes(Graphics2D g2, List<DrawableShape> shapes, Rectangle2D canvasSize) {
         try {
+            cs = canvasSize;
             //Get a clip of the size of the canvas (for the search mask)
             Area clip = new Area(canvasSize);
             //True if something is searched (at least one key is valid)
             boolean searching = false;
+            this.selectedKey = null;
             
             //Draw all shapes using the drawShape function
             for(DrawableShape s : shapes) {
@@ -106,12 +124,36 @@ public class ShapeDrawer {
                     clip.subtract(new Area(s.getShape()));
                     searching = true;
                 }
+                
+                if((s.getKey().getStates() & KeyState.selected.getValue()) != 0) {
+                    this.selectedKey = s;
+                }
             }
+            
+            if(this.selectedKey != null) {
+                //Draw a dashed border around the selected shape
+                Rectangle2D boundingBox = selectedKey.getShape().getBounds2D();
+                float[] f = {4, 2};
+                g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
+                g2.setColor(SELECTION_COLOR);
+                g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
+                
+                //Prepare the corner dots
+                this.selectedKey.setDots();
+                
+                //Draw the corner dots of the selected shape
+                g2.setColor(POINTS_COLOR);
+                for(java.awt.geom.Ellipse2D dot : DrawableShape.getDot()) {
+                    g2.fill(dot);
+                }
+            }
+            
             //Place the black mask if searching
             if(searching) {
-                g2.clip(clip);
+                g2.setClip(clip);
                 g2.setColor(new Color(0, 0, 0, 60));
-                g2.fill(canvasSize);
+                g2.fill(cs);
+                g2.setClip(this.cs);
             }
         }
         catch (Exception ex) {
@@ -120,7 +162,7 @@ public class ShapeDrawer {
     }
     
     //Draw border lines of a shape
-    private static void drawLines(Graphics2D g2, List<DrawableLine> lines) {
+    private void drawLines(Graphics2D g2, List<DrawableLine> lines) {
         try {
             //First corner of all the shape, and the last corner used
             Point2D corner = null, firstCorner = null;
@@ -194,8 +236,42 @@ public class ShapeDrawer {
         }
     }
     
+    private void drawCrossLines(Graphics2D g2, KeyUtils.KeyLine[] lines, DrawableShape shape) {
+        if(g2 == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : g2 is undefined.");
+        if(shape == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : shape is undefined.");
+        if(lines == null)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : lines is undefined.");
+        if(lines.length != 4)
+            throw new java.lang.IllegalArgumentException("drawCrossLines : lines size expected 4, got " + lines.length + ".");
+        
+        g2.clip(shape.getShape());
+        for(int i = 0; i < lines.length; ++i) {
+            if(lines[i] != null) {
+                //Set color and thickness
+                g2.setColor(lines[i].getColor());
+                g2.setStroke(new BasicStroke(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(lines[i].getThickness()),
+                        BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                //VARIABLES
+                Line2D line = new Line2D.Double();
+                Rectangle2D bounds = shape.getShape().getBounds2D();
+                //Create line according to index
+                switch(i) {
+                    case 0: line.setLine(bounds.getCenterX(), bounds.getMinY(), bounds.getCenterX(), bounds.getMaxY()); break;
+                    case 1: line.setLine(bounds.getMinX(), bounds.getCenterY(), bounds.getMaxX(), bounds.getCenterY()); break;
+                    case 2: line.setLine(bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()); break;
+                    case 3: line.setLine(bounds.getMaxX(), bounds.getMinY(), bounds.getMinX(), bounds.getMaxY()); break;
+                }
+                //Draw previewsly set line
+                g2.draw(line);
+            }
+        }
+        g2.setClip(this.cs);
+    }
+    
     //Draw the key information (name, etc.)
-    private static void drawText(Graphics2D g2, DrawableShape shape) {
+    private void drawText(Graphics2D g2, DrawableShape shape) {
         if(g2 == null)
             throw new java.lang.IllegalArgumentException("drawText : g2 is undefined.");
         if(shape == null)
@@ -208,13 +284,13 @@ public class ShapeDrawer {
         
         //Find the flags and if they are set, add the information
         if((keyState & KeyState.displayName.getValue()) != 0)
-            text += "\n" +shape.getKey().getName();
+            text += shape.getKey().getName() + "\n";
         if((keyState & KeyState.displayNote.getValue()) != 0)
-            text += "\n" +shape.getKey().getNote();
-        if((keyState & KeyState.displayAlteration.getValue()) != 0)
-            text += "\n" +shape.getKey().getAlteration();
+            text += shape.getKey().getNote();
         if((keyState & KeyState.displayOctave.getValue()) != 0)
-            text += "\n" +shape.getKey().getOctave();
+            text += shape.getKey().getOctave();
+        if((keyState & KeyState.displayAlteration.getValue()) != 0)
+            text += " " + shape.getKey().getAlteration();
         
         //If there is something (at least one flag)
         if(!"".equals(text)) {
@@ -228,7 +304,14 @@ public class ShapeDrawer {
             Rectangle2D boundsText = font.getStringBounds(text, frc);
             //Find the position of the first line in the shape (try to center it)
             int posY = (int)(boundingBox.getY() + (boundingBox.getHeight() - boundsText.getHeight() * (lines.length - 1)) / 2);
-            g2.setColor(Color.BLACK);
+            
+            //Get the text color acording to the shape state
+            if ((keyState & KeyState.clicked.getValue()) == 0) {
+                g2.setColor(shape.getKey().getShape().getIdleAppearance().getTextColor());
+            } else {
+                g2.setColor(shape.getKey().getShape().getSunkenAppearance().getTextColor());
+            }
+            
             //Draw the strings
             for (String line : lines) {
                 if(!"".equals(line)) {
@@ -242,7 +325,7 @@ public class ShapeDrawer {
     }
     
     //Get the line with the thickness applied (second line)
-    private static Line2D.Double getLineWithThickness(Line2D.Double line, int thickness) {
+    private Line2D.Double getLineWithThickness(Line2D.Double line, int thickness) {
         if (line == null) throw new java.lang.IllegalArgumentException("getLineWithThickness : Line argument is null.");
         else if (thickness == 0) return line;
         
@@ -265,7 +348,7 @@ public class ShapeDrawer {
     }
     
     //Get a close to infinity extended line
-    private static Line2D.Double getExtendedLine(Line2D.Double line) {
+    private Line2D.Double getExtendedLine(Line2D.Double line) {
         if (line == null) throw new java.lang.IllegalArgumentException("getExtendedLine : Line argument is null.");
         
         //Line is vertical, just return a big line
@@ -290,7 +373,7 @@ public class ShapeDrawer {
     }
     
     //Find the intersection point of two lines
-    private static Point2D getIntersection(Line2D.Double line1, Line2D.Double line2) {
+    private Point2D getIntersection(Line2D.Double line1, Line2D.Double line2) {
         //They don't collide, well shit.
         if(!line1.intersectsLine(line2)) return null;
         

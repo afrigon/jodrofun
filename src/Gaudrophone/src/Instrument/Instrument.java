@@ -25,7 +25,6 @@ package Instrument;
 
 import KeyUtils.KeyShape;
 import java.util.ArrayList;
-import java.util.List;
 import KeyUtils.Vector2;
 
 public class Instrument implements java.io.Serializable {
@@ -39,15 +38,15 @@ public class Instrument implements java.io.Serializable {
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public ArrayList<Key> getKeys() {
-        return keys;
+        return this.keys;
     }
     
     public void setName(String newName) {
-        name = newName;
+        this.name = newName;
     }
     
     public Vector2 getBoundingBox() {
@@ -75,6 +74,6 @@ public class Instrument implements java.io.Serializable {
     }
     
     public void removeKey(Key keyToRemove) {
-        keys.remove(keyToRemove);
+        this.keys.remove(keyToRemove);
     }
 }

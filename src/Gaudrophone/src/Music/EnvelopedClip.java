@@ -28,10 +28,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 
-/**
- *
- * @author Olivier
- */
 public class EnvelopedClip {
     private Clip clip = null;
     private long startInstant = 0;

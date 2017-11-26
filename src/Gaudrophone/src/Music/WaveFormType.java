@@ -21,11 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package Music;
 
-import Instrument.Key;
+public enum WaveFormType {
+    Sine(new SineWaveForm()), 
+    Square(new SquareWaveForm()), 
+    Triangle(new TriangleWaveForm()), 
+    Saw(new SawWaveForm()), 
+    Random(new RandomWaveForm());
 
-public interface SelectionManagerDelegate {
-    public void didSelectKey(Key key);
-    public void didDeselectKey();
+    private final WaveForm value;
+    private WaveFormType(WaveForm value) {
+        this.value = value;
+    }
+
+    public WaveForm getWaveForm() {
+        return value;
+    }
 }

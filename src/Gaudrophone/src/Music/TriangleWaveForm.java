@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package Music;
 
-import Instrument.Key;
-
-public interface SelectionManagerDelegate {
-    public void didSelectKey(Key key);
-    public void didDeselectKey();
+public class TriangleWaveForm extends WaveForm implements java.io.Serializable {
+    @Override
+    public double getAmplitude(double frequency, double time) {
+        //TODO:
+        return Math.sin(2 * Math.PI * frequency * time);
+    }
 }

@@ -21,11 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package Music;
 
-import Instrument.Key;
-
-public interface SelectionManagerDelegate {
-    public void didSelectKey(Key key);
-    public void didDeselectKey();
+public enum SoundType {
+    synthesizedSound, audioClip
 }

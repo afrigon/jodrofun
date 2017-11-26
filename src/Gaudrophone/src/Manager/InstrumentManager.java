@@ -45,14 +45,18 @@ public class InstrumentManager {
         this.currentInstrument = newInstrument.generate();
     }
     
-    public void openInstrument(String path) {
+    public Boolean openInstrument(String path) {
         this.currentInstrumentPath = path;
         InstrumentFileIO instrumentIO = new InstrumentFileIO(this.currentInstrumentPath);
         Instrument temp = instrumentIO.load();
         if (temp == null) {
-            //show error loading instrument
+            return false;
         } else {
+            for (Key key: temp.getKeys()) {
+                key.removeStates(KeyState.clicked.getValue() | KeyState.hover.getValue() | KeyState.searched.getValue() | KeyState.selected.getValue());
+            }
             this.currentInstrument = temp;
+            return true;
         }
     }
     

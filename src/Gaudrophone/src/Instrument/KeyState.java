@@ -23,10 +23,6 @@
  */
 package Instrument;
 
-/**
- *
- * @author Alexandre
- */
 public enum KeyState {
     hover(1),
     clicked(2),

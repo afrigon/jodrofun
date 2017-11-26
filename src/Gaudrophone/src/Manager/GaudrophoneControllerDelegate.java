@@ -21,18 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager;
 
-/**
- *
- * @author frigon
- */
-public class NoteName {
-    public static final int C = -9;
-    public static final int D = -7;
-    public static final int E = -5;
-    public static final int F = -4;
-    public static final int G = -2;
-    public static final int A = 0;
-    public static final int B = 2;
+import Instrument.Key;
+
+public interface GaudrophoneControllerDelegate {
+    public void shouldUpdateProprietyPannelFor(Key key);
+    public void didMoveKey(Key key);
+    public void didMovePoint(Key key);
 }

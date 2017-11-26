@@ -33,6 +33,7 @@ public class SynthesizedSound extends Sound {
     
     // Constructors
     public SynthesizedSound() {
+        type = SoundType.synthesizedSound;
         frequency = 440.0;
         tuning = 0;
         waveForm = new SineWaveForm();
@@ -40,6 +41,7 @@ public class SynthesizedSound extends Sound {
     }
     
     public SynthesizedSound(double freq) {
+        type = SoundType.synthesizedSound;
         frequency = freq;
         tuning = 0;
         waveForm = new SineWaveForm();
@@ -86,7 +88,7 @@ public class SynthesizedSound extends Sound {
         
         for (int i = 0; i < frames; i++) {
             double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            buffer[2 * i] = (byte) (120.0 * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
+            buffer[2 * i] = (byte) (120.0 * volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
             buffer[2 * i + 1] = buffer[2 * i];
         }
         
@@ -102,6 +104,10 @@ public class SynthesizedSound extends Sound {
     
     public void setTuning(int newTuning) {
         this.tuning = newTuning;
+    }
+    
+    public void setWaveForm(WaveForm waveform) {
+        this.waveForm = waveform;
     }
     
     // Getters
