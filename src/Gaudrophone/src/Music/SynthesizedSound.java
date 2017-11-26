@@ -60,12 +60,15 @@ public class SynthesizedSound extends Sound {
         
         int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
         
-        byte[] buffer = new byte[2 * frames];
+        byte[] buffer = new byte[4 * frames];
         
         for (int i = 0; i < frames; i++) {
             double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            buffer[2 * i] = (byte) (120.0 * volume * envelope.getPlayingAmplitude(time * 1000.0) * waveForm.getAmplitude(frequency, time));
-            buffer[2 * i + 1] = buffer[2 * i];
+            short amplitude = (short) (32767.0 * volume * envelope.getPlayingAmplitude(time * 1000.0) * waveForm.getAmplitude(frequency, time));
+            buffer[4 * i] = (byte) (amplitude & 0xff);
+            buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
+            buffer[4 * i + 2] = buffer[4 * i];
+            buffer[4 * i + 3] = buffer[4 * i + 1];
         }
         
         return new AudioInputStream(new ByteArrayInputStream(buffer, 0, buffer.length), WaveForm.AUDIO_FORMAT, buffer.length);
@@ -82,14 +85,17 @@ public class SynthesizedSound extends Sound {
         double timeLength = envelope.getReleaseTime(); // in milliseconds
         
         int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
-        byte[] buffer = new byte[2 * frames];
+        byte[] buffer = new byte[4 * frames];
         
         double milliTimePlayed = timePlayed * 1000;
         
         for (int i = 0; i < frames; i++) {
             double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            buffer[2 * i] = (byte) (120.0 * volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
-            buffer[2 * i + 1] = buffer[2 * i];
+            short amplitude = (short) (32767.0 * volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
+            buffer[4 * i] = (byte) (amplitude & 0xff);
+            buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
+            buffer[4 * i + 2] = buffer[4 * i];
+            buffer[4 * i + 3] = buffer[4 * i + 1];
         }
         
         return new AudioInputStream(new ByteArrayInputStream(buffer, 0, buffer.length), WaveForm.AUDIO_FORMAT, buffer.length);
