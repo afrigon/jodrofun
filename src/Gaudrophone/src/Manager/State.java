@@ -24,5 +24,10 @@
 package Manager;
 
 public enum State {
-    Play, AutoPlay, EditKey, EditLine, EditPoint, CreatingShape
+    Play,
+    AutoPlay,
+    EditKey,
+    EditLine,
+    EditPoint,
+    CreatingShape
 }

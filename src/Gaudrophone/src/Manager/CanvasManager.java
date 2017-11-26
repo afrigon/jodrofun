@@ -98,6 +98,11 @@ public class CanvasManager {
     
     public void clicked(int x, int y) {
         this.clickPosition = new Vector2(x, y);
+        if(this.state == State.EditKey)
+            if(clickedDot(x, y)) {
+                this.state = State.EditPoint;
+                return;
+            }
         DrawableShape ds = this.clickedShape(x, y);
         if (ds != null) {
             if(this.state == State.EditKey && (ds.getKey().getStates() & KeyState.selected.getValue()) != 0) {
@@ -148,11 +153,16 @@ public class CanvasManager {
                     this.draggedShape = null;
                 }
                 break;
+            case EditPoint :
+                GaudrophoneController.getController().getSelectionManager().setPoint(-1);
+                this.state = State.EditKey;
+                return; // Skip the key release to prevent deselection
             }
         
         DrawableShape ds = this.clickedShape(x, y);
         if (ds != null) {
             this.released(ds.getKey());
+            ds.setDots();
         } else {
             this.released(null);
         }
@@ -205,6 +215,13 @@ public class CanvasManager {
                     this.clickPosition = new Vector2(x, y);
                 }
                 break;
+            case EditPoint : 
+                GaudrophoneController.getController().movePoint(this.convertPixelToWorld(
+                        (int)(x - this.clickPosition.getX()),
+                        (int)(y - this.clickPosition.getY())));
+                this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                this.clickPosition = new Vector2(x, y);
+                break;
         }
     }
     
@@ -215,6 +232,19 @@ public class CanvasManager {
             }
         }
         return null;
+    }
+    
+    private boolean clickedDot(int x, int y) {
+        if(GaudrophoneController.getController().getSelectionManager().getSelectedKey() != null)  {
+            for(int i = 0; i < DrawableShape.getDot().size(); ++i) {
+                if(DrawableShape.getDot().get(i).contains(x, y)) {
+                    GaudrophoneController.getController().getSelectionManager().setPoint(i);
+                    this.state = State.EditPoint;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     public List<DrawableShape> getDrawableShapes() {
