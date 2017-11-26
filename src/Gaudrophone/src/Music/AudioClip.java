@@ -27,8 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -73,11 +71,16 @@ public class AudioClip extends Sound {
     }
     
     // Setters
-    public Boolean setPath(String newPath) {
-        path = newPath;
-                
+    public Boolean setPath(String path) {
+        this.path = path;
+        
+        if (path == null) {
+            this.audioInputStream = null;
+            return true;
+        }
+        
         try {
-            File file = new File(newPath);
+            File file = new File(path);
             
             AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
             AudioFormat audioFormat = format.getFormat();

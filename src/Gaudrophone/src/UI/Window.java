@@ -37,6 +37,7 @@ import Manager.GaudrophoneController;
 import Manager.GaudrophoneControllerDelegate;
 import Manager.SelectionManagerDelegate;
 import Manager.State;
+import Music.AudioClip;
 import Music.Sound;
 import Music.SoundType;
 import Music.SynthesizedSound;
@@ -1313,6 +1314,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         audioClipSelectButton.setBackground(new java.awt.Color(65, 65, 65));
         audioClipSelectButton.setForeground(new java.awt.Color(102, 102, 102));
         audioClipSelectButton.setLabel("Fichier...");
+        audioClipSelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                audioClipSelectButtonActionPerformed(evt);
+            }
+        });
         audioClipFileProperty.add(audioClipSelectButton);
 
         audioClipProperties.add(audioClipFileProperty);
@@ -1332,6 +1338,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         readSpeedSpinner.setModel(new javax.swing.SpinnerNumberModel(1.0d, 0.05d, 100.0d, 0.05d));
         readSpeedSpinner.setMinimumSize(new java.awt.Dimension(30, 26));
+        readSpeedSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                readSpeedSpinnerStateChanged(evt);
+            }
+        });
         readSpeedProperty.add(readSpeedSpinner);
 
         audioClipProperties.add(readSpeedProperty);
@@ -1667,6 +1678,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void synthRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_synthRadioButtonItemStateChanged
         this.noteProperties.setVisible(evt.getStateChange() == ItemEvent.SELECTED);
         this.audioClipProperties.setVisible(evt.getStateChange() == ItemEvent.DESELECTED);
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            GaudrophoneController.getController().createSynth();
+        } else {
+            GaudrophoneController.getController().createAudioClip();
+        }
     }//GEN-LAST:event_synthRadioButtonItemStateChanged
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -1842,6 +1858,25 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         GaudrophoneController.getController().setKeySize(new Vector2((double)this.widthSpinner.getValue(), (double)this.heightSpinner.getValue()));
         this.refresh();
     }//GEN-LAST:event_heightSpinnerStateChanged
+
+    private void readSpeedSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_readSpeedSpinnerStateChanged
+        GaudrophoneController.getController().setPitch((double)this.readSpeedSpinner.getValue());
+    }//GEN-LAST:event_readSpeedSpinnerStateChanged
+
+    private void audioClipSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioClipSelectButtonActionPerformed
+        fileDialog.setDialogTitle("Sélectionner un fichier");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier mp3","mp3"));
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (GaudrophoneController.getController().setAudioClip(fileDialog.getSelectedFile().getAbsolutePath())) {
+                this.audioClipPathLabel.setText(fileDialog.getSelectedFile().getName());
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Impossible d'ouvrir ce fichier");
+            }
+        }
+    }//GEN-LAST:event_audioClipSelectButtonActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2192,10 +2227,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.displayAlterationCheckBox.setSelected((key.getStates() & KeyState.displayAlteration.getValue()) != 0);
         
         if (key.getSound().getType() == SoundType.synthesizedSound) {
+            this.synthRadioButton.setSelected(true);
             SynthesizedSound sound = (SynthesizedSound)key.getSound();
             this.tuningSpinner.setValue(sound.getTuning());
             this.frequencySpinner.setValue(sound.getFrequency());
             this.waveformComboBox.setSelectedItem(sound.getWaveform());
+        } else if (key.getSound().getType() == SoundType.audioClip) {
+            this.audioClipRadioButton.setSelected(true);
+            AudioClip sound = (AudioClip)key.getSound();
+            this.audioClipPathLabel.setText(sound.getPath() == null ? "Aucun fichier" : sound.getPath());
+            this.readSpeedSpinner.setValue(sound.getSpeed());
         }
         
         this.setPositionSpinners(key);

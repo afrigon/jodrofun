@@ -2936,6 +2936,9 @@
                                     </Property>
                                     <Property name="label" type="java.lang.String" value="Fichier..."/>
                                   </Properties>
+                                  <Events>
+                                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="audioClipSelectButtonActionPerformed"/>
+                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>
@@ -2986,6 +2989,9 @@
                                       <Dimension value="[30, 26]"/>
                                     </Property>
                                   </Properties>
+                                  <Events>
+                                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="readSpeedSpinnerStateChanged"/>
+                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>
