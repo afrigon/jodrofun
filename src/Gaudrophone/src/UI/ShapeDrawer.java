@@ -141,6 +141,15 @@ public class ShapeDrawer {
                 g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
                 g2.setColor(new Color(0xf9a825));
                 g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
+                
+                //Prepare the corner dots
+                this.selectedKey.setDots();
+                
+                //Draw the corner dots of the selected shape
+                g2.setColor(Color.BLACK);
+                for(java.awt.geom.Ellipse2D dot : DrawableShape.getDot()) {
+                    g2.fill(dot);
+                }
             }
             
             //Place the black mask if searching
