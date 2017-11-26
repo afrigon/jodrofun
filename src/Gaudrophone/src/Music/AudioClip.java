@@ -37,35 +37,16 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 
 public class AudioClip extends Sound {
-    private String path = null;
+    private String path;
     private double speed;
     
     private transient AudioInputStream audioInputStream = null;
     
     // Constructors
-    public AudioClip(String newPath) {
-        typeString = "clip";
-        path = newPath;
+    public AudioClip() {
+        type = SoundType.audioClip;
         speed = 1;
-        
-        try {
-            File file = new File(newPath);
-            
-            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-            AudioFormat audioFormat = format.getFormat();
-            
-            InputStream inputStream = new FileInputStream(file);
-            audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
-            
-        } catch (UnsupportedAudioFileException ex) {
-            System.out.println("error clip");
-            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            System.out.println("error clip");
-            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
-        } 
     }
-    
     
     @Override
     public AudioInputStream getPlayingStream() {
@@ -92,8 +73,21 @@ public class AudioClip extends Sound {
     }
     
     // Setters
-    public void setPath(String newPath) {
+    public Boolean setPath(String newPath) {
         path = newPath;
+                
+        try {
+            File file = new File(newPath);
+            
+            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+            AudioFormat audioFormat = format.getFormat();
+            
+            InputStream inputStream = new FileInputStream(file);
+            audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            return true;
+        } catch (UnsupportedAudioFileException | IOException ex) {
+            return false;
+        } 
     }
     
     public void setSpeed(double newSpeed) {

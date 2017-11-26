@@ -33,7 +33,7 @@ public class SynthesizedSound extends Sound {
     
     // Constructors
     public SynthesizedSound() {
-        typeString = "synth";
+        type = SoundType.synthesizedSound;
         frequency = 440.0;
         tuning = 0;
         waveForm = new SineWaveForm();
@@ -41,7 +41,7 @@ public class SynthesizedSound extends Sound {
     }
     
     public SynthesizedSound(double freq) {
-        typeString = "synth";
+        type = SoundType.synthesizedSound;
         frequency = freq;
         tuning = 0;
         waveForm = new SineWaveForm();

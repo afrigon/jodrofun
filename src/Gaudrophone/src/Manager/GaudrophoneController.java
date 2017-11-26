@@ -32,6 +32,7 @@ import Music.SynthesizedSound;
 import Instrument.Note;
 import Instrument.Alteration;
 import Music.NoteTranslator;
+import Music.SoundType;
 import Music.WaveFormType;
 import java.awt.Color;
 import java.util.List;
@@ -238,27 +239,26 @@ public class GaudrophoneController {
         }
     }
     
-    public void setAudioClip(String path) {
+    public Boolean setAudioClip(String path) {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            AudioClip clip = new AudioClip(path);
+            AudioClip clip = new AudioClip();
+            
+            if (!clip.setPath(path)) {
+                return false;
+            }
             
             key.setSound(clip);
-            key.setNote(Note.A);
-            key.setOctave(4);
-            key.setAlteration(Alteration.Natural);
         }
+        return true;
     }
     
     public void removeAudioClip() {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             SynthesizedSound sound = new SynthesizedSound();
-            
+            sound.setFrequency(NoteTranslator.getFrequencyFromKey(key.getNote(), key.getAlteration(), key.getOctave(), sound.getTuning()));
             key.setSound(sound);
-            key.setNote(Note.A);
-            key.setOctave(4);
-            key.setAlteration(Alteration.Natural);
         }
     }
     
@@ -270,7 +270,7 @@ public class GaudrophoneController {
     }
     
     private void setFrequency(Key key) {
-        if ("synth".equals(key.getSound().getType())) {
+        if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound sound = (SynthesizedSound)key.getSound();
             sound.setFrequency(NoteTranslator.getFrequencyFromKey(key.getNote(), key.getAlteration(), key.getOctave(), sound.getTuning()));
             this.delegate.shouldUpdateProprietyPannelFor(key);
@@ -306,7 +306,7 @@ public class GaudrophoneController {
     
     public void setTuning (int newTuning) {
         Key key = selectionManager.getSelectedKey();
-        if (key != null && "synth".equals(key.getSound().getType())) {
+        if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
             ((SynthesizedSound)key.getSound()).setTuning(newTuning);
             this.setFrequency(key);
         }
@@ -349,7 +349,7 @@ public class GaudrophoneController {
 
     public void setWaveform(WaveFormType waveFormType) {
         Key key = selectionManager.getSelectedKey();
-        if (key != null && "synth".equals(key.getSound().getType())) {
+        if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
             ((SynthesizedSound)key.getSound()).setWaveForm(waveFormType.getWaveForm());
         }
     }

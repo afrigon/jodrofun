@@ -42,7 +42,7 @@ public class SelectionManager {
             if (key != null) {   
                 this.delegate.didSelectKey(key);
             } else {
-                this.delegate.didUnselectKey();
+                this.delegate.didDeselectKey();
             }
         }
     }
