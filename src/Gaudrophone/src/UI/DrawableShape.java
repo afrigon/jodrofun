@@ -53,6 +53,8 @@ public class DrawableShape {
     public void setShape(GeneralPath.Double shape) { this.generalPath = shape; }
     public void setLines(List<DrawableLine> lines) { this.lines = lines; }
     
+    public void remakeShape() { this.generatePath(); }
+    
     private void generatePath() {
         List<Vector2> points = this.key.getShape().getPoints();
         List<KeyLine> keyLines = this.key.getShape().getLines();

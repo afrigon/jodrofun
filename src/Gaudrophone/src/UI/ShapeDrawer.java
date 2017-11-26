@@ -117,6 +117,7 @@ public class ShapeDrawer {
             Area clip = new Area(canvasSize);
             //True if something is searched (at least one key is valid)
             boolean searching = false;
+            this.selectedKey = null;
             
             //Draw all shapes using the drawShape function
             for(DrawableShape s : shapes) {
