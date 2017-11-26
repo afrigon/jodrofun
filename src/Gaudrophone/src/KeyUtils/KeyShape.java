@@ -46,7 +46,7 @@ public class KeyShape implements java.io.Serializable {
         points = pointsList;
         lines = new LinkedList<>();
         for (int i = 0; i < points.size(); i++) {
-            lines.add(new KeyLine(2, new Color(0x979899)));
+            lines.add(new KeyLine(0, new Color(51, 51, 51)));
         }
         idleAppearance = new ShapeAppearance(color);
         clickedAppearance = new ShapeAppearance(color.darker());
@@ -184,10 +184,11 @@ public class KeyShape implements java.io.Serializable {
         double scale = delta.length()/size.length();
         Vector2 unitDelta = delta.unit();
         
-        for (Vector2 point : points) {
+        for(int i = 0; i < points.size(); ++i) {
+            Vector2 point = points.get(i);
             if (point != distantPoint) {
                 double product = point.dotProduct(unitDelta);
-                point = point.add(unitDelta.multiply(product * scale));
+                points.set(i, point.add(unitDelta.multiply(product * scale)));    
             }
         }
     }

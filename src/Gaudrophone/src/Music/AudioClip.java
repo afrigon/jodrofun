@@ -27,8 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -37,35 +35,16 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 
 public class AudioClip extends Sound {
-    private String path = null;
+    private String path;
     private double speed;
     
     private transient AudioInputStream audioInputStream = null;
     
     // Constructors
-    public AudioClip(String newPath) {
-        typeString = "clip";
-        path = newPath;
+    public AudioClip() {
+        type = SoundType.audioClip;
         speed = 1;
-        
-        try {
-            File file = new File(newPath);
-            
-            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-            AudioFormat audioFormat = format.getFormat();
-            
-            InputStream inputStream = new FileInputStream(file);
-            audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
-            
-        } catch (UnsupportedAudioFileException ex) {
-            System.out.println("error clip");
-            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            System.out.println("error clip");
-            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
-        } 
     }
-    
     
     @Override
     public AudioInputStream getPlayingStream() {
@@ -92,8 +71,26 @@ public class AudioClip extends Sound {
     }
     
     // Setters
-    public void setPath(String newPath) {
-        path = newPath;
+    public Boolean setPath(String path) {
+        this.path = path;
+        
+        if (path == null) {
+            this.audioInputStream = null;
+            return true;
+        }
+        
+        try {
+            File file = new File(path);
+            
+            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+            AudioFormat audioFormat = format.getFormat();
+            
+            InputStream inputStream = new FileInputStream(file);
+            audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            return true;
+        } catch (UnsupportedAudioFileException | IOException ex) {
+            return false;
+        } 
     }
     
     public void setSpeed(double newSpeed) {

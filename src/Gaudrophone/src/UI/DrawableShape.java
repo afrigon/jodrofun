@@ -66,7 +66,7 @@ public class DrawableShape {
     public void setDots() {
         drawableDot = new LinkedList<>();
         
-        int size = 3;
+        int size = 4;
         List<Vector2> points = this.key.getShape().getPoints();
         for(int i = 0; i < points.size(); ++i) {
             KeyUtils.Vector2 v = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(points.get(i));

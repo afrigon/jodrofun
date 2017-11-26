@@ -27,4 +27,6 @@ import Instrument.Key;
 
 public interface GaudrophoneControllerDelegate {
     public void shouldUpdateProprietyPannelFor(Key key);
+    public void didMoveKey(Key key);
+    public void didMovePoint(Key key);
 }

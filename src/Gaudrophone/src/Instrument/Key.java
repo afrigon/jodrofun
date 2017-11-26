@@ -27,14 +27,15 @@ import KeyUtils.KeyShape;
 import Music.Sound;
 import Music.SynthesizedSound;
 import Music.AudioClip;
+import Music.SoundType;
 
 public class Key implements java.io.Serializable {
     private KeyShape shape = null;
     private Sound sound = null;
     private String name = null;
-    private Alteration displayAlteration = Alteration.Natural;
-    private Note displayNote = Note.A;
-    private int displayOctave = 4;
+    private Alteration alteration = Alteration.Natural;
+    private Note note = Note.A;
+    private int octave = 4;
     private int states = 144;
     
     // Constructors
@@ -44,31 +45,32 @@ public class Key implements java.io.Serializable {
         this.name = keyName;
     }
     
-    public Key(KeyShape keyShape) {
-        java.util.List<KeyUtils.Vector2> v = new java.util.ArrayList<>();
-        keyShape.getPoints().forEach((point)->{v.add(new KeyUtils.Vector2(point.getX(), point.getY()));});
-        this.shape = new KeyShape(v, keyShape.getIdleAppearance().getColor(), keyShape.getSunkenAppearance().getColor());
-        this.shape.getIdleAppearance().setImage(keyShape.getIdleAppearance().getImagePath());
-        this.shape.getSunkenAppearance().setImage(keyShape.getSunkenAppearance().getImagePath());
-        
-        this.sound = new SynthesizedSound();
-        this.name = "New Key";
-    }
+//    public Key(KeyShape keyShape) {
+//        java.util.List<KeyUtils.Vector2> v = new java.util.ArrayList<>();
+//        keyShape.getPoints().forEach((point)->{v.add(new KeyUtils.Vector2(point.getX(), point.getY()));});
+//        this.shape = new KeyShape(v, keyShape.getIdleAppearance().getColor(), keyShape.getSunkenAppearance().getColor());
+//        this.shape.getIdleAppearance().setImage(keyShape.getIdleAppearance().getImagePath());
+//        this.shape.getSunkenAppearance().setImage(keyShape.getSunkenAppearance().getImagePath());
+//        
+//        this.sound = new SynthesizedSound();
+//        this.name = "Nouvelle touche";
+//    }
     
     //Everything need to be brand new, otherwise it will use a referenced pointer
     //Exemple, moving one key will move any duplicated because the points are the same pointers
     public Key(Key key) {
         //Create new Sound, synthesized or audioclip
-        if(SynthesizedSound.class.isInstance(key.getSound())) {
+        
+        if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound s = (SynthesizedSound)key.getSound();
             this.sound = new SynthesizedSound(s.getFrequency());
             ((SynthesizedSound)this.sound).setTuning(s.getTuning());
             ((SynthesizedSound)this.sound).setWaveForm(s.getWaveform());
             this.sound.setEnvelope(new Music.Envelope(s.getEnvelope().getAttack(), s.getEnvelope().getDecay(), s.getEnvelope().getSustain(), s.getEnvelope().getRelease()));
             this.sound.setVolume(s.getVolume());
-        }
-        else if(AudioClip.class.isInstance(key.getSound())) {
-            this.sound = new AudioClip(((AudioClip)key.getSound()).getPath());
+        } else if(key.getSound().getType() == SoundType.audioClip) {
+            this.sound = new AudioClip();
+            ((AudioClip)this.sound).setPath(((AudioClip)key.getSound()).getPath());
         }
         
         //Create new KeyShape
@@ -80,6 +82,9 @@ public class Key implements java.io.Serializable {
         
         //Set name
         this.name = key.name;
+        this.note = key.note;
+        this.alteration = key.alteration;
+        this.octave = key.octave;
     }
     
     // Setters
@@ -92,15 +97,15 @@ public class Key implements java.io.Serializable {
     }
     
     public void setNote(Note newNote) {
-        this.displayNote = newNote;
+        this.note = newNote;
     }
     
     public void setAlteration(Alteration newAlteration) {
-        this.displayAlteration = newAlteration;
+        this.alteration = newAlteration;
     }
     
     public void setOctave(int newOctave) {
-        this.displayOctave = newOctave;
+        this.octave = newOctave;
     }
     
     public void changeState(int keyState) {
@@ -117,15 +122,15 @@ public class Key implements java.io.Serializable {
     }
     
     public Note getNote() {
-        return this.displayNote;
+        return this.note;
     }
     
     public Alteration getAlteration() {
-        return this.displayAlteration;
+        return this.alteration;
     }
     
     public int getOctave() {
-        return this.displayOctave;
+        return this.octave;
     }
     
     public KeyShape getShape() {

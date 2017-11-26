@@ -28,7 +28,7 @@ import javax.sound.sampled.AudioInputStream;
 public abstract class Sound implements java.io.Serializable {
     protected double volume;
     protected Envelope envelope = null;
-    protected String typeString = "sound";
+    protected SoundType type = null;
     
     // Constructors
     public Sound() {
@@ -54,8 +54,8 @@ public abstract class Sound implements java.io.Serializable {
         return envelope;
     }
     
-    public String getType() {
-        return typeString;
+    public SoundType getType() {
+        return type;
     }
     
     public abstract AudioInputStream getPlayingStream();

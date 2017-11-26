@@ -35,9 +35,7 @@ public class NoteTranslator {
     public static double getFrequencyFromKey(Note note, Alteration alteration, int octave, int tuning) {
         int halfStepsFromReference = ((octave-BASE_OCTAVE) * 12) + note.getValue() + alteration.getValue();
         double frequency = Math.round(REFERENCE_FREQUENCY * Math.pow(CALCULUS_CONSTANT, halfStepsFromReference) * 100.0) / 100.0;
-        
-        // Good enough for jazz.
-        frequency += tuning*(4/Math.pow(2, octave)); 
+        frequency *= Math.pow(2, tuning/1200.0);
         return frequency;
     }
 

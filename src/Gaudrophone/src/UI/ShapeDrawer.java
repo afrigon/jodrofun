@@ -38,16 +38,12 @@ import java.util.List;
 import Instrument.KeyState;
 import Manager.GaudrophoneController;
 
-/**
- *
- * @author Alexandre
- */
 public class ShapeDrawer {
-    //Construtor
-    public ShapeDrawer() {}
+    private final Color SELECTION_COLOR = new Color(0xf9a825);
+    private final Color POINTS_COLOR = new Color(0xe0e0e0);
     
-    Rectangle2D cs = new Rectangle2D.Double();
-    DrawableShape selectedKey = null;
+    private Rectangle2D cs = new Rectangle2D.Double();
+    private DrawableShape selectedKey = null;
     
     //Draw a single shape on the graphic object
     public void drawShape(Graphics2D g2, DrawableShape shape) {
@@ -139,14 +135,14 @@ public class ShapeDrawer {
                 Rectangle2D boundingBox = selectedKey.getShape().getBounds2D();
                 float[] f = {4, 2};
                 g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
-                g2.setColor(new Color(0xf9a825));
+                g2.setColor(SELECTION_COLOR);
                 g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
                 
                 //Prepare the corner dots
                 this.selectedKey.setDots();
                 
                 //Draw the corner dots of the selected shape
-                g2.setColor(Color.BLACK);
+                g2.setColor(POINTS_COLOR);
                 for(java.awt.geom.Ellipse2D dot : DrawableShape.getDot()) {
                     g2.fill(dot);
                 }
@@ -308,7 +304,14 @@ public class ShapeDrawer {
             Rectangle2D boundsText = font.getStringBounds(text, frc);
             //Find the position of the first line in the shape (try to center it)
             int posY = (int)(boundingBox.getY() + (boundingBox.getHeight() - boundsText.getHeight() * (lines.length - 1)) / 2);
-            g2.setColor(Color.BLACK);
+            
+            //Get the text color acording to the shape state
+            if ((keyState & KeyState.clicked.getValue()) == 0) {
+                g2.setColor(shape.getKey().getShape().getIdleAppearance().getTextColor());
+            } else {
+                g2.setColor(shape.getKey().getShape().getSunkenAppearance().getTextColor());
+            }
+            
             //Draw the strings
             for (String line : lines) {
                 if(!"".equals(line)) {
