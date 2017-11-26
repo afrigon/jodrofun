@@ -145,8 +145,9 @@ public class KeyShape implements java.io.Serializable {
     }
     
     public void translate(Vector2 translation) {
-        for (Vector2 point : points) {
-            point = point.add(translation);
+        for(int i = 0; i < points.size(); ++i) {
+            Vector2 point = points.get(i);
+            points.set(i, point.add(translation));
         }
     }
     

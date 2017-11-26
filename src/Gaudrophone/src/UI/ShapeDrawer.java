@@ -38,16 +38,12 @@ import java.util.List;
 import Instrument.KeyState;
 import Manager.GaudrophoneController;
 
-/**
- *
- * @author Alexandre
- */
 public class ShapeDrawer {
-    //Construtor
-    public ShapeDrawer() {}
+    private final Color SELECTION_COLOR = new Color(0xf9a825);
+    private final Color POINTS_COLOR = new Color(0xe0e0e0);
     
-    Rectangle2D cs = new Rectangle2D.Double();
-    DrawableShape selectedKey = null;
+    private Rectangle2D cs = new Rectangle2D.Double();
+    private DrawableShape selectedKey = null;
     
     //Draw a single shape on the graphic object
     public void drawShape(Graphics2D g2, DrawableShape shape) {
@@ -117,6 +113,7 @@ public class ShapeDrawer {
             Area clip = new Area(canvasSize);
             //True if something is searched (at least one key is valid)
             boolean searching = false;
+            this.selectedKey = null;
             
             //Draw all shapes using the drawShape function
             for(DrawableShape s : shapes) {
@@ -138,8 +135,17 @@ public class ShapeDrawer {
                 Rectangle2D boundingBox = selectedKey.getShape().getBounds2D();
                 float[] f = {4, 2};
                 g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
-                g2.setColor(new Color(0xf9a825));
+                g2.setColor(SELECTION_COLOR);
                 g2.draw(new Rectangle2D.Double(boundingBox.getX() - 6, boundingBox.getY() - 6, boundingBox.getWidth() + 12, boundingBox.getHeight() + 12));
+                
+                //Prepare the corner dots
+                this.selectedKey.setDots();
+                
+                //Draw the corner dots of the selected shape
+                g2.setColor(POINTS_COLOR);
+                for(java.awt.geom.Ellipse2D dot : DrawableShape.getDot()) {
+                    g2.fill(dot);
+                }
             }
             
             //Place the black mask if searching

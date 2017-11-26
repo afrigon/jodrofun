@@ -116,11 +116,13 @@ public class GaudrophoneController {
         
     }
     
-    public void movePoint(Vector2 oldMousePosition, Vector2 newMousePosition) {
-
+    public void movePoint(Vector2 translation) {
+        this.selectionManager.getSelectedKey().getShape().getPoints().set(
+                this.selectionManager.getSelectedPoint(),
+                this.selectionManager.getSelectedKey().getShape().getPoints().get(this.selectionManager.getSelectedPoint()).add(translation));
     }
     
-    public void curveLine(Vector2 oldMousePosition, Vector2 newMousePosition) {
+    public void curveLine(Vector2 translation) {
         
     }
     
