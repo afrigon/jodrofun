@@ -45,7 +45,7 @@ public class SoundService {
     public void play(Sound sound) {
         if (clips.size() < polyphony) {
             
-            // VERIFY IF SOUND IS ALREADY MAPPED
+            close(sound); // stop the sound if already playing
             
             try {
                 EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getPlayingStream(), sound.getLoopFrame());
@@ -74,6 +74,13 @@ public class SoundService {
             Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void close(Sound sound) {
+        EnvelopedClip clip = clips.remove(sound);
+        if (clip != null) {
+            clip.end();
         }
     }
     

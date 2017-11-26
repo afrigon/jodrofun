@@ -88,7 +88,6 @@ public class AudioClip extends Sound {
         } 
     }
     
-    
     @Override
     public AudioInputStream getPlayingStream() {
         
@@ -210,11 +209,7 @@ public class AudioClip extends Sound {
     }
     
     // Setters
-    public void setPath(String newPath) {
-        path = newPath;
-    }
-    
-    public void setSpeed(double newSpeed) {
-        speed = newSpeed;
-    }
+//    public void setSpeed(double newSpeed) {
+//        speed = newSpeed;
+//    }
 }
