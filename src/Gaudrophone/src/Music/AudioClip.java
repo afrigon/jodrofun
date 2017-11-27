@@ -172,7 +172,7 @@ public class AudioClip extends Sound {
         return speed;
     }
     
-    //Setters
+    // Setters
     public Boolean setPath(String path) {
         this.path = path;
         

@@ -46,7 +46,10 @@ public class KeyShape implements java.io.Serializable {
         points = pointsList;
         lines = new LinkedList<>();
         for (int i = 0; i < points.size(); i++) {
-            lines.add(new KeyLine(0, new Color(51, 51, 51)));
+            lines.add(new KeyLine(0.5, new Color(51, 51, 51)));
+        }
+        for(int i = 0; i < this.crossLines.length; ++i) {
+            this.crossLines[i] = new KeyLine(new Color(255, 255, 255, 0));
         }
         idleAppearance = new ShapeAppearance(color);
         clickedAppearance = new ShapeAppearance(color.darker());
@@ -56,7 +59,10 @@ public class KeyShape implements java.io.Serializable {
         points = pointsList;
         lines = new LinkedList<>();
         for (int i = 0; i < points.size(); i++) {
-            lines.add(new KeyLine(2, new Color(0x979899)));
+            lines.add(new KeyLine(new Color(0x979899)));
+        }
+        for(int i = 0; i < this.crossLines.length; ++i) {
+            this.crossLines[i] = new KeyLine(new Color(1, 1, 1, 1));
         }
         idleAppearance = new ShapeAppearance(color);
         clickedAppearance = new ShapeAppearance(clickedColor);
@@ -96,21 +102,13 @@ public class KeyShape implements java.io.Serializable {
     
     // Methods
     private double getMaxBound(boolean isX) {
-        double max = isX ? points.get(0).getX() : points.get(0).getY();
-        for (Vector2 point : points) {
-            double number = isX ? point.getX() : point.getY();
-            if (number > max)
-                max = number;
-        }
+        double max = -1;
+        for(Vector2 point : points) max = Math.max(max, isX ? point.getX() : point.getY());
         return max;
     }
     private double getMinBound(boolean isX) {
-        double min = isX ? points.get(0).getX() : points.get(0).getY();
-        for (Vector2 point : points) {
-            double number = isX ? point.getX() : point.getY();
-            if (number < min)
-                min = number;
-        }
+        double min = -1;
+        for(Vector2 point : points) min = Math.min(min, isX ? point.getX() : point.getY());
         return min;
     }
     

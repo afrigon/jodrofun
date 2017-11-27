@@ -43,7 +43,7 @@ public class CanvasManager {
     private double ratioY = 1;
     private Vector2 originalCanvas = new Vector2(950, 600);
     private Vector2 canvasSize = new Vector2(1, 1);
-    private Vector2 boundingBoxPixels = new Vector2(1, 1); 
+    private Vector2 boundingBoxPixels = new Vector2(1, 1);
     
     public CanvasManagerDelegate delegate;
     
@@ -61,7 +61,7 @@ public class CanvasManager {
         ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
         ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
 
-    return new Vector2(vector.getX()*this.canvasSize.getX()/ratioX, vector.getY()*this.canvasSize.getY()/ratioY);
+        return new Vector2(vector.getX()*this.canvasSize.getX()/ratioX, vector.getY()*this.canvasSize.getY()/ratioY);
     }
     
     public int convertThicknessToPixel(double thickness) {
@@ -135,6 +135,9 @@ public class CanvasManager {
     
     public void released(int x, int y) {
         switch (this.state) {
+            case Play:
+                this.lastKey = null;
+                break;
             case CreatingShape : 
                 if (!this.clickPosition.equals(new Vector2(x, y))) {
                     Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());

@@ -31,7 +31,12 @@ public class KeyLine implements java.io.Serializable {
     
     // Constructors
     public KeyLine() {
-        lineThickness = 0.1;
+        lineThickness = 1;
+    }
+    
+    public KeyLine(Color color) {
+        lineThickness = 1;
+        lineColor = color;
     }
     
     public KeyLine(double thickness, Color color) {

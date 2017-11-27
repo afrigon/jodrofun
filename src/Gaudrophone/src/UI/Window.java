@@ -282,7 +282,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         rightScrollPane.setAutoscrolls(true);
         rightScrollPane.setMinimumSize(new java.awt.Dimension(415, 200));
         rightScrollPane.setPreferredSize(new java.awt.Dimension(415, 200));
-        rightScrollPane.setViewportView(tabbedPane);
 
         tabbedPane.setBackground(new java.awt.Color(65, 65, 65));
         tabbedPane.setForeground(new java.awt.Color(255, 255, 255));
@@ -355,7 +354,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         showNoteNameLabel.setMinimumSize(new java.awt.Dimension(40, 16));
         showNoteNameLabel.setOpaque(true);
         showNoteNameLabel.setPreferredSize(new java.awt.Dimension(40, 26));
-        showNoteNameLabel.setSize(new java.awt.Dimension(40, 26));
         showNameProperty.add(showNoteNameLabel);
 
         displayNameCheckBox.setBackground(new java.awt.Color(65, 65, 65));
@@ -364,7 +362,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayNameCheckBox.setText("Nom");
         displayNameCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayNameCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayNameCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayNameCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayNameCheckBoxItemStateChanged(evt);
@@ -378,15 +375,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayNoteCheckBox.setText("Note");
         displayNoteCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayNoteCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayNoteCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayNoteCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayNoteCheckBoxItemStateChanged(evt);
             }
         });
         showNameProperty.add(displayNoteCheckBox);
-
-        filler6.setSize(new java.awt.Dimension(40, 26));
         showNameProperty.add(filler6);
 
         displayOctaveCheckBox.setBackground(new java.awt.Color(65, 65, 65));
@@ -395,7 +389,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayOctaveCheckBox.setText("Octave");
         displayOctaveCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayOctaveCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayOctaveCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayOctaveCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayOctaveCheckBoxItemStateChanged(evt);
@@ -408,7 +401,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         displayAlterationCheckBox.setText("Altération");
         displayAlterationCheckBox.setMinimumSize(new java.awt.Dimension(40, 26));
         displayAlterationCheckBox.setPreferredSize(new java.awt.Dimension(40, 26));
-        displayAlterationCheckBox.setSize(new java.awt.Dimension(40, 26));
         displayAlterationCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 displayAlterationCheckBoxItemStateChanged(evt);
@@ -763,6 +755,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         borderComboBox.setMinimumSize(new java.awt.Dimension(100, 27));
         borderComboBox.setPreferredSize(new java.awt.Dimension(200, 27));
+        borderComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borderComboBoxActionPerformed(evt);
+            }
+        });
         linesSelectionWrapper.add(borderComboBox);
 
         linesWrapper.add(linesSelectionWrapper);
@@ -780,7 +777,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         lineThicknessLabel.setText("Épaisseur :");
         lineThicknessWrapper.add(lineThicknessLabel);
 
-        lineThicknessSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 20, 1));
+        lineThicknessSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 2.0d, 0.2d));
+        lineThicknessSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                lineThicknessSpinnerStateChanged(evt);
+            }
+        });
         lineThicknessWrapper.add(lineThicknessSpinner);
 
         lineControlWrapper.add(lineThicknessWrapper);
@@ -808,6 +810,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         lineColorEditButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lineColorEditButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lineColorEditButton.setOpaque(true);
+        lineColorEditButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lineColorEditButtonMouseClicked(evt);
+            }
+        });
         LineColorSpacer.add(lineColorEditButton);
 
         filler15.setBackground(new java.awt.Color(65, 65, 65));
@@ -1371,7 +1378,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         buttonPlayMode.setBackground(new java.awt.Color(65, 65, 65));
         buttonPlayMode.setForeground(new java.awt.Color(0, 0, 255));
-        buttonPlayMode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlay.png"))); // NOI18N
+        buttonPlayMode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlay_selected.png"))); // NOI18N
         buttonPlayMode.setToolTipText("Mode Jeu Libre");
         buttonPlayMode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonPlayMode.setBorderPainted(false);
@@ -1917,19 +1924,66 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         }
     }//GEN-LAST:event_audioClipSelectButtonActionPerformed
 
+    private void lineColorEditButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lineColorEditButtonMouseClicked
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundDisplayLabel.getBackground());
+        if (color != null) {
+            if(GaudrophoneController.getController().getSelectionManager().getSelectedLine() == -5)
+                GaudrophoneController.getController().setAllLineColor(color);
+            else
+                GaudrophoneController.getController().setLineColor(color);
+            this.backgroundDisplayLabel.setBackground(color);
+        }
+    }//GEN-LAST:event_lineColorEditButtonMouseClicked
+
+    
     private void instrumentNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_instrumentNameTextFieldKeyReleased
         GaudrophoneController.getController().getInstrumentManager().rename(this.instrumentNameTextField.getText());
     }//GEN-LAST:event_instrumentNameTextFieldKeyReleased
-
+    
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
         this.searchTextField.setText("");
         this.searchTextField.setForeground(Color.white);
     }//GEN-LAST:event_searchTextFieldFocusGained
-
+    
     private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
         this.searchTextField.setText("Rechercher");
         this.searchTextField.setForeground(new Color(153, 153, 153));
     }//GEN-LAST:event_searchTextFieldFocusLost
+    
+    private void borderComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borderComboBoxActionPerformed
+        int index = this.borderComboBox.getSelectedIndex();
+        int count = this.borderComboBox.getItemCount();
+        int lineIndex = 0;
+        if(index == 0) {
+            this.lineThicknessSpinner.setValue(2d);
+            lineIndex = -5;
+        }
+        else if(index == count - 4) {
+            lineIndex = -1;
+        }
+        else if(index == count - 3) {
+            lineIndex = -2;
+        }
+        else if(index == count - 2) {
+            lineIndex = -3;
+        }
+        else if(index == count - 1) {
+            lineIndex = -4;
+        }
+        else if(index != -1) {
+            lineIndex = index - 1;
+        }
+        
+        GaudrophoneController.getController().getSelectionManager().setLine(lineIndex);
+        this.refresh();
+    }//GEN-LAST:event_borderComboBoxActionPerformed
+
+    private void lineThicknessSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_lineThicknessSpinnerStateChanged
+        if((double)this.lineThicknessSpinner.getValue() >= 0 ) {
+            GaudrophoneController.getController().setLineThickness((double)this.lineThicknessSpinner.getValue());
+            this.refresh();
+        }
+    }//GEN-LAST:event_lineThicknessSpinnerStateChanged
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2015,8 +2069,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             });
             
             this.borderComboBox.addActionListener((ActionEvent e) -> {
-                this.lineControlWrapper.setVisible(this.borderComboBox.getSelectedIndex() == -1 || this.borderComboBox.getSelectedIndex() == 0);
-                
                 if (this.borderComboBox.getSelectedIndex() != -1) {
                     if (this.borderComboBox.getSelectedIndex() == 0) {
                         GaudrophoneController.getController().getSelectionManager().setLine(this.borderComboBox.getSelectedIndex()-1);
@@ -2312,11 +2364,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.buttonRemoveImage.setVisible(key.getShape().getIdleAppearance().getImagePath() != null);
         this.buttonRemoveSunkenImage.setVisible(key.getShape().getSunkenAppearance().getImagePath() != null);
         
-        String[] borders = new String[key.getShape().getLines().size() + 1];
+        String[] borders = new String[key.getShape().getLines().size() + 1 + 4];
         borders[0] = "Toutes";
-        for (int i = 1; i < borders.length; i++) {
+        for (int i = 1; i <= key.getShape().getLines().size(); i++) {
             borders[i] = "Line " + i;
         }
+        borders[borders.length - 4] = "Ligne Verticale";
+        borders[borders.length - 3] = "Ligne Horizontale";
+        borders[borders.length - 2] = "Ligne oblique inversé";
+        borders[borders.length - 1] = "Ligne oblique";
         this.borderComboBox.setModel(new DefaultComboBoxModel(borders));
         this.borderComboBox.setSelectedIndex(-1);
         
