@@ -43,7 +43,7 @@ import java.util.List;
 public class GaudrophoneController {
     private final InstrumentManager instrumentManager = new InstrumentManager();
     private final CanvasManager canvasManager = new CanvasManager();
-    private final SoundService soundService = new SoundService();
+    private final SoundService soundService = SoundService.get();
     private final SelectionManager selectionManager = new SelectionManager();
     public GaudrophoneControllerDelegate delegate;
     

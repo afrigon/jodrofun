@@ -24,24 +24,34 @@
 package Music;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 
 public class EnvelopedClip {
+    private static final SoundService SOUND_SERVICE = SoundService.get();
     private Clip clip = null;
+    private Clip releaseClip = null;
     private long startInstant = 0;
     private long releaseInstant = 0;
     private boolean released = false;
     
-    public EnvelopedClip(Clip newClip, AudioInputStream audioInputStream, int loopFrame) throws LineUnavailableException, IOException {
-        clip = newClip;
-
-        clip.open(audioInputStream);
-        if (loopFrame > 0) {
-            clip.setLoopPoints(loopFrame, -1);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
+    public EnvelopedClip(Clip newClip, AudioInputStream audioInputStream, int loopFrame) {
+        try {
+            clip = newClip;
+            
+            clip.open(audioInputStream);
+            if (loopFrame > 0) {
+                clip.setLoopPoints(loopFrame, -1);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(EnvelopedClip.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(EnvelopedClip.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -56,35 +66,46 @@ public class EnvelopedClip {
         return ((double)(System.nanoTime() - startInstant))/1000000000;
     }
     
-    public void release(Clip newClip, AudioInputStream audioInputStream) throws LineUnavailableException, IOException {
+    public void release(Clip newClip, AudioInputStream audioInputStream) {
         if (released == false) {
-            released = true;
-            newClip.open(audioInputStream);
-
-            releaseInstant = System.nanoTime();
-            double timePlayed = ((double)(releaseInstant - startInstant))/1000000000;
-            newClip.start();
-
-            newClip.addLineListener((LineEvent le) -> {
-                if (le.getType() == LineEvent.Type.STOP) {
-                    newClip.close();
-                }
-            });
-
-            clip.stop();
-            clip.close();
-            clip = newClip;
+            try {
+                released = true;
+                releaseClip = newClip;
+                
+                releaseClip.open(audioInputStream);
+                
+                releaseInstant = System.nanoTime();
+                double timePlayed = ((double)(releaseInstant - startInstant))/1000000000;
+                releaseClip.start();
+                
+                releaseClip.addLineListener((LineEvent le) -> {
+                    if (le.getType() == LineEvent.Type.STOP) {
+                        releaseClip.close();
+                        SOUND_SERVICE.close(this);
+                    }
+                });
+                
+                clip.stop();
+                clip.close();
+                
+            } catch (LineUnavailableException ex) {
+                Logger.getLogger(EnvelopedClip.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(EnvelopedClip.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
     public void end() {
-        //System.out.println("clip stop");
-        clip.stop();
-        clip.close();
+        if (clip != null) {
+            clip.close();
+        }
+        if (releaseClip != null) {
+            releaseClip.close();
+        }
         startInstant = 0;
         releaseInstant = 0;
         released = false;
-        clip = null;
     }
 }
 
