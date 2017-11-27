@@ -30,16 +30,10 @@ import java.util.List;
 public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
     private List<KeyLine> lines = null;
-    private KeyLine[] crossLines = new KeyLine[4];
+    private final KeyLine[] crossLines = new KeyLine[4];
     
     private ShapeAppearance idleAppearance = null;
     private ShapeAppearance clickedAppearance = null;
-    
-    public static enum Corner {
-        TopLeft, TopCenter, TopRight,
-        CenterLeft, Center, CenterRight, 
-        BottomLeft, BottomCenter, BottomRight
-    }
     
     // Constructors
     public KeyShape(List<Vector2> pointsList, Color color) {
@@ -51,8 +45,8 @@ public class KeyShape implements java.io.Serializable {
         for(int i = 0; i < this.crossLines.length; ++i) {
             this.crossLines[i] = new KeyLine(new Color(255, 255, 255, 0));
         }
-        idleAppearance = new ShapeAppearance(color);
-        clickedAppearance = new ShapeAppearance(color.darker());
+        this.idleAppearance = new ShapeAppearance(color);
+        this.clickedAppearance = new ShapeAppearance(color.darker());
     }
     
     public KeyShape(List<Vector2> pointsList, Color color, Color clickedColor) {
@@ -64,16 +58,16 @@ public class KeyShape implements java.io.Serializable {
         for(int i = 0; i < this.crossLines.length; ++i) {
             this.crossLines[i] = new KeyLine(new Color(255, 255, 255, 0));
         }
-        idleAppearance = new ShapeAppearance(color);
-        clickedAppearance = new ShapeAppearance(clickedColor);
+        this.idleAppearance = new ShapeAppearance(color);
+        this.clickedAppearance = new ShapeAppearance(clickedColor);
     }
     
     public ShapeAppearance getIdleAppearance() {
-        return idleAppearance;
+        return this.idleAppearance;
     }
     
     public ShapeAppearance getSunkenAppearance() {
-        return clickedAppearance;
+        return this.clickedAppearance;
     }
     
     public List<Vector2> getPoints() {
@@ -92,12 +86,12 @@ public class KeyShape implements java.io.Serializable {
         this.lines = lines;
     }
     
-    public void setCrossLineColor(Color newColor, int index) {
-        this.crossLines[index].setColor(newColor);
+    public void setCrossLineColor(Color newColor, CrossLine crossLine) {
+        this.crossLines[crossLine.getValue()].setColor(newColor);
     }
     
-    public void setCrossLineThickness(double newThickness, int index) {
-        this.crossLines[index].setThickness(newThickness);
+    public void setCrossLineThickness(double newThickness, CrossLine crossLine) {
+        this.crossLines[crossLine.getValue()].setThickness(newThickness);
     }
     
     // Methods
@@ -115,23 +109,23 @@ public class KeyShape implements java.io.Serializable {
     public Vector2 getCorner(Corner corner) {
         if (null != corner) {
             switch (corner) {
-                case TopLeft:
+                case topLeft:
                     return new Vector2(getMinBound(true), getMinBound(false));
-                case TopCenter:
+                case topCenter:
                     return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMinBound(false));
-                case TopRight:
+                case topRight:
                     return new Vector2(getMaxBound(true), getMinBound(false));
-                case CenterLeft:
+                case centerLeft:
                     return new Vector2(getMinBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
-                case Center:
+                case center:
                     return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, (getMaxBound(false) + getMinBound(false)) / 2);
-                case CenterRight:
+                case centerRight:
                     return new Vector2(getMaxBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
-                case BottomLeft:
+                case bottomLeft:
                     return new Vector2(getMinBound(true), getMaxBound(false));
-                case BottomCenter:
+                case bottomCenter:
                     return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMaxBound(false));
-                case BottomRight:
+                case bottomRight:
                     return new Vector2(getMaxBound(true), getMaxBound(false));
             }
         }
@@ -140,7 +134,7 @@ public class KeyShape implements java.io.Serializable {
     }
     
     public Vector2 getSize() {
-        Vector2 signedSize = getCorner(Corner.TopRight).sub(getCorner(Corner.BottomLeft));
+        Vector2 signedSize = getCorner(Corner.topRight).sub(getCorner(Corner.bottomLeft));
         return new Vector2(Math.abs(signedSize.getX()), Math.abs(signedSize.getY()));
     }
     
@@ -200,7 +194,7 @@ public class KeyShape implements java.io.Serializable {
         double resizeX = newSize.getX() / currentSize.getX();
         double resizeY = newSize.getY() / currentSize.getY();
         
-        Vector2 reference = getCorner(Corner.TopLeft);
+        Vector2 reference = getCorner(Corner.topLeft);
         
         for(int i = 0; i < points.size(); ++i) {
             Vector2 point = points.get(i).sub(reference);

@@ -29,6 +29,7 @@ import Instrument.Key;
 import Instrument.KeyState;
 import Music.Note;
 import Instrument.Piano;
+import KeyUtils.Corner;
 import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.TriangleKeyShape;
@@ -2390,14 +2391,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     // End of variables declaration//GEN-END:variables
 
     private void setPositionSpinners(Key key) {
-        Vector2 origin = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(key.getShape().getCorner(KeyShape.Corner.TopLeft));
+        Vector2 origin = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(key.getShape().getCorner(Corner.topLeft));
         this.xSpinner.setValue((double)Math.round(origin.getX()));
         this.ySpinner.setValue((double)Math.round(origin.getY()));
     }
     
     public void setSizeSpinners(Key key) {
-        Vector2 origin = key.getShape().getCorner(KeyShape.Corner.TopLeft);
-        Vector2 bottomRightOrigin = key.getShape().getCorner(KeyShape.Corner.BottomRight);
+        Vector2 origin = key.getShape().getCorner(Corner.topLeft);
+        Vector2 bottomRightOrigin = key.getShape().getCorner(Corner.bottomRight);
         
         Vector2 size = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(bottomRightOrigin.sub(origin));
         this.widthSpinner.setValue((double)Math.round(size.getX()));
@@ -2474,6 +2475,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.borderComboBox.setModel(new DefaultComboBoxModel(borders));
         this.borderComboBox.setSelectedIndex(-1);
         
+        this.lineControlWrapper.setVisible(false);
+        
         if (this.splitWindow.getRightComponent() == null) {
             this.splitWindow.setRightComponent(this.rightScrollPane);
             this.splitWindow.setDividerLocation(Math.max(this.splitWindow.getWidth()/2, this.splitWindow.getWidth()-500));
@@ -2532,5 +2535,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 this.buttonEditKey.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnEdit_selected.png")));
                 break;
         }
+    }
+
+    @Override
+    public void didSelectLine(Color color, double thickness) {
+        this.lineColorEditButton.setBackground(color);
+        this.lineThicknessSpinner.setValue(thickness);
+        this.lineControlWrapper.setVisible(true);
     }
 }

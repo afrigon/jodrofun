@@ -29,7 +29,6 @@ import KeyUtils.KeyLine;
 import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.Vector2;
-import Music.NoteTranslator;
 import Music.PlayableNote;
 import Music.SynthesizedSound;
 import java.awt.Color;

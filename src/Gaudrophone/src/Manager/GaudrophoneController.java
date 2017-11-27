@@ -24,6 +24,8 @@
 package Manager;
 
 import Instrument.Key;
+import KeyUtils.Corner;
+import KeyUtils.CrossLine;
 import Music.SoundService;
 import KeyUtils.KeyShape;
 import KeyUtils.Vector2;
@@ -32,7 +34,6 @@ import Music.AudioClip;
 import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
-import Music.NoteTranslator;
 import Music.SoundType;
 import Music.WaveFormType;
 import java.awt.Color;
@@ -102,7 +103,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             position = this.canvasManager.convertPixelToWorld((int)position.getX(), (int)position.getY());
-            key.getShape().translate(position.sub(key.getShape().getCorner(KeyShape.Corner.TopLeft)));
+            key.getShape().translate(position.sub(key.getShape().getCorner(Corner.topLeft)));
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
         }
     }
@@ -121,18 +122,18 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             size = this.canvasManager.convertPixelToWorld((int)size.getX(), (int)size.getY());
-            Vector2 origin = key.getShape().getCorner(KeyShape.Corner.TopLeft);
-            Vector2 bottomRightOrigin = key.getShape().getCorner(KeyShape.Corner.BottomRight);
+            Vector2 origin = key.getShape().getCorner(Corner.topLeft);
+            Vector2 bottomRightOrigin = key.getShape().getCorner(Corner.bottomRight);
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
             if (size.getX() != 0 && size.getY() != 0) {
-                key.getShape().setSize(size, KeyShape.Corner.TopLeft);
+                key.getShape().setSize(size, Corner.topLeft);
             }        
         }
     }
     
-    public void resizeKey(KeyShape.Corner corner, Vector2 delta) {
+    public void resizeKey(Corner corner, Vector2 delta) {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().stretch(delta);
@@ -235,7 +236,7 @@ public class GaudrophoneController {
             if(line == -5)
                 this.setAllLineColor(newColor);
             else if(line == -1 || line == -2 || line == -3 || line == -4)
-                key.getShape().setCrossLineColor(newColor, Math.abs(line) - 1);
+                key.getShape().setCrossLineColor(newColor, CrossLine.getCrossLineForIndex(Math.abs(line) - 1));
             else {
                 List<KeyLine> shapeLines = key.getShape().getLines();
                 shapeLines.get(line).setColor(newColor);
@@ -287,7 +288,7 @@ public class GaudrophoneController {
             if(line == -5)
                 this.setAllLineThickness(newThickness);
             else if(line == -1 || line == -2 || line == -3 || line == -4)
-                key.getShape().setCrossLineThickness(newThickness, Math.abs(line) - 1);
+                key.getShape().setCrossLineThickness(newThickness, CrossLine.getCrossLineForIndex(Math.abs(line) - 1));
             else {
                 List<KeyLine> shapeLines = key.getShape().getLines();
                 shapeLines.get(line).setThickness(newThickness);

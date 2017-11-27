@@ -61,8 +61,8 @@ public class Guitar implements InstrumentPattern {
                 lines.add(new KeyLine((j == 1 || (i == 0 && j == 3)) ? 1 : 0, new Color(0x5f7684)));
             }
             shape.setLines(lines);
-            shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal.getValue());
-            shape.setCrossLineThickness(2, CrossLine.horizontal.getValue());
+            shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal);
+            shape.setCrossLineThickness(2, CrossLine.horizontal);
             shape.getIdleAppearance().setColor(new Color(0x966F33));
             shape.getSunkenAppearance().setColor(new Color(0x725325));
             
