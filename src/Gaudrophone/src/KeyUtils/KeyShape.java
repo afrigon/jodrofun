@@ -49,7 +49,7 @@ public class KeyShape implements java.io.Serializable {
             lines.add(new KeyLine(new Color(51, 51, 51)));
         }
         for(int i = 0; i < this.crossLines.length; ++i) {
-            this.crossLines[i] = new KeyLine(new Color(255, 255, 255, 255));
+            this.crossLines[i] = new KeyLine(new Color(0, 0, 0, 0));
         }
         idleAppearance = new ShapeAppearance(color);
         clickedAppearance = new ShapeAppearance(color.darker());
@@ -62,7 +62,7 @@ public class KeyShape implements java.io.Serializable {
             lines.add(new KeyLine(new Color(0x979899)));
         }
         for(int i = 0; i < this.crossLines.length; ++i) {
-            this.crossLines[i] = new KeyLine(new Color(1, 1, 1, 1));
+            this.crossLines[i] = new KeyLine(new Color(0, 0, 0, 0));
         }
         idleAppearance = new ShapeAppearance(color);
         clickedAppearance = new ShapeAppearance(clickedColor);

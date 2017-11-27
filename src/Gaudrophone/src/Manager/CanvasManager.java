@@ -43,7 +43,10 @@ public class CanvasManager {
     private double ratioY = 1;
     private Vector2 originalCanvas = new Vector2(950, 600);
     private Vector2 canvasSize = new Vector2(1, 1);
-    private Vector2 boundingBoxPixels = new Vector2(1, 1); 
+    private Vector2 boundingBoxPixels = new Vector2(1, 1);
+    
+    private double ratio = Double.POSITIVE_INFINITY;
+    private Vector2 canvasSize2 = new Vector2(0, 0);
     
     public CanvasManagerDelegate delegate;
     
@@ -51,25 +54,43 @@ public class CanvasManager {
     private Vector2 clickPosition;
     
     public Vector2 convertPixelToWorld(int x, int y) {
-        ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
+        /*ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
         ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
 
-            return new Vector2(x*100/this.canvasSize.getX()/100*ratioX, y*100/this.canvasSize.getY()/100*ratioY);
+        return new Vector2(x*100/this.canvasSize.getX()/100*ratioX, y*100/this.canvasSize.getY()/100*ratioY);*/
+        if(ratio != Double.POSITIVE_INFINITY)
+            return new Vector2(x / ratio, y / ratio);
+        else
+        {
+            this.ratio = 1;
+            return new Vector2(1, 1);
+        }
     }
     
     public Vector2 convertWorldToPixel(Vector2 vector) {
-        ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
+        /*ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
         ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
 
-    return new Vector2(vector.getX()*this.canvasSize.getX()/ratioX, vector.getY()*this.canvasSize.getY()/ratioY);
+        return new Vector2(vector.getX()*this.canvasSize.getX()/ratioX, vector.getY()*this.canvasSize.getY()/ratioY);*/
+        if(ratio != Double.POSITIVE_INFINITY)
+            return new Vector2(vector.getX() * ratio, vector.getY() * ratio);
+        else {
+            this.ratio = 1;
+            return canvasSize2;
+        }
+            
     }
     
     public int convertThicknessToPixel(double thickness) {
-        ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
+        /*ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
         ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
         double newThickness = ratioX > ratioY ? thickness * ratioX : thickness * ratioY;
         
-        return (int)newThickness;
+        return (int)newThickness;*/
+        if(ratio != Double.POSITIVE_INFINITY)
+            return (int)(thickness * ratio);
+        else
+            return (int)thickness;
     }
     
     public void drawKeys(List<Key> keyList) {
@@ -260,7 +281,21 @@ public class CanvasManager {
     }
     
     public void setCanvasSize(int x, int y) {
-        this.canvasSize = new Vector2(x, y);
+        this.canvasSize2 = new Vector2(x, y);
+        if(GaudrophoneController.getController().getInstrumentManager().getInstrument() != null)
+            this.findNewRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
+    }
+    
+    public void findNewRatio(Vector2 instrumentCorner) {
+        if(instrumentCorner == null
+                || instrumentCorner.getX() == Double.POSITIVE_INFINITY || instrumentCorner.getY() == Double.POSITIVE_INFINITY
+                || instrumentCorner.getX() == Double.NEGATIVE_INFINITY || instrumentCorner.getY() == Double.NEGATIVE_INFINITY
+                || instrumentCorner.getX() == Double.NaN || instrumentCorner.getY() == Double.NaN)
+            ratio = Double.POSITIVE_INFINITY;
+        else
+            this.ratio = Math.min(
+                    this.canvasSize2.getX() / instrumentCorner.getX(),
+                    this.canvasSize2.getY() / instrumentCorner.getY());
     }
     
     public void setStoredKeyGenerator(KeyShapeGenerator generator) {

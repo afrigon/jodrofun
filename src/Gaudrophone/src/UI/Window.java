@@ -2056,7 +2056,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             Key key4 = new Key(sound, new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
             key4.getShape().getIdleAppearance().setColor(Color.green);
             GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
-
+            GaudrophoneController.getController().getCanvasManager().findNewRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
+            
             this.refresh();
         });
     }
