@@ -47,9 +47,11 @@ public class SoundService {
             try {
                 EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getPlayingStream(), sound.getLoopFrame());
                 
-                close(sound); // stop the sound if already playing
-                clips.put(sound, clip);
-                clip.start();
+                if (clips.size() < polyphony) {
+                    close(sound); // stop the sound if already playing
+                    clips.put(sound, clip);
+                    clip.start();
+                }
                 
             } catch (LineUnavailableException | IOException ex) {
                 Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,12 +64,13 @@ public class SoundService {
     
     public void release(Sound sound) {
         EnvelopedClip clip = clips.get(sound);
-        try {
-            if(clip != null) {
+
+        if (clip != null) {
+            try {
                 clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
+            } catch (LineUnavailableException | IOException ex) {
+                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (LineUnavailableException | IOException ex) {
-            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

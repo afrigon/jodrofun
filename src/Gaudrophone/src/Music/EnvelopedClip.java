@@ -27,7 +27,6 @@ import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 
 public class EnvelopedClip {
@@ -74,7 +73,6 @@ public class EnvelopedClip {
 
             clip.stop();
             clip.close();
-
             clip = newClip;
         }
     }
