@@ -90,7 +90,12 @@ public class DrawableShape {
                 DrawableLine dl = new DrawableLine();
                 dl.setLine(new Line2D.Double(previous.getX(), previous.getY(), next.getX(), next.getY()));
                 dl.setKeyLine(keyLines.get(i-1));
-                dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(i-1).getThickness()));
+                if (keyLines.get(i-1).getThickness() == 0)
+                    dl.setThickness(0);
+                else {
+                    int thick = GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(i-1).getThickness());
+                    dl.setThickness(thick <= 0 ? 1 : thick);
+                }
                 this.lines.add(dl);
             }
             
@@ -100,7 +105,12 @@ public class DrawableShape {
             DrawableLine dl = new DrawableLine();
             dl.setLine(new Line2D.Double(last.getX(), last.getY(), first.getX(), first.getY()));
             dl.setKeyLine(keyLines.get(keyLines.size()-1));
-            dl.setThickness(GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(keyLines.size()-1).getThickness()));
+            if (keyLines.get(keyLines.size()-1).getThickness() == 0)
+                dl.setThickness(0);
+            else {
+                int thick = GaudrophoneController.getController().getCanvasManager().convertThicknessToPixel(keyLines.get(keyLines.size()-1).getThickness());
+                dl.setThickness(thick <= 0 ? 1 : thick);
+            }
             this.lines.add(dl);
         }
     }
