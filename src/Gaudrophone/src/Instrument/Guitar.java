@@ -23,20 +23,53 @@
  */
 package Instrument;
 
-public class Guitar implements InstrumentPattern {
+import KeyUtils.CrossLine;
+import KeyUtils.KeyLine;
+import KeyUtils.KeyShape;
+import KeyUtils.RectangleKeyShape;
+import KeyUtils.ShapeAppearance;
+import KeyUtils.Vector2;
+import Music.AudioClip;
+import java.awt.Color;
+import java.util.LinkedList;
 
+public class Guitar implements InstrumentPattern {
+    private Instrument guitar;
+    
     @Override
     public Instrument generate() {
-        Instrument guitar = new Instrument();
-        guitar.setName("Guitar");
+        this.guitar = new Instrument();
+        guitar.setName("Guitare");
         
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 12; j++) {
-                
-            }
-        }
+        this.addString(Note.E, 4, 0); //high
+        this.addString(Note.B, 3, 1);
+        this.addString(Note.G, 3, 2);
+        this.addString(Note.D, 3, 3);
+        this.addString(Note.A, 2, 4);
+        this.addString(Note.E, 2, 5); //low
         
         return guitar;
     }
     
+    private void addString(Note note, int octave, int stringIndex) {
+        for (int i = 0; i < 12; i++) {
+            KeyShape shape = new RectangleKeyShape().generateRectangle(1, 1, new Vector2(i, stringIndex));
+            LinkedList<KeyLine> lines = new LinkedList<>();
+            for (int j = 0; j < 4; j++) {
+                lines.add(new KeyLine(4, new Color(0x5f7684)));
+            }
+            shape.setLines(lines);
+            shape.setCrossLineColor(new Color(0x5f7684), CrossLine.horizontal.getValue());
+            shape.setCrossLineThickness(4, CrossLine.horizontal.getValue());
+            shape.getIdleAppearance().setColor(new Color(0x966F33));
+            shape.getSunkenAppearance().setColor(new Color(0x725325));
+            
+            AudioClip sound = new AudioClip();
+            //sound.setPath();
+            
+            Key key = new Key(sound, shape, "");
+//          key.set
+            guitar.addKey(key);
+        }
+    }
 }
