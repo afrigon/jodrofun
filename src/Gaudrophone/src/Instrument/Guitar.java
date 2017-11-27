@@ -32,7 +32,10 @@ import KeyUtils.Vector2;
 import Music.AudioClip;
 import Music.PlayableNote;
 import java.awt.Color;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Guitar implements InstrumentPattern {
     private Instrument guitar;
@@ -55,26 +58,34 @@ public class Guitar implements InstrumentPattern {
     private void addString(Note note, int octave, int stringIndex) {
         PlayableNote playableNote = new PlayableNote(note, octave);
         for (int i = 0; i < 12; i++) {
-            KeyShape shape = new RectangleKeyShape().generateRectangle(100, 100, new Vector2(i*100, stringIndex*100));
-            LinkedList<KeyLine> lines = new LinkedList<>();
-            for (int j = 0; j < 4; j++) {
-                lines.add(new KeyLine((j == 1 || (i == 0 && j == 3)) ? 1 : 0, new Color(0x5f7684)));
-            }
-            shape.setLines(lines);
-            shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal);
-            shape.setCrossLineThickness(2, CrossLine.horizontal);
-            shape.getIdleAppearance().setColor(new Color(0x966F33));
-            shape.getSunkenAppearance().setColor(new Color(0x725325));
+            playableNote = playableNote.getNextPlayableNote();
+            String keyName = playableNote.getNote().toString() + playableNote.getAlteration().getString() + playableNote.getOctave();
             
-            AudioClip sound = new AudioClip();
+            AudioClip sound = new AudioClip(playableNote);
             sound.getEnvelope().setRelease(600);
-            sound.setPath(getClass().getResource("/resources/guitar/" + "A3" + ".wav").getPath());
+            try {
+                sound.setPath(java.net.URLDecoder.decode(getClass().getResource("/resources/guitar/" + keyName + ".wav").getPath(), "UTF-8"));
+            } catch (UnsupportedEncodingException | NullPointerException ex) {
+                continue;
+            }
             
-            Key key = new Key(sound, shape, "");
-//          key.set
+            Key key = new Key(sound, this.getVisual(i, stringIndex), keyName);
             key.setStates(0);
             guitar.addKey(key);
-            playableNote = playableNote.getNextPlayableNote();
         }
+    }
+    
+    private KeyShape getVisual(int x, int y) {
+        KeyShape shape = new RectangleKeyShape().generateRectangle(100, 100, new Vector2(x*100, y*100));
+        LinkedList<KeyLine> lines = new LinkedList<>();
+        for (int j = 0; j < 4; j++) {
+            lines.add(new KeyLine((j % 2 == 0) ? 0 : 1, new Color(0x5f7684)));
+        }
+        shape.setLines(lines);
+        shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal);
+        shape.setCrossLineThickness(4, CrossLine.horizontal);
+        shape.getIdleAppearance().setColor(new Color(0x966F33));
+        shape.getSunkenAppearance().setColor(new Color(0x725325));
+        return shape;
     }
 }

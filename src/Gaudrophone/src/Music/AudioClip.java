@@ -43,14 +43,17 @@ public class AudioClip extends Sound {
     
     // Constructors
     public AudioClip() {
-        type = SoundType.audioClip;
-        speed = 1;
+        this.type = SoundType.audioClip;
     }
     
     public AudioClip(String path) {
-        type = SoundType.audioClip;
-        speed = 1;
+        this.type = SoundType.audioClip;
         this.setPath(path);
+    }
+    
+    public AudioClip(PlayableNote playableNote) {
+        this.type = SoundType.audioClip;
+        this.playableNote = playableNote;
     }
     
     @Override
@@ -173,7 +176,7 @@ public class AudioClip extends Sound {
     }
     
     // Setters
-    public Boolean setPath(String path) {
+    public final Boolean setPath(String path) {
         this.path = path;
         
         if (path == null) {
@@ -187,23 +190,23 @@ public class AudioClip extends Sound {
             File file = new File(path);
             
             AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-            audioFormat = format.getFormat();
+            this.audioFormat = format.getFormat();
             
             InputStream inputStream = new FileInputStream(file);
             
-            AudioInputStream audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            AudioInputStream audioInputStream = new AudioInputStream(inputStream, this.audioFormat, file.length());
             
             int byteRead = 0;
             int offset = 0;
             int fileLength = (int) file.length();
-            buffer =  new byte[(int) file.length()];
+            this.buffer =  new byte[(int) file.length()];
             
             while (byteRead <= 0) {
-                byteRead = audioInputStream.read(buffer, offset, fileLength - offset);
+                byteRead = audioInputStream.read(this.buffer, offset, fileLength - offset);
                 offset += byteRead;
             }
             
-            clipTime = ((double)buffer.length / (double)audioFormat.getFrameSize()) / (double)audioFormat.getSampleRate();
+            this.clipTime = ((double)this.buffer.length / (double)this.audioFormat.getFrameSize()) / (double)this.audioFormat.getSampleRate();
             return true;
         } catch (UnsupportedAudioFileException | IOException ex) {
             return false;

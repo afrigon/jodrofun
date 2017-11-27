@@ -139,7 +139,7 @@ public class PlayableNote {
         switch (this.alteration) {
             case Flat: return new PlayableNote(this.note, this.octave, Alteration.Natural, this.tuning);
             case Natural:
-                if (this.note != Note.E || this.note != Note.B) {
+                if (this.note != Note.E && this.note != Note.B) {
                     return new PlayableNote(this.note, this.octave, Alteration.Sharp, this.tuning);
                 } else {
                     if (this.note == Note.E) {
@@ -159,7 +159,7 @@ public class PlayableNote {
         switch (this.alteration) {
             case Sharp: return new PlayableNote(this.note, this.octave, Alteration.Natural, this.tuning);
             case Natural:
-                if (this.note != Note.F || this.note != Note.C) {
+                if (this.note != Note.F && this.note != Note.C) {
                     return new PlayableNote(this.note, this.octave, Alteration.Flat, this.tuning);
                 } else {
                     if (this.note == Note.F) {
