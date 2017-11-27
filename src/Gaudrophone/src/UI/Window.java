@@ -23,11 +23,11 @@
  */
 package UI;
 
-import Instrument.Alteration;
+import Music.Alteration;
 import Instrument.Guitar;
 import Instrument.Key;
 import Instrument.KeyState;
-import Instrument.Note;
+import Music.Note;
 import Instrument.Piano;
 import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;

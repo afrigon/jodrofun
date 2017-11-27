@@ -23,9 +23,6 @@
  */
 package Music;
 
-import Instrument.Alteration;
-import Instrument.Note;
-
 public class NoteTranslator {
     //private final String[] NOTE_NAMES = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"};
     private static final int BASE_OCTAVE = 4;

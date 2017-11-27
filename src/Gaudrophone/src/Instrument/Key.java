@@ -23,6 +23,8 @@
  */
 package Instrument;
 
+import Music.Note;
+import Music.Alteration;
 import KeyUtils.KeyShape;
 import Music.Sound;
 import Music.SynthesizedSound;

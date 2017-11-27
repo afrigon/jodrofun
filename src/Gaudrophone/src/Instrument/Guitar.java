@@ -23,12 +23,14 @@
  */
 package Instrument;
 
+import Music.Note;
 import KeyUtils.CrossLine;
 import KeyUtils.KeyLine;
 import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.Vector2;
 import Music.AudioClip;
+import Music.PlayableNote;
 import java.awt.Color;
 import java.util.LinkedList;
 
@@ -51,6 +53,7 @@ public class Guitar implements InstrumentPattern {
     }
     
     private void addString(Note note, int octave, int stringIndex) {
+        PlayableNote playableNote = new PlayableNote(note, octave);
         for (int i = 0; i < 12; i++) {
             KeyShape shape = new RectangleKeyShape().generateRectangle(100, 100, new Vector2(i*100, stringIndex*100));
             LinkedList<KeyLine> lines = new LinkedList<>();
@@ -71,6 +74,7 @@ public class Guitar implements InstrumentPattern {
 //          key.set
             key.setStates(0);
             guitar.addKey(key);
+            playableNote = playableNote.getNextPlayableNote();
         }
     }
 }

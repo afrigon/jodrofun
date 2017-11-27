@@ -23,6 +23,8 @@
  */
 package Instrument;
 
+import Music.Note;
+import Music.Alteration;
 import KeyUtils.KeyLine;
 import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
