@@ -43,9 +43,7 @@ public class CanvasManager {
     private double ratioY = 1;
     private double ratio = 1;
     private Vector2 baseSize = new Vector2(950, 600);
-    private Vector2 originalCanvas = new Vector2(950, 600);
     private Vector2 canvasSize = new Vector2(1, 1);
-    private Vector2 boundingBoxPixels = new Vector2(1, 1); 
     
     public CanvasManagerDelegate delegate;
     
