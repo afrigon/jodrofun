@@ -29,7 +29,7 @@ public class Envelope implements java.io.Serializable {
     private double sustain = 0.8; // between 0 and 1
     private double release = 100; // milliseconds
     
-    public static final double SUSTAIN_TIME = 60000;
+    public static final double SUSTAIN_TIME = 150;
     
     public Envelope() {}
     public Envelope(double newAttack, double newDecay, double newSustain, double newRelease) {

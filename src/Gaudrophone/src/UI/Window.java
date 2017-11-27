@@ -1637,12 +1637,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void newBlankMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBlankMenuItemActionPerformed
         GaudrophoneController.getController().getInstrumentManager().newInstrument();
         this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+        GaudrophoneController.getController().getCanvasManager().setState(State.Play);
         this.refresh();
     }//GEN-LAST:event_newBlankMenuItemActionPerformed
 
     private void newGuitarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGuitarMenuItemActionPerformed
         GaudrophoneController.getController().getInstrumentManager().newInstrument(new Guitar());
         this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+        GaudrophoneController.getController().getCanvasManager().setState(State.Play);
+        GaudrophoneController.getController().getCanvasManager().findNewRatio(new Vector2(this.canvas.getWidth(), this.canvas.getHeight()));
         this.refresh();
     }//GEN-LAST:event_newGuitarMenuItemActionPerformed
 
@@ -2110,7 +2113,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             Key key4 = new Key(sound, new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
             key4.getShape().getIdleAppearance().setColor(Color.green);
             GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
-
+            GaudrophoneController.getController().getCanvasManager().findNewRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
+            
             this.refresh();
         });
     }

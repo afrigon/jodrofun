@@ -59,10 +59,10 @@ public class KeyShape implements java.io.Serializable {
         points = pointsList;
         lines = new LinkedList<>();
         for (int i = 0; i < points.size(); i++) {
-            lines.add(new KeyLine(new Color(0x979899)));
+            lines.add(new KeyLine(0.5, new Color(51, 51, 51)));
         }
         for(int i = 0; i < this.crossLines.length; ++i) {
-            this.crossLines[i] = new KeyLine(new Color(1, 1, 1, 1));
+            this.crossLines[i] = new KeyLine(new Color(255, 255, 255, 0));
         }
         idleAppearance = new ShapeAppearance(color);
         clickedAppearance = new ShapeAppearance(clickedColor);

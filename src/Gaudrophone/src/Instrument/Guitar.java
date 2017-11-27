@@ -29,6 +29,7 @@ import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.ShapeAppearance;
 import KeyUtils.Vector2;
+import Manager.GaudrophoneController;
 import Music.AudioClip;
 import java.awt.Color;
 import java.util.LinkedList;
@@ -53,22 +54,24 @@ public class Guitar implements InstrumentPattern {
     
     private void addString(Note note, int octave, int stringIndex) {
         for (int i = 0; i < 12; i++) {
-            KeyShape shape = new RectangleKeyShape().generateRectangle(1, 1, new Vector2(i, stringIndex));
+            KeyShape shape = new RectangleKeyShape().generateRectangle(100, 100, new Vector2(i*100, stringIndex*100));
             LinkedList<KeyLine> lines = new LinkedList<>();
             for (int j = 0; j < 4; j++) {
-                lines.add(new KeyLine(4, new Color(0x5f7684)));
+                lines.add(new KeyLine(j == 1 ? 1 : 0, new Color(0x5f7684)));
             }
             shape.setLines(lines);
-            shape.setCrossLineColor(new Color(0x5f7684), CrossLine.horizontal.getValue());
-            shape.setCrossLineThickness(4, CrossLine.horizontal.getValue());
+            shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal.getValue());
+            shape.setCrossLineThickness(2, CrossLine.horizontal.getValue());
             shape.getIdleAppearance().setColor(new Color(0x966F33));
             shape.getSunkenAppearance().setColor(new Color(0x725325));
             
             AudioClip sound = new AudioClip();
+            sound.getEnvelope().setRelease(600);
             sound.setPath(getClass().getResource("/resources/guitar/" + "A3" + ".wav").getPath());
             
             Key key = new Key(sound, shape, "");
 //          key.set
+            key.setStates(0);
             guitar.addKey(key);
         }
     }

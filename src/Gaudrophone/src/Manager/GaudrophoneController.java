@@ -88,6 +88,7 @@ public class GaudrophoneController {
         if (key != null) {
             instrumentManager.getInstrument().removeKey(key);
             selectionManager.setKey(null);
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -97,6 +98,7 @@ public class GaudrophoneController {
         if (key != null) {
             position = this.canvasManager.convertPixelToWorld((int)position.getX(), (int)position.getY());
             key.getShape().translate(position.sub(key.getShape().getCorner(KeyShape.Corner.TopLeft)));
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
         }
     }
     
@@ -105,6 +107,7 @@ public class GaudrophoneController {
         if (key != null) {
             key.getShape().translate(translation);
             this.delegate.didMoveKey(key);
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -116,6 +119,7 @@ public class GaudrophoneController {
             Vector2 origin = key.getShape().getCorner(KeyShape.Corner.TopLeft);
             Vector2 bottomRightOrigin = key.getShape().getCorner(KeyShape.Corner.BottomRight);
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
             if (size.getX() != 0 && size.getY() != 0) {
                 key.getShape().setSize(size, KeyShape.Corner.Center);
@@ -127,6 +131,7 @@ public class GaudrophoneController {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().stretch(delta);
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -144,6 +149,7 @@ public class GaudrophoneController {
         int point = selectionManager.getSelectedPoint();
         if (key != null && point != -1) {
             key.getShape().getPoints().set(point, key.getShape().getPoints().get(point).add(translation));
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.delegate.didMovePoint(key);
         }
     }

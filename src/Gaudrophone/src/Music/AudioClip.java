@@ -35,11 +35,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AudioClip extends Sound {
-    private String path;
-    private double speed;
-    private AudioFormat audioFormat;
-    private byte[] buffer;
-    private double clipTime;
+    private String path = null;
+    private double speed = 1;
+    private AudioFormat audioFormat = null;
+    private byte[] buffer = null;
+    private double clipTime = 0;
     
     // Constructors
     public AudioClip() {
@@ -105,17 +105,17 @@ public class AudioClip extends Sound {
 
     @Override
     public AudioInputStream getReleasedStream(double timePlayed) {
-        int playingFrame = (int) (timePlayed * audioFormat.getSampleRate());
-        int remainingFrames = ((int) (buffer.length/audioFormat.getFrameSize())) - playingFrame;
+        int playingFrame = (int) (timePlayed * this.audioFormat.getSampleRate());
+        int remainingFrames = ((int) (this.buffer.length / this.audioFormat.getFrameSize())) - playingFrame;
         
-        if (timePlayed < clipTime) {
+        if (timePlayed < this.clipTime) {
             
-            int channels = audioFormat.getChannels();
-            int frameSize = audioFormat.getFrameSize();
-            double sampleRate = audioFormat.getSampleRate();
+            int channels = this.audioFormat.getChannels();
+            int frameSize = this.audioFormat.getFrameSize();
+            double sampleRate = this.audioFormat.getSampleRate();
             
             int sampleSizeInByte = frameSize/channels;
-            boolean isBigEndian = audioFormat.isBigEndian();
+            boolean isBigEndian = this.audioFormat.isBigEndian();
         
             double milliTimePlayed = timePlayed * 1000;
             
@@ -124,18 +124,18 @@ public class AudioClip extends Sound {
             for (int i = 0; i < remainingFrames; i++) {
                 double time = ((double) i)/sampleRate;
                 
-                double amp = volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed);
+                double amp = this.volume * this.envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed);
                 
                 for (int j = 0; j < channels; j++) {
                     if (sampleSizeInByte == 1) {
-                        envelopedBuffer[frameSize * i + j] = (byte) (((double) buffer[frameSize * i + j]) * amp);
+                        envelopedBuffer[frameSize * i + j] = (byte) (((double) this.buffer[frameSize * i + j]) * amp);
 
                     } else if (sampleSizeInByte == 2) {
                         int firstByteOriginalPosition = (playingFrame + i) * frameSize + j * channels;
                         int firstBytePosition = frameSize * i + j * channels;
                         if (isBigEndian) {
                             System.out.println("Big Endian file might not be supported.");
-                            short value = (short) ((buffer[firstByteOriginalPosition] << 8) + (buffer[firstByteOriginalPosition + 1] & 0xff));
+                            short value = (short) ((this.buffer[firstByteOriginalPosition] << 8) + (this.buffer[firstByteOriginalPosition + 1] & 0xff));
 
                             value = (short) (amp * ((double) value));
 
@@ -143,7 +143,7 @@ public class AudioClip extends Sound {
                             envelopedBuffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
 
                         } else {
-                            short value = (short) ((buffer[firstByteOriginalPosition + 1] << 8) + (buffer[firstByteOriginalPosition] & 0xff));
+                            short value = (short) ((this.buffer[firstByteOriginalPosition + 1] << 8) + (this.buffer[firstByteOriginalPosition] & 0xff));
 
                             value = (short) (amp * ((double) value));
 
@@ -153,9 +153,9 @@ public class AudioClip extends Sound {
                     }
                 }
             }
-            return new AudioInputStream(new ByteArrayInputStream(envelopedBuffer, 0, envelopedBuffer.length), audioFormat, envelopedBuffer.length);
+            return new AudioInputStream(new ByteArrayInputStream(envelopedBuffer, 0, envelopedBuffer.length), this.audioFormat, envelopedBuffer.length);
         }
-        return new AudioInputStream(new ByteArrayInputStream(new byte[2], 0, 2), audioFormat, 2);
+        return new AudioInputStream(new ByteArrayInputStream(new byte[2], 0, 2), this.audioFormat, 2);
     }
 
     @Override
@@ -165,11 +165,11 @@ public class AudioClip extends Sound {
     
     // Getters
     public String getPath() {
-        return path;
+        return this.path;
     }
     
     public double getSpeed() {
-        return speed;
+        return this.speed;
     }
     
     // Setters
@@ -211,6 +211,6 @@ public class AudioClip extends Sound {
     }
     
     public void setSpeed(double newSpeed) {
-        speed = newSpeed;
+        this.speed = newSpeed;
     }
 }

@@ -29,8 +29,7 @@ import KeyUtils.Vector2;
 
 public class Instrument implements java.io.Serializable {
     private String name = "Instrument vide";
-    private final ArrayList<Key> keys = new ArrayList<>();
-    private Vector2 boundingBox = new Vector2(0, 0);
+    private ArrayList<Key> keys = new ArrayList<>();
     
     public String getName() {
         return this.name;
@@ -45,27 +44,17 @@ public class Instrument implements java.io.Serializable {
     }
     
     public Vector2 getBoundingBox() {
-        double lowestX = 0.0;
-        double lowestY = 0.0;
-        for (Key key : keys) {
-            //System.out.println("lowestCorner : " + lowestCorner.getX() + ", " + lowestCorner.getY());
-            if (key.getShape().getCorner(KeyShape.Corner.BottomRight).getX() > lowestX)
-                lowestX = key.getShape().getCorner(KeyShape.Corner.BottomRight).getX();
-            if (key.getShape().getCorner(KeyShape.Corner.BottomRight).getY() > lowestY)
-                lowestY = key.getShape().getCorner(KeyShape.Corner.BottomRight).getY();
+        double width = 0;
+        double height = 0;
+        for(Key key : this.keys) {
+            width = Math.max(width, key.getShape().getCorner(KeyShape.Corner.BottomRight).getX());
+            height = Math.max(height, key.getShape().getCorner(KeyShape.Corner.BottomRight).getY());
         }
-        boundingBox = new Vector2(lowestX, lowestY);
-        return boundingBox;
+        return new Vector2(width, height);
     }
     
     public void addKey(Key newKey) {
         keys.add(newKey);
-        
-        System.out.println("Key corner : " + newKey.getShape().getCorner(KeyShape.Corner.BottomRight).getX() + ", " + newKey.getShape().getCorner(KeyShape.Corner.BottomRight).getY());
-        
-        if (newKey.getShape().getCorner(KeyShape.Corner.BottomRight).getX() > boundingBox.getX()
-                || newKey.getShape().getCorner(KeyShape.Corner.BottomRight).getY() > boundingBox.getY())
-            boundingBox = newKey.getShape().getCorner(KeyShape.Corner.BottomRight);
     }
     
     public void removeKey(Key keyToRemove) {

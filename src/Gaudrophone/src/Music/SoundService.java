@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Port;
@@ -43,30 +44,41 @@ public class SoundService {
     }
     
     public void play(Sound sound) {
-        if (clips.size() < polyphony) {
+        //if (clips.size() < polyphony) {
+            
             try {
-                EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getPlayingStream(), sound.getLoopFrame());
-                
-                if (clips.size() < polyphony) {
+                AudioInputStream stream = sound.getPlayingStream();
+                if (stream != null) {
+                    EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), stream, sound.getLoopFrame());
+                    
                     close(sound); // stop the sound if already playing
                     clips.put(sound, clip);
                     clip.start();
                 }
-            } catch (LineUnavailableException ex) {
-                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+                
+            } catch (LineUnavailableException | IOException ex) {
                 Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            closeLastSound();
+        /*} else {
+        Sound firstSound = clips.keySet().iterator().next();
+        EnvelopedClip firstClip = clips.remove(firstSound);
+        firstClip.end();
+        play(sound);
+        }*/ 
+        /*} else {
+            Sound firstSound = clips.keySet().iterator().next();
+            EnvelopedClip firstClip = clips.remove(firstSound);
+            firstClip.end();
             play(sound);
-        }
+        }*/
     }
     
     public void release(Sound sound) {
         EnvelopedClip clip = clips.get(sound);
         try {
-            clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
+            if(clip != null) {
+                clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
+            }
         } catch (LineUnavailableException ex) {
             Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

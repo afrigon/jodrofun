@@ -69,8 +69,7 @@ public class Key implements java.io.Serializable {
             this.sound.setEnvelope(new Music.Envelope(s.getEnvelope().getAttack(), s.getEnvelope().getDecay(), s.getEnvelope().getSustain(), s.getEnvelope().getRelease()));
             this.sound.setVolume(s.getVolume());
         } else if(key.getSound().getType() == SoundType.audioClip) {
-            this.sound = new AudioClip();
-            ((AudioClip)this.sound).setPath(((AudioClip)key.getSound()).getPath());
+            this.sound = new AudioClip(((AudioClip)key.getSound()).getPath());
         }
         
         //Create new KeyShape
