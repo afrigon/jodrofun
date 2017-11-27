@@ -27,15 +27,15 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Port;
-import javax.sound.sampled.AudioInputStream;
 
 public class SoundService {
     public static SoundService shared = new SoundService();
     private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
-    private final int polyphony = 32;
+    private final int polyphony = 16;
     
     public SoundService() {
         if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {
@@ -46,22 +46,25 @@ public class SoundService {
     public void play(Sound sound) {
         //if (clips.size() < polyphony) {
             
-            close(sound); // stop the sound if already playing
-            
             try {
                 AudioInputStream stream = sound.getPlayingStream();
                 if (stream != null) {
                     EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), stream, sound.getLoopFrame());
                     
+                    close(sound); // stop the sound if already playing
                     clips.put(sound, clip);
                     clip.start();
                 }
                 
-            } catch (LineUnavailableException ex) {
-                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (LineUnavailableException | IOException ex) {
                 Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
             }
+        /*} else {
+        Sound firstSound = clips.keySet().iterator().next();
+        EnvelopedClip firstClip = clips.remove(firstSound);
+        firstClip.end();
+        play(sound);
+        }*/ 
         /*} else {
             Sound firstSound = clips.keySet().iterator().next();
             EnvelopedClip firstClip = clips.remove(firstSound);
@@ -80,6 +83,15 @@ public class SoundService {
             Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void closeLastSound() {
+        Sound firstSound = clips.keySet().iterator().next();
+        if (firstSound != null) {
+            EnvelopedClip firstClip = clips.remove(firstSound);
+            firstClip.end();
+            System.out.println("closing last sound");
         }
     }
     

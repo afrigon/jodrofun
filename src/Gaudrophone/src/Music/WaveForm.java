@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 package Music;
+
 import javax.sound.sampled.AudioFormat;
 
 public abstract class WaveForm {

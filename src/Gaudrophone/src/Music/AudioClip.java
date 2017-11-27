@@ -22,24 +22,18 @@
  * THE SOFTWARE.
  */
 package Music;
- 
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
- 
-/**
- *
- * @author Olivier
- */
+
 public class AudioClip extends Sound {
     private String path = null;
     private double speed = 1;
@@ -47,113 +41,68 @@ public class AudioClip extends Sound {
     private byte[] buffer = null;
     private double clipTime = 0;
     
-    //private AudioInputStream audioInputStream = null;
-    
     // Constructors
     public AudioClip() {
-        this.type = SoundType.audioClip;
+        type = SoundType.audioClip;
+        speed = 1;
     }
     
-    public AudioClip(String newPath) {
-        path = newPath;
-        this.type = SoundType.audioClip;
-        
-        createBuffer();
+    public AudioClip(String path) {
+        type = SoundType.audioClip;
+        speed = 1;
+        this.setPath(path);
     }
-    
-    private boolean createBuffer() {
-        try {
-            if(path == null) {
-                this.buffer = null;
-                this.audioFormat = null;
-                this.clipTime = 0;
-                return true;
-            }
-            File file = new File(this.path);
-            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-            this.audioFormat = format.getFormat();
-            
-            InputStream inputStream = new FileInputStream(file);
-            
-            AudioInputStream audioInputStream = new AudioInputStream(inputStream, this.audioFormat, file.length());
-            
-            int byteRead = 0;
-            int offset = 0;
-            int fileLength = (int) file.length();
-            this.buffer =  new byte[(int) file.length()];
-            System.out.println("file length : " + fileLength);
-            
-            while (byteRead <= 0) {
-                //System.out.println("reading byte : " + byteRead);
-                //System.out.println("offset byte : " + offset);
-                byteRead = audioInputStream.read(this.buffer, offset, fileLength - offset);
-                offset += byteRead;
-            }
-            
-            clipTime = ((double)this.buffer.length / (double)this.audioFormat.getFrameSize()) / (double)this.audioFormat.getSampleRate();
-            
-            return true;
-        } catch (UnsupportedAudioFileException | IOException ex) {
-            System.out.println("error clip");
-            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-    
     
     @Override
     public AudioInputStream getPlayingStream() {
-        if(this.audioFormat != null) {
-            int channels = this.audioFormat.getChannels();
-            int frameSize = this.audioFormat.getFrameSize();
-            int sampleSizeInBits = this.audioFormat.getSampleSizeInBits();
-            double sampleRate = this.audioFormat.getSampleRate();
+        int channels = audioFormat.getChannels();
+        int frameSize = audioFormat.getFrameSize();
+        int sampleSizeInBits = audioFormat.getSampleSizeInBits();
+        double sampleRate = audioFormat.getSampleRate();
+        
+        int sampleSizeInByte = frameSize/channels;
+        boolean isBigEndian = audioFormat.isBigEndian();
+        
+        System.out.println("AUDIO FORMAT ///// Channels : " + channels + " //// Frame size : " + frameSize + " //// Sample size in bits : " + sampleSizeInBits);
+        System.out.println("//// Sample size in bytes : " + sampleSizeInByte + " //// Big Endian : " + isBigEndian);
+        
+        byte[] envelopedBuffer = new byte[buffer.length];
+        
+        for (int i = 0; i < buffer.length/frameSize; i++) {
+            double time = ((double) i)/sampleRate;
+            
+            double amp = volume * envelope.getPlayingAmplitude(time * 1000.0);
+            
+            for (int j = 0; j < channels; j++) {
+                if (sampleSizeInByte == 1) {
+                    envelopedBuffer[i * frameSize + j] = (byte) (((double) buffer[i * frameSize + j]) * amp);
+                    
+                } else if (sampleSizeInByte == 2) {
+                    int firstBytePosition = i * frameSize + j * channels;
+                    if (isBigEndian) {
+                        System.out.println("Big Endian file might not be supported.");
+                        short value = (short) ((buffer[firstBytePosition] << 8) + (buffer[firstBytePosition + 1] & 0xff));
 
-            int sampleSizeInByte = frameSize/channels;
-            boolean isBigEndian = this.audioFormat.isBigEndian();
+                        value = (short) (amp * ((double) value));
 
-            System.out.println("AUDIO FORMAT ///// Channels : " + channels + " //// Frame size : " + frameSize + " //// Sample size in bits : " + sampleSizeInBits);
-            System.out.println("//// Sample size in bytes : " + sampleSizeInByte + " //// Big Endian : " + isBigEndian);
+                        envelopedBuffer[firstBytePosition + 1] = (byte) (value & 0xff);
+                        envelopedBuffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
+                        
+                    } else {
+                        short value = (short) ((buffer[firstBytePosition + 1] << 8) + (buffer[firstBytePosition] & 0xff));
 
-            byte[] envelopedBuffer = new byte[this.buffer.length];
+                        value = (short) (amp * ((double) value));
 
-            for (int i = 0; i < this.buffer.length/frameSize; i++) {
-                double time = ((double) i)/sampleRate;
-
-                double amp = this.volume * this.envelope.getPlayingAmplitude(time * 1000.0);
-
-                for (int j = 0; j < channels; j++) {
-                    if (sampleSizeInByte == 1) {
-                        envelopedBuffer[i * frameSize + j] = (byte)(((double)this.buffer[i * frameSize + j]) * amp);
-
-                    } else if (sampleSizeInByte == 2) {
-                        int firstBytePosition = i * frameSize + j * channels;
-                        if (isBigEndian) {
-                            System.out.println("Big Endian file might not be supported.");
-                            short value = (short) ((this.buffer[firstBytePosition] << 8) + (this.buffer[firstBytePosition + 1] & 0xff));
-
-                            value = (short) (amp * ((double) value));
-
-                            envelopedBuffer[firstBytePosition + 1] = (byte) (value & 0xff);
-                            envelopedBuffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
-
-                        } else {
-                            short value = (short) ((this.buffer[firstBytePosition + 1] << 8) + (this.buffer[firstBytePosition] & 0xff));
-
-                            value = (short) (amp * ((double) value));
-
-                            envelopedBuffer[firstBytePosition] = (byte) (value & 0xff);
-                            envelopedBuffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
-                        }
+                        envelopedBuffer[firstBytePosition] = (byte) (value & 0xff);
+                        envelopedBuffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
                     }
                 }
             }
-
-            return new AudioInputStream(new ByteArrayInputStream(envelopedBuffer, 0, envelopedBuffer.length), this.audioFormat, envelopedBuffer.length);
         }
-        return null;
+        
+        return new AudioInputStream(new ByteArrayInputStream(envelopedBuffer, 0, envelopedBuffer.length), audioFormat, envelopedBuffer.length);
     }
-    
+
     @Override
     public AudioInputStream getReleasedStream(double timePlayed) {
         int playingFrame = (int) (timePlayed * this.audioFormat.getSampleRate());
@@ -208,7 +157,7 @@ public class AudioClip extends Sound {
         }
         return new AudioInputStream(new ByteArrayInputStream(new byte[2], 0, 2), this.audioFormat, 2);
     }
- 
+
     @Override
     public int getLoopFrame() {
         return -1;
@@ -224,9 +173,41 @@ public class AudioClip extends Sound {
     }
     
     // Setters
-    public boolean setPath(String newPath) {
-        this.path = newPath;
-        return createBuffer();
+    public Boolean setPath(String path) {
+        this.path = path;
+        
+        if (path == null) {
+            this.buffer = null;
+            this.audioFormat = null;
+            this.clipTime = 0;
+            return true;
+        }
+        
+        try {
+            File file = new File(path);
+            
+            AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+            audioFormat = format.getFormat();
+            
+            InputStream inputStream = new FileInputStream(file);
+            
+            AudioInputStream audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
+            
+            int byteRead = 0;
+            int offset = 0;
+            int fileLength = (int) file.length();
+            buffer =  new byte[(int) file.length()];
+            
+            while (byteRead <= 0) {
+                byteRead = audioInputStream.read(buffer, offset, fileLength - offset);
+                offset += byteRead;
+            }
+            
+            clipTime = ((double)buffer.length / (double)audioFormat.getFrameSize()) / (double)audioFormat.getSampleRate();
+            return true;
+        } catch (UnsupportedAudioFileException | IOException ex) {
+            return false;
+        }
     }
     
     public void setSpeed(double newSpeed) {

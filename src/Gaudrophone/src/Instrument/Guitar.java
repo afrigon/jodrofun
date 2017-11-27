@@ -23,15 +23,56 @@
  */
 package Instrument;
 
-public class Guitar implements InstrumentPattern {
+import KeyUtils.CrossLine;
+import KeyUtils.KeyLine;
+import KeyUtils.KeyShape;
+import KeyUtils.RectangleKeyShape;
+import KeyUtils.ShapeAppearance;
+import KeyUtils.Vector2;
+import Manager.GaudrophoneController;
+import Music.AudioClip;
+import java.awt.Color;
+import java.util.LinkedList;
 
+public class Guitar implements InstrumentPattern {
+    private Instrument guitar;
+    
     @Override
     public Instrument generate() {
-        Instrument guitar = new Instrument();
-        guitar.setName("New Guitar");
-        // ajouter les touches
+        this.guitar = new Instrument();
+        guitar.setName("Guitare");
+        
+        this.addString(Note.E, 4, 0); //high
+        this.addString(Note.B, 3, 1);
+        this.addString(Note.G, 3, 2);
+        this.addString(Note.D, 3, 3);
+        this.addString(Note.A, 2, 4);
+        this.addString(Note.E, 2, 5); //low
         
         return guitar;
     }
     
+    private void addString(Note note, int octave, int stringIndex) {
+        for (int i = 0; i < 12; i++) {
+            KeyShape shape = new RectangleKeyShape().generateRectangle(100, 100, new Vector2(i*100, stringIndex*100));
+            LinkedList<KeyLine> lines = new LinkedList<>();
+            for (int j = 0; j < 4; j++) {
+                lines.add(new KeyLine(j == 1 ? 1 : 0, new Color(0x5f7684)));
+            }
+            shape.setLines(lines);
+            shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal.getValue());
+            shape.setCrossLineThickness(2, CrossLine.horizontal.getValue());
+            shape.getIdleAppearance().setColor(new Color(0x966F33));
+            shape.getSunkenAppearance().setColor(new Color(0x725325));
+            
+            AudioClip sound = new AudioClip();
+            sound.getEnvelope().setRelease(600);
+            sound.setPath(getClass().getResource("/resources/guitar/" + "A3" + ".wav").getPath());
+            
+            Key key = new Key(sound, shape, "");
+//          key.set
+            key.setStates(0);
+            guitar.addKey(key);
+        }
+    }
 }

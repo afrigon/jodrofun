@@ -29,7 +29,7 @@ import javax.sound.sampled.AudioInputStream;
 public class SynthesizedSound extends Sound {
     private double frequency;
     private int tuning;
-    private WaveForm waveForm = null;
+    private WaveForm waveForm;
     
     // Constructors
     public SynthesizedSound() {
@@ -47,12 +47,6 @@ public class SynthesizedSound extends Sound {
         waveForm = new SineWaveForm();
 //        waveForm.updateBuffer(frequency);
     }
-    
-    // Implement abstract methods
-//    @Override
-//    public AudioInputStream getAudioInputStream() {
-//        return waveForm.getAudioInputStream();
-//    }
 
     @Override
     public AudioInputStream getPlayingStream() {

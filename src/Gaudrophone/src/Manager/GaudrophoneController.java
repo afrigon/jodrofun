@@ -121,8 +121,9 @@ public class GaudrophoneController {
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
-            //TODO: FIX this shit
-            //key.getShape().stretch(size.sub(oldSize));
+            if (size.getX() != 0 && size.getY() != 0) {
+                key.getShape().setSize(size, KeyShape.Corner.Center);
+            }        
         }
     }
     

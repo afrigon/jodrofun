@@ -21,9 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package KeyUtils;
 
-public interface CanvasManagerDelegate {
-    public void shouldRedraw();
-    public void didChangeState(State state);
+
+public enum CrossLine {
+    horizontal(1), vertical(0), diagonalUpLeftDownRight(2), diagonalDownLeftUpRight(3);
+
+    private final int value;
+    private CrossLine(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

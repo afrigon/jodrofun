@@ -24,28 +24,19 @@
 package Music;
 
 public class Envelope implements java.io.Serializable {
-    private double attack; // milliseconds
-    private double decay; // milliseconds
-    private double sustain; // between 0 and 1
-    private double release; // milliseconds
-    private double attackAndDecay;
+    private double attack = 100; // milliseconds
+    private double decay = 100; // milliseconds
+    private double sustain = 0.8; // between 0 and 1
+    private double release = 100; // milliseconds
     
     public static final double SUSTAIN_TIME = 150;
     
-    public Envelope() {
-        attack = 150;
-        decay = 75;
-        sustain = .6;
-        release = 2000;
-        attackAndDecay = attack + decay;
-    }
-    
+    public Envelope() {}
     public Envelope(double newAttack, double newDecay, double newSustain, double newRelease) {
         attack = newAttack;
         decay = newDecay;
         sustain = newSustain;
         release = newRelease;
-        attackAndDecay = attack + decay;
     }
     
     public int getAttack() {
@@ -67,12 +58,10 @@ public class Envelope implements java.io.Serializable {
     // setters
     public void setAttack(double newAttack) {
         attack = newAttack;
-        attackAndDecay = attack + decay;
     }
     
     public void setDecay(double newDecay) {
         decay = newDecay;
-        attackAndDecay = attack + decay;
     }
     
     public void setSustain(double newSustain) {
@@ -96,7 +85,7 @@ public class Envelope implements java.io.Serializable {
         if (time <= attack) {
             return getAttackAmplitude(time);
         } else {
-            if (time < attackAndDecay) {
+            if (time < attack + decay) {
                 return getDecayAmplitude(time - attack);
             } else {
                 return sustain;
@@ -113,7 +102,7 @@ public class Envelope implements java.io.Serializable {
     }
     
     public double getPlayingTimeLength() {
-        return attackAndDecay + SUSTAIN_TIME;
+        return attack + decay + SUSTAIN_TIME;
     }
     
     public double getReleaseTime() {

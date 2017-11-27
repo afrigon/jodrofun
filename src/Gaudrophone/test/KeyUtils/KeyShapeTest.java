@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package KeyUtils;
 
-public interface CanvasManagerDelegate {
-    public void shouldRedraw();
-    public void didChangeState(State state);
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+/**
+ *
+ * @author Olivier
+ */
+public class KeyShapeTest {
+    
+    @Test
+    public void constructors() {
+        List<Vector2> pointList = new ArrayList<>();
+        
+        Vector2 position = new Vector2(1, 1);
+        Vector2 size = new Vector2(100, 100);
+        
+        pointList.add(new Vector2(position.getX(), position.getY() + size.getY()));
+        pointList.add(new Vector2(position.getX() + size.getX()/2, position.getY()));
+        pointList.add(new Vector2(position.getX() + size.getX(), position.getY() + size.getY()));
+        
+        KeyShape triangle = new KeyShape(pointList, new Color(0x979899));
+        
+        assertEquals(triangle.getSize().getX(), size.getX(), 0);
+        assertEquals(triangle.getSize().getY(), size.getY(), 0);
+        
+    }
 }

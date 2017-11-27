@@ -28,13 +28,8 @@ import java.util.ArrayList;
 import KeyUtils.Vector2;
 
 public class Instrument implements java.io.Serializable {
-    private String name;
-    private ArrayList<Key> keys;
-    
-    public Instrument() {
-        this.name = "New Instrument";
-        this.keys = new ArrayList<Key>();
-    }
+    private String name = "Instrument vide";
+    private ArrayList<Key> keys = new ArrayList<>();
     
     public String getName() {
         return this.name;
