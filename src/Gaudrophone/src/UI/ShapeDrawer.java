@@ -376,7 +376,7 @@ public class ShapeDrawer {
         double xThickness = angle / Math.toRadians(90),
                 yThickness = (Math.abs(angle) - Math.toRadians(90)) / Math.toRadians(90);
         if(xThickness > 1) xThickness = 2 - xThickness;
-        if(xThickness < -1) xThickness = -2 + xThickness;
+        if(xThickness < -1) xThickness = -2 - xThickness;
         
         //Create and return a new line using the thickness multipliers
         return new Line2D.Double(

@@ -39,12 +39,6 @@ public class CanvasManager {
     
     private DrawableShape draggedShape = null;
     
-    private double ratioX = 1;
-    private double ratioY = 1;
-    private Vector2 originalCanvas = new Vector2(950, 600);
-    private Vector2 canvasSize = new Vector2(1, 1);
-    private Vector2 boundingBoxPixels = new Vector2(1, 1);
-    
     private double ratio = Double.POSITIVE_INFINITY;
     private Vector2 canvasSize2 = new Vector2(0, 0);
     
@@ -54,10 +48,6 @@ public class CanvasManager {
     private Vector2 clickPosition;
     
     public Vector2 convertPixelToWorld(int x, int y) {
-        /*ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
-        ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
-
-        return new Vector2(x*100/this.canvasSize.getX()/100*ratioX, y*100/this.canvasSize.getY()/100*ratioY);*/
         if(ratio != Double.POSITIVE_INFINITY)
             return new Vector2(x / ratio, y / ratio);
         else
@@ -68,10 +58,6 @@ public class CanvasManager {
     }
     
     public Vector2 convertWorldToPixel(Vector2 vector) {
-        /*ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
-        ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
-
-        return new Vector2(vector.getX()*this.canvasSize.getX()/ratioX, vector.getY()*this.canvasSize.getY()/ratioY);*/
         if(ratio != Double.POSITIVE_INFINITY)
             return new Vector2(vector.getX() * ratio, vector.getY() * ratio);
         else {
@@ -82,11 +68,6 @@ public class CanvasManager {
     }
     
     public int convertThicknessToPixel(double thickness) {
-        /*ratioX = canvasSize.getX() / originalCanvas.getX() > 1.0 ? canvasSize.getX() / originalCanvas.getX() : 1.0;
-        ratioY = canvasSize.getY() / originalCanvas.getY() > 1.0 ? canvasSize.getY() / originalCanvas.getY() : 1.0;
-        double newThickness = ratioX > ratioY ? thickness * ratioX : thickness * ratioY;
-        
-        return (int)newThickness;*/
         if(ratio != Double.POSITIVE_INFINITY)
             return (int)(thickness * ratio);
         else
