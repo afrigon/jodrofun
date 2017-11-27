@@ -53,7 +53,7 @@ public class SoundService {
                     clip.start();
                 }
                 
-            } catch (LineUnavailableException | IOException ex) {
+            } catch (LineUnavailableException ex) {
                 Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -68,7 +68,8 @@ public class SoundService {
         if (clip != null) {
             try {
                 clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
-            } catch (LineUnavailableException | IOException ex) {
+                
+            } catch (LineUnavailableException ex) {
                 Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
