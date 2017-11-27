@@ -43,7 +43,7 @@ import java.util.List;
 public class GaudrophoneController {
     private final InstrumentManager instrumentManager = new InstrumentManager();
     private final CanvasManager canvasManager = new CanvasManager();
-    private final SoundService soundService = new SoundService();
+    private final SoundService soundService = SoundService.get();
     private final SelectionManager selectionManager = new SelectionManager();
     public GaudrophoneControllerDelegate delegate;
     
@@ -126,7 +126,7 @@ public class GaudrophoneController {
             Vector2 origin = key.getShape().getCorner(Corner.topLeft);
             Vector2 bottomRightOrigin = key.getShape().getCorner(Corner.bottomRight);
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
-            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
+            //this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
             if (size.getX() != 0 && size.getY() != 0) {
                 key.getShape().setSize(size, Corner.topLeft);
@@ -256,10 +256,6 @@ public class GaudrophoneController {
                 if(line != null)
                     line.setColor(newColor);
             }
-            for(KeyLine line : key.getShape().getCrossLines()) {
-                if(line != null)
-                    line.setColor(newColor);
-            }
             key.getShape().setLines(shapeLines);
             this.canvasManager.delegate.shouldRedraw();
         }
@@ -270,10 +266,6 @@ public class GaudrophoneController {
         if (key != null) {
             List<KeyLine> shapeLines = key.getShape().getLines();
             for(KeyLine line : shapeLines) {
-                if(line != null)
-                    line.setThickness(newThickness);
-            }
-            for(KeyLine line : key.getShape().getCrossLines()) {
                 if(line != null)
                     line.setThickness(newThickness);
             }

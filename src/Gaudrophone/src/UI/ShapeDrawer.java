@@ -314,7 +314,7 @@ public class ShapeDrawer {
             text += shape.getKey().getName() + "\n";
         }
         if((keyState & KeyState.displayNote.getValue()) != 0)
-            text += shape.getKey().getNote();
+            text += shape.getKey().getNote().name();
         if((keyState & KeyState.displayOctave.getValue()) != 0)
             text += shape.getKey().getOctave();
         if((keyState & KeyState.displayAlteration.getValue()) != 0)

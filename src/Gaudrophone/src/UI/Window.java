@@ -264,7 +264,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -788,7 +788,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         lineThicknessLabel.setText("Épaisseur :");
         lineThicknessWrapper.add(lineThicknessLabel);
 
-        lineThicknessSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 2.0d, 0.2d));
+        lineThicknessSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 15000.0d, 0.2d));
         lineThicknessSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 lineThicknessSpinnerStateChanged(evt);
