@@ -249,6 +249,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         quitMenuItem = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        menuEditDelete = new javax.swing.JMenuItem();
+        menuEditDuplicate = new javax.swing.JMenuItem();
         insertMenuItem = new javax.swing.JMenu();
         createRectangleMenuItem = new javax.swing.JMenuItem();
         createTriangleMenuItem = new javax.swing.JMenuItem();
@@ -1607,6 +1610,30 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         jMenuBar1.add(fileMenuItem);
 
+        jMenu2.setText("Edition");
+
+        menuEditDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
+        menuEditDelete.setText("Supprimer");
+        menuEditDelete.setEnabled(false);
+        menuEditDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEditDeleteActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuEditDelete);
+
+        menuEditDuplicate.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        menuEditDuplicate.setText("Dupliquer");
+        menuEditDuplicate.setEnabled(false);
+        menuEditDuplicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEditDuplicateActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuEditDuplicate);
+
+        jMenuBar1.add(jMenu2);
+
         insertMenuItem.setBorder(null);
         insertMenuItem.setText("Insérer");
 
@@ -2017,6 +2044,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void menuModePlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModePlayActionPerformed
         GaudrophoneController.getController().getCanvasManager().setState(State.Play);
     }//GEN-LAST:event_menuModePlayActionPerformed
+
+    private void menuEditDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditDeleteActionPerformed
+        GaudrophoneController.getController().deleteKey();
+    }//GEN-LAST:event_menuEditDeleteActionPerformed
+
+    private void menuEditDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditDuplicateActionPerformed
+        GaudrophoneController.getController().duplicateKey();
+    }//GEN-LAST:event_menuEditDuplicateActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2062,8 +2097,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.splitWindow.setLeftComponent(this.canvas);
             this.hideControls();
             this.setVisible(true);
-            this.setFocusable(true);
-            this.requestFocusInWindow();
             
             this.canvas.setBackground(new Color(102,102,102));
             this.canvas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2075,17 +2108,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 @Override
                 public void mouseReleased(java.awt.event.MouseEvent e) {
                     refresh();
-                }
-            });
-            
-            this.addKeyListener(new java.awt.event.KeyAdapter() {
-                @Override
-                public void keyPressed(java.awt.event.KeyEvent e) {
-                    if(e.getKeyCode() == KeyEvent.VK_DELETE &&
-                            (GaudrophoneController.getController().getCanvasManager().getState() == Manager.State.EditKey ||
-                            GaudrophoneController.getController().getCanvasManager().getState() == Manager.State.EditLine ||
-                            GaudrophoneController.getController().getCanvasManager().getState() == Manager.State.EditPoint))
-                        GaudrophoneController.getController().deleteKey();
                 }
             });
             
@@ -2240,6 +2262,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JTextField instrumentNameTextField;
     private javax.swing.JPanel instrumentPanel;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField keyNameField;
@@ -2255,6 +2278,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel lineThicknessWrapper;
     private javax.swing.JPanel linesSelectionWrapper;
     private javax.swing.JPanel linesWrapper;
+    private javax.swing.JMenuItem menuEditDelete;
+    private javax.swing.JMenuItem menuEditDuplicate;
     private javax.swing.JMenuItem menuModeEditKey;
     private javax.swing.JMenuItem menuModePlay;
     private javax.swing.JRadioButton naturalRadioButton;
@@ -2422,11 +2447,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.splitWindow.setRightComponent(this.rightScrollPane);
             this.splitWindow.setDividerLocation(Math.max(this.splitWindow.getWidth()/2, this.splitWindow.getWidth()-500));
         }
+        this.menuEditDelete.setEnabled(true);
+        this.menuEditDuplicate.setEnabled(true);
     }
     
     @Override
     public void didDeselectKey() {
         this.hideControls();
+        this.menuEditDelete.setEnabled(false);
+        this.menuEditDuplicate.setEnabled(false);
     }
 
     @Override
