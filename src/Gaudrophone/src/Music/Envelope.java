@@ -30,13 +30,13 @@ public class Envelope implements java.io.Serializable {
     private double release; // milliseconds
     private double attackAndDecay;
     
-    public static final double SUSTAIN_TIME = 150;
+    public static final double SUSTAIN_TIME = 30000;
     
     public Envelope() {
-        attack = 100;
+        attack = 30;
         decay = 100;
         sustain = 0.8;
-        release = 250;
+        release = 2000;
         attackAndDecay = attack + decay;
     }
     
