@@ -57,7 +57,7 @@ public class Guitar implements InstrumentPattern {
             KeyShape shape = new RectangleKeyShape().generateRectangle(100, 100, new Vector2(i*100, stringIndex*100));
             LinkedList<KeyLine> lines = new LinkedList<>();
             for (int j = 0; j < 4; j++) {
-                lines.add(new KeyLine(j == 1 ? 1 : 0, new Color(0x5f7684)));
+                lines.add(new KeyLine((j == 1 || (i == 0 && j == 3)) ? 1 : 0, new Color(0x5f7684)));
             }
             shape.setLines(lines);
             shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal.getValue());
