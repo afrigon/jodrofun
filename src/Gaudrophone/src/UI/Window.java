@@ -2027,7 +2027,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 GaudrophoneController.getController().setAllLineColor(color);
             else
                 GaudrophoneController.getController().setLineColor(color);
-            this.backgroundDisplayLabel.setBackground(color);
+            this.lineColorEditButton.setBackground(color);
         }
     }//GEN-LAST:event_lineColorEditButtonMouseClicked
 
@@ -2052,6 +2052,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         int lineIndex = 0;
         if(index == 0) {
             this.lineThicknessSpinner.setValue(2d);
+            this.lineColorEditButton.setBackground(new Color(65, 65, 65));
+            this.lineControlWrapper.setVisible(true);
             lineIndex = -5;
         }
         else if(index == count - 4) {
