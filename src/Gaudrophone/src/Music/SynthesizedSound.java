@@ -85,7 +85,7 @@ public class SynthesizedSound extends Sound {
         
         for (int i = 0; i < frames; i++) {
             double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            short amplitude = (short) (32767.0 * volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
+            short amplitude = (short) (32767.0 * volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, time));
             buffer[4 * i] = (byte) (amplitude & 0xff);
             buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
             buffer[4 * i + 2] = buffer[4 * i];

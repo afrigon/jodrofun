@@ -61,16 +61,18 @@ public class EnvelopedClip {
         releaseInstant = System.nanoTime();
         double timePlayed = ((double)(releaseInstant - startInstant))/1000000000;
         newClip.start();
-
+        
+        clip.stop();
         clip.close();
 
         clip = newClip;
         released = true;
-        System.out.println("clip release");
+        //System.out.println("clip release");
     }
     
     public void end() {
-        System.out.println("clip stop");
+        //System.out.println("clip stop");
+        clip.stop();
         clip.close();
         startInstant = 0;
         releaseInstant = 0;
