@@ -88,6 +88,7 @@ public class GaudrophoneController {
             instrumentManager.getInstrument().removeKey(key);
             selectionManager.setKey(null);
             this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.updateRatio(this.instrumentManager.getInstrument().getBoundingBox());
         }
     }
     
