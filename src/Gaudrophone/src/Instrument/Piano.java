@@ -30,6 +30,7 @@ import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.Vector2;
 import Music.NoteTranslator;
+import Music.PlayableNote;
 import Music.SynthesizedSound;
 import java.awt.Color;
 import java.util.LinkedList;
@@ -77,7 +78,7 @@ public class Piano implements InstrumentPattern {
     }
     
     private Key generateKey(Note note, int octave, Alteration alteration) {
-        SynthesizedSound sound = new SynthesizedSound(NoteTranslator.getFrequencyFromKey(note, alteration, octave, 0));
+        SynthesizedSound sound = new SynthesizedSound(new PlayableNote(note, octave, alteration, 0));
         sound.getEnvelope().setRelease(300);
         KeyShape shape = alteration == Alteration.Natural ? this.getWhiteKey() : this.getBlackKey();
         String noteName = note.toString() + alteration.getString() + octave;

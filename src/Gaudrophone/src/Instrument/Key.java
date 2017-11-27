@@ -35,9 +35,6 @@ public class Key implements java.io.Serializable {
     private KeyShape shape = null;
     private Sound sound = null;
     private String name = null;
-    private Alteration alteration = Alteration.Natural;
-    private Note note = Note.A;
-    private int octave = 4;
     private int states = 144;
     
     // Constructors
@@ -47,17 +44,6 @@ public class Key implements java.io.Serializable {
         this.name = keyName;
     }
     
-//    public Key(KeyShape keyShape) {
-//        java.util.List<KeyUtils.Vector2> v = new java.util.ArrayList<>();
-//        keyShape.getPoints().forEach((point)->{v.add(new KeyUtils.Vector2(point.getX(), point.getY()));});
-//        this.shape = new KeyShape(v, keyShape.getIdleAppearance().getColor(), keyShape.getSunkenAppearance().getColor());
-//        this.shape.getIdleAppearance().setImage(keyShape.getIdleAppearance().getImagePath());
-//        this.shape.getSunkenAppearance().setImage(keyShape.getSunkenAppearance().getImagePath());
-//        
-//        this.sound = new SynthesizedSound();
-//        this.name = "Nouvelle touche";
-//    }
-    
     //Everything need to be brand new, otherwise it will use a referenced pointer
     //Exemple, moving one key will move any duplicated because the points are the same pointers
     public Key(Key key) {
@@ -65,8 +51,7 @@ public class Key implements java.io.Serializable {
         
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound s = (SynthesizedSound)key.getSound();
-            this.sound = new SynthesizedSound(s.getFrequency());
-            ((SynthesizedSound)this.sound).setTuning(s.getTuning());
+            this.sound = new SynthesizedSound();
             ((SynthesizedSound)this.sound).setWaveForm(s.getWaveform());
             this.sound.setEnvelope(new Music.Envelope(s.getEnvelope().getAttack(), s.getEnvelope().getDecay(), s.getEnvelope().getSustain(), s.getEnvelope().getRelease()));
             this.sound.setVolume(s.getVolume());
@@ -81,36 +66,37 @@ public class Key implements java.io.Serializable {
         this.shape.getIdleAppearance().setImage(key.getShape().getIdleAppearance().getImagePath());
         this.shape.getSunkenAppearance().setImage(key.getShape().getSunkenAppearance().getImagePath());
         
-        //Set name
+        //Set Others
         this.name = key.name;
-        this.note = key.note;
-        this.alteration = key.alteration;
-        this.octave = key.octave;
+        this.sound.getPlayableNote().setNote(key.sound.getPlayableNote().getNote());
+        this.sound.getPlayableNote().setOctave(key.sound.getPlayableNote().getOctave());
+        this.sound.getPlayableNote().setAlteration(key.sound.getPlayableNote().getAlteration());
+        this.sound.getPlayableNote().setTuning(key.sound.getPlayableNote().getTuning());
     }
     
     // Setters
-    public void setSound(Sound newSound) {
-        this.sound = newSound;
+    public void setSound(Sound sound) {
+        this.sound = sound;
     }
     
-    public void setName(String newName) {
-        this.name = newName;
+    public void setName(String name) {
+        this.name = name;
     }
     
-    public void setNote(Note newNote) {
-        this.note = newNote;
+    public void setNote(Note note) {
+        this.sound.getPlayableNote().setNote(note);
     }
     
-    public void setAlteration(Alteration newAlteration) {
-        this.alteration = newAlteration;
+    public void setOctave(int octave) {
+        this.sound.getPlayableNote().setOctave(octave);
+    }
+        
+    public void setAlteration(Alteration alteration) {
+        this.sound.getPlayableNote().setAlteration(alteration);
     }
     
-    public void setOctave(int newOctave) {
-        this.octave = newOctave;
-    }
-    
-    public void changeState(int keyState) {
-        this.states = this.states ^ keyState;
+    public void setTuning(int tuning) {
+        this.sound.getPlayableNote().setTuning(tuning);
     }
     
     // Getters
@@ -123,15 +109,23 @@ public class Key implements java.io.Serializable {
     }
     
     public Note getNote() {
-        return this.note;
+        return this.sound.getPlayableNote().getNote();
     }
     
     public Alteration getAlteration() {
-        return this.alteration;
+        return this.sound.getPlayableNote().getAlteration();
     }
     
     public int getOctave() {
-        return this.octave;
+        return this.sound.getPlayableNote().getOctave();
+    }
+    
+    public int getTuning() {
+        return this.sound.getPlayableNote().getTuning();
+    }
+    
+    public double getFrequency() {
+        return this.sound.getPlayableNote().getFrequency();
     }
     
     public KeyShape getShape() {

@@ -47,7 +47,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
@@ -1275,7 +1274,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         tuningLabel.setOpaque(true);
         tuningProperty.add(tuningLabel);
 
-        tuningSpinner.setModel(new javax.swing.SpinnerNumberModel(0, -49, 49, 1));
+        tuningSpinner.setModel(new javax.swing.SpinnerNumberModel(0, -100, 100, 1));
         tuningSpinner.setMinimumSize(new java.awt.Dimension(30, 26));
         tuningSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -2193,30 +2192,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             
             GaudrophoneController.getController().getInstrumentManager().newInstrument();
             this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
-            
-//          MINI-PIANO
-            Key key = new Key(new SynthesizedSound(440), new RectangleKeyShape().generateSquare(50, new Vector2(0, 0)), "A");
-            key.getShape().getIdleAppearance().setColor(Color.yellow);
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key);
-
-            Key key1 = new Key(new SynthesizedSound(493.88), new RectangleKeyShape().generateSquare(50, new Vector2(52, 2)), "B");
-            key1.getShape().getIdleAppearance().setColor(Color.PINK);
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key1);
-
-            Key key2 = new Key(new SynthesizedSound(523.25), new RectangleKeyShape().generateSquare(50, new Vector2(104, 2)), "C");
-            key2.getShape().getIdleAppearance().setColor(Color.CYAN);
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key2);
-
-            Key key3 = new Key(new SynthesizedSound(587.33), new RectangleKeyShape().generateSquare(50, new Vector2(156, 2)), "D");
-            key3.getShape().getIdleAppearance().setColor(Color.MAGENTA);
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key3);
-
-            Sound sound = new SynthesizedSound(659.25);
-            Key key4 = new Key(sound, new RectangleKeyShape().generateSquare(50, new Vector2(208, 2)), "E");
-            key4.getShape().getIdleAppearance().setColor(Color.green);
-            GaudrophoneController.getController().getInstrumentManager().getInstrument().addKey(key4);
-            GaudrophoneController.getController().getCanvasManager().findNewRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
-            
             this.refresh();
         });
     }
@@ -2457,11 +2432,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.displayOctaveCheckBox.setSelected((key.getStates() & KeyState.displayOctave.getValue()) != 0);
         this.displayAlterationCheckBox.setSelected((key.getStates() & KeyState.displayAlteration.getValue()) != 0);
         
+        this.frequencySpinner.setValue(key.getFrequency());
+        this.tuningSpinner.setValue(key.getTuning());
+        
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             this.synthRadioButton.setSelected(true);
             SynthesizedSound sound = (SynthesizedSound)key.getSound();
-            this.tuningSpinner.setValue(sound.getTuning());
-            this.frequencySpinner.setValue(sound.getFrequency());
             this.waveformComboBox.setSelectedItem(sound.getWaveform());
         } else if (key.getSound().getType() == SoundType.audioClip) {
             this.audioClipRadioButton.setSelected(true);

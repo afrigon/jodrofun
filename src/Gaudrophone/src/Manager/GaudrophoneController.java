@@ -321,7 +321,6 @@ public class GaudrophoneController {
     private void setFrequency(Key key) {
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound sound = (SynthesizedSound)key.getSound();
-            sound.setFrequency(NoteTranslator.getFrequencyFromKey(key.getNote(), key.getAlteration(), key.getOctave(), sound.getTuning()));
             this.delegate.shouldUpdateProprietyPannelFor(key);
         }
     }
@@ -355,8 +354,8 @@ public class GaudrophoneController {
     
     public void setTuning (int newTuning) {
         Key key = this.selectionManager.getSelectedKey();
-        if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
-            ((SynthesizedSound)key.getSound()).setTuning(newTuning);
+        if (key != null) {
+            key.setTuning(newTuning);
             this.setFrequency(key);
         }
     }

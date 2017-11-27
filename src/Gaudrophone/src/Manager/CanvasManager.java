@@ -142,12 +142,12 @@ public class CanvasManager {
                 break;
             case CreatingShape : 
                 if (!this.clickPosition.equals(new Vector2(x, y))) {
-                    Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
+                    Key key = new Key(new SynthesizedSound(), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
                     GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
                     this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                     //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
                 } else {
-                    Key key = new Key(new SynthesizedSound(440), this.storedKeyShape.generate(100, this.clickPosition), this.storedKeyShape.getName());
+                    Key key = new Key(new SynthesizedSound(), this.storedKeyShape.generate(100, this.clickPosition), this.storedKeyShape.getName());
                     GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
                     this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                 }

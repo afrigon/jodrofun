@@ -2873,7 +2873,7 @@
                                 <Component class="javax.swing.JSpinner" name="tuningSpinner">
                                   <Properties>
                                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                                      <SpinnerModel initial="0" maximum="49" minimum="-49" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                      <SpinnerModel initial="0" maximum="100" minimum="-100" numberType="java.lang.Integer" stepSize="1" type="number"/>
                                     </Property>
                                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                       <Dimension value="[30, 26]"/>

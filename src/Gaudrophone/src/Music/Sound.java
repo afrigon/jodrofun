@@ -27,6 +27,7 @@ import javax.sound.sampled.AudioInputStream;
 
 public abstract class Sound implements java.io.Serializable {
     protected double volume;
+    protected PlayableNote playableNote = new PlayableNote();
     protected Envelope envelope = null;
     protected SoundType type = null;
     
@@ -56,6 +57,10 @@ public abstract class Sound implements java.io.Serializable {
     
     public SoundType getType() {
         return type;
+    }
+    
+    public PlayableNote getPlayableNote() {
+        return this.playableNote;
     }
     
     public abstract AudioInputStream getPlayingStream();
