@@ -34,4 +34,12 @@ public enum Alteration {
     public int getValue() {
         return value;
     }
+    
+    public String getString() {
+        switch(this) {
+            case Sharp: return "#";
+            case Flat: return "b";
+            default: return "";
+        }
+    }
 }

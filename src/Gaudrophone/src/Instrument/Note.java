@@ -34,4 +34,17 @@ public enum Note {
     public int getValue() {
         return value;
     }
+
+    public Note getNext() {
+        switch (this) {
+            case A: return Note.B;
+            case B: return Note.C;
+            case C: return Note.D;
+            case D: return Note.E;
+            case E: return Note.F;
+            case F: return Note.G;
+            case G: return Note.A;
+            default: return null;
+        }
+    }
 } 

@@ -63,8 +63,8 @@ public class AudioClip extends Sound {
         int sampleSizeInByte = frameSize/channels;
         boolean isBigEndian = audioFormat.isBigEndian();
         
-        System.out.println("AUDIO FORMAT ///// Channels : " + channels + " //// Frame size : " + frameSize + " //// Sample size in bits : " + sampleSizeInBits);
-        System.out.println("//// Sample size in bytes : " + sampleSizeInByte + " //// Big Endian : " + isBigEndian);
+//        System.out.println("AUDIO FORMAT ///// Channels : " + channels + " //// Frame size : " + frameSize + " //// Sample size in bits : " + sampleSizeInBits);
+//        System.out.println("//// Sample size in bytes : " + sampleSizeInByte + " //// Big Endian : " + isBigEndian);
         
         byte[] envelopedBuffer = new byte[buffer.length];
         

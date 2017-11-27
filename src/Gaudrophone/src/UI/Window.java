@@ -28,6 +28,7 @@ import Instrument.Guitar;
 import Instrument.Key;
 import Instrument.KeyState;
 import Instrument.Note;
+import Instrument.Piano;
 import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.TriangleKeyShape;
@@ -245,11 +246,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         newMenu = new javax.swing.JMenu();
         newBlankMenuItem = new javax.swing.JMenuItem();
         newGuitarMenuItem = new javax.swing.JMenuItem();
+        newPianoMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         quitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        menuEditNext = new javax.swing.JMenuItem();
+        menuEditPrevious = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuEditDelete = new javax.swing.JMenuItem();
         menuEditDuplicate = new javax.swing.JMenuItem();
         insertMenuItem = new javax.swing.JMenu();
@@ -1566,6 +1571,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         });
         newMenu.add(newGuitarMenuItem);
 
+        newPianoMenuItem.setText("Piano");
+        newPianoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newPianoMenuItemActionPerformed(evt);
+            }
+        });
+        newMenu.add(newPianoMenuItem);
+
         fileMenuItem.add(newMenu);
 
         openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
@@ -1611,6 +1624,27 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         jMenuBar1.add(fileMenuItem);
 
         jMenu2.setText("Edition");
+
+        menuEditNext.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, 0));
+        menuEditNext.setText("Suivant");
+        menuEditNext.setEnabled(false);
+        menuEditNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEditNextActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuEditNext);
+
+        menuEditPrevious.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, 0));
+        menuEditPrevious.setText("Précédent");
+        menuEditPrevious.setEnabled(false);
+        menuEditPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEditPreviousActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuEditPrevious);
+        jMenu2.add(jSeparator1);
 
         menuEditDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
         menuEditDelete.setText("Supprimer");
@@ -2052,6 +2086,22 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void menuEditDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditDuplicateActionPerformed
         GaudrophoneController.getController().duplicateKey();
     }//GEN-LAST:event_menuEditDuplicateActionPerformed
+
+    private void newPianoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPianoMenuItemActionPerformed
+        GaudrophoneController.getController().getInstrumentManager().newInstrument(new Piano());
+        this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+        GaudrophoneController.getController().getCanvasManager().setState(State.Play);
+        GaudrophoneController.getController().getCanvasManager().findNewRatio(new Vector2(this.canvas.getWidth(), this.canvas.getHeight()));
+        this.refresh();
+    }//GEN-LAST:event_newPianoMenuItemActionPerformed
+
+    private void menuEditNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditNextActionPerformed
+        GaudrophoneController.getController().nextKey();
+    }//GEN-LAST:event_menuEditNextActionPerformed
+
+    private void menuEditPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditPreviousActionPerformed
+        GaudrophoneController.getController().previousKey();
+    }//GEN-LAST:event_menuEditPreviousActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2264,6 +2314,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField keyNameField;
     private javax.swing.JLabel keyNameLabel;
@@ -2280,12 +2331,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel linesWrapper;
     private javax.swing.JMenuItem menuEditDelete;
     private javax.swing.JMenuItem menuEditDuplicate;
+    private javax.swing.JMenuItem menuEditNext;
+    private javax.swing.JMenuItem menuEditPrevious;
     private javax.swing.JMenuItem menuModeEditKey;
     private javax.swing.JMenuItem menuModePlay;
     private javax.swing.JRadioButton naturalRadioButton;
     private javax.swing.JMenuItem newBlankMenuItem;
     private javax.swing.JMenuItem newGuitarMenuItem;
     private javax.swing.JMenu newMenu;
+    private javax.swing.JMenuItem newPianoMenuItem;
     private javax.swing.JPanel normalProperty;
     private javax.swing.JLabel normalTitle;
     private javax.swing.JPanel normalWrapper;
@@ -2486,6 +2540,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 this.instrumentNameTextField.setBackground(new Color(51, 51, 51));
                 this.instrumentNameTextField.setForeground(new Color(255, 255, 255));
                 this.instrumentNameTextField.setEnabled(false);
+                this.menuEditNext.setEnabled(false);
+                this.menuEditPrevious.setEnabled(false);
                 this.resetButtons();
                 this.buttonPlayMode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlay_selected.png")));
                 break;
@@ -2493,6 +2549,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 this.instrumentNameTextField.setBackground(new Color(102, 102, 102));
                 this.instrumentNameTextField.setForeground(new Color(232, 232, 232));
                 this.instrumentNameTextField.setEnabled(true);
+                this.menuEditNext.setEnabled(true);
+                this.menuEditPrevious.setEnabled(true);
                 this.resetButtons();
                 this.buttonEditKey.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnEdit_selected.png")));
                 break;
