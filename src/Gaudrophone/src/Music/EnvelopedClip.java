@@ -32,7 +32,9 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 
 public class EnvelopedClip {
+    private static final SoundService SOUND_SERVICE = SoundService.get();
     private Clip clip = null;
+    private Clip releaseClip = null;
     private long startInstant = 0;
     private long releaseInstant = 0;
     private boolean released = false;
@@ -68,21 +70,24 @@ public class EnvelopedClip {
         if (released == false) {
             try {
                 released = true;
-                newClip.open(audioInputStream);
+                releaseClip = newClip;
+                
+                releaseClip.open(audioInputStream);
                 
                 releaseInstant = System.nanoTime();
                 double timePlayed = ((double)(releaseInstant - startInstant))/1000000000;
-                newClip.start();
+                releaseClip.start();
                 
-                newClip.addLineListener((LineEvent le) -> {
+                releaseClip.addLineListener((LineEvent le) -> {
                     if (le.getType() == LineEvent.Type.STOP) {
-                        newClip.close();
+                        releaseClip.close();
+                        SOUND_SERVICE.close(this);
                     }
                 });
                 
                 clip.stop();
                 clip.close();
-                clip = newClip;
+                
             } catch (LineUnavailableException ex) {
                 Logger.getLogger(EnvelopedClip.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -92,13 +97,15 @@ public class EnvelopedClip {
     }
     
     public void end() {
-        //System.out.println("clip stop");
-        clip.stop();
-        clip.close();
+        if (clip != null) {
+            clip.close();
+        }
+        if (releaseClip != null) {
+            releaseClip.close();
+        }
         startInstant = 0;
         releaseInstant = 0;
         released = false;
-        clip = null;
     }
 }
 

@@ -23,7 +23,6 @@
  */
 package Music;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,18 +31,24 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Port;
 
 public class SoundService {
-    public static SoundService shared = new SoundService();
+    private static SoundService shared = new SoundService();
     private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
     private final int polyphony = 3;
+    private int playingClip = 0;
     
-    public SoundService() {
+    private SoundService() {
         if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {
             System.out.println("OUPUT IS NOT SUPPORTED");
         }
     }
     
+    public static SoundService get() {
+        return shared;
+    }
+    
     public void play(Sound sound) {
-        if (clips.size() < polyphony) {
+        if (playingClip < polyphony) {
+            playingClip += 1;
             try {
                 EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getPlayingStream(), sound.getLoopFrame());
                 
@@ -54,6 +59,7 @@ public class SoundService {
                 }
                 
             } catch (LineUnavailableException ex) {
+                playingClip -= 1;
                 Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -79,7 +85,9 @@ public class SoundService {
         Sound firstSound = clips.keySet().iterator().next();
         if (firstSound != null) {
             EnvelopedClip firstClip = clips.remove(firstSound);
-            firstClip.end();
+            //firstClip.end();
+            //System.out.println("Fucking end the last clip.");
+            playingClip -= 1;
         }
     }
     
@@ -88,6 +96,16 @@ public class SoundService {
         if (clip != null) {
             clip.end();
         }
+    }
+    
+    public void close(EnvelopedClip clip) {
+        clips.entrySet().forEach((entry) -> {
+            if (entry.getValue() == clip) {
+                clips.remove(entry.getKey());
+                playingClip -= 1;
+                //clip.end();
+            }
+        });
     }
     
     public void close() {
