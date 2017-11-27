@@ -65,7 +65,7 @@ public class Guitar implements InstrumentPattern {
             shape.getSunkenAppearance().setColor(new Color(0x725325));
             
             AudioClip sound = new AudioClip();
-            //sound.setPath();
+            sound.setPath(getClass().getResource("/resources/guitar/" + "A3" + ".wav").getPath());
             
             Key key = new Key(sound, shape, "");
 //          key.set
