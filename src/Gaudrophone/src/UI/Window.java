@@ -887,6 +887,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         noteNameProperty.add(noteNameLabel);
 
         noteComboBox.setMinimumSize(new java.awt.Dimension(30, 26));
+        noteComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteComboBoxActionPerformed(evt);
+            }
+        });
         noteNameProperty.add(noteComboBox);
 
         octaveLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -1299,6 +1304,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         waveFormProperty.add(waveFormLabel);
 
         waveformComboBox.setMinimumSize(new java.awt.Dimension(30, 26));
+        waveformComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                waveformComboBoxActionPerformed(evt);
+            }
+        });
         waveFormProperty.add(waveformComboBox);
 
         noteProperties.add(waveFormProperty);
@@ -2101,6 +2111,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void menuEditPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditPreviousActionPerformed
         GaudrophoneController.getController().previousKey();
     }//GEN-LAST:event_menuEditPreviousActionPerformed
+
+    private void noteComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteComboBoxActionPerformed
+        GaudrophoneController.getController().setNote((Note)this.noteComboBox.getSelectedItem());
+    }//GEN-LAST:event_noteComboBoxActionPerformed
+
+    private void waveformComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_waveformComboBoxActionPerformed
+        GaudrophoneController.getController().setWaveform((WaveFormType)this.waveformComboBox.getSelectedItem());
+    }//GEN-LAST:event_waveformComboBoxActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2147,7 +2165,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.hideControls();
             this.setVisible(true);
             
-            this.canvas.setBackground(new Color(102,102,102));
+            GaudrophoneController.getController().delegate = this;
+            GaudrophoneController.getController().getSelectionManager().delegate = this;
+            GaudrophoneController.getController().getCanvasManager().delegate = this;
+            
             this.canvas.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mousePressed(java.awt.event.MouseEvent e) {
@@ -2168,28 +2189,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 }
             });
             
-            this.noteComboBox.addActionListener((ActionEvent e) -> {
-                GaudrophoneController.getController().setNote((Note)this.noteComboBox.getSelectedItem());
-            });
-            
-            this.borderComboBox.addActionListener((ActionEvent e) -> {
-                if (this.borderComboBox.getSelectedIndex() != -1) {
-                    if (this.borderComboBox.getSelectedIndex() == 0) {
-                        GaudrophoneController.getController().getSelectionManager().setLine(this.borderComboBox.getSelectedIndex()-1);
-                    }
-                    GaudrophoneController.getController().getSelectionManager().setLine(this.borderComboBox.getSelectedIndex()-1);
-                }
-            });
-            
-            this.waveformComboBox.addActionListener((ActionEvent e) -> {
-                GaudrophoneController.getController().setWaveform((WaveFormType)this.waveformComboBox.getSelectedItem());
-            });
-            
+            this.canvas.setBackground(new Color(102,102,102));
             GaudrophoneController.getController().getCanvasManager().setCanvasSize(this.canvasPannel.getWidth(), this.canvasPannel.getHeight());
-            GaudrophoneController.getController().delegate = this;
-            GaudrophoneController.getController().getSelectionManager().delegate = this;
-            GaudrophoneController.getController().getCanvasManager().delegate = this;
-            
             GaudrophoneController.getController().getInstrumentManager().newInstrument();
             this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
             this.refresh();
