@@ -37,12 +37,20 @@ public class InstrumentManager {
         return this.currentInstrumentPath;
     }
     
+    public String getName() {
+        return this.currentInstrument.getName();
+    }
+    
     public void newInstrument() {
         this.currentInstrument = new Instrument();
     }
     
     public void newInstrument(InstrumentPattern newInstrument) {
         this.currentInstrument = newInstrument.generate();
+    }
+    
+    public void rename(String name) {
+        this.currentInstrument.setName(name);
     }
     
     public Boolean openInstrument(String path) {

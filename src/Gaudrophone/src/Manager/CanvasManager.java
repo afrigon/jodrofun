@@ -258,6 +258,7 @@ public class CanvasManager {
             GaudrophoneController.getController().getSelectionManager().setKey(null);
         }
         this.state = state;
+        this.delegate.didChangeState(state);
     }
     
     public void setCanvasSize(int x, int y) {

@@ -28,8 +28,13 @@ public class Guitar implements InstrumentPattern {
     @Override
     public Instrument generate() {
         Instrument guitar = new Instrument();
-        guitar.setName("New Guitar");
-        // ajouter les touches
+        guitar.setName("Guitar");
+        
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 12; j++) {
+                
+            }
+        }
         
         return guitar;
     }
