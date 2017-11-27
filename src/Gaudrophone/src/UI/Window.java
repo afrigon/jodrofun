@@ -1553,6 +1553,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 searchTextFieldFocusLost(evt);
             }
         });
+        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchTextFieldKeyReleased(evt);
+            }
+        });
         jToolBar1.add(searchTextField);
         jToolBar1.add(filler17);
 
@@ -2044,6 +2049,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
         this.searchTextField.setText("Rechercher");
         this.searchTextField.setForeground(new Color(153, 153, 153));
+        GaudrophoneController.getController().search(null);
     }//GEN-LAST:event_searchTextFieldFocusLost
     
     private void borderComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borderComboBoxActionPerformed
@@ -2122,6 +2128,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void waveformComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_waveformComboBoxActionPerformed
         GaudrophoneController.getController().setWaveform((WaveFormType)this.waveformComboBox.getSelectedItem());
     }//GEN-LAST:event_waveformComboBoxActionPerformed
+
+    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
+        GaudrophoneController.getController().search(this.searchTextField.getText());
+    }//GEN-LAST:event_searchTextFieldKeyReleased
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {

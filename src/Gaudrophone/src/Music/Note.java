@@ -34,6 +34,19 @@ public enum Note {
     public int getValue() {
         return value;
     }
+    
+    public String getFrenchName() {
+        switch (this) {
+            case A: return "La";
+            case B: return "Si";
+            case C: return "Do";
+            case D: return "Ré";
+            case E: return "Mi";
+            case F: return "Fa";
+            case G: return "Sol";
+            default: return "";
+        }
+    }
 
     public Note getNext() {
         switch (this) {

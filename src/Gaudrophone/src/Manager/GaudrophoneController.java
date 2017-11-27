@@ -24,6 +24,7 @@
 package Manager;
 
 import Instrument.Key;
+import Instrument.KeyState;
 import KeyUtils.Corner;
 import KeyUtils.CrossLine;
 import Music.SoundService;
@@ -445,5 +446,17 @@ public class GaudrophoneController {
                 this.canvasManager.delegate.shouldRedraw();
             }
         }
+    }
+
+    public void search(String text) {
+        if ("".equals(text) || text == null) {
+            for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+                key.removeState(KeyState.searched);
+            }
+        } else {
+            Search search = new SearchAll(this.instrumentManager.getInstrument().getKeys());
+            search.search(text);
+        }
+        this.canvasManager.delegate.shouldRedraw();
     }
 }
