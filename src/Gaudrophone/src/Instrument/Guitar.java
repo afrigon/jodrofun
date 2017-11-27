@@ -34,8 +34,6 @@ import Music.PlayableNote;
 import java.awt.Color;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Guitar implements InstrumentPattern {
     private Instrument guitar;
@@ -76,16 +74,16 @@ public class Guitar implements InstrumentPattern {
     }
     
     private KeyShape getVisual(int x, int y) {
-        KeyShape shape = new RectangleKeyShape().generateRectangle(100, 100, new Vector2(x*100, y*100));
+        KeyShape shape = new RectangleKeyShape().generateRectangle(100, 30, new Vector2(x*100, y*30+60));
         LinkedList<KeyLine> lines = new LinkedList<>();
         for (int j = 0; j < 4; j++) {
             lines.add(new KeyLine((j % 2 == 0) ? 0 : 1, new Color(0x5f7684)));
         }
         shape.setLines(lines);
-        shape.setCrossLineColor(new Color(0xf2bc52), CrossLine.horizontal);
-        shape.setCrossLineThickness(4, CrossLine.horizontal);
-        shape.getIdleAppearance().setColor(new Color(0x966F33));
-        shape.getSunkenAppearance().setColor(new Color(0x725325));
+        shape.setCrossLineColor(y > 2 ? new Color(0xb87333) : new Color(0xa7a7a7), CrossLine.horizontal);
+        shape.setCrossLineThickness(y+1, CrossLine.horizontal);
+        shape.getIdleAppearance().setColor(new Color(0x775732));
+        shape.getSunkenAppearance().setColor(new Color(0x543c21));
         return shape;
     }
 }

@@ -50,10 +50,9 @@ public class CanvasManager {
     public Vector2 convertPixelToWorld(int x, int y) {
         if(ratio != Double.POSITIVE_INFINITY)
             return new Vector2(x / ratio, y / ratio);
-        else
-        {
+        else {
             this.ratio = 1;
-            return new Vector2(1, 1);
+            return new Vector2(x, y);
         }
     }
     
@@ -68,10 +67,11 @@ public class CanvasManager {
     }
     
     public int convertThicknessToPixel(double thickness) {
-        if(ratio != Double.POSITIVE_INFINITY)
+        if(ratio != Double.POSITIVE_INFINITY) {
             return (int)(thickness * ratio);
-        else
+        } else {
             return (int)thickness;
+        }
     }
     
     public void drawKeys(List<Key> keyList) {
@@ -91,9 +91,6 @@ public class CanvasManager {
                 key.addState(KeyState.clicked);
                 this.lastKey = key;
                 break;
-            case EditKey:
-                
-                break;
         }
     }
     
@@ -110,7 +107,6 @@ public class CanvasManager {
                 this.draggedShape = ds;
             }
             this.clicked(ds.getKey());
-            
         }
     }
     
