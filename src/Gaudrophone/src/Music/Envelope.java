@@ -29,7 +29,7 @@ public class Envelope implements java.io.Serializable {
     private double sustain = 0.8; // between 0 and 1
     private double release = 100; // milliseconds
     
-    public static final double SUSTAIN_TIME = 150;
+    public static final double SUSTAIN_TIME = 100;
     
     public Envelope() {}
     public Envelope(double newAttack, double newDecay, double newSustain, double newRelease) {
@@ -94,8 +94,8 @@ public class Envelope implements java.io.Serializable {
     }
     public double getReleasedAmplitude(double time, double timePlayed) {
         if (time < release) {
-            double powThis = time / release - 1;
-            return getPlayingAmplitude(timePlayed) * powThis * powThis;
+            double powThis = 1 - time / release;
+            return getPlayingAmplitude(timePlayed) * powThis * powThis * (1 - Math.exp(-time/5));
         } else {
             return 0;
         } 
