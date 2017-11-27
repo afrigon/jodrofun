@@ -21,33 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager;
 
-public enum Alteration {
-    Flat(-1), Natural(0), Sharp(1);
-    
-    private final int value;
-    private Alteration(int value) {
-        this.value = value;
-    }
+import Instrument.Key;
+import java.util.ArrayList;
 
-    public int getValue() {
-        return value;
+public abstract class Search {
+    protected final ArrayList<Key> keys;
+    
+    public Search(ArrayList<Key> keys) {
+        this.keys = keys;
     }
     
-    public String getFrenchName() {
-        switch (this) {
-            case Sharp: return "Dièse";
-            case Flat: return "Bémol";
-            default: return "Naturelle";
-        }
-    }
-    
-    public String getString() {
-        switch(this) {
-            case Sharp: return "#";
-            case Flat: return "b";
-            default: return "";
-        }
-    }
+    public abstract void search(String value);
 }

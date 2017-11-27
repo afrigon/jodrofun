@@ -172,13 +172,16 @@ public class CanvasManager {
         switch (this.state) {
             case Play:
                 DrawableShape ds = this.clickedShape(x, y);
+                //If the drag is on a key
                 if (ds != null) {
+                    //If the user clicked the canvas and drag onto a key
                     if (this.lastKey == null) {
                         GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());
                         ds.getKey().addState(KeyState.clicked);
                         if (this.delegate != null) { this.delegate.shouldRedraw(); }
                         this.lastKey = ds.getKey();
                     } else {
+                        //If the playing key is not the same as the key being drag right now
                         if (this.lastKey != ds.getKey()) {
                             GaudrophoneController.getController().getSoundService().release(this.lastKey.getSound());
                             GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());

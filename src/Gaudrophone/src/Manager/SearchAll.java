@@ -21,33 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager;
 
-public enum Alteration {
-    Flat(-1), Natural(0), Sharp(1);
-    
-    private final int value;
-    private Alteration(int value) {
-        this.value = value;
-    }
+import Instrument.Key;
+import Instrument.KeyState;
+import java.util.ArrayList;
 
-    public int getValue() {
-        return value;
+public class SearchAll extends Search {
+    public SearchAll(ArrayList<Key> keys) {
+        super(keys);
     }
     
-    public String getFrenchName() {
-        switch (this) {
-            case Sharp: return "Dièse";
-            case Flat: return "Bémol";
-            default: return "Naturelle";
-        }
-    }
-    
-    public String getString() {
-        switch(this) {
-            case Sharp: return "#";
-            case Flat: return "b";
-            default: return "";
+    @Override
+    public void search(String value) {
+        value = value.toLowerCase();
+        for (Key key: this.keys) {
+            if (key.getName().toLowerCase().contains(value) ||
+                key.getNote().toString().toLowerCase().contains(value) ||
+                key.getNote().getFrenchName().toLowerCase().contains(value) ||
+                key.getAlteration().toString().toLowerCase().contains(value) ||
+                key.getAlteration().getString().contains(value) ||
+                key.getAlteration().getFrenchName().toLowerCase().contains(value) ||
+                String.valueOf(key.getFrequency()).contains(value) ||
+                String.valueOf(key.getOctave()).contains(value) ||
+                String.valueOf(key.getTuning()).contains(value)) {
+                key.addState(KeyState.searched);
+            } else {
+                key.removeState(KeyState.searched);
+            }
         }
     }
 }
