@@ -142,7 +142,8 @@ public class KeyShape implements java.io.Serializable {
     }
     
     public Vector2 getSize() {
-        return getCorner(Corner.TopRight).sub(getCorner(Corner.BottomLeft));
+        Vector2 signedSize = getCorner(Corner.TopRight).sub(getCorner(Corner.BottomLeft));
+        return new Vector2(Math.abs(signedSize.getX()), Math.abs(signedSize.getY()));
     }
     
     public void translate(Vector2 translation) {
@@ -192,5 +193,22 @@ public class KeyShape implements java.io.Serializable {
                 points.set(i, point.add(unitDelta.multiply(product * scale)));    
             }
         }
+    }
+    
+    public void setSize(Vector2 newSize, Corner fixCorner) {
+        Vector2 position = getCorner(fixCorner);
+        
+        Vector2 currentSize = getSize();
+        double resizeX = newSize.getX() / currentSize.getX();
+        double resizeY = newSize.getY() / currentSize.getY();
+        
+        Vector2 reference = getCorner(Corner.TopLeft);
+        
+        for(int i = 0; i < points.size(); ++i) {
+            Vector2 point = points.get(i).sub(reference);
+            points.set(i, new Vector2(point.getX() * resizeX + reference.getX(), point.getY() * resizeY + reference.getY()));
+        }
+        
+        setPosition(position, fixCorner);
     }
 }
