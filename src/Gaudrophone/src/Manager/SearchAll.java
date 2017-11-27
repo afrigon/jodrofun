@@ -42,9 +42,9 @@ public class SearchAll extends Search {
                 if (key.getName().toLowerCase().contains(value) ||
                     key.getNote().toString().toLowerCase().equals(value) ||
                     key.getNote().getFrenchName().toLowerCase().equals(value) ||
-                    key.getAlteration().toString().toLowerCase().contains(value) ||
+                    key.getAlteration().toString().toLowerCase().equals(value) ||
                     key.getAlteration().getString().contains(value) ||
-                    key.getAlteration().getFrenchName().toLowerCase().contains(value) ||
+                    key.getAlteration().getFrenchName().toLowerCase().equals(value) ||
                     String.valueOf(key.getFrequency()).equals(value) ||
                     String.valueOf(key.getOctave()).equals(value)) {
                     key.addState(KeyState.searched);
