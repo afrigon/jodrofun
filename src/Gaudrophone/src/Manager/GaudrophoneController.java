@@ -27,6 +27,7 @@ import Instrument.Key;
 import Music.SoundService;
 import KeyUtils.KeyShape;
 import KeyUtils.Vector2;
+import KeyUtils.KeyLine;
 import Music.AudioClip;
 import Music.SynthesizedSound;
 import Instrument.Note;
@@ -218,10 +219,16 @@ public class GaudrophoneController {
     public void setLineColor(Color newColor) {
         Key key = selectionManager.getSelectedKey();
         int line = selectionManager.getSelectedLine();
-        if (key != null && line != -1) {
-            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            shapeLines.get(line).setColor(newColor);
-            key.getShape().setLines(shapeLines);
+        if (key != null) {
+            if(line == -5)
+                this.setAllLineColor(newColor);
+            else if(line == -1 || line == -2 || line == -3 || line == -4)
+                key.getShape().setCrossLineColor(newColor, Math.abs(line) - 1);
+            else {
+                List<KeyLine> shapeLines = key.getShape().getLines();
+                shapeLines.get(line).setColor(newColor);
+                key.getShape().setLines(shapeLines);
+            }
             this.canvasManager.delegate.shouldRedraw();
         }
         
@@ -230,39 +237,50 @@ public class GaudrophoneController {
     public void setAllLineColor(Color newColor) {
         Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            for(KeyUtils.KeyLine line : shapeLines) {
-                line.setColor(newColor);
+            List<KeyLine> shapeLines = key.getShape().getLines();
+            for(KeyLine line : shapeLines) {
+                if(line != null)
+                    line.setColor(newColor);
+            }
+            for(KeyLine line : key.getShape().getCrossLines()) {
+                if(line != null)
+                    line.setColor(newColor);
             }
             key.getShape().setLines(shapeLines);
             this.canvasManager.delegate.shouldRedraw();
         }
-        
+    }
+    
+    public void setAllLineThickness(double newThickness) {
+        Key key = selectionManager.getSelectedKey();
+        if (key != null) {
+            List<KeyLine> shapeLines = key.getShape().getLines();
+            for(KeyLine line : shapeLines) {
+                if(line != null)
+                    line.setThickness(newThickness);
+            }
+            for(KeyLine line : key.getShape().getCrossLines()) {
+                if(line != null)
+                    line.setThickness(newThickness);
+            }
+            key.getShape().setLines(shapeLines);
+            this.canvasManager.delegate.shouldRedraw();
+        }
     }
     
     public void setLineThickness(double newThickness) {
         Key key = selectionManager.getSelectedKey();
         int line = selectionManager.getSelectedLine();
-        if (key != null && line != -1) {
-            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            shapeLines.get(line).setThickness(newThickness);
-            key.getShape().setLines(shapeLines);
-            this.canvasManager.delegate.shouldRedraw();
-        }
-    }
-    
-    public void setCrossLineColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
         if (key != null) {
-            key.getShape().setCrossLineColor(newColor, Math.abs(selectionManager.getSelectedLine()) - 1);
-            this.canvasManager.delegate.shouldRedraw();
-        }
-    }
-    
-    public void setCrossLineThickness(double newThickness) {
-        Key key = selectionManager.getSelectedKey();
-        if (key != null) {
-            key.getShape().setCrossLineThickness(newThickness, Math.abs(selectionManager.getSelectedLine()) - 1);
+            if(line == -5)
+                this.setAllLineThickness(newThickness);
+            else if(line == -1 || line == -2 || line == -3 || line == -4)
+                key.getShape().setCrossLineThickness(newThickness, Math.abs(line) - 1);
+            else {
+                List<KeyLine> shapeLines = key.getShape().getLines();
+                shapeLines.get(line).setThickness(newThickness);
+                key.getShape().setLines(shapeLines);
+            }
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -277,7 +295,7 @@ public class GaudrophoneController {
     
     public Boolean setAudioClip(String path) {
         Key key = selectionManager.getSelectedKey();
-        if (key != null && key.getSound().getType() == SoundType.audioClip) {
+        if (key != null && AudioClip.class.isInstance(key.getSound())/*key.getSound().getType() == SoundType.audioClip*/) {
             AudioClip clip = (AudioClip) key.getSound();
             if (!clip.setPath(path)) {
                 return false;
