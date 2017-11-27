@@ -44,6 +44,7 @@ public class ShapeDrawer {
     
     private Rectangle2D cs = new Rectangle2D.Double();
     private DrawableShape selectedKey = null;
+    private Boolean isSearching = false;
     
     //Draw a single shape on the graphic object
     public void drawShape(Graphics2D g2, DrawableShape shape) {
@@ -89,7 +90,7 @@ public class ShapeDrawer {
             drawCrossLines(g2, shape.getKey().getShape().getCrossLines(), shape);
             
             //Draw each border lines
-            drawLines(g2, shape.getLines());
+            drawLines(g2, shape.getLines(), (keyState & KeyState.searched.getValue()) != 0);
             
             //Draw the key information (name, etc.)
             drawText(g2, shape);
@@ -111,8 +112,6 @@ public class ShapeDrawer {
             cs = canvasSize;
             //Get a clip of the size of the canvas (for the search mask)
             Area clip = new Area(canvasSize);
-            //True if something is searched (at least one key is valid)
-            boolean searching = false;
             this.selectedKey = null;
             
             //Draw all shapes using the drawShape function
@@ -120,9 +119,8 @@ public class ShapeDrawer {
                 drawShape(g2, s);
                 //Check if the key have the search flag
                 if((s.getKey().getStates() & KeyState.searched.getValue()) != 0) {
-                    //Remove the shape from the mask and place searching to TRUE
+                    //Remove the shape from the mask
                     clip.subtract(new Area(s.getShape()));
-                    searching = true;
                 }
                 
                 if((s.getKey().getStates() & KeyState.selected.getValue()) != 0) {
@@ -149,7 +147,7 @@ public class ShapeDrawer {
             }
             
             //Place the black mask if searching
-            if(searching) {
+            if(this.isSearching) {
                 g2.setClip(clip);
                 g2.setColor(new Color(0, 0, 0, 60));
                 g2.fill(cs);
@@ -162,7 +160,7 @@ public class ShapeDrawer {
     }
     
     //Draw border lines of a shape
-    private void drawLines(Graphics2D g2, List<DrawableLine> lines) {
+    private void drawLines(Graphics2D g2, List<DrawableLine> lines, Boolean searched) {
         try {
             //First corner of all the shape, and the last corner used
             Point2D cornerExtern = null, firstCornerExtern = null, cornerIntern = null, firstCornerIntern = null;
@@ -251,7 +249,7 @@ public class ShapeDrawer {
                     }
                     
                     //Paint the line using his color
-                    g2.setPaint(current.getColor());
+                    g2.setPaint(searched ? this.SELECTION_COLOR : current.getColor());
                     g2.fill(p);
                     //Current line is the next one. Iterate now.
                     current = next;
@@ -448,5 +446,9 @@ public class ShapeDrawer {
             y = a1 * x + b1;
         }
         return new Point2D.Double(x, y);
+    }
+
+    public void setIsSearching(boolean value) {
+        this.isSearching = value;
     }
 }
