@@ -34,7 +34,7 @@ import javax.sound.sampled.Port;
 public class SoundService {
     public static SoundService shared = new SoundService();
     private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
-    private final int polyphony = 16;
+    private final int polyphony = 1;
     
     public SoundService() {
         if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {
@@ -65,12 +65,14 @@ public class SoundService {
     
     public void release(Sound sound) {
         EnvelopedClip clip = clips.get(sound);
-        try {
-            clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+        if (clip != null) {
+            try {
+                clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
+            } catch (LineUnavailableException ex) {
+                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
@@ -79,7 +81,6 @@ public class SoundService {
         if (firstSound != null) {
             EnvelopedClip firstClip = clips.remove(firstSound);
             firstClip.end();
-            System.out.println("closing last sound");
         }
     }
     

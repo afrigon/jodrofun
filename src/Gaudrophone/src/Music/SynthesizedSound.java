@@ -71,7 +71,7 @@ public class SynthesizedSound extends Sound {
     @Override
     public int getLoopFrame() {
         double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
-        return (int) (WaveForm.SAMPLE_RATE * ((timeLength - Envelope.SUSTAIN_TIME/2) / 1000.0));
+        return (int) (WaveForm.SAMPLE_RATE * ((timeLength - Envelope.SUSTAIN_TIME) / 1000.0));
     }
 
     @Override
