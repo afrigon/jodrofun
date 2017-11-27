@@ -60,6 +60,5 @@ public abstract class Sound implements java.io.Serializable {
     
     public abstract AudioInputStream getPlayingStream();
     public abstract AudioInputStream getReleasedStream(double timePlayed);
-    
     public abstract int getLoopFrame();
 }

@@ -117,7 +117,7 @@ public class GaudrophoneController {
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
 
             //TODO: FIX this shit
-            //key.getShape().stretch(size.sub(oldSize));
+            //key.getShape().stretch(new Vector2(0.01,0.01));
         }
     }
     
