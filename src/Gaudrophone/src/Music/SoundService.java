@@ -34,7 +34,7 @@ import javax.sound.sampled.Port;
 public class SoundService {
     public static SoundService shared = new SoundService();
     private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
-    private final int polyphony = 1;
+    private final int polyphony = 3;
     
     public SoundService() {
         if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {

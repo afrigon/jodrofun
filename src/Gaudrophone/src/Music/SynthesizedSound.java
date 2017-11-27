@@ -28,6 +28,7 @@ import javax.sound.sampled.AudioInputStream;
 
 public class SynthesizedSound extends Sound {
     private WaveForm waveForm = new SineWaveForm();
+    private short[] synthesizedBuffer;
     
     public SynthesizedSound() {
         this.type = SoundType.synthesizedSound;
@@ -36,6 +37,19 @@ public class SynthesizedSound extends Sound {
     public SynthesizedSound(PlayableNote playableNote) {
         this.type = SoundType.synthesizedSound;
         this.playableNote = playableNote;
+    }
+    
+    public void refreshBuffer() {
+        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
+        
+        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
+        
+        synthesizedBuffer = new short[frames];
+        for (int i = 0; i < frames; i++) {
+            double time = ((double) i)/WaveForm.SAMPLE_RATE;
+            synthesizedBuffer[i] = (short) (32767.0 * this.volume * this.envelope.getPlayingAmplitude(time * 1000.0) * this.waveForm.getAmplitude(this.playableNote.getFrequency(), time));
+            
+        }
     }
 
     @Override
@@ -47,8 +61,9 @@ public class SynthesizedSound extends Sound {
         byte[] buffer = new byte[4 * frames];
         
         for (int i = 0; i < frames; i++) {
-            double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            short amplitude = (short) (32767.0 * this.volume * this.envelope.getPlayingAmplitude(time * 1000.0) * this.waveForm.getAmplitude(this.playableNote.getFrequency(), time));
+            //double time = ((double) i)/WaveForm.SAMPLE_RATE;
+            //short amplitude = (short) (32767.0 * this.volume * this.envelope.getPlayingAmplitude(time * 1000.0) * this.waveForm.getAmplitude(this.playableNote.getFrequency(), time));
+            short amplitude = synthesizedBuffer[i];
             buffer[4 * i] = (byte) (amplitude & 0xff);
             buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
             buffer[4 * i + 2] = buffer[4 * i];
