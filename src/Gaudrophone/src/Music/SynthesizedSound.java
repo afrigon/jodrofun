@@ -32,14 +32,16 @@ public class SynthesizedSound extends Sound {
     
     public SynthesizedSound() {
         this.type = SoundType.synthesizedSound;
+        this.refreshBuffer();
     }
     
     public SynthesizedSound(PlayableNote playableNote) {
         this.type = SoundType.synthesizedSound;
         this.playableNote = playableNote;
+        this.refreshBuffer();
     }
     
-    public void refreshBuffer() {
+    public final void refreshBuffer() {
         double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
         
         int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
