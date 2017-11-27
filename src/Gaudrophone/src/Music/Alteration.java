@@ -21,17 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package Music;
 
-public enum Note {
-    C(-9), D(-7), E(-5), F(-4), G(-2), A(0), B(2);
-
+public enum Alteration {
+    Flat(-1), Natural(0), Sharp(1);
+    
     private final int value;
-    private Note(int value) {
+    private Alteration(int value) {
         this.value = value;
     }
 
     public int getValue() {
         return value;
     }
-} 
+    
+    public String getString() {
+        switch(this) {
+            case Sharp: return "#";
+            case Flat: return "b";
+            default: return "";
+        }
+    }
+}

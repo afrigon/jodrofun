@@ -25,10 +25,11 @@ package Manager;
 
 import Instrument.Key;
 import Instrument.KeyState;
+import KeyUtils.KeyLine;
 
 public class SelectionManager {
     private Key selectedKey = null;
-    private int selectedLine = -1;
+    private int selectedLine = -5;
     private int selectedPoint = -1;
     public SelectionManagerDelegate delegate;
     
@@ -37,7 +38,7 @@ public class SelectionManager {
             this.selectedKey.removeState(KeyState.selected);
         }
         this.selectedPoint = -1;
-        this.selectedLine = -1;
+        this.selectedLine = -5;
         this.selectedKey = key;
         if (key != null) { key.addState(KeyState.selected); }
         if (this.delegate != null) {
@@ -51,6 +52,15 @@ public class SelectionManager {
     
     public void setLine(int line) {
         this.selectedLine = line;
+        if (this.delegate != null && line != -5) {
+            if (line >= 0) {
+                KeyLine keyLine = this.selectedKey.getShape().getLines().get(line);
+                this.delegate.didSelectLine(keyLine.getColor(), keyLine.getThickness());
+            } else {
+                KeyLine keyLine = this.selectedKey.getShape().getCrossLines()[Math.abs(line)-1];
+                this.delegate.didSelectLine(keyLine.getColor(), keyLine.getThickness());
+            }
+        }
     }
     
     public void setPoint(int point) {

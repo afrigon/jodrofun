@@ -27,25 +27,31 @@ import java.io.ByteArrayInputStream;
 import javax.sound.sampled.AudioInputStream;
 
 public class SynthesizedSound extends Sound {
-    private double frequency;
-    private int tuning;
-    private WaveForm waveForm;
+    private WaveForm waveForm = new SineWaveForm();
+    private short[] synthesizedBuffer;
     
-    // Constructors
     public SynthesizedSound() {
-        type = SoundType.synthesizedSound;
-        frequency = 440.0;
-        tuning = 0;
-        waveForm = new SineWaveForm();
-//        waveForm.updateBuffer(frequency);
+        this.type = SoundType.synthesizedSound;
+        this.refreshBuffer();
     }
     
-    public SynthesizedSound(double freq) {
-        type = SoundType.synthesizedSound;
-        frequency = freq;
-        tuning = 0;
-        waveForm = new SineWaveForm();
-//        waveForm.updateBuffer(frequency);
+    public SynthesizedSound(PlayableNote playableNote) {
+        this.type = SoundType.synthesizedSound;
+        this.playableNote = playableNote;
+        this.refreshBuffer();
+    }
+    
+    public final void refreshBuffer() {
+        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
+        
+        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
+        
+        synthesizedBuffer = new short[frames];
+        for (int i = 0; i < frames; i++) {
+            double time = ((double) i)/WaveForm.SAMPLE_RATE;
+            synthesizedBuffer[i] = (short) (32767.0 * this.volume * this.envelope.getPlayingAmplitude(time * 1000.0) * this.waveForm.getAmplitude(this.playableNote.getFrequency(), time));
+            
+        }
     }
 
     @Override
@@ -57,8 +63,9 @@ public class SynthesizedSound extends Sound {
         byte[] buffer = new byte[4 * frames];
         
         for (int i = 0; i < frames; i++) {
-            double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            short amplitude = (short) (32767.0 * volume * envelope.getPlayingAmplitude(time * 1000.0) * waveForm.getAmplitude(frequency, time));
+            //double time = ((double) i)/WaveForm.SAMPLE_RATE;
+            //short amplitude = (short) (32767.0 * this.volume * this.envelope.getPlayingAmplitude(time * 1000.0) * this.waveForm.getAmplitude(this.playableNote.getFrequency(), time));
+            short amplitude = synthesizedBuffer[i];
             buffer[4 * i] = (byte) (amplitude & 0xff);
             buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
             buffer[4 * i + 2] = buffer[4 * i];
@@ -71,7 +78,7 @@ public class SynthesizedSound extends Sound {
     @Override
     public int getLoopFrame() {
         double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
-        return (int) (WaveForm.SAMPLE_RATE * ((timeLength - Envelope.SUSTAIN_TIME/2) / 1000.0));
+        return (int) (WaveForm.SAMPLE_RATE * ((timeLength - Envelope.SUSTAIN_TIME) / 1000.0));
     }
 
     @Override
@@ -85,7 +92,7 @@ public class SynthesizedSound extends Sound {
         
         for (int i = 0; i < frames; i++) {
             double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            short amplitude = (short) (32767.0 * volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
+            short amplitude = (short) (32767.0 * this.volume * this.envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * this.waveForm.getAmplitude(this.getPlayableNote().getFrequency(), timePlayed + time));
             buffer[4 * i] = (byte) (amplitude & 0xff);
             buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
             buffer[4 * i + 2] = buffer[4 * i];
@@ -96,27 +103,8 @@ public class SynthesizedSound extends Sound {
     }
     
     // Setters
-    public void setFrequency(double newFrequency) {
-        this.frequency = newFrequency;
-        // update tuning
-//        waveForm.updateBuffer(frequency);
-    }
-    
-    public void setTuning(int newTuning) {
-        this.tuning = newTuning;
-    }
-    
     public void setWaveForm(WaveForm waveform) {
         this.waveForm = waveform;
-    }
-    
-    // Getters
-    public double getFrequency() {
-        return this.frequency;
-    }
-    
-    public int getTuning() {
-        return this.tuning;
     }
     
     public WaveForm getWaveform() {

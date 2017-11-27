@@ -23,13 +23,13 @@
  */
 package Instrument;
 
-import KeyUtils.KeyShape;
+import KeyUtils.Corner;
 import java.util.ArrayList;
 import KeyUtils.Vector2;
 
 public class Instrument implements java.io.Serializable {
     private String name = "Instrument vide";
-    private ArrayList<Key> keys = new ArrayList<>();
+    private final ArrayList<Key> keys = new ArrayList<>();
     
     public String getName() {
         return this.name;
@@ -47,8 +47,8 @@ public class Instrument implements java.io.Serializable {
         double width = 0;
         double height = 0;
         for(Key key : this.keys) {
-            width = Math.max(width, key.getShape().getCorner(KeyShape.Corner.BottomRight).getX());
-            height = Math.max(height, key.getShape().getCorner(KeyShape.Corner.BottomRight).getY());
+            width = Math.max(width, key.getShape().getCorner(Corner.bottomRight).getX());
+            height = Math.max(height, key.getShape().getCorner(Corner.bottomRight).getY());
         }
         return new Vector2(width, height);
     }

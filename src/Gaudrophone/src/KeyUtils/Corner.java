@@ -21,13 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package KeyUtils;
 
-import Instrument.Key;
-import java.awt.Color;
-
-public interface SelectionManagerDelegate {
-    public void didSelectKey(Key key);
-    public void didDeselectKey();
-    public void didSelectLine(Color color, double thickness);
+public enum Corner {
+    topLeft, topCenter, topRight,
+    centerLeft, center, centerRight, 
+    bottomLeft, bottomCenter, bottomRight
 }

@@ -28,11 +28,21 @@ public enum CrossLine {
     horizontal(1), vertical(0), diagonalUpLeftDownRight(2), diagonalDownLeftUpRight(3);
 
     private final int value;
-    private CrossLine(int value) {
+    CrossLine(int value) {
         this.value = value;
     }
 
     public int getValue() {
         return value;
+    }
+    
+    public static CrossLine getCrossLineForIndex(int index) {
+        switch(index) {
+            case 0: return CrossLine.vertical;
+            case 1: return CrossLine.horizontal;
+            case 2: return CrossLine.diagonalUpLeftDownRight;
+            case 3: return CrossLine.diagonalDownLeftUpRight;
+            default: return null;
+        }
     }
 }
