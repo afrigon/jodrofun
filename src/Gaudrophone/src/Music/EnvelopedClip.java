@@ -32,7 +32,6 @@ public class EnvelopedClip {
     private Clip clip = null;
     private long startInstant = 0;
     private long releaseInstant = 0;
-    private boolean released = false;
     
     public EnvelopedClip(Clip newClip, AudioInputStream audioInputStream, int loopFrame) throws LineUnavailableException, IOException {
         clip = newClip;
@@ -45,7 +44,6 @@ public class EnvelopedClip {
     }
     
     public void start() {
-        released = false;
         startInstant = System.nanoTime();
         
         clip.start();
@@ -66,7 +64,6 @@ public class EnvelopedClip {
         clip.close();
 
         clip = newClip;
-        released = true;
         //System.out.println("clip release");
     }
     
@@ -76,7 +73,6 @@ public class EnvelopedClip {
         clip.close();
         startInstant = 0;
         releaseInstant = 0;
-        released = false;
         clip = null;
     }
 }

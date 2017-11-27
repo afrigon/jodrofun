@@ -107,7 +107,7 @@ public class KeyShape implements java.io.Serializable {
         return max;
     }
     private double getMinBound(boolean isX) {
-        double min = -1;
+        double min = Double.MAX_VALUE;
         for(Vector2 point : points) min = Math.min(min, isX ? point.getX() : point.getY());
         return min;
     }

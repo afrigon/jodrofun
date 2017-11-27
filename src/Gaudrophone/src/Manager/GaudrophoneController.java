@@ -122,7 +122,7 @@ public class GaudrophoneController {
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
             if (size.getX() != 0 && size.getY() != 0) {
-                key.getShape().setSize(size, KeyShape.Corner.Center);
+                key.getShape().setSize(size, KeyShape.Corner.TopLeft);
             }        
         }
     }
