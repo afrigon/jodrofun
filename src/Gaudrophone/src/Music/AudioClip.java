@@ -23,7 +23,7 @@
  */
 package Music;
 
-import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,151 +38,175 @@ public class AudioClip extends Sound {
     private String path = null;
     private double speed = 1;
     private AudioFormat audioFormat = null;
-    private byte[] buffer = null;
-    private double clipTime = 0;
+    private byte[] originalBuffer = null;
     
     // Constructors
     public AudioClip() {
-        this.type = SoundType.audioClip;
+        type = SoundType.audioClip;
     }
     
     public AudioClip(String path) {
-        this.type = SoundType.audioClip;
-        this.setPath(path);
+        type = SoundType.audioClip;
+        setPath(path);
     }
     
-    public AudioClip(PlayableNote playableNote) {
-        this.type = SoundType.audioClip;
-        this.playableNote = playableNote;
+    public AudioClip(PlayableNote note) {
+        type = SoundType.audioClip;
+        playableNote = note;
     }
     
     @Override
-    public AudioInputStream getPlayingStream() {
+    public AudioFormat getAudioFormat() {
+        return audioFormat;
+    }
+
+    @Override
+    public void run() {
         int channels = audioFormat.getChannels();
         int frameSize = audioFormat.getFrameSize();
-        int sampleSizeInBits = audioFormat.getSampleSizeInBits();
         double sampleRate = audioFormat.getSampleRate();
         
         int sampleSizeInByte = frameSize/channels;
         boolean isBigEndian = audioFormat.isBigEndian();
         
-//        System.out.println("AUDIO FORMAT ///// Channels : " + channels + " //// Frame size : " + frameSize + " //// Sample size in bits : " + sampleSizeInBits);
-//        System.out.println("//// Sample size in bytes : " + sampleSizeInByte + " //// Big Endian : " + isBigEndian);
+        int bufferSize = (int) (sampleRate / 20);
+        int sampleCount = 0;
         
-        byte[] envelopedBuffer = new byte[buffer.length];
-        
-        for (int i = 0; i < buffer.length/frameSize; i++) {
-            double time = ((double) i)/sampleRate;
+        // play the attack, decay and sustain part until sound is killed or released
+        while (playing && (!released)) {
+            byte[] buffer = new byte[frameSize * bufferSize];
             
-            double amp = volume * envelope.getPlayingAmplitude(time * 1000.0);
-            
-            for (int j = 0; j < channels; j++) {
-                if (sampleSizeInByte == 1) {
-                    envelopedBuffer[i * frameSize + j] = (byte) (((double) buffer[i * frameSize + j]) * amp);
-                    
-                } else if (sampleSizeInByte == 2) {
-                    int firstBytePosition = i * frameSize + j * channels;
-                    if (isBigEndian) {
-                        System.out.println("Big Endian file might not be supported.");
-                        short value = (short) ((buffer[firstBytePosition] << 8) + (buffer[firstBytePosition + 1] & 0xff));
+            for (int i = 0; i < bufferSize; i++) {
+                int isampleCount = (i + sampleCount);
+                
+                double time = (((double) (isampleCount))/WaveForm.SAMPLE_RATE);
+                
+                double amp = volume * envelope.getPlayingAmplitude(time * 1000.0);
+                
+                if (isampleCount >= originalBuffer.length) {
+                    for (int j = 0; j < channels; j++) {
+                        if (sampleSizeInByte == 1) {
+                            buffer[isampleCount * frameSize + j] = 0;
 
-                        value = (short) (amp * ((double) value));
-
-                        envelopedBuffer[firstBytePosition + 1] = (byte) (value & 0xff);
-                        envelopedBuffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
-                        
-                    } else {
-                        short value = (short) ((buffer[firstBytePosition + 1] << 8) + (buffer[firstBytePosition] & 0xff));
-
-                        value = (short) (amp * ((double) value));
-
-                        envelopedBuffer[firstBytePosition] = (byte) (value & 0xff);
-                        envelopedBuffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
+                        } else if (sampleSizeInByte == 2) {
+                            buffer[isampleCount * frameSize + j * channels + 1] = 0;
+                            buffer[isampleCount * frameSize + j * channels] = 0;
+                        }
                     }
-                }
-            }
-        }
-        
-        return new AudioInputStream(new ByteArrayInputStream(envelopedBuffer, 0, envelopedBuffer.length), audioFormat, envelopedBuffer.length);
-    }
+                } else {
+                    for (int j = 0; j < channels; j++) {
+                        if (sampleSizeInByte == 1) {
+                            buffer[i * frameSize + j] = (byte) (((double) originalBuffer[isampleCount * frameSize + j]) * amp);
 
-    @Override
-    public AudioInputStream getReleasedStream(double timePlayed) {
-        int playingFrame = (int) (timePlayed * this.audioFormat.getSampleRate());
-        int remainingFrames = ((int) (this.buffer.length / this.audioFormat.getFrameSize())) - playingFrame;
-        
-        if (timePlayed < this.clipTime) {
-            
-            int channels = this.audioFormat.getChannels();
-            int frameSize = this.audioFormat.getFrameSize();
-            double sampleRate = this.audioFormat.getSampleRate();
-            
-            int sampleSizeInByte = frameSize/channels;
-            boolean isBigEndian = this.audioFormat.isBigEndian();
-        
-            double milliTimePlayed = timePlayed * 1000;
-            
-            byte[] envelopedBuffer = new byte[remainingFrames * sampleSizeInByte * channels];
-            
-            for (int i = 0; i < remainingFrames; i++) {
-                double time = ((double) i)/sampleRate;
-                
-                double amp = this.volume * this.envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed);
-                
-                for (int j = 0; j < channels; j++) {
-                    if (sampleSizeInByte == 1) {
-                        envelopedBuffer[frameSize * i + j] = (byte) (((double) this.buffer[frameSize * i + j]) * amp);
+                        } else if (sampleSizeInByte == 2) {
+                            int firstBytePosition = i * frameSize + j * channels;
+                            int ifirstBytePosition = isampleCount * frameSize + j * channels;
+                            if (isBigEndian) {
+                                System.out.println("Big Endian file might not be supported.");
+                                short value = (short) ((originalBuffer[ifirstBytePosition] << 8) + (originalBuffer[ifirstBytePosition + 1] & 0xff));
 
-                    } else if (sampleSizeInByte == 2) {
-                        int firstByteOriginalPosition = (playingFrame + i) * frameSize + j * channels;
-                        int firstBytePosition = frameSize * i + j * channels;
-                        if (isBigEndian) {
-                            System.out.println("Big Endian file might not be supported.");
-                            short value = (short) ((this.buffer[firstByteOriginalPosition] << 8) + (this.buffer[firstByteOriginalPosition + 1] & 0xff));
+                                value = (short) (amp * ((double) value));
 
-                            value = (short) (amp * ((double) value));
+                                buffer[firstBytePosition + 1] = (byte) (value & 0xff);
+                                buffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
 
-                            envelopedBuffer[firstBytePosition + 1] = (byte) (value & 0xff);
-                            envelopedBuffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
+                            } else {
+                                short value = (short) ((originalBuffer[ifirstBytePosition + 1] << 8) + (originalBuffer[ifirstBytePosition] & 0xff));
 
-                        } else {
-                            short value = (short) ((this.buffer[firstByteOriginalPosition + 1] << 8) + (this.buffer[firstByteOriginalPosition] & 0xff));
+                                value = (short) (amp * ((double) value));
 
-                            value = (short) (amp * ((double) value));
-
-                            envelopedBuffer[firstBytePosition] = (byte) (value & 0xff);
-                            envelopedBuffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
+                                buffer[firstBytePosition] = (byte) (value & 0xff);
+                                buffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
+                            }
                         }
                     }
                 }
             }
-            return new AudioInputStream(new ByteArrayInputStream(envelopedBuffer, 0, envelopedBuffer.length), this.audioFormat, envelopedBuffer.length);
+            sampleCount += bufferSize;
+            
+            line.write(buffer, 0, buffer.length);
         }
-        return new AudioInputStream(new ByteArrayInputStream(new byte[2], 0, 2), this.audioFormat, 2);
-    }
+        
+        int sampleCountReleased = 0; // keeps the total number of samples played
+        double milliTimePlayed = (double) sampleCount / (double) WaveForm.SAMPLE_RATE * 1000.0;
+        
+        // Play the release tail of a sound
+        while (playing && released) {
+            byte[] buffer = new byte[frameSize * bufferSize];
+            
+            for (int i = 0; i < bufferSize; i++) {
+                int isampleCount = (i + sampleCountReleased);
+                
+                double time = (((double) (isampleCount))/WaveForm.SAMPLE_RATE);
+                
+                double amp = volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed);
+                
+                if (amp == 0) {
+                    kill();
+                    return;
+                }
+                
+                if (isampleCount * frameSize >= originalBuffer.length) {
+                    for (int j = 0; j < channels; j++) {
+                        if (sampleSizeInByte == 1) {
+                            buffer[isampleCount * frameSize + j] = 0;
 
-    @Override
-    public int getLoopFrame() {
-        return -1;
+                        } else if (sampleSizeInByte == 2) {
+                            buffer[isampleCount * frameSize + j * channels + 1] = 0;
+                            buffer[isampleCount * frameSize + j * channels] = 0;
+                        }
+                    }
+                } else {
+                    for (int j = 0; j < channels; j++) {
+                        if (sampleSizeInByte == 1) {
+                            buffer[i * frameSize + j] = (byte) (((double) originalBuffer[isampleCount * frameSize + j]) * amp);
+
+                        } else if (sampleSizeInByte == 2) {
+                            int firstBytePosition = i * frameSize + j * channels;
+                            int ifirstBytePosition = isampleCount * frameSize + j * channels;
+                            if (isBigEndian) {
+                                System.out.println("Big Endian file might not be supported.");
+                                short value = (short) ((originalBuffer[ifirstBytePosition] << 8) + (originalBuffer[ifirstBytePosition + 1] & 0xff));
+
+                                value = (short) (amp * ((double) value));
+
+                                buffer[firstBytePosition + 1] = (byte) (value & 0xff);
+                                buffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
+
+                            } else {
+                                short value = (short) ((originalBuffer[ifirstBytePosition + 1] << 8) + (originalBuffer[ifirstBytePosition] & 0xff));
+
+                                value = (short) (amp * ((double) value));
+
+                                buffer[firstBytePosition] = (byte) (value & 0xff);
+                                buffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
+                            }
+                        }
+                    }
+                }
+            }
+            sampleCountReleased += bufferSize;
+            
+            line.write(buffer, 0, buffer.length);
+        }
     }
     
     // Getters
     public String getPath() {
-        return this.path;
+        return path;
     }
     
     public double getSpeed() {
-        return this.speed;
+        return speed;
     }
     
     // Setters
-    public final Boolean setPath(String path) {
-        this.path = path;
+    public final Boolean setPath(String newPath) {
+        path = newPath;
         
         if (path == null) {
-            this.buffer = null;
-            this.audioFormat = null;
-            this.clipTime = 0;
+            originalBuffer = null;
+            audioFormat = null;
             return true;
         }
         
@@ -190,23 +214,23 @@ public class AudioClip extends Sound {
             File file = new File(path);
             
             AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-            this.audioFormat = format.getFormat();
+            audioFormat = format.getFormat();
             
             InputStream inputStream = new FileInputStream(file);
             
-            AudioInputStream audioInputStream = new AudioInputStream(inputStream, this.audioFormat, file.length());
+            AudioInputStream audioInputStream = new AudioInputStream(inputStream, audioFormat, file.length());
             
             int byteRead = 0;
             int offset = 0;
             int fileLength = (int) file.length();
-            this.buffer =  new byte[(int) file.length()];
+            originalBuffer =  new byte[(int) file.length()];
             
             while (byteRead <= 0) {
-                byteRead = audioInputStream.read(this.buffer, offset, fileLength - offset);
+                byteRead = audioInputStream.read(originalBuffer, offset, fileLength - offset);
                 offset += byteRead;
             }
             
-            this.clipTime = ((double)this.buffer.length / (double)this.audioFormat.getFrameSize()) / (double)this.audioFormat.getSampleRate();
+            //clipTime = ((double)buffer.length / (double)audioFormat.getFrameSize()) / (double)audioFormat.getSampleRate();
             return true;
         } catch (UnsupportedAudioFileException | IOException ex) {
             return false;
@@ -214,6 +238,6 @@ public class AudioClip extends Sound {
     }
     
     public void setSpeed(double newSpeed) {
-        this.speed = newSpeed;
+        speed = newSpeed;
     }
 }

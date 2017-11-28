@@ -24,7 +24,6 @@
 package Music;
 
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +51,7 @@ public class SoundService {
     }
     
     public void play(Sound sound) {
-        if (soundPlayingQty < polyphony) // kill the least recent sound
+        if (soundPlayingQty == polyphony) // kill the least recent sound
             closeLastSound();
         
         if (sound.isPlaying())
@@ -80,9 +79,11 @@ public class SoundService {
     }
     
     private void closeLastSound() {
-        Sound sound = playingSounds.remove();
-        if (sound != null)
-            sound.kill();
+        if (playingSounds.size() > 0) {
+            Sound sound = playingSounds.remove();
+            if (sound != null)
+                sound.kill();
+        }
     }
     
     public void closeAll() {

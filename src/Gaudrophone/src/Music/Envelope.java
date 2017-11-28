@@ -24,10 +24,10 @@
 package Music;
 
 public class Envelope implements java.io.Serializable {
-    private double attack = 1000; // milliseconds
-    private double decay = 50; // milliseconds
-    private double sustain = .3; // between 0 and 1
-    private double release = 2000; // milliseconds
+    private double attack = 100; // milliseconds
+    private double decay = 100; // milliseconds
+    private double sustain = .8; // between 0 and 1
+    private double release = 200; // milliseconds
     
     public static final double SUSTAIN_TIME = 500;
     
@@ -99,7 +99,7 @@ public class Envelope implements java.io.Serializable {
     public double getReleasedAmplitude(double time, double timePlayed) {
         if (time < release) {
             double powThis = 1 - time / release;
-            return getPlayingAmplitude(timePlayed) * powThis * powThis * (1 - Math.exp(-time/5));
+            return getPlayingAmplitude(timePlayed) * powThis * powThis;// * (1 - Math.exp(-time/5));
         } else {
             return 0;
         } 
