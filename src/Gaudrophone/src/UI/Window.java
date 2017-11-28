@@ -264,7 +264,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.2"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1403,6 +1403,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonPlayMode.setToolTipText("Mode Jeu Libre");
         buttonPlayMode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonPlayMode.setBorderPainted(false);
+        buttonPlayMode.setContentAreaFilled(false);
         buttonPlayMode.setFocusable(false);
         buttonPlayMode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonPlayMode.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1438,6 +1439,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonDuplicate.setToolTipText("Dupliquer la touche");
         buttonDuplicate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonDuplicate.setBorderPainted(false);
+        buttonDuplicate.setContentAreaFilled(false);
         buttonDuplicate.setFocusable(false);
         buttonDuplicate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonDuplicate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1453,6 +1455,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonAddImage.setToolTipText("Ajouter une image");
         buttonAddImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonAddImage.setBorderPainted(false);
+        buttonAddImage.setContentAreaFilled(false);
         buttonAddImage.setFocusable(false);
         buttonAddImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonAddImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1468,6 +1471,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonRemoveImage.setToolTipText("Supprimer l'image");
         buttonRemoveImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonRemoveImage.setBorderPainted(false);
+        buttonRemoveImage.setContentAreaFilled(false);
         buttonRemoveImage.setFocusable(false);
         buttonRemoveImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonRemoveImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1483,6 +1487,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonAddSunkenImage.setToolTipText("Ajouter une image pour l'état enfoncée");
         buttonAddSunkenImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonAddSunkenImage.setBorderPainted(false);
+        buttonAddSunkenImage.setContentAreaFilled(false);
         buttonAddSunkenImage.setFocusable(false);
         buttonAddSunkenImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonAddSunkenImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1498,6 +1503,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonRemoveSunkenImage.setToolTipText("Supprimer l'image pour l'état enfoncée");
         buttonRemoveSunkenImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonRemoveSunkenImage.setBorderPainted(false);
+        buttonRemoveSunkenImage.setContentAreaFilled(false);
         buttonRemoveSunkenImage.setFocusable(false);
         buttonRemoveSunkenImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonRemoveSunkenImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1513,6 +1519,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonDelete.setToolTipText("Supprimer la touche");
         buttonDelete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonDelete.setBorderPainted(false);
+        buttonDelete.setContentAreaFilled(false);
         buttonDelete.setFocusable(false);
         buttonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -2015,7 +2022,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void audioClipSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioClipSelectButtonActionPerformed
         fileDialog.setDialogTitle("Sélectionner un fichier");
         fileDialog.resetChoosableFileFilters();
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier mp3","mp3"));
+        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier WAV","wav"));
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
