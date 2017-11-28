@@ -44,27 +44,28 @@ public class SynthesizedSound extends Sound {
     public final void refreshBuffer() {
         double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
         
-        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
+        double frequency = playableNote.getFrequency();
+        int waves = (int) ((Envelope.SUSTAIN_TIME / 1000.0) * frequency); // number of waves during approx SUSTAIN_TIME
+        //System.out.println("Waves : " + waves);
+        double preciseSustainTime = ((double) waves) / frequency;
+        
+        int frames = (int) (WaveForm.SAMPLE_RATE * (timeLength / 1000.0 + preciseSustainTime));
         
         synthesizedBuffer = new short[frames];
         for (int i = 0; i < frames; i++) {
             double time = ((double) i)/WaveForm.SAMPLE_RATE;
             synthesizedBuffer[i] = (short) (32767.0 * this.volume * this.envelope.getPlayingAmplitude(time * 1000.0) * this.waveForm.getAmplitude(this.playableNote.getFrequency(), time));
-            
         }
+        
+        refreshClip();
     }
 
     @Override
     public AudioInputStream getPlayingStream() {
-        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
         
-        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
+        byte[] buffer = new byte[4 * synthesizedBuffer.length];
         
-        byte[] buffer = new byte[4 * frames];
-        
-        for (int i = 0; i < frames; i++) {
-            //double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            //short amplitude = (short) (32767.0 * this.volume * this.envelope.getPlayingAmplitude(time * 1000.0) * this.waveForm.getAmplitude(this.playableNote.getFrequency(), time));
+        for (int i = 0; i < synthesizedBuffer.length; i++) {
             short amplitude = synthesizedBuffer[i];
             buffer[4 * i] = (byte) (amplitude & 0xff);
             buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
@@ -77,8 +78,12 @@ public class SynthesizedSound extends Sound {
     
     @Override
     public int getLoopFrame() {
-        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
-        return (int) (WaveForm.SAMPLE_RATE * ((timeLength - Envelope.SUSTAIN_TIME) / 1000.0));
+        return (int) (WaveForm.SAMPLE_RATE * (envelope.getAttackAndDecay() / 1000.0));
+    }
+    
+    @Override
+    public int getLastLoopFrame() {
+        return -1;
     }
 
     @Override

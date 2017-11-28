@@ -97,12 +97,13 @@ public class EnvelopedClip {
     }
     
     public void end() {
-        if (clip != null) {
-            clip.close();
-        }
-        if (releaseClip != null) {
-            releaseClip.close();
-        }
+        try {
+            clip.stop();
+        } catch (Exception e) {}
+        try {
+            releaseClip.stop();
+        } catch (Exception e) {}
+
         startInstant = 0;
         releaseInstant = 0;
         released = false;
