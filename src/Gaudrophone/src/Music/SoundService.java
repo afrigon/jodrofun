@@ -23,96 +23,72 @@
  */
 package Music;
 
-import java.util.LinkedHashMap;
+
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Port;
+import javax.sound.sampled.SourceDataLine;
 
 public class SoundService {
-    private static SoundService shared = new SoundService();
-    private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
-    private final int polyphony = 3;
-    private int playingClip = 0;
+    private static final SoundService SHARED = new SoundService();
+    private final LinkedList<Sound> playingSounds;
+    private final int polyphony = 32;
+    private int soundPlayingQty = 0;
     
     private SoundService() {
+        playingSounds = new LinkedList<>();
+        
         if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {
             System.out.println("OUPUT IS NOT SUPPORTED");
         }
     }
     
     public static SoundService get() {
-        return shared;
+        return SHARED;
     }
     
     public void play(Sound sound) {
-        if (playingClip < polyphony) {
-            playingClip += 1;
-            try {
-                EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getPlayingStream(), sound.getLoopFrame());
-                
-                if (clips.size() < polyphony) {
-                    close(sound); // stop the sound if already playing
-                    clips.put(sound, clip);
-                    clip.start();
-                }
-                
-            } catch (LineUnavailableException ex) {
-                playingClip -= 1;
-                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
+        if (soundPlayingQty == polyphony) // kill the least recent sound
             closeLastSound();
-            play(sound);
+        
+        if (sound.isPlaying())
+            sound.kill();
+        
+        soundPlayingQty++;
+        SourceDataLine line;
+        try {
+            line = AudioSystem.getSourceDataLine(sound.getAudioFormat());
+            sound.play(line);
+            playingSounds.add(sound);
+
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void release(Sound sound) {
-        EnvelopedClip clip = clips.get(sound);
-
-        if (clip != null) {
-            try {
-                clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
-                
-            } catch (LineUnavailableException ex) {
-                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        if (sound.isPlaying())
+            sound.release();
+    }
+    
+    public void killed() {
+        soundPlayingQty--;
     }
     
     private void closeLastSound() {
-        Sound firstSound = clips.keySet().iterator().next();
-        if (firstSound != null) {
-            EnvelopedClip firstClip = clips.remove(firstSound);
-            //firstClip.end();
-            //System.out.println("Fucking end the last clip.");
-            playingClip -= 1;
+        if (playingSounds.size() > 0) {
+            Sound sound = playingSounds.remove();
+            if (sound != null)
+                sound.kill();
         }
     }
     
-    private void close(Sound sound) {
-        EnvelopedClip clip = clips.remove(sound);
-        if (clip != null) {
-            clip.end();
-        }
-    }
-    
-    public void close(EnvelopedClip clip) {
-        clips.entrySet().forEach((entry) -> {
-            if (entry.getValue() == clip) {
-                clips.remove(entry.getKey());
-                playingClip -= 1;
-                //clip.end();
-            }
-        });
-    }
-    
-    public void close() {
-        while (clips.size() > 0) {
-            Sound firstSound = clips.keySet().iterator().next();
-            EnvelopedClip firstClip = clips.remove(firstSound);
-            firstClip.end();
+    public void closeAll() {
+        for (Sound sound : playingSounds) {
+            sound.kill();
         }
     }
 }
