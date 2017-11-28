@@ -110,6 +110,13 @@ public class SynthesizedSound extends Sound {
     // Setters
     public void setWaveForm(WaveForm waveform) {
         this.waveForm = waveform;
+        this.refreshBuffer();
+    }
+
+    @Override
+    public void setVolume(double newVolume) {
+        super.setVolume(newVolume);
+        this.refreshBuffer();
     }
     
     public WaveForm getWaveform() {
