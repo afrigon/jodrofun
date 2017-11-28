@@ -26,7 +26,7 @@ package Music;
 public class TriangleWaveForm extends WaveForm implements java.io.Serializable {
     @Override
     public double getAmplitude(double frequency, double time) {
-        //TODO:
-        return Math.sin(2 * Math.PI * frequency * time);
+        double angle = 2 * Math.PI * ((frequency * time) % 1);
+        return 2.0 * Math.abs(2.0 * angle / Math.PI - 1.0) - 1.0;
     }
 }

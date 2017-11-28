@@ -315,7 +315,6 @@ public class GaudrophoneController {
     private void setFrequency(Key key) {
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound sound = (SynthesizedSound)key.getSound();
-            sound.refreshBuffer();
             this.delegate.shouldUpdateProprietyPannelFor(key);
         }
     }
