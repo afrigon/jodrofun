@@ -135,7 +135,7 @@ public class AudioClip extends Sound {
             byte[] buffer = new byte[frameSize * bufferSize];
             
             for (int i = 0; i < bufferSize; i++) {
-                int isampleCount = (i + sampleCountReleased);
+                int isampleCount = (i + sampleCount + sampleCountReleased);
                 
                 double time = (((double) (isampleCount))/WaveForm.SAMPLE_RATE);
                 
