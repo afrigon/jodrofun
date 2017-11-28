@@ -33,22 +33,29 @@ public class SearchAll extends Search {
     }
     
     @Override
-    public void search(String value) {
-        value = value.toLowerCase();
+    public void search(String filterString) {
+        final String[] values = filterString.toLowerCase().split(" ");
+        
         for (Key key: this.keys) {
-            if (key.getName().toLowerCase().contains(value) ||
-                key.getNote().toString().toLowerCase().contains(value) ||
-                key.getNote().getFrenchName().toLowerCase().contains(value) ||
-                key.getAlteration().toString().toLowerCase().contains(value) ||
-                key.getAlteration().getString().contains(value) ||
-                key.getAlteration().getFrenchName().toLowerCase().contains(value) ||
-                String.valueOf(key.getFrequency()).contains(value) ||
-                String.valueOf(key.getOctave()).contains(value) ||
-                String.valueOf(key.getTuning()).contains(value)) {
-                key.addState(KeyState.searched);
-            } else {
-                key.removeState(KeyState.searched);
+            Boolean found = false;
+            for (String value: values) {
+                if (key.getName().toLowerCase().contains(value) ||
+                    key.getNote().toString().toLowerCase().equals(value) ||
+                    key.getNote().getFrenchName().toLowerCase().equals(value) ||
+                    key.getAlteration().toString().toLowerCase().equals(value) ||
+                    key.getAlteration().getString().contains(value) ||
+                    key.getAlteration().getFrenchName().toLowerCase().equals(value) ||
+                    String.valueOf(key.getFrequency()).equals(value) ||
+                    String.valueOf(key.getOctave()).equals(value)) {
+                    key.addState(KeyState.searched);
+                    found = true;
+                    break;
+                }
             }
+            
+            if (!found) {
+                key.removeState(KeyState.searched);
+            }            
         }
     }
 }

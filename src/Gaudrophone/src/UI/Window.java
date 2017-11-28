@@ -1403,6 +1403,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonPlayMode.setToolTipText("Mode Jeu Libre");
         buttonPlayMode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonPlayMode.setBorderPainted(false);
+        buttonPlayMode.setFocusable(false);
         buttonPlayMode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonPlayMode.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonPlayMode.addActionListener(new java.awt.event.ActionListener() {
@@ -1418,6 +1419,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonEditKey.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonEditKey.setBorderPainted(false);
         buttonEditKey.setContentAreaFilled(false);
+        buttonEditKey.setFocusable(false);
         buttonEditKey.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonEditKey.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonEditKey.addActionListener(new java.awt.event.ActionListener() {
@@ -2044,12 +2046,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
         this.searchTextField.setText("");
         this.searchTextField.setForeground(Color.white);
+        this.canvas.shapeDrawer.setIsSearching(true);
+        this.refresh();
     }//GEN-LAST:event_searchTextFieldFocusGained
     
     private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
         this.searchTextField.setText("Rechercher");
         this.searchTextField.setForeground(new Color(153, 153, 153));
         GaudrophoneController.getController().search(null);
+        this.canvas.shapeDrawer.setIsSearching(false);
+        this.refresh();
     }//GEN-LAST:event_searchTextFieldFocusLost
     
     private void borderComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borderComboBoxActionPerformed
@@ -2176,6 +2182,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         java.awt.EventQueue.invokeLater(() -> {
             this.splitWindow.setLeftComponent(this.canvas);
             this.hideControls();
+            this.canvas.requestFocusInWindow();
             this.setVisible(true);
             
             GaudrophoneController.getController().delegate = this;
@@ -2190,6 +2197,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
                 @Override
                 public void mouseReleased(java.awt.event.MouseEvent e) {
+                    canvas.requestFocusInWindow();
                     refresh();
                 }
             });

@@ -33,5 +33,5 @@ public abstract class Search {
         this.keys = keys;
     }
     
-    public abstract void search(String value);
+    public abstract void search(String filterString);
 }
