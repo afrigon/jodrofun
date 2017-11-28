@@ -97,7 +97,7 @@ public class EnvelopedClip {
     }
     
     public void end() {
-        if (clip != null) {
+        /*if (clip != null) {
             clip.close();
         }
         if (releaseClip != null) {
@@ -105,7 +105,7 @@ public class EnvelopedClip {
         }
         startInstant = 0;
         releaseInstant = 0;
-        released = false;
+        released = false;*/
     }
 }
 
