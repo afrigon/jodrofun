@@ -39,7 +39,9 @@ public class Guitar implements InstrumentPattern {
     private Instrument guitar;
     private String fullPathJar;
     
-    public Guitar() { this.fullPathJar = new java.io.File(".").getAbsolutePath().replace("\\.", ""); }
+    public Guitar() { 
+        this.fullPathJar = new java.io.File(".").getAbsolutePath().replace("\\.", "");
+    }
     
     @Override
     public Instrument generate() {
