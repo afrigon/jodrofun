@@ -31,10 +31,6 @@ public class SynthesizedSound extends Sound {
     
     private static final int BUFFER_SIZE = (int) (WaveForm.SAMPLE_RATE / 20);
     
-    public SynthesizedSound() {
-        
-    }
-    
     public SynthesizedSound(PlayableNote playableNote) {
         this.type = SoundType.synthesizedSound;
         this.playableNote = playableNote;

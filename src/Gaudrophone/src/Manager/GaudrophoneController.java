@@ -35,6 +35,7 @@ import Music.AudioClip;
 import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
+import Music.PlayableNote;
 import Music.SoundType;
 import Music.WaveFormType;
 import java.awt.Color;
@@ -406,7 +407,7 @@ public class GaudrophoneController {
     public void createSynth() {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null && key.getSound().getType() == SoundType.audioClip) {
-            key.setSound(new SynthesizedSound());
+            key.setSound(new SynthesizedSound(new PlayableNote()));
         }
     }
 

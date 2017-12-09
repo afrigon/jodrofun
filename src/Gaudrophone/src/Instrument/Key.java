@@ -29,6 +29,7 @@ import KeyUtils.KeyShape;
 import Music.Sound;
 import Music.SynthesizedSound;
 import Music.AudioClip;
+import Music.PlayableNote;
 import Music.SoundType;
 
 public class Key implements java.io.Serializable {
@@ -51,7 +52,7 @@ public class Key implements java.io.Serializable {
         
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound s = (SynthesizedSound)key.getSound();
-            this.sound = new SynthesizedSound();
+            this.sound = new SynthesizedSound(new PlayableNote());
             ((SynthesizedSound)this.sound).setWaveForm(s.getWaveform());
             this.sound.setEnvelope(new Music.Envelope(s.getEnvelope().getAttack(), s.getEnvelope().getDecay(), s.getEnvelope().getSustain(), s.getEnvelope().getRelease()));
             this.sound.setVolume(s.getVolume());

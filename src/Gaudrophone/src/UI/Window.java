@@ -30,7 +30,6 @@ import Instrument.KeyState;
 import Music.Note;
 import Instrument.Piano;
 import KeyUtils.Corner;
-import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.TriangleKeyShape;
 import KeyUtils.Vector2;
@@ -40,12 +39,10 @@ import Manager.GaudrophoneControllerDelegate;
 import Manager.SelectionManagerDelegate;
 import Manager.State;
 import Music.AudioClip;
-import Music.Sound;
 import Music.SoundType;
 import Music.SynthesizedSound;
 import Music.WaveFormType;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
@@ -264,7 +261,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.2"));
+        fileDialog.setCurrentDirectory(new java.io.File("/"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
