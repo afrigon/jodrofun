@@ -359,6 +359,8 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setAttack(newAttack);
+            if(key.getSound().getType() == SoundType.synthesizedSound)
+                ((SynthesizedSound)key.getSound()).refreshBuffer();
         }
     }
         
@@ -366,6 +368,8 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setDecay(newDecay);
+            if(key.getSound().getType() == SoundType.synthesizedSound)
+                ((SynthesizedSound)key.getSound()).refreshBuffer();
         }
     }
         
@@ -373,6 +377,8 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setSustain((double)newSustain/100);
+            if(key.getSound().getType() == SoundType.synthesizedSound)
+                ((SynthesizedSound)key.getSound()).refreshBuffer();
         }
     }
         
@@ -380,6 +386,8 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setRelease(newRelease);
+            if(key.getSound().getType() == SoundType.synthesizedSound)
+                ((SynthesizedSound)key.getSound()).refreshBuffer();
         }
     }
         
@@ -400,7 +408,9 @@ public class GaudrophoneController {
     public void setWaveform(WaveFormType waveFormType) {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
-            ((SynthesizedSound)key.getSound()).setWaveForm(waveFormType.getWaveForm());
+            SynthesizedSound sound = ((SynthesizedSound)key.getSound());
+            sound.setWaveForm(waveFormType.getWaveForm());
+            sound.refreshBuffer();
         }
     }
 
