@@ -39,7 +39,7 @@ import Instrument.KeyState;
 import Manager.GaudrophoneController;
 
 public class ShapeDrawer {
-    private final Color SELECTION_COLOR = new Color(0xf9a825);
+    private final Color SELECTION_COLOR = new Color(0x388e3c);
     private final Color POINTS_COLOR = new Color(0xe0e0e0);
     
     private Rectangle2D cs = new Rectangle2D.Double();

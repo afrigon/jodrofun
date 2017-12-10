@@ -29,21 +29,16 @@ import java.awt.geom.Path2D;
 import java.awt.Color;
 import java.awt.BasicStroke;
 
-/**
- *
- * @author Alexandre
- */
-public class EnvelopeGraphe extends javax.swing.JPanel {
-    
+public class EnvelopeGraph extends javax.swing.JPanel {
     private double attack = 100;
     private double decay = 100;
     private double sustain = 0.8;
     private double release = 100;
     
-    private final Color foreColor = Color.GREEN;
-    private final Color fillColor = Color.GREEN;
+    private final Color foreColor = new Color(0x388e3c);
+    private final Color fillColor = new Color(0x1a388e3c, true);
     private final Color backgroundColor = Color.DARK_GRAY;
-    private final float strokeSize = 3.0f;
+    private final float strokeSize = 2.0f;
     
     private final double maxValue = 5000;
     
@@ -62,15 +57,14 @@ public class EnvelopeGraphe extends javax.swing.JPanel {
         g2.setStroke(new BasicStroke(strokeSize));
         
         double attackPoint = this.getCurve(this.attack) * width / 3;
-        System.out.println(this.getCurve(this.attack));
         
         Path2D p = new Path2D.Double();
         
-        p.moveTo(0, height);
-        p.lineTo(attackPoint, 0);
-        p.lineTo(attackPoint + this.getCurve(this.decay) * width / 3, (1 - this.sustain) * height);
-        p.lineTo(2 * width / 3, (1 - this.sustain) * height);
-        p.lineTo(2 * width / 3 + this.getCurve(this.release) * width / 3, height);
+        p.moveTo(0, height+strokeSize);
+        p.lineTo(attackPoint, 0+strokeSize);
+        p.lineTo(attackPoint + this.getCurve(this.decay) * width / 3, (1 - this.sustain) * height+strokeSize);
+        p.lineTo(2 * width / 3, (1 - this.sustain) * height+strokeSize);
+        p.lineTo(2 * width / 3 + this.getCurve(this.release) * width / 3, height+strokeSize);
         p.closePath();
         
         g2.setColor(this.fillColor);
@@ -92,7 +86,7 @@ public class EnvelopeGraphe extends javax.swing.JPanel {
     }
     
     public void setSustain(double p_sustain) {
-        this.sustain = p_sustain;
+        this.sustain = p_sustain / 100;
     }
     
     public void setRelease(double p_release) {

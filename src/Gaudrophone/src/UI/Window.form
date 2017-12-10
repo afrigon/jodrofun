@@ -2282,7 +2282,7 @@
                                     </Property>
                                   </Properties>
                                   <AuxValues>
-                                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new EnvelopeGraphe()"/>
+                                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new UI.EnvelopeGraph()"/>
                                   </AuxValues>
 
                                   <Layout>

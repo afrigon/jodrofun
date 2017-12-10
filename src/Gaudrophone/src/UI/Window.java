@@ -180,7 +180,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         volumeLabel = new javax.swing.JLabel();
         volumeSlider = new javax.swing.JSlider();
         volumeSpinner = new javax.swing.JSpinner();
-        envelopeGraph = new EnvelopeGraphe();
+        envelopeGraph = new EnvelopeGraph();
         envelopeSliders = new javax.swing.JPanel();
         attackSliderPanel = new javax.swing.JPanel();
         attackSlider = new javax.swing.JSlider();
@@ -1824,25 +1824,25 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
     private void attackSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_attackSpinnerStateChanged
         GaudrophoneController.getController().setAttack((double)attackSlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setAttack((double)attackSlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setAttack((double)attackSlider.getValue());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_attackSpinnerStateChanged
 
     private void decaySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_decaySpinnerStateChanged
         GaudrophoneController.getController().setDecay((double)decaySlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setDecay((double)decaySlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setDecay((double)decaySlider.getValue());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_decaySpinnerStateChanged
 
     private void sustainSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sustainSpinnerStateChanged
         GaudrophoneController.getController().setSustain((double)sustainSlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setSustain((double)sustainSlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setSustain((double)sustainSlider.getValue());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_sustainSpinnerStateChanged
 
     private void releaseSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_releaseSpinnerStateChanged
         GaudrophoneController.getController().setRelease((double)releaseSlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setRelease((double)releaseSlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setRelease((double)releaseSlider.getValue());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_releaseSpinnerStateChanged
 

@@ -105,6 +105,8 @@ public class SongIO {
                     tempo.add(this.stringToStep(c));
                 }
             }
+            
+            
         }
     }
     
