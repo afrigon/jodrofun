@@ -26,6 +26,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
+import java.awt.geom.Line2D;
 import java.awt.Color;
 import java.awt.BasicStroke;
 
@@ -34,19 +35,23 @@ public class EnvelopeGraph extends javax.swing.JPanel {
     private double decay = 100;
     private double sustain = 0.8;
     private double release = 100;
+    private double volume = 0.5;
     
     private final Color foreColor = new Color(0x388e3c);
     private final Color fillColor = new Color(0x1a388e3c, true);
     private final Color backgroundColor = Color.DARK_GRAY;
+    private final Color volumeColor = new Color(0x009688);
     private final float strokeSize = 2.0f;
     
     private final double maxValue = 5000;
     
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
         double width = this.getWidth();
-        double height = this.getHeight();
+        double height = this.getHeight() * volume;
+        double heightDif = this.getHeight() - height;
+        
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -54,23 +59,31 @@ public class EnvelopeGraph extends javax.swing.JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         g2.setBackground(this.backgroundColor);
-        g2.setStroke(new BasicStroke(strokeSize));
+        g2.setStroke(new BasicStroke(this.strokeSize));
         
-        double attackPoint = this.getCurve(this.attack) * width / 3;
-        
-        Path2D p = new Path2D.Double();
-        
-        p.moveTo(0, height+strokeSize);
-        p.lineTo(attackPoint, 0+strokeSize);
-        p.lineTo(attackPoint + this.getCurve(this.decay) * width / 3, (1 - this.sustain) * height+strokeSize);
-        p.lineTo(2 * width / 3, (1 - this.sustain) * height+strokeSize);
-        p.lineTo(2 * width / 3 + this.getCurve(this.release) * width / 3, height+strokeSize);
-        p.closePath();
-        
-        g2.setColor(this.fillColor);
-        g2.fill(p);
-        g2.setColor(this.foreColor);
-        g2.draw(p);
+        if(volume != 0) {
+            double attackPoint = this.getCurve(this.attack) * width / 3;
+
+            Path2D p = new Path2D.Double();
+
+            p.moveTo(0, height + heightDif + this.strokeSize);
+            p.lineTo(attackPoint, heightDif + this.strokeSize);
+            p.lineTo(attackPoint + this.getCurve(this.decay) * width / 3, (1 - this.sustain) * height + heightDif + this.strokeSize);
+            p.lineTo(2 * width / 3, (1 - this.sustain) * height + heightDif + this.strokeSize);
+            p.lineTo(2 * width / 3 + this.getCurve(this.release) * width / 3, height + heightDif + this.strokeSize);
+            p.closePath();
+
+            g2.setColor(this.fillColor);
+            g2.fill(p);
+            g2.setColor(this.foreColor);
+            g2.draw(p);
+            if(volume != 1) {
+                float[] f = {3};
+                g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 0, f, 0));
+                g2.setColor(this.volumeColor);
+                g2.draw(new Line2D.Double(0, heightDif, width, heightDif));
+            }
+        }
     }
     
     private double getCurve(double a) {
@@ -86,10 +99,14 @@ public class EnvelopeGraph extends javax.swing.JPanel {
     }
     
     public void setSustain(double p_sustain) {
-        this.sustain = p_sustain / 100;
+        this.sustain = p_sustain;
     }
     
     public void setRelease(double p_release) {
         this.release = p_release;
+    }
+    
+    public void setVolume(double p_volume) {
+        this.volume = p_volume;
     }
 }
