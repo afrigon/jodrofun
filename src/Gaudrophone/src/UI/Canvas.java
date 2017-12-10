@@ -25,11 +25,9 @@ package UI;
 
 import Manager.CanvasManager;
 import Manager.GaudrophoneController;
-import Manager.State;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Canvas extends javax.swing.JPanel {
