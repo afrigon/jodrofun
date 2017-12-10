@@ -26,10 +26,10 @@ package Music;
 public class Envelope implements java.io.Serializable {
     private double attack = 100; // milliseconds
     private double decay = 100; // milliseconds
-    private double sustain = 0.8; // between 0 and 1
-    private double release = 100; // milliseconds
+    private double sustain = .8; // between 0 and 1
+    private double release = 200; // milliseconds
     
-    public static final double SUSTAIN_TIME = 100;
+    public static final double SUSTAIN_TIME = 500;
     
     public Envelope() {}
     public Envelope(double newAttack, double newDecay, double newSustain, double newRelease) {
@@ -53,6 +53,10 @@ public class Envelope implements java.io.Serializable {
     
     public int getRelease() {
         return (int)this.release;
+    }
+    
+    public double getAttackAndDecay() {
+        return attack + decay;
     }
     
     // setters
@@ -95,7 +99,7 @@ public class Envelope implements java.io.Serializable {
     public double getReleasedAmplitude(double time, double timePlayed) {
         if (time < release) {
             double powThis = 1 - time / release;
-            return getPlayingAmplitude(timePlayed) * powThis * powThis * (1 - Math.exp(-time/5));
+            return getPlayingAmplitude(timePlayed) * powThis * powThis;// * (1 - Math.exp(-time/5));
         } else {
             return 0;
         } 
@@ -108,33 +112,4 @@ public class Envelope implements java.io.Serializable {
     public double getReleaseTime() {
         return release;
     }
-
-    
-//    public float getPlayingVolume(double time) {
-//        if (time <= attack) {
-//            return getAttackVolume(time);
-//        } else {
-//            if (time < attackAndDecay) {
-//                return getDecayVolume(time - attack);
-//            } else {
-//                return sustain;
-//            }
-//        }
-//    }
-//    
-//    public float getReleaseVolume(double time) {
-//        if (time < release) {
-//            return sustain + (- sustain - 80.0f) * (float) (time/release);
-//        } else {
-//            return -80.0f;
-//        } 
-//    }
-//    
-//    private float getAttackVolume(double time) {
-//        return 80.0f * (float) (time/attack - 1);
-//    }
-//    
-//    private float getDecayVolume(double time) {
-//        return sustain * (float) (time/decay);
-//    }
 }

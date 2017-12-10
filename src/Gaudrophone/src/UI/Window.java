@@ -30,7 +30,6 @@ import Instrument.KeyState;
 import Music.Note;
 import Instrument.Piano;
 import KeyUtils.Corner;
-import KeyUtils.KeyShape;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.TriangleKeyShape;
 import KeyUtils.Vector2;
@@ -40,12 +39,10 @@ import Manager.GaudrophoneControllerDelegate;
 import Manager.SelectionManagerDelegate;
 import Manager.State;
 import Music.AudioClip;
-import Music.Sound;
 import Music.SoundType;
 import Music.SynthesizedSound;
 import Music.WaveFormType;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
@@ -183,7 +180,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         volumeLabel = new javax.swing.JLabel();
         volumeSlider = new javax.swing.JSlider();
         volumeSpinner = new javax.swing.JSpinner();
-        envelopeGraph = new EnvelopeGraphe();
+        envelopeGraph = new EnvelopeGraph();
         envelopeSliders = new javax.swing.JPanel();
         attackSliderPanel = new javax.swing.JPanel();
         attackSlider = new javax.swing.JSlider();
@@ -248,6 +245,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         newGuitarMenuItem = new javax.swing.JMenuItem();
         newPianoMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
+        openSongMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         quitMenuItem = new javax.swing.JMenuItem();
@@ -264,7 +262,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
+        fileDialog.setCurrentDirectory(new java.io.File("/"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1403,6 +1401,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonPlayMode.setToolTipText("Mode Jeu Libre");
         buttonPlayMode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonPlayMode.setBorderPainted(false);
+        buttonPlayMode.setContentAreaFilled(false);
         buttonPlayMode.setFocusable(false);
         buttonPlayMode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonPlayMode.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1438,6 +1437,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonDuplicate.setToolTipText("Dupliquer la touche");
         buttonDuplicate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonDuplicate.setBorderPainted(false);
+        buttonDuplicate.setContentAreaFilled(false);
         buttonDuplicate.setFocusable(false);
         buttonDuplicate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonDuplicate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1453,6 +1453,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonAddImage.setToolTipText("Ajouter une image");
         buttonAddImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonAddImage.setBorderPainted(false);
+        buttonAddImage.setContentAreaFilled(false);
         buttonAddImage.setFocusable(false);
         buttonAddImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonAddImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1468,6 +1469,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonRemoveImage.setToolTipText("Supprimer l'image");
         buttonRemoveImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonRemoveImage.setBorderPainted(false);
+        buttonRemoveImage.setContentAreaFilled(false);
         buttonRemoveImage.setFocusable(false);
         buttonRemoveImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonRemoveImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1483,6 +1485,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonAddSunkenImage.setToolTipText("Ajouter une image pour l'état enfoncée");
         buttonAddSunkenImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonAddSunkenImage.setBorderPainted(false);
+        buttonAddSunkenImage.setContentAreaFilled(false);
         buttonAddSunkenImage.setFocusable(false);
         buttonAddSunkenImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonAddSunkenImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1498,6 +1501,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonRemoveSunkenImage.setToolTipText("Supprimer l'image pour l'état enfoncée");
         buttonRemoveSunkenImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonRemoveSunkenImage.setBorderPainted(false);
+        buttonRemoveSunkenImage.setContentAreaFilled(false);
         buttonRemoveSunkenImage.setFocusable(false);
         buttonRemoveSunkenImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonRemoveSunkenImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1513,6 +1517,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonDelete.setToolTipText("Supprimer la touche");
         buttonDelete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         buttonDelete.setBorderPainted(false);
+        buttonDelete.setContentAreaFilled(false);
         buttonDelete.setFocusable(false);
         buttonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1607,6 +1612,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             }
         });
         fileMenuItem.add(openMenuItem);
+
+        openSongMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        openSongMenuItem.setText("Ouvrir chanson");
+        openSongMenuItem.setBorder(null);
+        openSongMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openSongMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenuItem.add(openSongMenuItem);
 
         saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveMenuItem.setText("Enregistrer");
@@ -1809,13 +1824,13 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
     private void attackSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_attackSpinnerStateChanged
         GaudrophoneController.getController().setAttack((double)attackSlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setAttack((double)attackSlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setAttack((double)attackSlider.getValue());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_attackSpinnerStateChanged
 
     private void decaySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_decaySpinnerStateChanged
         GaudrophoneController.getController().setDecay((double)decaySlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setDecay((double)decaySlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setDecay((double)decaySlider.getValue());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_decaySpinnerStateChanged
 
@@ -1827,7 +1842,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
     private void releaseSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_releaseSpinnerStateChanged
         GaudrophoneController.getController().setRelease((double)releaseSlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setRelease((double)releaseSlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setRelease((double)releaseSlider.getValue());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_releaseSpinnerStateChanged
 
@@ -2023,7 +2038,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void audioClipSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioClipSelectButtonActionPerformed
         fileDialog.setDialogTitle("Sélectionner un fichier");
         fileDialog.resetChoosableFileFilters();
-        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier mp3","mp3"));
+        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier WAV","wav"));
         fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -2146,6 +2161,17 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         GaudrophoneController.getController().search(this.searchTextField.getText());
     }//GEN-LAST:event_searchTextFieldKeyReleased
+
+    private void openSongMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSongMenuItemActionPerformed
+        fileDialog.setDialogTitle("Sélectionner un fichier");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier TXT","txt"));
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().loadSong(fileDialog.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_openSongMenuItemActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2355,6 +2381,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel octaveLabel;
     private javax.swing.JSpinner octaveSpinner;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem openSongMenuItem;
     private javax.swing.JPanel positionProperty;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JLabel readSpeedLabel;

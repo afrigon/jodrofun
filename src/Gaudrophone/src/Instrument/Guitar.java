@@ -37,6 +37,11 @@ import java.util.LinkedList;
 
 public class Guitar implements InstrumentPattern {
     private Instrument guitar;
+    private String fullPathJar;
+    
+    public Guitar() { 
+        this.fullPathJar = new java.io.File(".").getAbsolutePath().replace("\\.", "");
+    }
     
     @Override
     public Instrument generate() {
@@ -62,7 +67,8 @@ public class Guitar implements InstrumentPattern {
             AudioClip sound = new AudioClip(playableNote);
             sound.getEnvelope().setRelease(600);
             try {
-                sound.setPath(java.net.URLDecoder.decode(getClass().getResource("/resources/guitar/" + keyName + ".wav").getPath(), "UTF-8"));
+                new java.io.File(".").getAbsolutePath();
+                sound.setPath(java.net.URLDecoder.decode(this.fullPathJar + "\\resources\\guitar\\" + keyName + ".wav", "UTF-8"));
             } catch (UnsupportedEncodingException | NullPointerException ex) {
                 continue;
             }

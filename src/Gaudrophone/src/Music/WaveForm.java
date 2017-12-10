@@ -31,5 +31,5 @@ public abstract class WaveForm {
     
     static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE, 2, true, false);
     
-    public abstract double getAmplitude(double frequency, double frame);
+    public abstract double getAmplitude(double frequency, double time);
 }
