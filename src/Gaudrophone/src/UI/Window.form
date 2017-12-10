@@ -2281,6 +2281,9 @@
                                       <Dimension value="[50, 125]"/>
                                     </Property>
                                   </Properties>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new EnvelopeGraphe()"/>
+                                  </AuxValues>
 
                                   <Layout>
                                     <DimensionLayout dim="0">
