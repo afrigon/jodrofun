@@ -1821,7 +1821,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
     private void sustainSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sustainSpinnerStateChanged
         GaudrophoneController.getController().setSustain((double)sustainSlider.getValue());
-        ((EnvelopeGraphe)this.envelopeGraph).setSustain((double)sustainSlider.getValue());
+        ((EnvelopeGraphe)this.envelopeGraph).setSustain(((double)sustainSlider.getValue())/100);
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_sustainSpinnerStateChanged
 

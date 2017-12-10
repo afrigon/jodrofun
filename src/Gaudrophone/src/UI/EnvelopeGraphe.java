@@ -62,7 +62,6 @@ public class EnvelopeGraphe extends javax.swing.JPanel {
         g2.setStroke(new BasicStroke(strokeSize));
         
         double attackPoint = this.getCurve(this.attack) * width / 3;
-        System.out.println(this.getCurve(this.attack));
         
         Path2D p = new Path2D.Double();
         
