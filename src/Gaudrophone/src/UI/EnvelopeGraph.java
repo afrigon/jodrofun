@@ -77,19 +77,19 @@ public class EnvelopeGraph extends javax.swing.JPanel {
         return 1 + (0.5 * Math.log10(a / this.maxValue + 0.01));
     }
     
-    public void setAttack(double p_attack) {
-        this.attack = p_attack;
+    public void setAttack(double attack) {
+        this.attack = attack;
     }
     
-    public void setDecay(double p_decay) {
-        this.decay = p_decay;
+    public void setDecay(double decay) {
+        this.decay = decay;
     }
     
-    public void setSustain(double p_sustain) {
-        this.sustain = p_sustain / 100;
+    public void setSustain(double sustain) {
+        this.sustain = sustain / 100;
     }
     
-    public void setRelease(double p_release) {
-        this.release = p_release;
+    public void setRelease(double release) {
+        this.release = release;
     }
 }

@@ -26,7 +26,7 @@ package Music;
 import java.util.LinkedList;
 
 public class PlayableChord {
-    private LinkedList<PlayableNote> notes = null;
+    private final LinkedList<PlayableNote> notes = new LinkedList<>();
     private double relativeSteps = 0;
     private double length = 1;
     
@@ -43,7 +43,6 @@ public class PlayableChord {
     }
     
     public void addNote(PlayableNote note) {
-        if (this.notes == null) { this.notes = new LinkedList<>(); }
         this.notes.add(note);
     }
     
@@ -53,5 +52,9 @@ public class PlayableChord {
     
     public void setLength(double steps) {
         this.length = steps;
+    }
+    
+    public boolean isEmpty() {
+        return this.notes.isEmpty();
     }
 }

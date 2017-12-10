@@ -47,6 +47,19 @@ public enum Note {
             default: return "";
         }
     }
+    
+    public static Note getNoteFromName(String str) {
+        switch (str.toUpperCase()) {
+            case "A": return Note.A;
+            case "B": return Note.B;
+            case "C": return Note.C;
+            case "D": return Note.D;
+            case "E": return Note.E;
+            case "F": return Note.F;
+            case "G": return Note.G;
+            default: return null;
+        }
+    }
 
     public Note getNext() {
         switch (this) {
