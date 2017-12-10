@@ -245,6 +245,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         newGuitarMenuItem = new javax.swing.JMenuItem();
         newPianoMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
+        openSongMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         quitMenuItem = new javax.swing.JMenuItem();
@@ -1612,6 +1613,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         });
         fileMenuItem.add(openMenuItem);
 
+        openSongMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        openSongMenuItem.setText("Ouvrir chanson");
+        openSongMenuItem.setBorder(null);
+        openSongMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openSongMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenuItem.add(openSongMenuItem);
+
         saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveMenuItem.setText("Enregistrer");
         saveMenuItem.setBorder(null);
@@ -2142,6 +2153,17 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         GaudrophoneController.getController().search(this.searchTextField.getText());
     }//GEN-LAST:event_searchTextFieldKeyReleased
+
+    private void openSongMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSongMenuItemActionPerformed
+        fileDialog.setDialogTitle("Sélectionner un fichier");
+        fileDialog.resetChoosableFileFilters();
+        fileDialog.addChoosableFileFilter(new FileNameExtensionFilter("Fichier TXT","txt"));
+        fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            GaudrophoneController.getController().loadSong(fileDialog.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_openSongMenuItemActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2351,6 +2373,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel octaveLabel;
     private javax.swing.JSpinner octaveSpinner;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem openSongMenuItem;
     private javax.swing.JPanel positionProperty;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JLabel readSpeedLabel;
