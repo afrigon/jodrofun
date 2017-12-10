@@ -180,7 +180,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         volumeLabel = new javax.swing.JLabel();
         volumeSlider = new javax.swing.JSlider();
         volumeSpinner = new javax.swing.JSpinner();
-        envelopeGraph = new EnvelopeGraph();
+        envelopeGraph = new UI.EnvelopeGraph();
         envelopeSliders = new javax.swing.JPanel();
         attackSliderPanel = new javax.swing.JPanel();
         attackSlider = new javax.swing.JSlider();
@@ -262,7 +262,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1836,7 +1836,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
     private void sustainSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sustainSpinnerStateChanged
         GaudrophoneController.getController().setSustain((double)sustainSlider.getValue());
-        ((EnvelopeGraph)this.envelopeGraph).setSustain((double)sustainSlider.getValue());
+        ((EnvelopeGraph)this.envelopeGraph).setSustain(((double)sustainSlider.getValue())/(double)sustainSlider.getMaximum());
         this.envelopeGraph.repaint();
     }//GEN-LAST:event_sustainSpinnerStateChanged
 
@@ -1866,7 +1866,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_buttonDuplicateActionPerformed
 
     private void volumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_volumeSliderStateChanged
-        GaudrophoneController.getController().setVolume((double)volumeSlider.getValue()/100);
+        GaudrophoneController.getController().setVolume((double)volumeSlider.getValue()/(double)volumeSlider.getMaximum());
+        ((EnvelopeGraph)this.envelopeGraph).setVolume((double)volumeSlider.getValue()/(double)volumeSlider.getMaximum());
+        this.envelopeGraph.repaint();
     }//GEN-LAST:event_volumeSliderStateChanged
 
     private void displayNameCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_displayNameCheckBoxItemStateChanged
