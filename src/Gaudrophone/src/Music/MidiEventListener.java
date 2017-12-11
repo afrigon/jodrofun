@@ -24,25 +24,32 @@
 package Music;
 
 import javax.sound.midi.ControllerEventListener;
+import javax.sound.midi.MetaEventListener;
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.ShortMessage;
 
 /**
  *
  * @author Olivier
  */
-public class MidiEventListener implements ControllerEventListener {
-    
+public class MidiEventListener implements MetaEventListener {//ControllerEventListener {
+
     @Override
-    public void controlChange(ShortMessage event) {
-        int command = event.getCommand();
-        if (command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF) {
-            int midiNum = event.getData1();
-            int octave = (midiNum / 12) - 1;
-            int note = midiNum % 12;
-            int velocity = event.getData2();
-            System.out.println("Note ON/OFF: " + note + " - " + octave + " : vel " + velocity);
-        } else {
-            System.out.println("Other command " + command);
-        }
+    public void meta(MetaMessage event) {
+        System.out.println("Event : " + event.getType());
     }
+    
+//    @Override
+//    public void controlChange(ShortMessage event) {
+//        int command = event.getCommand();
+//        if (command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF) {
+//            int midiNum = event.getData1();
+//            int octave = (midiNum / 12) - 1;
+//            int note = midiNum % 12;
+//            int velocity = event.getData2();
+//            System.out.println("Note ON/OFF: " + note + " - " + octave + " : vel " + velocity);
+//        } else {
+//            System.out.println("Other command " + command);
+//        }
+//    }
 }

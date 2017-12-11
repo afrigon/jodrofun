@@ -23,13 +23,13 @@
  */
 package Music;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Transmitter;
 
 /**
  *
@@ -38,23 +38,37 @@ import javax.sound.midi.Sequencer;
 public class MidiPlayer {
     private Sequencer sequencer = null;
     
-    
-    public void MidiPlayer(Sequence sequence) {
+    public MidiPlayer(Sequence sequence) {
         try {
             sequencer = MidiSystem.getSequencer();
             
             sequencer.setSequence(sequence);
+//            int[] controllers = new int[128];
+//            for (int i = 0; i < 128; i++) {
+//                controllers[i] = i;
+//            }
+            //sequencer.addControllerEventListener(new MidiEventListener(), controllers); // checker le tableau de int
+               
+            //sequencer.addMetaEventListener(new MidiEventListener());
+                    
             sequencer.open();
-            sequencer.addControllerEventListener(new MidiEventListener(), new int[1]); // checker le tableau de int
-            sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
-            sequencer.start();
             
+            MidiReceiver receiver = new MidiReceiver();
+            Transmitter trans = sequencer.getTransmitter();
+            trans.setReceiver(receiver);            
+            
+            sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+            System.out.println("Sequencer is going to start.");
+            sequencer.start();
+            System.out.println("Sequencer has started.");
             
         } catch (MidiUnavailableException | InvalidMidiDataException ex) {
             System.out.println(ex.toString());
         } finally {
-            sequencer.stop();
-            sequencer.close();
+//            System.out.println("Sequencer is going to close.");
+//            sequencer.stop();
+//            sequencer.close();
+//            System.out.println("Sequencer has closed.");
         }
     }
     
@@ -64,5 +78,14 @@ public class MidiPlayer {
         } else {
             System.out.println("Sequencer should not be null ?!??!?!?!!.");
         }
+    }
+    
+    public float getTempo() {
+        if (sequencer != null) {
+            return sequencer.getTempoInBPM();
+        } else {
+            System.out.println("Sequencer should not be null ?!??!?!?!!.");
+        }
+        return 0;
     }
 }
