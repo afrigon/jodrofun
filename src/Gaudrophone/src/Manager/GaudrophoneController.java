@@ -47,6 +47,7 @@ public class GaudrophoneController {
     private final SoundService soundService = SoundService.getSoundService();
     private final SelectionManager selectionManager = new SelectionManager();
     private final Sequencer sequencer = new Sequencer();
+    private final DeviceManager deviceManager = new DeviceManager();
     public GaudrophoneControllerDelegate delegate;
     
     private static GaudrophoneController controller = null;
