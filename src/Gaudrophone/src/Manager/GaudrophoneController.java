@@ -74,6 +74,10 @@ public class GaudrophoneController {
         return this.selectionManager;
     }
     
+    public Sequencer getSequencer() {
+        return sequencer;
+    }
+    
     public void duplicateKey() {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
@@ -274,7 +278,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         int line = this.selectionManager.getSelectedLine();
         if (key != null) {
-            if(line == -5)
+            if (line == -5)
                 this.setAllLineColor(newColor);
             else if(line == -1 || line == -2 || line == -3 || line == -4)
                 key.getShape().setCrossLineColor(newColor, CrossLine.getCrossLineForIndex(Math.abs(line) - 1));
@@ -318,7 +322,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         int line = this.selectionManager.getSelectedLine();
         if (key != null) {
-            if(line == -5)
+            if (line == -5)
                 this.setAllLineThickness(newThickness);
             else if(line == -1 || line == -2 || line == -3 || line == -4)
                 key.getShape().setCrossLineThickness(newThickness, CrossLine.getCrossLineForIndex(Math.abs(line) - 1));
@@ -538,12 +542,14 @@ public class GaudrophoneController {
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
             if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
                 key.addState(KeyState.clicked);
-                this.soundService.play(key.getSound());
+                if (!sequencer.isMuted()) {
+                    this.soundService.play(key.getSound());
+                }
                 this.canvasManager.delegate.shouldRedraw();
                 return true;
             }
         }
-        return false;
+        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
     public boolean releaseNote(PlayableNote note) {
@@ -555,6 +561,6 @@ public class GaudrophoneController {
                 return true;
             }
         }
-        return false;
+        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
 }
