@@ -92,6 +92,15 @@ public class CanvasManager {
                 key.addState(KeyState.clicked);
                 this.lastKey = key;
                 break;
+                
+            case AutoPlay:
+                Sequencer sequencer = GaudrophoneController.getController().getSequencer();
+                if (!sequencer.isMuted() || sequencer.hasNearNote(key.getSound().getPlayableNote().getFrequency())) {
+                    GaudrophoneController.getController().getSoundService().play(key.getSound());
+                    key.addState(KeyState.clicked);
+                    this.lastKey = key;
+                }
+                break;
         }
     }
     

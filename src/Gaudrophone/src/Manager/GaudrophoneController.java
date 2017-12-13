@@ -48,7 +48,6 @@ public class GaudrophoneController {
     private final SelectionManager selectionManager = new SelectionManager();
     private final Sequencer sequencer = new Sequencer();
     public GaudrophoneControllerDelegate delegate;
-    private boolean songMuted = false;
     
     private static GaudrophoneController controller = null;
     
@@ -73,6 +72,10 @@ public class GaudrophoneController {
     
     public SelectionManager getSelectionManager() {
         return this.selectionManager;
+    }
+    
+    public Sequencer getSequencer() {
+        return sequencer;
     }
     
     public void duplicateKey() {
@@ -501,27 +504,25 @@ public class GaudrophoneController {
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
             if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
                 key.addState(KeyState.clicked);
-                if (!songMuted) {
+                if (!sequencer.isMuted()) {
                     this.soundService.play(key.getSound());
                 }
                 this.canvasManager.delegate.shouldRedraw();
                 return true;
             }
         }
-        return songMuted; // so if it is muted the sound will not be played by the Sequencer
+        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
     public boolean releaseNote(PlayableNote note) {
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
             if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
                 key.removeState(KeyState.clicked);
-                if (!songMuted) {
-                    this.soundService.release(key.getSound());
-                }
+                this.soundService.release(key.getSound());
                 this.canvasManager.delegate.shouldRedraw();
                 return true;
             }
         }
-        return songMuted; // so if it is muted the sound will not be played by the Sequencer
+        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
 }

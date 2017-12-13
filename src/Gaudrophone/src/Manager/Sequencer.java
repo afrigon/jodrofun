@@ -35,6 +35,7 @@ public class Sequencer implements Runnable {
     private long lastTimeUpdate = 0;
     private double currentStep = 0;
     private final ArrayList<Sound> missingSounds = new ArrayList<>();
+    private boolean muted = false;
     
     public int getBPM() {
         return this.bpm;
@@ -58,6 +59,10 @@ public class Sequencer implements Runnable {
             this.metronome.close();
         }
         return this.metronome.isRunning;
+    }
+    
+    public boolean isMuted() {
+        return muted;
     }
     
     private double getElapsedTime() {
