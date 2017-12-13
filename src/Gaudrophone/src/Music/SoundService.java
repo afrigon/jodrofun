@@ -23,65 +23,71 @@
  */
 package Music;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Port;
+import javax.sound.sampled.SourceDataLine;
 
 public class SoundService {
-    public static SoundService shared = new SoundService();
-    private final LinkedHashMap<Sound, EnvelopedClip> clips = new LinkedHashMap();
+    private static final SoundService SHARED = new SoundService();
+    private final LinkedList<Sound> playingSounds;
     private final int polyphony = 32;
+    private int soundPlayingQty = 0;
     
-    public SoundService() {
+    private SoundService() {
+        playingSounds = new LinkedList<>();
+        
         if (!AudioSystem.isLineSupported(Port.Info.SPEAKER)) {
             System.out.println("OUPUT IS NOT SUPPORTED");
         }
     }
     
+    public static SoundService getSoundService() {
+        return SHARED;
+    }
+    
     public void play(Sound sound) {
-        if (clips.size() < polyphony) {
-            
-            // VERIFY IF SOUND IS ALREADY MAPPED
-            
-            try {
-                EnvelopedClip clip = new EnvelopedClip(AudioSystem.getClip(), sound.getPlayingStream(), sound.getLoopFrame());
-                
-                clips.put(sound, clip);
-                clip.start();
-                
-            } catch (LineUnavailableException ex) {
-                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            Sound firstSound = clips.keySet().iterator().next();
-            EnvelopedClip firstClip = clips.remove(firstSound);
-            firstClip.end();
-            play(sound);
+        if (soundPlayingQty == polyphony) // kill the least recent sound
+            closeLastSound();
+        
+        if (sound.isPlaying())
+            sound.kill();
+        
+        soundPlayingQty++;
+        SourceDataLine line;
+        try {
+            line = AudioSystem.getSourceDataLine(sound.getAudioFormat());
+            sound.play(line);
+            playingSounds.add(sound);
+
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void release(Sound sound) {
-        EnvelopedClip clip = clips.get(sound);
-        try {
-            clip.release(AudioSystem.getClip(), sound.getReleasedStream(clip.getTimePlayed()));
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
+        if (sound.isPlaying())
+            sound.release();
+    }
+    
+    public void killed() {
+        soundPlayingQty--;
+    }
+    
+    private void closeLastSound() {
+        if (playingSounds.size() > 0) {
+            Sound sound = playingSounds.remove();
+            if (sound != null)
+                sound.kill();
         }
     }
     
-    public void close() {
-        while (clips.size() > 0) {
-            Sound firstSound = clips.keySet().iterator().next();
-            EnvelopedClip firstClip = clips.remove(firstSound);
-            firstClip.end();
+    public void closeAll() {
+        for (Sound sound : playingSounds) {
+            sound.kill();
         }
     }
 }

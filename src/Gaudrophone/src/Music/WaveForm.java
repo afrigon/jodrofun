@@ -27,7 +27,9 @@ import javax.sound.sampled.AudioFormat;
 
 public abstract class WaveForm {
     static final int SAMPLE_RATE = 44100;
-    static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, 8, 2, true, false);
+    static final int SAMPLE_SIZE = 16; // This is related to SynthesizedSound.getPlayingStream() and SynthesizedSound.getReleasedStream()
     
-    public abstract double getAmplitude(double frequency, double frame);
+    static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE, 2, true, false);
+    
+    public abstract double getAmplitude(double frequency, double time);
 }

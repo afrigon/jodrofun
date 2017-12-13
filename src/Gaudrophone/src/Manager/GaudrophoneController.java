@@ -24,14 +24,18 @@
 package Manager;
 
 import Instrument.Key;
+import Instrument.KeyState;
+import KeyUtils.Corner;
+import KeyUtils.CrossLine;
 import Music.SoundService;
-import KeyUtils.KeyShape;
 import KeyUtils.Vector2;
+import KeyUtils.KeyLine;
 import Music.AudioClip;
 import Music.SynthesizedSound;
-import Instrument.Note;
-import Instrument.Alteration;
-import Music.NoteTranslator;
+import Music.Note;
+import Music.Alteration;
+import Music.PlayableNote;
+import Music.SongIO;
 import Music.SoundType;
 import Music.WaveFormType;
 import java.awt.Color;
@@ -40,8 +44,9 @@ import java.util.List;
 public class GaudrophoneController {
     private final InstrumentManager instrumentManager = new InstrumentManager();
     private final CanvasManager canvasManager = new CanvasManager();
-    private final SoundService soundService = new SoundService();
+    private final SoundService soundService = SoundService.getSoundService();
     private final SelectionManager selectionManager = new SelectionManager();
+    private final Sequencer sequencer = new Sequencer();
     public GaudrophoneControllerDelegate delegate;
     
     private static GaudrophoneController controller = null;
@@ -54,23 +59,27 @@ public class GaudrophoneController {
     }
     
     public InstrumentManager getInstrumentManager() {
-        return instrumentManager;
+        return this.instrumentManager;
     }
     
     public CanvasManager getCanvasManager() {
-        return canvasManager;
+        return this.canvasManager;
     }
     
     public SoundService getSoundService() {
-        return soundService;
+        return this.soundService;
     }
     
     public SelectionManager getSelectionManager() {
-        return selectionManager;
+        return this.selectionManager;
+    }
+    
+    public Sequencer getSequencer() {
+        return sequencer;
     }
     
     public void duplicateKey() {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             Key k = new Key(key);
             Vector2 translation = this.canvasManager.convertPixelToWorld(10, 10);
@@ -83,49 +92,60 @@ public class GaudrophoneController {
     }
     
     public void deleteKey() {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
-            instrumentManager.getInstrument().removeKey(key);
-            selectionManager.setKey(null);
+            int index = this.instrumentManager.getInstrument().getKeys().indexOf(key);
+            this.instrumentManager.getInstrument().removeKey(key);
+            if (!this.instrumentManager.getInstrument().getKeys().isEmpty()) {
+                this.selectionManager.setKey(this.instrumentManager.getInstrument().getKeys().get(Math.max(0, index-1)));
+            } else {
+                this.selectionManager.setKey(null);
+            }
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.delegate.shouldRedraw();
             this.canvasManager.updateRatio(this.instrumentManager.getInstrument().getBoundingBox());
         }
     }
     
     public void setKeyPosition(Vector2 position) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             position = this.canvasManager.convertPixelToWorld((int)position.getX(), (int)position.getY());
-            key.getShape().translate(position.sub(key.getShape().getCorner(KeyShape.Corner.TopLeft)));
+            key.getShape().translate(position.sub(key.getShape().getCorner(Corner.topLeft)));
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
         }
     }
     
     public void moveKey(Vector2 translation) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().translate(translation);
             this.delegate.didMoveKey(key);
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
     
     public void setKeySize(Vector2 size) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             size = this.canvasManager.convertPixelToWorld((int)size.getX(), (int)size.getY());
-            Vector2 origin = key.getShape().getCorner(KeyShape.Corner.TopLeft);
-            Vector2 bottomRightOrigin = key.getShape().getCorner(KeyShape.Corner.BottomRight);
+            Vector2 origin = key.getShape().getCorner(Corner.topLeft);
+            Vector2 bottomRightOrigin = key.getShape().getCorner(Corner.bottomRight);
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
+            //this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
-            //TODO: FIX this shit
-            //key.getShape().stretch(size.sub(oldSize));
+            if (size.getX() != 0 && size.getY() != 0) {
+                key.getShape().setSize(size, Corner.topLeft);
+            }        
         }
     }
     
-    public void resizeKey(KeyShape.Corner corner, Vector2 delta) {
-        Key key = selectionManager.getSelectedKey();
+    public void resizeKey(Corner corner, Vector2 delta) {
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().stretch(delta);
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -139,10 +159,11 @@ public class GaudrophoneController {
     }
     
     public void movePoint(Vector2 translation) {
-        Key key = selectionManager.getSelectedKey();
-        int point = selectionManager.getSelectedPoint();
+        Key key = this.selectionManager.getSelectedKey();
+        int point = this.selectionManager.getSelectedPoint();
         if (key != null && point != -1) {
             key.getShape().getPoints().set(point, key.getShape().getPoints().get(point).add(translation));
+            this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.delegate.didMovePoint(key);
         }
     }
@@ -152,7 +173,7 @@ public class GaudrophoneController {
     }
     
     public void setKeyDepth(int index) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null && index >= 0 && index < this.instrumentManager.getInstrument().getKeys().size()) {
             this.instrumentManager.getInstrument().getKeys().remove(key);
             this.instrumentManager.getInstrument().getKeys().add(index, key);
@@ -160,7 +181,7 @@ public class GaudrophoneController {
     }
     
     public void setKeyColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getIdleAppearance().setColor(newColor);
             this.canvasManager.delegate.shouldRedraw();
@@ -168,7 +189,7 @@ public class GaudrophoneController {
     }
     
     public void setKeySunkenColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getSunkenAppearance().setColor(newColor);
             this.canvasManager.delegate.shouldRedraw();
@@ -176,7 +197,7 @@ public class GaudrophoneController {
     }
     
     public void setKeyTextColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getIdleAppearance().setTextColor(newColor);
             this.canvasManager.delegate.shouldRedraw();
@@ -184,7 +205,7 @@ public class GaudrophoneController {
     }
     
     public void setKeySunkenTextColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getSunkenAppearance().setTextColor(newColor);
             this.canvasManager.delegate.shouldRedraw();
@@ -192,7 +213,7 @@ public class GaudrophoneController {
     }
     
     public void setKeyImage(String path) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             if (path == null) {
                 key.getShape().getIdleAppearance().removeImage();
@@ -205,7 +226,7 @@ public class GaudrophoneController {
     }
     
     public void setKeySunkenImage(String path) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             if (path == null) {
                 key.getShape().getSunkenAppearance().removeImage();
@@ -217,59 +238,68 @@ public class GaudrophoneController {
     }
     
     public void setLineColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
-        int line = selectionManager.getSelectedLine();
-        if (key != null && line != -1) {
-            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            shapeLines.get(line).setColor(newColor);
-            key.getShape().setLines(shapeLines);
+        Key key = this.selectionManager.getSelectedKey();
+        int line = this.selectionManager.getSelectedLine();
+        if (key != null) {
+            if (line == -5)
+                this.setAllLineColor(newColor);
+            else if(line == -1 || line == -2 || line == -3 || line == -4)
+                key.getShape().setCrossLineColor(newColor, CrossLine.getCrossLineForIndex(Math.abs(line) - 1));
+            else {
+                List<KeyLine> shapeLines = key.getShape().getLines();
+                shapeLines.get(line).setColor(newColor);
+                key.getShape().setLines(shapeLines);
+            }
             this.canvasManager.delegate.shouldRedraw();
         }
         
     }
     
     public void setAllLineColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
-            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            for(KeyUtils.KeyLine line : shapeLines) {
-                line.setColor(newColor);
+            List<KeyLine> shapeLines = key.getShape().getLines();
+            for(KeyLine line : shapeLines) {
+                if(line != null)
+                    line.setColor(newColor);
             }
             key.getShape().setLines(shapeLines);
             this.canvasManager.delegate.shouldRedraw();
         }
-        
     }
     
-    public void setLineThickness(double newThickness) {
-        Key key = selectionManager.getSelectedKey();
-        int line = selectionManager.getSelectedLine();
-        if (key != null && line != -1) {
-            List<KeyUtils.KeyLine> shapeLines = key.getShape().getLines();
-            shapeLines.get(line).setThickness(newThickness);
+    public void setAllLineThickness(double newThickness) {
+        Key key = this.selectionManager.getSelectedKey();
+        if (key != null) {
+            List<KeyLine> shapeLines = key.getShape().getLines();
+            for(KeyLine line : shapeLines) {
+                if(line != null)
+                    line.setThickness(newThickness);
+            }
             key.getShape().setLines(shapeLines);
             this.canvasManager.delegate.shouldRedraw();
         }
     }
     
-    public void setCrossLineColor(Color newColor) {
-        Key key = selectionManager.getSelectedKey();
+    public void setLineThickness(double newThickness) {
+        Key key = this.selectionManager.getSelectedKey();
+        int line = this.selectionManager.getSelectedLine();
         if (key != null) {
-            key.getShape().setCrossLineColor(newColor, Math.abs(selectionManager.getSelectedLine()) - 1);
-            this.canvasManager.delegate.shouldRedraw();
-        }
-    }
-    
-    public void setCrossLineThickness(double newThickness) {
-        Key key = selectionManager.getSelectedKey();
-        if (key != null) {
-            key.getShape().setCrossLineThickness(newThickness, Math.abs(selectionManager.getSelectedLine()) - 1);
+            if (line == -5)
+                this.setAllLineThickness(newThickness);
+            else if(line == -1 || line == -2 || line == -3 || line == -4)
+                key.getShape().setCrossLineThickness(newThickness, CrossLine.getCrossLineForIndex(Math.abs(line) - 1));
+            else {
+                List<KeyLine> shapeLines = key.getShape().getLines();
+                shapeLines.get(line).setThickness(newThickness);
+                key.getShape().setLines(shapeLines);
+            }
             this.canvasManager.delegate.shouldRedraw();
         }
     }
     
     public void setName(String newName) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.setName(newName);
             this.canvasManager.delegate.shouldRedraw();
@@ -277,8 +307,8 @@ public class GaudrophoneController {
     }
     
     public Boolean setAudioClip(String path) {
-        Key key = selectionManager.getSelectedKey();
-        if (key != null && key.getSound().getType() == SoundType.audioClip) {
+        Key key = this.selectionManager.getSelectedKey();
+        if (key != null && AudioClip.class.isInstance(key.getSound())/*key.getSound().getType() == SoundType.audioClip*/) {
             AudioClip clip = (AudioClip) key.getSound();
             if (!clip.setPath(path)) {
                 return false;
@@ -292,13 +322,12 @@ public class GaudrophoneController {
     private void setFrequency(Key key) {
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound sound = (SynthesizedSound)key.getSound();
-            sound.setFrequency(NoteTranslator.getFrequencyFromKey(key.getNote(), key.getAlteration(), key.getOctave(), sound.getTuning()));
             this.delegate.shouldUpdateProprietyPannelFor(key);
         }
     }
     
     public void setNote(Note newNote) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.setNote(newNote);
             this.setFrequency(key);
@@ -307,7 +336,7 @@ public class GaudrophoneController {
     }
     
     public void setAlteration(Alteration alteration) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.setAlteration(alteration);
             this.setFrequency(key);
@@ -316,7 +345,7 @@ public class GaudrophoneController {
     }
     
     public void setOctave(int newOctave) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.setOctave(newOctave);
             this.setFrequency(key);
@@ -325,73 +354,176 @@ public class GaudrophoneController {
     }
     
     public void setTuning (int newTuning) {
-        Key key = selectionManager.getSelectedKey();
-        if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
-            ((SynthesizedSound)key.getSound()).setTuning(newTuning);
+        Key key = this.selectionManager.getSelectedKey();
+        if (key != null) {
+            key.setTuning(newTuning);
             this.setFrequency(key);
         }
     }
     
     public void setAttack (double newAttack) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setAttack(newAttack);
+            if(key.getSound().getType() == SoundType.synthesizedSound) {
+                //((SynthesizedSound)key.getSound()).refreshBuffer();
+            }
         }
     }
         
     public void setDecay (double newDecay) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setDecay(newDecay);
+            if(key.getSound().getType() == SoundType.synthesizedSound) {
+                //((SynthesizedSound)key.getSound()).refreshBuffer();
+            }
         }
     }
         
     public void setSustain (double newSustain) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setSustain((double)newSustain/100);
+            if(key.getSound().getType() == SoundType.synthesizedSound) {
+                //((SynthesizedSound)key.getSound()).refreshBuffer();
+            }
         }
     }
         
     public void setRelease (double newRelease) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setRelease(newRelease);
+            if(key.getSound().getType() == SoundType.synthesizedSound) {
+                //((SynthesizedSound)key.getSound()).refreshBuffer();
+            }
         }
     }
         
     public void setVolume (double newVolume) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().setVolume(newVolume);
         }
     }
     
     public void setPitch(double pitch) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null && key.getSound().getType() == SoundType.audioClip) {
             ((AudioClip)key.getSound()).setSpeed(pitch);
         }
     }
 
     public void setWaveform(WaveFormType waveFormType) {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
-            ((SynthesizedSound)key.getSound()).setWaveForm(waveFormType.getWaveForm());
+            SynthesizedSound sound = ((SynthesizedSound)key.getSound());
+            sound.setWaveForm(waveFormType.getWaveForm());
+            //sound.refreshBuffer();
+        }
+    }
+
+    public void setMasterWaveform(WaveFormType waveFormType) {
+        if (this.instrumentManager.getInstrument() != null) {
+            this.instrumentManager.getInstrument().setMasterWaveForm(waveFormType.getWaveForm());
         }
     }
 
     public void createSynth() {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null && key.getSound().getType() == SoundType.audioClip) {
-            key.setSound(new SynthesizedSound());
+            key.setSound(new SynthesizedSound(new PlayableNote()));
         }
     }
 
     public void createAudioClip() {
-        Key key = selectionManager.getSelectedKey();
+        Key key = this.selectionManager.getSelectedKey();
         if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
             key.setSound(new AudioClip());
         }
+    }
+
+    public void nextKey() {
+        Key key = this.selectionManager.getSelectedKey();
+        if (key != null) {
+            int index = this.instrumentManager.getInstrument().getKeys().indexOf(key);
+            Key newKey = this.instrumentManager.getInstrument().getKeys().get(index+1 >= this.instrumentManager.getInstrument().getKeys().size() ? 0 : index+1);
+            this.selectionManager.setKey(newKey);
+            this.canvasManager.delegate.shouldRedraw();
+        } else {
+            if (this.instrumentManager.getInstrument().getKeys().size() > 0) {
+                this.selectionManager.setKey(this.instrumentManager.getInstrument().getKeys().get(0));
+                this.canvasManager.delegate.shouldRedraw();
+            }
+        }
+    }
+
+    public void previousKey() {
+        Key key = this.selectionManager.getSelectedKey();
+        if (key != null) {
+            int index = this.instrumentManager.getInstrument().getKeys().indexOf(key);
+            Key newKey = this.instrumentManager.getInstrument().getKeys().get(index-1 >= 0 ? index-1 : this.instrumentManager.getInstrument().getKeys().size()-1);
+            this.selectionManager.setKey(newKey);
+            this.canvasManager.delegate.shouldRedraw();
+        } else {
+            if (this.instrumentManager.getInstrument().getKeys().size() > 0) {
+                this.selectionManager.setKey(this.instrumentManager.getInstrument().getKeys().get(0));
+                this.canvasManager.delegate.shouldRedraw();
+            }
+        }
+    }
+
+    public void search(String text) {
+        if ("".equals(text) || text == null) {
+            for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+                key.removeState(KeyState.searched);
+            }
+        } else {
+            Search search = new SearchAll(this.instrumentManager.getInstrument().getKeys());
+            search.search(text);
+        }
+        this.canvasManager.delegate.shouldRedraw();
+    }
+
+    public void loadSong(String path) {
+        this.sequencer.setSong(new SongIO().Load(path));
+        this.delegate.didSetBPM(this.sequencer.getBPM());
+    }
+    
+    public void setBPM(int bpm) {
+        this.sequencer.setBPM(bpm);
+        this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencer.play();
+    }
+    
+    public boolean toggleMetronome() {
+        return this.sequencer.toogleMetronome();
+    }
+    
+    public boolean playNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.addState(KeyState.clicked);
+                if (!sequencer.isMuted()) {
+                    this.soundService.play(key.getSound());
+                }
+                this.canvasManager.delegate.shouldRedraw();
+                return true;
+            }
+        }
+        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+    public boolean releaseNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.removeState(KeyState.clicked);
+                this.soundService.release(key.getSound());
+                this.canvasManager.delegate.shouldRedraw();
+                return true;
+            }
+        }
+        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
 }

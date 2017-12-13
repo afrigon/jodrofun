@@ -24,28 +24,19 @@
 package Music;
 
 public class Envelope implements java.io.Serializable {
-    private double attack; // milliseconds
-    private double decay; // milliseconds
-    private double sustain; // between 0 and 1
-    private double release; // milliseconds
-    private double attackAndDecay;
+    private double attack = 100; // milliseconds
+    private double decay = 100; // milliseconds
+    private double sustain = .8; // between 0 and 1
+    private double release = 200; // milliseconds
     
-    public static final double SUSTAIN_TIME = 150;
+    public static final double SUSTAIN_TIME = 500;
     
-    public Envelope() {
-        attack = 100;
-        decay = 100;
-        sustain = 0.8;
-        release = 250;
-        attackAndDecay = attack + decay;
-    }
-    
+    public Envelope() {}
     public Envelope(double newAttack, double newDecay, double newSustain, double newRelease) {
         attack = newAttack;
         decay = newDecay;
         sustain = newSustain;
         release = newRelease;
-        attackAndDecay = attack + decay;
     }
     
     public int getAttack() {
@@ -64,15 +55,17 @@ public class Envelope implements java.io.Serializable {
         return (int)this.release;
     }
     
+    public double getAttackAndDecay() {
+        return attack + decay;
+    }
+    
     // setters
     public void setAttack(double newAttack) {
         attack = newAttack;
-        attackAndDecay = attack + decay;
     }
     
     public void setDecay(double newDecay) {
         decay = newDecay;
-        attackAndDecay = attack + decay;
     }
     
     public void setSustain(double newSustain) {
@@ -96,7 +89,7 @@ public class Envelope implements java.io.Serializable {
         if (time <= attack) {
             return getAttackAmplitude(time);
         } else {
-            if (time < attackAndDecay) {
+            if (time < attack + decay) {
                 return getDecayAmplitude(time - attack);
             } else {
                 return sustain;
@@ -105,47 +98,18 @@ public class Envelope implements java.io.Serializable {
     }
     public double getReleasedAmplitude(double time, double timePlayed) {
         if (time < release) {
-            double powThis = time / release - 1;
-            return getPlayingAmplitude(timePlayed) * powThis * powThis;
+            double powThis = 1 - time / release;
+            return getPlayingAmplitude(timePlayed) * powThis * powThis;// * (1 - Math.exp(-time/5));
         } else {
             return 0;
         } 
     }
     
     public double getPlayingTimeLength() {
-        return attackAndDecay + SUSTAIN_TIME;
+        return attack + decay + SUSTAIN_TIME;
     }
     
     public double getReleaseTime() {
         return release;
     }
-
-    
-//    public float getPlayingVolume(double time) {
-//        if (time <= attack) {
-//            return getAttackVolume(time);
-//        } else {
-//            if (time < attackAndDecay) {
-//                return getDecayVolume(time - attack);
-//            } else {
-//                return sustain;
-//            }
-//        }
-//    }
-//    
-//    public float getReleaseVolume(double time) {
-//        if (time < release) {
-//            return sustain + (- sustain - 80.0f) * (float) (time/release);
-//        } else {
-//            return -80.0f;
-//        } 
-//    }
-//    
-//    private float getAttackVolume(double time) {
-//        return 80.0f * (float) (time/attack - 1);
-//    }
-//    
-//    private float getDecayVolume(double time) {
-//        return sustain * (float) (time/decay);
-//    }
 }

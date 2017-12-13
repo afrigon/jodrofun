@@ -25,4 +25,5 @@ package Manager;
 
 public interface CanvasManagerDelegate {
     public void shouldRedraw();
+    public void didChangeState(State state);
 }

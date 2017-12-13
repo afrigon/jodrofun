@@ -23,12 +23,57 @@
  */
 package Music;
 
-import javax.sound.sampled.AudioInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
 
-public abstract class Sound implements java.io.Serializable {
+public abstract class Sound implements Runnable, java.io.Serializable {
+    private static final SoundService SOUNDSERVICE = SoundService.getSoundService();
+    
     protected double volume;
+    protected PlayableNote playableNote = new PlayableNote();
     protected Envelope envelope = null;
     protected SoundType type = null;
+    protected SourceDataLine line = null;
+    
+    protected boolean playing = false;
+    protected boolean released = false;
+    
+    public void play(SourceDataLine newLine) {
+        released = false;
+        playing = true;
+        line = newLine;
+        try {
+            line.open(getAudioFormat());
+            line.start();
+            
+            // start thread
+            new Thread(this).start();
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(Sound.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void release() {
+        released = true;
+    }
+    
+    public void kill() {
+        playing = false;
+        line.close();
+        SOUNDSERVICE.killed();
+    }
+    
+    public boolean isPlaying() {
+        return playing;
+    }
+    
+    public abstract AudioFormat getAudioFormat();
+    
+    @Override
+    public abstract void run();
     
     // Constructors
     public Sound() {
@@ -58,8 +103,7 @@ public abstract class Sound implements java.io.Serializable {
         return type;
     }
     
-    public abstract AudioInputStream getPlayingStream();
-    public abstract AudioInputStream getReleasedStream(double timePlayed);
-    
-    public abstract int getLoopFrame();
+    public PlayableNote getPlayableNote() {
+        return this.playableNote;
+    }
 }

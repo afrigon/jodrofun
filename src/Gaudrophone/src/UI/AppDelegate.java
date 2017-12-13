@@ -23,8 +23,6 @@
  */
 package UI;
 
-import javax.swing.UIManager;
-
 public class AppDelegate {
     private static Window window = new Window();
     

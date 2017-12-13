@@ -23,100 +23,92 @@
  */
 package Music;
 
-import java.io.ByteArrayInputStream;
-import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioFormat;
+
 
 public class SynthesizedSound extends Sound {
-    private double frequency;
-    private int tuning;
-    private WaveForm waveForm = null;
+    private WaveForm waveForm = new SineWaveForm();
     
-    // Constructors
-    public SynthesizedSound() {
-        type = SoundType.synthesizedSound;
-        frequency = 440.0;
-        tuning = 0;
-        waveForm = new SineWaveForm();
-//        waveForm.updateBuffer(frequency);
+    private static final int BUFFER_SIZE = (int) (WaveForm.SAMPLE_RATE / 20);
+    
+    public SynthesizedSound(PlayableNote playableNote) {
+        this.type = SoundType.synthesizedSound;
+        this.playableNote = playableNote;
     }
     
-    public SynthesizedSound(double freq) {
-        type = SoundType.synthesizedSound;
-        frequency = freq;
-        tuning = 0;
-        waveForm = new SineWaveForm();
-//        waveForm.updateBuffer(frequency);
-    }
-    
-    // Implement abstract methods
-//    @Override
-//    public AudioInputStream getAudioInputStream() {
-//        return waveForm.getAudioInputStream();
-//    }
-
     @Override
-    public AudioInputStream getPlayingStream() {
-        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
+    public void run() {
         
-        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
+        int sampleCount = 0;
         
-        byte[] buffer = new byte[2 * frames];
-        
-        for (int i = 0; i < frames; i++) {
-            double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            buffer[2 * i] = (byte) (120.0 * volume * envelope.getPlayingAmplitude(time * 1000.0) * waveForm.getAmplitude(frequency, time));
-            buffer[2 * i + 1] = buffer[2 * i];
+        // play the attack, decay and sustain part until sound is killed or released
+        while (playing && (!released)) {
+            byte[] buffer = new byte[4 * BUFFER_SIZE];
+            
+            for (int i = 0; i < BUFFER_SIZE; i++) {
+                double time = (((double) (i + sampleCount))/WaveForm.SAMPLE_RATE);
+                
+                short amplitude = (short) (32767.0 * envelope.getPlayingAmplitude(time * 1000.0) * volume * waveForm.getAmplitude(playableNote.getFrequency(), time));
+            
+                buffer[4 * i] = (byte) (amplitude & 0xff);
+                buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
+                buffer[4 * i + 2] = buffer[4 * i];
+                buffer[4 * i + 3] = buffer[4 * i + 1];
+            }
+            sampleCount += BUFFER_SIZE;
+            
+            line.write(buffer, 0, buffer.length);
         }
         
-        return new AudioInputStream(new ByteArrayInputStream(buffer, 0, buffer.length), WaveForm.AUDIO_FORMAT, buffer.length);
+        int sampleCountReleased = 0; // keeps the total number of samples played
+        double milliTimePlayed = (double) sampleCount / (double) WaveForm.SAMPLE_RATE * 1000.0;
+        
+        // Play the release tail of a sound
+        while (playing && released) {
+            byte[] buffer = new byte[4 * BUFFER_SIZE];
+            
+            for (int i = 0; i < BUFFER_SIZE; i++) {
+                double time = (((double) (i + sampleCountReleased))/WaveForm.SAMPLE_RATE);
+                
+                double envelopeAmplitude = envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed);
+                
+                if (envelopeAmplitude == 0) {
+                    kill();
+                    return;
+                }
+                
+                short amplitude = (short) (32767.0 * envelopeAmplitude * volume * waveForm.getAmplitude(playableNote.getFrequency(), time));
+            
+                buffer[4 * i] = (byte) (amplitude & 0xff);
+                buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
+                buffer[4 * i + 2] = buffer[4 * i];
+                buffer[4 * i + 3] = buffer[4 * i + 1];
+                
+                
+                if (envelopeAmplitude == 0) {
+                    kill();
+                    return;
+                }
+            }
+            
+            sampleCountReleased += BUFFER_SIZE;
+            line.write(buffer, 0, buffer.length);
+        }
     }
     
     @Override
-    public int getLoopFrame() {
-        double timeLength = envelope.getPlayingTimeLength(); // in milliseconds
-        return (int) (WaveForm.SAMPLE_RATE * ((timeLength - Envelope.SUSTAIN_TIME/2) / 1000.0));
-    }
-
-    @Override
-    public AudioInputStream getReleasedStream(double timePlayed) { // timePlayed must be in seconds
-        double timeLength = envelope.getReleaseTime(); // in milliseconds
-        
-        int frames = (int) (WaveForm.SAMPLE_RATE * timeLength / 1000.0);
-        byte[] buffer = new byte[2 * frames];
-        
-        double milliTimePlayed = timePlayed * 1000;
-        
-        for (int i = 0; i < frames; i++) {
-            double time = ((double) i)/WaveForm.SAMPLE_RATE;
-            buffer[2 * i] = (byte) (120.0 * volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed) * waveForm.getAmplitude(frequency, timePlayed + time));
-            buffer[2 * i + 1] = buffer[2 * i];
-        }
-        
-        return new AudioInputStream(new ByteArrayInputStream(buffer, 0, buffer.length), WaveForm.AUDIO_FORMAT, buffer.length);
+    public AudioFormat getAudioFormat() {
+        return WaveForm.AUDIO_FORMAT;
     }
     
     // Setters
-    public void setFrequency(double newFrequency) {
-        this.frequency = newFrequency;
-        // update tuning
-//        waveForm.updateBuffer(frequency);
-    }
-    
-    public void setTuning(int newTuning) {
-        this.tuning = newTuning;
-    }
-    
     public void setWaveForm(WaveForm waveform) {
         this.waveForm = waveform;
     }
-    
-    // Getters
-    public double getFrequency() {
-        return this.frequency;
-    }
-    
-    public int getTuning() {
-        return this.tuning;
+
+    @Override
+    public void setVolume(double newVolume) {
+        super.setVolume(newVolume);
     }
     
     public WaveForm getWaveform() {

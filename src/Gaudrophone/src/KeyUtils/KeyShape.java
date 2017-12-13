@@ -30,44 +30,44 @@ import java.util.List;
 public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
     private List<KeyLine> lines = null;
-    private KeyLine[] crossLines = new KeyLine[4];
+    private final KeyLine[] crossLines = new KeyLine[4];
     
     private ShapeAppearance idleAppearance = null;
     private ShapeAppearance clickedAppearance = null;
-    
-    public static enum Corner {
-        TopLeft, TopCenter, TopRight,
-        CenterLeft, Center, CenterRight, 
-        BottomLeft, BottomCenter, BottomRight
-    }
     
     // Constructors
     public KeyShape(List<Vector2> pointsList, Color color) {
         points = pointsList;
         lines = new LinkedList<>();
         for (int i = 0; i < points.size(); i++) {
-            lines.add(new KeyLine(0, new Color(51, 51, 51)));
+            lines.add(new KeyLine(0.5, new Color(51, 51, 51)));
         }
-        idleAppearance = new ShapeAppearance(color);
-        clickedAppearance = new ShapeAppearance(color.darker());
+        for(int i = 0; i < this.crossLines.length; ++i) {
+            this.crossLines[i] = new KeyLine(new Color(255, 255, 255, 0));
+        }
+        this.idleAppearance = new ShapeAppearance(color);
+        this.clickedAppearance = new ShapeAppearance(color.darker());
     }
     
     public KeyShape(List<Vector2> pointsList, Color color, Color clickedColor) {
         points = pointsList;
         lines = new LinkedList<>();
         for (int i = 0; i < points.size(); i++) {
-            lines.add(new KeyLine(2, new Color(0x979899)));
+            lines.add(new KeyLine(0.5, new Color(51, 51, 51)));
         }
-        idleAppearance = new ShapeAppearance(color);
-        clickedAppearance = new ShapeAppearance(clickedColor);
+        for(int i = 0; i < this.crossLines.length; ++i) {
+            this.crossLines[i] = new KeyLine(new Color(255, 255, 255, 0));
+        }
+        this.idleAppearance = new ShapeAppearance(color);
+        this.clickedAppearance = new ShapeAppearance(clickedColor);
     }
     
     public ShapeAppearance getIdleAppearance() {
-        return idleAppearance;
+        return this.idleAppearance;
     }
     
     public ShapeAppearance getSunkenAppearance() {
-        return clickedAppearance;
+        return this.clickedAppearance;
     }
     
     public List<Vector2> getPoints() {
@@ -86,62 +86,56 @@ public class KeyShape implements java.io.Serializable {
         this.lines = lines;
     }
     
-    public void setCrossLineColor(Color newColor, int index) {
-        this.crossLines[index].setColor(newColor);
+    public void setCrossLineColor(Color newColor, CrossLine crossLine) {
+        this.crossLines[crossLine.getValue()].setColor(newColor);
     }
     
-    public void setCrossLineThickness(double newThickness, int index) {
-        this.crossLines[index].setThickness(newThickness);
+    public void setCrossLineThickness(double newThickness, CrossLine crossLine) {
+        this.crossLines[crossLine.getValue()].setThickness(newThickness);
     }
     
     // Methods
     private double getMaxBound(boolean isX) {
-        double max = isX ? points.get(0).getX() : points.get(0).getY();
-        for (Vector2 point : points) {
-            double number = isX ? point.getX() : point.getY();
-            if (number > max)
-                max = number;
-        }
+        double max = -1;
+        for(Vector2 point : points) max = Math.max(max, isX ? point.getX() : point.getY());
         return max;
     }
     private double getMinBound(boolean isX) {
-        double min = isX ? points.get(0).getX() : points.get(0).getY();
-        for (Vector2 point : points) {
-            double number = isX ? point.getX() : point.getY();
-            if (number < min)
-                min = number;
-        }
+        double min = Double.MAX_VALUE;
+        for(Vector2 point : points) min = Math.min(min, isX ? point.getX() : point.getY());
         return min;
     }
     
     public Vector2 getCorner(Corner corner) {
-        if (null != corner) switch (corner) {
-            case TopLeft:
-                return new Vector2(getMinBound(true), getMinBound(false));
-            case TopCenter:
-                return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMinBound(false));
-            case TopRight:
-                return new Vector2(getMaxBound(true), getMinBound(false));
-            case CenterLeft:
-                return new Vector2(getMinBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
-            case Center:
-                return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, (getMaxBound(false) + getMinBound(false)) / 2);
-            case CenterRight:
-                return new Vector2(getMaxBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
-            case BottomLeft:
-                return new Vector2(getMinBound(true), getMaxBound(false));
-            case BottomCenter:
-                return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMaxBound(false));
-            case BottomRight:
-                return new Vector2(getMaxBound(true), getMaxBound(false));
-            default:
-                break; // or throw error ?
+        if (null != corner) {
+            switch (corner) {
+                case topLeft:
+                    return new Vector2(getMinBound(true), getMinBound(false));
+                case topCenter:
+                    return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMinBound(false));
+                case topRight:
+                    return new Vector2(getMaxBound(true), getMinBound(false));
+                case centerLeft:
+                    return new Vector2(getMinBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
+                case center:
+                    return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, (getMaxBound(false) + getMinBound(false)) / 2);
+                case centerRight:
+                    return new Vector2(getMaxBound(true), (getMaxBound(false) + getMinBound(false)) / 2);
+                case bottomLeft:
+                    return new Vector2(getMinBound(true), getMaxBound(false));
+                case bottomCenter:
+                    return new Vector2((getMaxBound(true) + getMinBound(true)) / 2, getMaxBound(false));
+                case bottomRight:
+                    return new Vector2(getMaxBound(true), getMaxBound(false));
+            }
         }
-        return new Vector2(); // 
+        
+        return null;
     }
     
     public Vector2 getSize() {
-        return getCorner(Corner.TopRight).sub(getCorner(Corner.BottomLeft));
+        Vector2 signedSize = getCorner(Corner.topRight).sub(getCorner(Corner.bottomLeft));
+        return new Vector2(Math.abs(signedSize.getX()), Math.abs(signedSize.getY()));
     }
     
     public void translate(Vector2 translation) {
@@ -191,5 +185,22 @@ public class KeyShape implements java.io.Serializable {
                 points.set(i, point.add(unitDelta.multiply(product * scale)));    
             }
         }
+    }
+    
+    public void setSize(Vector2 newSize, Corner fixCorner) {
+        Vector2 position = getCorner(fixCorner);
+        
+        Vector2 currentSize = getSize();
+        double resizeX = newSize.getX() / currentSize.getX();
+        double resizeY = newSize.getY() / currentSize.getY();
+        
+        Vector2 reference = getCorner(Corner.topLeft);
+        
+        for(int i = 0; i < points.size(); ++i) {
+            Vector2 point = points.get(i).sub(reference);
+            points.set(i, new Vector2(point.getX() * resizeX + reference.getX(), point.getY() * resizeY + reference.getY()));
+        }
+        
+        setPosition(position, fixCorner);
     }
 }

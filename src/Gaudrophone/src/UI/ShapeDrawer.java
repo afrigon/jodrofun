@@ -39,11 +39,12 @@ import Instrument.KeyState;
 import Manager.GaudrophoneController;
 
 public class ShapeDrawer {
-    private final Color SELECTION_COLOR = new Color(0xf9a825);
+    private final Color SELECTION_COLOR = new Color(0x388e3c);
     private final Color POINTS_COLOR = new Color(0xe0e0e0);
     
     private Rectangle2D cs = new Rectangle2D.Double();
     private DrawableShape selectedKey = null;
+    private Boolean isSearching = false;
     
     //Draw a single shape on the graphic object
     public void drawShape(Graphics2D g2, DrawableShape shape) {
@@ -89,7 +90,7 @@ public class ShapeDrawer {
             drawCrossLines(g2, shape.getKey().getShape().getCrossLines(), shape);
             
             //Draw each border lines
-            drawLines(g2, shape.getLines());
+            drawLines(g2, shape.getLines(), (keyState & KeyState.searched.getValue()) != 0);
             
             //Draw the key information (name, etc.)
             drawText(g2, shape);
@@ -111,8 +112,6 @@ public class ShapeDrawer {
             cs = canvasSize;
             //Get a clip of the size of the canvas (for the search mask)
             Area clip = new Area(canvasSize);
-            //True if something is searched (at least one key is valid)
-            boolean searching = false;
             this.selectedKey = null;
             
             //Draw all shapes using the drawShape function
@@ -120,9 +119,8 @@ public class ShapeDrawer {
                 drawShape(g2, s);
                 //Check if the key have the search flag
                 if((s.getKey().getStates() & KeyState.searched.getValue()) != 0) {
-                    //Remove the shape from the mask and place searching to TRUE
+                    //Remove the shape from the mask
                     clip.subtract(new Area(s.getShape()));
-                    searching = true;
                 }
                 
                 if((s.getKey().getStates() & KeyState.selected.getValue()) != 0) {
@@ -149,7 +147,7 @@ public class ShapeDrawer {
             }
             
             //Place the black mask if searching
-            if(searching) {
+            if(this.isSearching) {
                 g2.setClip(clip);
                 g2.setColor(new Color(0, 0, 0, 60));
                 g2.fill(cs);
@@ -162,10 +160,10 @@ public class ShapeDrawer {
     }
     
     //Draw border lines of a shape
-    private void drawLines(Graphics2D g2, List<DrawableLine> lines) {
+    private void drawLines(Graphics2D g2, List<DrawableLine> lines, Boolean searched) {
         try {
             //First corner of all the shape, and the last corner used
-            Point2D corner = null, firstCorner = null;
+            Point2D cornerExtern = null, firstCornerExtern = null, cornerIntern = null, firstCornerIntern = null;
             //If there is at least three lines, well, we might be able to do something
             if(lines.size() > 2) {
                 //VARIABLES
@@ -177,54 +175,81 @@ public class ShapeDrawer {
                 for(int i = 0; i < lines.size(); ++i) {
                     //Polygon containing the line shape
                     java.awt.Polygon p = new java.awt.Polygon();
-                    //Add the first line, directly on the shape
-                    p.addPoint((int)current.getLine().getX1(), (int)current.getLine().getY1());
-                    p.addPoint((int)current.getLine().getX2(), (int)current.getLine().getY2());
-                    
                     //If it's the last, use the past corner and the first one.
                     //No calculation needed
                     if(current == last) {
-                        p.addPoint((int)firstCorner.getX(), (int)firstCorner.getY());
-                        p.addPoint((int)corner.getX(), (int)corner.getY());
+                        p.addPoint((int)firstCornerIntern.getX(), (int)firstCornerIntern.getY());
+                        p.addPoint((int)cornerIntern.getX(), (int)cornerIntern.getY());
+                        p.addPoint((int)cornerExtern.getX(), (int)cornerExtern.getY());
+                        p.addPoint((int)firstCornerExtern.getX(), (int)firstCornerExtern.getY());
                     }
                     else {
                         next = lines.get(i + 1);
                         //If it's the first line, find the corner with the last one AND the with the next one
                         if(current == first) {
-                            Line2D.Double l = getExtendedLine(getLineWithThickness(current.getLine(), current.getThickness()));
-                            firstCorner = getIntersection(
+                            Line2D.Double l = getExtendedLine(getLineWithThickness(current.getLine(), -current.getThickness()));
+                            firstCornerIntern = getIntersection(
+                                    l,
+                                    getExtendedLine(getLineWithThickness(last.getLine(), -last.getThickness())));
+                            cornerIntern = getIntersection(
+                                    l,
+                                    getExtendedLine(getLineWithThickness(next.getLine(), -next.getThickness())));
+                            
+                            if(firstCornerIntern == null)
+                                throw new NullPointerException("drawLines : firstCornerIntern is undefined. Probably no intersection between the lines in arguments.");
+                            if(cornerIntern == null)
+                                throw new NullPointerException("drawLines : cornerIntern is undefined. Probably no intersection between the lines in arguments.");
+                            
+                            p.addPoint((int)firstCornerIntern.getX(), (int)firstCornerIntern.getY());
+                            p.addPoint((int)cornerIntern.getX(), (int)cornerIntern.getY());
+                            
+                            
+                            l = getExtendedLine(getLineWithThickness(current.getLine(), current.getThickness()));
+                            firstCornerExtern = getIntersection(
                                     l,
                                     getExtendedLine(getLineWithThickness(last.getLine(), last.getThickness())));
-                            corner = getIntersection(
+                            cornerExtern = getIntersection(
                                     l,
                                     getExtendedLine(getLineWithThickness(next.getLine(), next.getThickness())));
                             
-                            if(firstCorner == null)
-                                throw new NullPointerException("drawLines : firstCorner is undefined. Probably no intersection between the lines in arguments.");
-                            if(corner == null)
-                                throw new NullPointerException("drawLines : corner is undefined. Probably no intersection between the lines in arguments.");
+                            if(firstCornerExtern == null)
+                                throw new NullPointerException("drawLines : firstCornerExtern is undefined. Probably no intersection between the lines in arguments.");
+                            if(cornerExtern == null)
+                                throw new NullPointerException("drawLines : cornerExtern is undefined. Probably no intersection between the lines in arguments.");
                             
-                            p.addPoint((int)corner.getX(), (int)corner.getY());
-                            p.addPoint((int)firstCorner.getX(), (int)firstCorner.getY());
+                            p.addPoint((int)cornerExtern.getX(), (int)cornerExtern.getY());
+                            p.addPoint((int)firstCornerExtern.getX(), (int)firstCornerExtern.getY());
                         }
                         //It's not the last line and not the first, since we have access to the past corner, just find the next corner and draw
                         else {
                             Point2D nextCorner = getIntersection(
+                                    getExtendedLine(getLineWithThickness(current.getLine(), -current.getThickness())),
+                                    getExtendedLine(getLineWithThickness(next.getLine(), -next.getThickness())));
+                            
+                            if(nextCorner == null)
+                                throw new NullPointerException("drawLines : nextCornerIntern is undefined. Probably no intersection between the lines in arguments.");
+
+                            p.addPoint((int)cornerIntern.getX(), (int)cornerIntern.getY());
+                            p.addPoint((int)nextCorner.getX(), (int)nextCorner.getY());
+                            //Past corner is now the next one. Iterate now.
+                            cornerIntern = nextCorner;
+                            
+                            nextCorner = getIntersection(
                                     getExtendedLine(getLineWithThickness(current.getLine(), current.getThickness())),
                                     getExtendedLine(getLineWithThickness(next.getLine(), next.getThickness())));
                             
                             if(nextCorner == null)
-                                throw new NullPointerException("drawLines : nextCorner is undefined. Probably no intersection between the lines in arguments.");
+                                throw new NullPointerException("drawLines : nextCornerExtern is undefined. Probably no intersection between the lines in arguments.");
 
                             p.addPoint((int)nextCorner.getX(), (int)nextCorner.getY());
-                            p.addPoint((int)corner.getX(), (int)corner.getY());
+                            p.addPoint((int)cornerExtern.getX(), (int)cornerExtern.getY());
                             //Past corner is now the next one. Iterate now.
-                            corner = nextCorner;
+                            cornerExtern = nextCorner;
                         }
                     }
                     
                     //Paint the line using his color
-                    g2.setPaint(current.getColor());
+                    g2.setPaint(searched ? this.SELECTION_COLOR : current.getColor());
                     g2.fill(p);
                     //Current line is the next one. Iterate now.
                     current = next;
@@ -281,12 +306,15 @@ public class ShapeDrawer {
         int keyState = shape.getKey().getStates();
         Rectangle2D boundingBox = shape.getShape().getBounds2D();
         String text = "";
+        boolean firstIsName = false;
         
         //Find the flags and if they are set, add the information
-        if((keyState & KeyState.displayName.getValue()) != 0)
+        if((keyState & KeyState.displayName.getValue()) != 0) {
+            firstIsName = true;
             text += shape.getKey().getName() + "\n";
+        }
         if((keyState & KeyState.displayNote.getValue()) != 0)
-            text += shape.getKey().getNote();
+            text += shape.getKey().getNote().name();
         if((keyState & KeyState.displayOctave.getValue()) != 0)
             text += shape.getKey().getOctave();
         if((keyState & KeyState.displayAlteration.getValue()) != 0)
@@ -315,10 +343,19 @@ public class ShapeDrawer {
             //Draw the strings
             for (String line : lines) {
                 if(!"".equals(line)) {
+                    if(firstIsName) {
+                        font = new Font("Verdana", Font.BOLD, 12);
+                        g2.setFont(font);
+                    }
                     Rectangle2D boundsLine = font.getStringBounds(line, frc);
                     //Find the position of the line on the X axis (to make each line centered)
                     int posX = (int)(boundingBox.getX() + (boundingBox.getWidth() - boundsLine.getWidth()) / 2);
                     g2.drawString(line, posX, posY += g2.getFontMetrics().getHeight());
+                    if(firstIsName) {
+                        font = new Font("Verdana", Font.PLAIN, 12);
+                        g2.setFont(font);
+                        firstIsName = false;
+                    }
                 }
             }
         }
@@ -337,7 +374,7 @@ public class ShapeDrawer {
         double xThickness = angle / Math.toRadians(90),
                 yThickness = (Math.abs(angle) - Math.toRadians(90)) / Math.toRadians(90);
         if(xThickness > 1) xThickness = 2 - xThickness;
-        if(xThickness < -1) xThickness = -2 + xThickness;
+        if(xThickness < -1) xThickness = -2 - xThickness;
         
         //Create and return a new line using the thickness multipliers
         return new Line2D.Double(
@@ -409,5 +446,9 @@ public class ShapeDrawer {
             y = a1 * x + b1;
         }
         return new Point2D.Double(x, y);
+    }
+
+    public void setIsSearching(boolean value) {
+        this.isSearching = value;
     }
 }
