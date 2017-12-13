@@ -41,17 +41,17 @@ public class Canvas extends javax.swing.JPanel {
         
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent e) {
-                manager.clicked(e.getX(), e.getY());
+                manager.clicked(e.getX(), e.getY(), e.getButton());
             }
             
             public void mouseReleased(java.awt.event.MouseEvent e) {
-                manager.released(e.getX(), e.getY());
+                manager.released(e.getX(), e.getY(), e.getButton());
             }
         });
         
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent e) {
-                manager.dragged(e.getX(), e.getY());
+                manager.dragged(e.getX(), e.getY(), e.getButton());
             }
         });
         

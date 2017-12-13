@@ -26,6 +26,7 @@ package KeyUtils;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
+import java.awt.geom.Line2D;
 
 public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
@@ -60,6 +61,21 @@ public class KeyShape implements java.io.Serializable {
         }
         this.idleAppearance = new ShapeAppearance(color);
         this.clickedAppearance = new ShapeAppearance(clickedColor);
+    }
+    
+    public void addPoint(int index) {
+        if(index >= 0 && index < points.size()) {
+            Vector2 p0 = points.get(index++), p1, newP;
+
+            if(index == points.size()) {
+                index = 0;
+            }
+            p1 = points.get(index);
+
+            newP = new Vector2((p0.getX() + p1.getX()) / 2, (p0.getY() + p1.getY()) / 2);
+            points.add(index, newP);
+            lines.add(index, new KeyLine());
+        }
     }
     
     public ShapeAppearance getIdleAppearance() {
