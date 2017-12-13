@@ -506,12 +506,14 @@ public class GaudrophoneController {
         return false;
     }
     
-    public void releaseNote(PlayableNote note) {
+    public boolean releaseNote(PlayableNote note) {
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
             if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
                 key.removeState(KeyState.clicked);
                 this.soundService.release(key.getSound());
+                return true;
             }
         }
+        return false;
     }
 }
