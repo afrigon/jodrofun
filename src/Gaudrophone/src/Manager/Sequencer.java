@@ -25,10 +25,13 @@ package Manager;
 
 import Music.*;
 
-public class Sequencer {
+public class Sequencer implements Runnable {
     private final Metronome metronome = new Metronome();
     private Song song = null;
     private int bpm = 120;
+    private boolean isPlaying = false;
+    private long lastTimeUpdate = 0;
+    private double currentStep = 0;
     
     public int getBPM() {
         return this.bpm;
@@ -52,5 +55,62 @@ public class Sequencer {
             this.metronome.close();
         }
         return this.metronome.isRunning;
+    }
+    
+    private double getElapsedTime() {
+        long now = System.nanoTime();
+        long delta = now - lastTimeUpdate;
+        lastTimeUpdate = now;
+        return ((double) delta) / 1000000000.0;
+    }
+    
+//    private void generateMissingSound() {
+//        missingSounds.clear();
+//        for (PlayableChord chord : this.song.getChords()) {
+//            for (PlayableNote note : chord.getNotes()) {
+//                
+//            }
+//        }
+//    }
+    
+    public void play() {
+        isPlaying = true;
+        new Thread(this).start();
+    }
+    
+    public void pause() {
+        isPlaying = false;
+    }
+    
+    public void stop() {
+        isPlaying = false;
+        currentStep = 0;
+    }
+    
+    @Override
+    public void run() {
+        getElapsedTime(); // call the method to init lastTimeUpdate
+        while (isPlaying) {
+            double previousStep = currentStep;
+            currentStep += getElapsedTime() * ((double) bpm) / 60.0; // calculate elapsed steps
+            
+            double chordPlayStep = 0;
+            for (PlayableChord chord : this.song.getChords()) {
+                chordPlayStep += chord.getRelativeSteps();
+                double chordEndStep = chordPlayStep + chord.getLength();
+                
+                if ((chordPlayStep > previousStep) && (chordPlayStep <= currentStep)) {
+                    // get a sound or create a default one
+                    // store it somewhere to stop it
+                    //SOUND_SERVICE.play(sound);
+                }
+                
+                if ((chordEndStep > previousStep) && (chordEndStep <= currentStep)) {
+                    // get the searched sound or the created one and release it
+                    //SOUND_SERVICE.release(sound);
+                    isPlaying = false;
+                }
+            }
+        }
     }
 }

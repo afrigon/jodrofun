@@ -35,7 +35,6 @@ import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
 import Music.PlayableNote;
-import Music.Song;
 import Music.SongIO;
 import Music.SoundType;
 import Music.WaveFormType;
