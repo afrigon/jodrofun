@@ -25,23 +25,29 @@ package Music;
 
 public class Metronome extends Thread {
     private int bpm = 120;
+    public boolean isRunning = false;
     
     public void start(int bpm) {
         this.bpm = bpm;
-        super.start();
+        if (!this.isRunning) {
+            this.isRunning = true;
+            super.start();
+        }
+    }
+    
+    public void adjustBPM(int bpm) {
+        this.bpm = bpm;
     }
     
     @Override
     public void run() {
         try {
-            for(;;this.sleep(60000/this.bpm))
+            for(;this.isRunning; this.sleep(60000/this.bpm))
                 java.awt.Toolkit.getDefaultToolkit().beep();
-        } catch (InterruptedException e) {
-            this.interrupt();
-        }   
+        } catch (InterruptedException e) { this.close(); }   
     }
     
     public void close() {
-        this.interrupt();
+        this.isRunning = false;
     }
 }

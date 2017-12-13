@@ -35,7 +35,8 @@ public class Sequencer {
     }
     
     public void setBPM(int bpm) {
-        this.bpm = Math.max(0, Math.min(bpm, 600));
+        this.bpm = Math.max(1, Math.min(bpm, 600));
+        this.metronome.adjustBPM(this.bpm);
     }
     
     public void setSong(Song song) {
@@ -45,11 +46,11 @@ public class Sequencer {
     
     //return state
     public boolean toogleMetronome() {
-        if (this.metronome.isInterrupted()) {
+        if (!this.metronome.isRunning) {
             this.metronome.start(this.bpm);
         } else {
             this.metronome.close();
         }
-        return !this.metronome.isInterrupted();
+        return this.metronome.isRunning;
     }
 }
