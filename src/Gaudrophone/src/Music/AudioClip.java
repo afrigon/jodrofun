@@ -23,7 +23,6 @@
  */
 package Music;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,7 +36,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioClip extends Sound {
     private String path = null;
     private double speed = 1;
-    private AudioFormat audioFormat = null;
+    private transient AudioFormat audioFormat = null;
     private byte[] originalBuffer = null;
     
     // Constructors

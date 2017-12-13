@@ -23,7 +23,7 @@
  */
 package Music;
 
-public class PlayableNote {
+public class PlayableNote implements java.io.Serializable {
     //Clamping contants
     private final int MIN_OCTAVE = -2;
     private final int MAX_OCTAVE = 8;

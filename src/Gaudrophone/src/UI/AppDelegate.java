@@ -23,29 +23,10 @@
  */
 package UI;
 
-import Music.MidiPlayer;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
-import javax.swing.UIManager;
-
 public class AppDelegate {
     private static Window window = new Window();
     
     public static void main(String [] args) {
         AppDelegate.window.setVisible();
-        
-        try {
-            Sequence sequence = MidiSystem.getSequence(new File("yoyoyoy.mid"));
-            MidiPlayer loop = new MidiPlayer(sequence);
-            System.out.println("MidiPlayerCreated");
-        } catch (InvalidMidiDataException | IOException ex) {
-            Logger.getLogger(AppDelegate.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
     }
 }

@@ -23,10 +23,6 @@
  */
 package Music;
 
-/**
- *
- * @author Olivier
- */
 public class LiveLoop {
     boolean recording;
     

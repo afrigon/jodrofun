@@ -56,7 +56,7 @@ public class SongIO {
         for (int i = 0; i < lines.size();) {
             if (lines.get(i).matches(".*//.*")) {
                 //remove comments
-                lines.remove(i);
+                lines.set(i, lines.get(i).replaceAll("//.*", ""));
             } else {
                 //trim unsignificent char
                 lines.set(i, lines.get(i).replaceAll("[\t *\\|]", ""));

@@ -595,7 +595,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         backgroundDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         backgroundDisplayLabel.setToolTipText("");
         backgroundDisplayLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        backgroundDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        backgroundDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         backgroundDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         backgroundDisplayLabel.setOpaque(true);
         backgroundDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -625,7 +625,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         textColorDisplayLabel.setBackground(new java.awt.Color(65, 65, 65));
         textColorDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textColorDisplayLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        textColorDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        textColorDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         textColorDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         textColorDisplayLabel.setOpaque(true);
         textColorDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -677,7 +677,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         backgroundSunkenDisplayLabel.setBackground(new java.awt.Color(65, 65, 65));
         backgroundSunkenDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         backgroundSunkenDisplayLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        backgroundSunkenDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        backgroundSunkenDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         backgroundSunkenDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         backgroundSunkenDisplayLabel.setOpaque(true);
         backgroundSunkenDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -707,7 +707,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         textSunkenColorDisplayLabel.setBackground(new java.awt.Color(65, 65, 65));
         textSunkenColorDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textSunkenColorDisplayLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        textSunkenColorDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        textSunkenColorDisplayLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         textSunkenColorDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         textSunkenColorDisplayLabel.setOpaque(true);
         textSunkenColorDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -816,7 +816,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         lineColorEditButton.setForeground(new java.awt.Color(255, 255, 255));
         lineColorEditButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lineColorEditButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        lineColorEditButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lineColorEditButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lineColorEditButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lineColorEditButton.setOpaque(true);
         lineColorEditButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2599,5 +2599,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.lineColorEditButton.setBackground(color);
         this.lineThicknessSpinner.setValue(thickness);
         this.lineControlWrapper.setVisible(true);
+    }
+
+    @Override
+    public void didSetBPM(int bpm) {
+        
     }
 }

@@ -47,6 +47,7 @@ public class GaudrophoneController {
     private final CanvasManager canvasManager = new CanvasManager();
     private final SoundService soundService = SoundService.get();
     private final SelectionManager selectionManager = new SelectionManager();
+    private final Sequencer sequencer = new Sequencer();
     public GaudrophoneControllerDelegate delegate;
     
     private static GaudrophoneController controller = null;
@@ -476,6 +477,16 @@ public class GaudrophoneController {
     }
 
     public void loadSong(String path) {
-        Song song = new SongIO().Load(path);
+        this.sequencer.setSong(new SongIO().Load(path));
+        this.delegate.didSetBPM(this.sequencer.getBPM());
+    }
+    
+    public void setBPM(int bpm) {
+        this.sequencer.setBPM(bpm);
+        this.delegate.didSetBPM(this.sequencer.getBPM());
+    }
+    
+    public boolean toggleMetronome() {
+        return this.sequencer.toogleMetronome();
     }
 }
