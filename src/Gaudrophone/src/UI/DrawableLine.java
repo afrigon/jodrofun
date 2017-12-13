@@ -25,20 +25,29 @@ package UI;
 
 import java.awt.Color;
 import KeyUtils.KeyLine;
+import KeyUtils.Vector2;
+import Manager.GaudrophoneController;
 import java.awt.geom.Line2D;
 
 public class DrawableLine {
     private KeyLine keyLine;
     private int lineThickness;
     private Line2D.Double line;
+    private Vector2 curvePoint;
     
     public void DrawableLine() { }
     
-    public Color getColor() { return keyLine.getColor(); }
-    public int getThickness() { return lineThickness; }
-    public Line2D.Double getLine() { return line; }
+    public Vector2 handlePosition() {
+        return this.curvePoint;
+    }
+    public Color getColor() { return this.keyLine.getColor(); }
+    public int getThickness() { return this.lineThickness; }
+    public Line2D.Double getLine() { return this.line; }
     
-    public void setKeyLine(KeyLine p_keyLine) { keyLine = p_keyLine; }
-    public void setThickness(int p_thickness) { lineThickness = p_thickness; }
-    public void setLine(Line2D.Double p_line) { line = p_line; }
+    public void setKeyLine(KeyLine p_keyLine) {
+        this.keyLine = p_keyLine;
+        this.curvePoint = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(this.keyLine.getCurve());
+    }
+    public void setThickness(int p_thickness) { this.lineThickness = p_thickness; }
+    public void setLine(Line2D.Double p_line) { this.line = p_line; }
 }

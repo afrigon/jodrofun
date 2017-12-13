@@ -32,6 +32,7 @@ import Music.SynthesizedSound;
 import UI.DrawableShape;
 import java.util.LinkedList;
 import java.util.List;
+import java.awt.event.MouseEvent;
 
 public class CanvasManager {
     private List<DrawableShape> shapes;
@@ -95,13 +96,20 @@ public class CanvasManager {
         }
     }
     
-    public void clicked(int x, int y) {
+    public void clicked(int x, int y, int button) {
         this.clickPosition = new Vector2(x, y);
-        if(this.state == State.EditKey)
-            if(clickedDot(x, y)) {
-                this.state = State.EditPoint;
+        if(this.state == State.EditKey) {
+            int dot = clickedDot(x, y);
+            if(dot != -1) {
+                if (button == MouseEvent.BUTTON1) /* Left click */ {
+                    GaudrophoneController.getController().getSelectionManager().setPoint(dot);
+                    this.state = State.EditPoint;
+                } else if (button == MouseEvent.BUTTON3) /* Right click */ {
+                    GaudrophoneController.getController().deletePoint(dot);
+                }
                 return;
             }
+        }
         DrawableShape ds = this.clickedShape(x, y);
         if (ds != null) {
             if(this.state == State.EditKey && (ds.getKey().getStates() & KeyState.selected.getValue()) != 0) {
@@ -132,7 +140,7 @@ public class CanvasManager {
         }
     }
     
-    public void released(int x, int y) {
+    public void released(int x, int y, int button) {
         switch (this.state) {
             case Play:
                 this.lastKey = null;
@@ -169,7 +177,7 @@ public class CanvasManager {
         }
     }
     
-    public void dragged(int x, int y) {
+    public void dragged(int x, int y, int button) {
         switch (this.state) {
             case Play:
                 DrawableShape ds = this.clickedShape(x, y);
@@ -238,17 +246,15 @@ public class CanvasManager {
         return null;
     }
     
-    private boolean clickedDot(int x, int y) {
+    private int clickedDot(int x, int y) {
         if(GaudrophoneController.getController().getSelectionManager().getSelectedKey() != null)  {
             for(int i = 0; i < DrawableShape.getDot().size(); ++i) {
                 if(DrawableShape.getDot().get(i).contains(x, y)) {
-                    GaudrophoneController.getController().getSelectionManager().setPoint(i);
-                    this.state = State.EditPoint;
-                    return true;
+                    return i;
                 }
             }
         }
-        return false;
+        return -1;
     }
     
     public List<DrawableShape> getDrawableShapes() {

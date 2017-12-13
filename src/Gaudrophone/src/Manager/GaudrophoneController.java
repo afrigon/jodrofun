@@ -98,6 +98,7 @@ public class GaudrophoneController {
                 this.selectionManager.setKey(null);
             }
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
+            this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -117,6 +118,7 @@ public class GaudrophoneController {
             key.getShape().translate(translation);
             this.delegate.didMoveKey(key);
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
+            this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -145,12 +147,25 @@ public class GaudrophoneController {
         }
     }
     
-    public void createPoint() {
-        
+    public void createPoint(int index) {
+        Key key = this.selectionManager.getSelectedKey();
+        if(key != null) {
+            key.getShape().addPoint(index);
+            this.delegate.didMovePoint(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
     }
     
-    public void deletePoint() {
-        
+    public void deletePoint(int index) {
+        Key key = this.selectionManager.getSelectedKey();
+        //Must remain at least 3 points after removing
+        if(key != null && key.getShape().getPoints().size() > 3) {
+            key.getShape().getPoints().remove(index);
+            key.getShape().getLines().remove(index);
+            this.delegate.didMovePoint(key);
+            this.delegate.shouldUpdateProprietyPannelFor(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
     }
     
     public void movePoint(Vector2 translation) {
@@ -163,8 +178,31 @@ public class GaudrophoneController {
         }
     }
     
+    //Curves won't be out for a while, since border algo need to be redone (previously linear)
     public void curveLine(Vector2 translation) {
-        
+        Key key = this.selectionManager.getSelectedKey();
+        int point = this.selectionManager.getSelectedPoint();
+        if (key != null && point != -1) {
+            key.getShape().getLines().get(point).setCurve(
+                    key.getShape().getLines().get(point).getCurve().add(translation));
+            this.delegate.didMovePoint(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
+    }
+    
+    public void setLineShape(KeyUtils.LineShape pointShape) {
+        Key key = this.selectionManager.getSelectedKey();
+        int line = this.selectionManager.getSelectedLine();
+        if (key != null && line != -1) {
+            Vector2 p2, p1 = key.getShape().getPoints().get(line);
+            if(line + 1 == key.getShape().getPoints().size()) {
+                p2 = key.getShape().getPoints().get(0);
+            } else {
+                p2 = key.getShape().getPoints().get(line);
+            }
+            key.getShape().getLines().get(line).setShape(pointShape, p1, p2);
+            this.delegate.didMovePoint(key);
+        }
     }
     
     public void setKeyDepth(int index) {

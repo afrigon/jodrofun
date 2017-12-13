@@ -157,9 +157,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         lineColorWrapper = new javax.swing.JPanel();
         lineColorLabel = new javax.swing.JLabel();
         LineColorSpacer = new javax.swing.JPanel();
-        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         lineColorEditButton = new javax.swing.JLabel();
-        filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        addPointButton = new javax.swing.JButton();
         audioPanel = new javax.swing.JPanel();
         KeyProperties = new javax.swing.JPanel();
         generalProperties = new javax.swing.JPanel();
@@ -281,7 +280,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -828,9 +827,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         LineColorSpacer.setBackground(new java.awt.Color(65, 65, 65));
         LineColorSpacer.setLayout(new java.awt.GridLayout(1, 0));
 
-        filler14.setBackground(new java.awt.Color(65, 65, 65));
-        LineColorSpacer.add(filler14);
-
         lineColorEditButton.setBackground(new java.awt.Color(65, 65, 65));
         lineColorEditButton.setForeground(new java.awt.Color(255, 255, 255));
         lineColorEditButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -845,14 +841,19 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         });
         LineColorSpacer.add(lineColorEditButton);
 
-        filler15.setBackground(new java.awt.Color(65, 65, 65));
-        LineColorSpacer.add(filler15);
-
         lineColorWrapper.add(LineColorSpacer);
 
         lineControlWrapper.add(lineColorWrapper);
 
         linesWrapper.add(lineControlWrapper);
+
+        addPointButton.setText("Ajouter un coin");
+        addPointButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPointButtonActionPerformed(evt);
+            }
+        });
+        linesWrapper.add(addPointButton);
 
         borderPanel.add(linesWrapper);
 
@@ -2334,6 +2335,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void bpmSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bpmSpinnerStateChanged
         GaudrophoneController.getController().setBPM((int)this.bpmSpinner.getValue());
     }//GEN-LAST:event_bpmSpinnerStateChanged
+
+    private void addPointButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPointButtonActionPerformed
+        GaudrophoneController.getController().createPoint(GaudrophoneController.getController().getSelectionManager().getSelectedLine());
+    }//GEN-LAST:event_addPointButtonActionPerformed
     
     private void resetButtons() {
         this.showPannel(this.globalEditPannel);
@@ -2425,6 +2430,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel KeyProperties;
     private javax.swing.JPanel LineColorSpacer;
+    private javax.swing.JButton addPointButton;
     private javax.swing.ButtonGroup alterationButtonGroup;
     private javax.swing.JLabel alterationLabel;
     private javax.swing.JPanel alterationProperty;
@@ -2487,8 +2493,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.Box.Filler filler11;
     private javax.swing.Box.Filler filler12;
     private javax.swing.Box.Filler filler13;
-    private javax.swing.Box.Filler filler14;
-    private javax.swing.Box.Filler filler15;
     private javax.swing.Box.Filler filler16;
     private javax.swing.Box.Filler filler17;
     private javax.swing.Box.Filler filler2;
