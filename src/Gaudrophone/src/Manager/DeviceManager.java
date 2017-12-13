@@ -44,9 +44,8 @@ public final class DeviceManager {
     }
     
     public final void clearDevices() {
-        for (MidiDevice device : devices) {
+        for (MidiDevice device : devices)
             device.close();
-        }
         devices.clear();
     }
     
