@@ -24,14 +24,17 @@
 package Manager;
 
 import Music.*;
+import java.util.ArrayList;
 
 public class Sequencer implements Runnable {
+    private final GaudrophoneController gaudrophone = GaudrophoneController.getController();
     private final Metronome metronome = new Metronome();
     private Song song = null;
     private int bpm = 120;
     private boolean isPlaying = false;
     private long lastTimeUpdate = 0;
     private double currentStep = 0;
+    private final ArrayList<Sound> missingSounds = new ArrayList<>();
     
     public int getBPM() {
         return this.bpm;
@@ -64,15 +67,6 @@ public class Sequencer implements Runnable {
         return ((double) delta) / 1000000000.0;
     }
     
-//    private void generateMissingSound() {
-//        missingSounds.clear();
-//        for (PlayableChord chord : this.song.getChords()) {
-//            for (PlayableNote note : chord.getNotes()) {
-//                
-//            }
-//        }
-//    }
-    
     public void play() {
         isPlaying = true;
         new Thread(this).start();
@@ -87,8 +81,25 @@ public class Sequencer implements Runnable {
         currentStep = 0;
     }
     
+    private void createMissingSound(PlayableNote note) {
+        Sound sound = new SynthesizedSound(note);
+        missingSounds.add(sound);
+        gaudrophone.getSoundService().play(sound);
+    }
+    
+    private void playMissingSound(PlayableNote note) {
+        for (Sound sound : missingSounds) {
+            if (sound.getPlayableNote() == note) {
+                gaudrophone.getSoundService().play(sound);
+                return;
+            }
+        }
+        createMissingSound(note);
+    }
+    
     @Override
     public void run() {
+        missingSounds.clear();
         getElapsedTime(); // call the method to init lastTimeUpdate
         while (isPlaying) {
             double previousStep = currentStep;
@@ -100,15 +111,23 @@ public class Sequencer implements Runnable {
                 double chordEndStep = chordPlayStep + chord.getLength();
                 
                 if ((chordPlayStep > previousStep) && (chordPlayStep <= currentStep)) {
-                    // get a sound or create a default one
-                    // store it somewhere to stop it
-                    //SOUND_SERVICE.play(sound);
+                    for (PlayableNote note : chord.getNotes()) {
+                        if (!gaudrophone.playNote(note)) {
+                            playMissingSound(note);
+                        }
+                    }
                 }
                 
                 if ((chordEndStep > previousStep) && (chordEndStep <= currentStep)) {
-                    // get the searched sound or the created one and release it
-                    //SOUND_SERVICE.release(sound);
-                    isPlaying = false;
+                    for (PlayableNote note : chord.getNotes()) {
+                        if (!gaudrophone.releaseNote(note)) {
+                            for (Sound sound : missingSounds) {
+                                if (sound.getPlayableNote() == note) {
+                                    gaudrophone.getSoundService().release(sound);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -44,7 +44,7 @@ import java.util.List;
 public class GaudrophoneController {
     private final InstrumentManager instrumentManager = new InstrumentManager();
     private final CanvasManager canvasManager = new CanvasManager();
-    private final SoundService soundService = SoundService.get();
+    private final SoundService soundService = SoundService.getSoundService();
     private final SelectionManager selectionManager = new SelectionManager();
     private final Sequencer sequencer = new Sequencer();
     public GaudrophoneControllerDelegate delegate;
@@ -493,5 +493,13 @@ public class GaudrophoneController {
     
     public boolean toggleMetronome() {
         return this.sequencer.toogleMetronome();
+    }
+    
+    public boolean playNote(PlayableNote note) {
+        return false;
+    }
+    
+    public boolean releaseNote(PlayableNote note) {
+        return false;
     }
 }
