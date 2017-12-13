@@ -235,7 +235,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         buttonDelete = new javax.swing.JButton();
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
         instrumentNameTextField = new javax.swing.JTextField();
-        filler18 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        masterWaveformComboBox = new javax.swing.JComboBox(WaveFormType.values());
         searchTextField = new javax.swing.JTextField();
         filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -262,7 +262,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1544,7 +1544,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             }
         });
         jToolBar1.add(instrumentNameTextField);
-        jToolBar1.add(filler18);
+
+        masterWaveformComboBox.setMinimumSize(new java.awt.Dimension(30, 26));
+        masterWaveformComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                masterWaveformComboBoxActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(masterWaveformComboBox);
 
         searchTextField.setBackground(new java.awt.Color(102, 102, 102));
         searchTextField.setForeground(new java.awt.Color(153, 153, 153));
@@ -2174,6 +2181,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             GaudrophoneController.getController().loadSong(fileDialog.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_openSongMenuItemActionPerformed
+
+    private void masterWaveformComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masterWaveformComboBoxActionPerformed
+        GaudrophoneController.getController().setMasterWaveform((WaveFormType)this.masterWaveformComboBox.getSelectedItem());
+    }//GEN-LAST:event_masterWaveformComboBoxActionPerformed
     
     private void resetButtons() {
         if (this.splitWindow.getRightComponent() != null) {
@@ -2321,7 +2332,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.Box.Filler filler15;
     private javax.swing.Box.Filler filler16;
     private javax.swing.Box.Filler filler17;
-    private javax.swing.Box.Filler filler18;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
@@ -2362,6 +2372,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel lineThicknessWrapper;
     private javax.swing.JPanel linesSelectionWrapper;
     private javax.swing.JPanel linesWrapper;
+    private javax.swing.JComboBox<String> masterWaveformComboBox;
     private javax.swing.JMenuItem menuEditDelete;
     private javax.swing.JMenuItem menuEditDuplicate;
     private javax.swing.JMenuItem menuEditNext;

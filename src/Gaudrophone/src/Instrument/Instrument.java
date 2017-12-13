@@ -26,9 +26,11 @@ package Instrument;
 import KeyUtils.Corner;
 import java.util.ArrayList;
 import KeyUtils.Vector2;
+import Music.WaveForm;
 
 public class Instrument implements java.io.Serializable {
     private String name = "Instrument vide";
+    private WaveForm masterWaveForm = new Music.SineWaveForm();
     private final ArrayList<Key> keys = new ArrayList<>();
     
     public String getName() {
@@ -39,8 +41,16 @@ public class Instrument implements java.io.Serializable {
         return this.keys;
     }
     
+    public WaveForm getMasterWaveForm() {
+        return this.masterWaveForm;
+    }
+    
     public void setName(String newName) {
         this.name = newName;
+    }
+    
+    public void setMasterWaveForm(WaveForm p_waveForm) {
+        this.masterWaveForm = p_waveForm;
     }
     
     public Vector2 getBoundingBox() {

@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -37,8 +39,18 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioClip extends Sound {
     private String path = null;
     private double speed = 1;
-    private AudioFormat audioFormat = null;
+    private transient AudioFormat audioFormat = null;
     private byte[] originalBuffer = null;
+    
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        try {
+            AudioFileFormat format = AudioSystem.getAudioFileFormat(new File(path));
+            audioFormat = format.getFormat();
+        } catch (UnsupportedAudioFileException ex) {
+            Logger.getLogger(AudioClip.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     // Constructors
     public AudioClip() {

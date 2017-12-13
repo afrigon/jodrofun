@@ -419,6 +419,12 @@ public class GaudrophoneController {
         }
     }
 
+    public void setMasterWaveform(WaveFormType waveFormType) {
+        if (this.instrumentManager.getInstrument() != null) {
+            this.instrumentManager.getInstrument().setMasterWaveForm(waveFormType.getWaveForm());
+        }
+    }
+
     public void createSynth() {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null && key.getSound().getType() == SoundType.audioClip) {

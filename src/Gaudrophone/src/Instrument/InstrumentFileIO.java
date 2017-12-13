@@ -56,6 +56,7 @@ public class InstrumentFileIO {
             in.close();
             fileIn.close();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Could not load instrument.");
         }
 
