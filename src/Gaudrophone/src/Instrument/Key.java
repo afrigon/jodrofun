@@ -37,6 +37,9 @@ public class Key implements java.io.Serializable {
     private Sound sound = null;
     private String name = null;
     private int states = 144;
+    private boolean linked = false;
+    private int linkedChannel = 0;
+    private int linkedMidiNumber = 0;
     
     // Constructors
     public Key(Sound keySound, KeyShape keyShape, String keyName) {
@@ -155,5 +158,19 @@ public class Key implements java.io.Serializable {
     
     public void removeStates(int states) {
         this.states -= (this.states & states);
+    }
+    
+    public void link(int channel, int midiNum) {
+        linkedChannel = channel;
+        linkedMidiNumber = midiNum;
+        linked = true;
+    }
+    
+    public boolean isLinked(int channel, int midiNum) {
+        return (linked && linkedChannel == channel && linkedMidiNumber == midiNum);
+    }
+    
+    public void unlink() {
+        linked = false;
     }
 }

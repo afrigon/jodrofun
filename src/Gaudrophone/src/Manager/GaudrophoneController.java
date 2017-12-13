@@ -39,6 +39,7 @@ import Music.SongIO;
 import Music.SoundType;
 import Music.WaveFormType;
 import java.awt.Color;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GaudrophoneController {
@@ -77,6 +78,10 @@ public class GaudrophoneController {
     
     public Sequencer getSequencer() {
         return sequencer;
+    }
+    
+    public DeviceManager getDeviceManager() {
+        return deviceManager;
     }
     
     public void duplicateKey() {
@@ -525,5 +530,19 @@ public class GaudrophoneController {
             }
         }
         return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+    public void linkMidiToKey(Key key) {
+        deviceManager.linkMidiToKey(key);
+    }
+    
+    public LinkedList<Key> getLinkedKeys(int channel, int midiNum) {
+        LinkedList<Key> linkedKeys = new LinkedList<>();
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.isLinked(channel, midiNum)) {
+                linkedKeys.add(key);
+            }
+        }
+        return linkedKeys;
     }
 }
