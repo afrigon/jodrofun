@@ -53,15 +53,9 @@ public class SongIO {
     }
     
     private LinkedList<String> stripSong(LinkedList<String> lines) {
-        for (int i = 0; i < lines.size();) {
-            if (lines.get(i).matches(".*//.*")) {
-                //remove comments
-                lines.set(i, lines.get(i).replaceAll("//.*", ""));
-            } else {
-                //trim unsignificent char
-                lines.set(i, lines.get(i).replaceAll("[\t *\\|]", ""));
-                i++;
-            }
+        for (int i = 0; i < lines.size(); ++i) {
+            //trim unsignificent char and comments (any //+)
+            lines.set(i, lines.get(i).replaceAll("[\t *\\|]|([//].*)", ""));
         }
         return lines;
     }

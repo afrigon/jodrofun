@@ -51,7 +51,7 @@ public class Song {
     }
     
     public void setBPM(int bpm) {
-        this.bpm = Math.max(0, Math.min(bpm, 600));
+        this.bpm = Math.max(1, Math.min(bpm, 600));
     }
     
     public void setRaw(String raw) {
