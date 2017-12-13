@@ -44,7 +44,7 @@ import java.util.List;
 public class GaudrophoneController {
     private final InstrumentManager instrumentManager = new InstrumentManager();
     private final CanvasManager canvasManager = new CanvasManager();
-    private final SoundService soundService = SoundService.get();
+    private final SoundService soundService = SoundService.getSoundService();
     private final SelectionManager selectionManager = new SelectionManager();
     private final Sequencer sequencer = new Sequencer();
     public GaudrophoneControllerDelegate delegate;
@@ -489,6 +489,7 @@ public class GaudrophoneController {
     public void setBPM(int bpm) {
         this.sequencer.setBPM(bpm);
         this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencer.play();
     }
     
     public boolean toggleMetronome() {
@@ -500,6 +501,7 @@ public class GaudrophoneController {
             if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
                 key.addState(KeyState.clicked);
                 this.soundService.play(key.getSound());
+                this.canvasManager.delegate.shouldRedraw();
                 return true;
             }
         }
@@ -511,6 +513,7 @@ public class GaudrophoneController {
             if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
                 key.removeState(KeyState.clicked);
                 this.soundService.release(key.getSound());
+                this.canvasManager.delegate.shouldRedraw();
                 return true;
             }
         }

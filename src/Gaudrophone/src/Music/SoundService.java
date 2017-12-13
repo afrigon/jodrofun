@@ -45,7 +45,7 @@ public class SoundService {
         }
     }
     
-    public static SoundService get() {
+    public static SoundService getSoundService() {
         return SHARED;
     }
     
