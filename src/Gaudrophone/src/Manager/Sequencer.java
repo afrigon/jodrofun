@@ -24,11 +24,16 @@
 package Manager;
 
 import Music.*;
+import java.util.ArrayList;
 
-public class Sequencer {
+public class Sequencer implements Runnable {
     private final Metronome metronome = new Metronome();
     private Song song = null;
     private int bpm = 120;
+    private boolean isPlaying = false;
+    private long lastTimeUpdate = 0;
+    private double currentStep = 0;
+    private final ArrayList<Sound> missingSounds = new ArrayList<>();
     
     public int getBPM() {
         return this.bpm;
@@ -52,5 +57,78 @@ public class Sequencer {
             this.metronome.close();
         }
         return this.metronome.isRunning;
+    }
+    
+    private double getElapsedTime() {
+        long now = System.nanoTime();
+        long delta = now - lastTimeUpdate;
+        lastTimeUpdate = now;
+        return ((double) delta) / 1000000000.0;
+    }
+    
+    public void play() {
+        isPlaying = true;
+        new Thread(this).start();
+    }
+    
+    public void pause() {
+        isPlaying = false;
+    }
+    
+    public void stop() {
+        isPlaying = false;
+        currentStep = 0;
+    }
+    
+    private void createMissingSound(PlayableNote note) {
+        Sound sound = new SynthesizedSound(note);
+        missingSounds.add(sound);
+        GaudrophoneController.getController().getSoundService().play(sound);
+    }
+    
+    private void playMissingSound(PlayableNote note) {
+        for (Sound sound : missingSounds) {
+            if (sound.getPlayableNote() == note) {
+                GaudrophoneController.getController().getSoundService().play(sound);
+                return;
+            }
+        }
+        createMissingSound(note);
+    }
+    
+    @Override
+    public void run() {
+        missingSounds.clear();
+        getElapsedTime(); // call the method to init lastTimeUpdate
+        while (isPlaying) {
+            double previousStep = currentStep;
+            currentStep += getElapsedTime() * ((double) bpm) / 60.0; // calculate elapsed steps
+            
+            double chordPlayStep = 0;
+            for (PlayableChord chord : this.song.getChords()) {
+                chordPlayStep += chord.getRelativeSteps();
+                double chordEndStep = chordPlayStep + chord.getLength();
+                
+                if ((chordPlayStep > previousStep) && (chordPlayStep <= currentStep)) {
+                    for (PlayableNote note : chord.getNotes()) {
+                        if (!GaudrophoneController.getController().playNote(note)) {
+                            playMissingSound(note);
+                        }
+                    }
+                }
+                
+                if ((chordEndStep > previousStep) && (chordEndStep <= currentStep)) {
+                    for (PlayableNote note : chord.getNotes()) {
+                        if (!GaudrophoneController.getController().releaseNote(note)) {
+                            for (Sound sound : missingSounds) {
+                                if (sound.getPlayableNote() == note) {
+                                    GaudrophoneController.getController().getSoundService().release(sound);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

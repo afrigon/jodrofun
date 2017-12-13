@@ -23,7 +23,6 @@
  */
 package Music;
 
-
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +45,7 @@ public class SoundService {
         }
     }
     
-    public static SoundService get() {
+    public static SoundService getSoundService() {
         return SHARED;
     }
     

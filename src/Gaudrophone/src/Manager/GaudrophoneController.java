@@ -35,7 +35,6 @@ import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
 import Music.PlayableNote;
-import Music.Song;
 import Music.SongIO;
 import Music.SoundType;
 import Music.WaveFormType;
@@ -45,7 +44,7 @@ import java.util.List;
 public class GaudrophoneController {
     private final InstrumentManager instrumentManager = new InstrumentManager();
     private final CanvasManager canvasManager = new CanvasManager();
-    private final SoundService soundService = SoundService.get();
+    private final SoundService soundService = SoundService.getSoundService();
     private final SelectionManager selectionManager = new SelectionManager();
     private final Sequencer sequencer = new Sequencer();
     public GaudrophoneControllerDelegate delegate;
@@ -490,9 +489,34 @@ public class GaudrophoneController {
     public void setBPM(int bpm) {
         this.sequencer.setBPM(bpm);
         this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencer.play();
     }
     
     public boolean toggleMetronome() {
         return this.sequencer.toogleMetronome();
+    }
+    
+    public boolean playNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.addState(KeyState.clicked);
+                this.soundService.play(key.getSound());
+                this.canvasManager.delegate.shouldRedraw();
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean releaseNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.removeState(KeyState.clicked);
+                this.soundService.release(key.getSound());
+                this.canvasManager.delegate.shouldRedraw();
+                return true;
+            }
+        }
+        return false;
     }
 }

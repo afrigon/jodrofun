@@ -30,7 +30,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 public abstract class Sound implements Runnable, java.io.Serializable {
-    private static final SoundService SOUNDSERVICE = SoundService.get();
+    private static final SoundService SOUNDSERVICE = SoundService.getSoundService();
     
     protected double volume;
     protected PlayableNote playableNote = new PlayableNote();
