@@ -489,6 +489,7 @@ public class GaudrophoneController {
     public void setBPM(int bpm) {
         this.sequencer.setBPM(bpm);
         this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencer.play();
     }
     
     public boolean toggleMetronome() {
@@ -496,10 +497,26 @@ public class GaudrophoneController {
     }
     
     public boolean playNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.addState(KeyState.clicked);
+                this.soundService.play(key.getSound());
+                this.canvasManager.delegate.shouldRedraw();
+                return true;
+            }
+        }
         return false;
     }
     
     public boolean releaseNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.removeState(KeyState.clicked);
+                this.soundService.release(key.getSound());
+                this.canvasManager.delegate.shouldRedraw();
+                return true;
+            }
+        }
         return false;
     }
 }

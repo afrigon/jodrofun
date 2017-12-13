@@ -1423,7 +1423,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         keyNameProperty8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         keyNameProperty8.setMinimumSize(new java.awt.Dimension(125, 32));
         keyNameProperty8.setPreferredSize(new java.awt.Dimension(375, 0));
-        keyNameProperty8.setLayout(new java.awt.GridLayout());
+        keyNameProperty8.setLayout(new java.awt.GridLayout(1, 0));
 
         keyNameLabel8.setForeground(new java.awt.Color(255, 255, 255));
         keyNameLabel8.setText("BPM :");
@@ -1473,7 +1473,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         informationWrapper3.setBackground(new java.awt.Color(65, 65, 65));
         informationWrapper3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         informationWrapper3.setPreferredSize(new java.awt.Dimension(50, 20));
-        informationWrapper3.setLayout(new java.awt.GridLayout());
+        informationWrapper3.setLayout(new java.awt.GridLayout(1, 0));
 
         informationTitle3.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         informationTitle3.setForeground(new java.awt.Color(255, 255, 255));
@@ -1489,7 +1489,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         keyNameProperty3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         keyNameProperty3.setMinimumSize(new java.awt.Dimension(125, 32));
         keyNameProperty3.setPreferredSize(new java.awt.Dimension(375, 0));
-        keyNameProperty3.setLayout(new java.awt.GridLayout());
+        keyNameProperty3.setLayout(new java.awt.GridLayout(1, 0));
 
         keyNameLabel3.setForeground(new java.awt.Color(255, 255, 255));
         keyNameLabel3.setText("Nom de l'instrument :");
@@ -1516,7 +1516,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         keyNameProperty4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         keyNameProperty4.setMinimumSize(new java.awt.Dimension(125, 32));
         keyNameProperty4.setPreferredSize(new java.awt.Dimension(375, 0));
-        keyNameProperty4.setLayout(new java.awt.GridLayout());
+        keyNameProperty4.setLayout(new java.awt.GridLayout(1, 0));
 
         keyNameLabel4.setForeground(new java.awt.Color(255, 255, 255));
         keyNameLabel4.setText("Timbre de base :");
@@ -2387,7 +2387,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             GaudrophoneController.getController().getSelectionManager().delegate = this;
             GaudrophoneController.getController().getCanvasManager().delegate = this;
             
-            GaudrophoneController.getController().toggleMetronome();
+//            GaudrophoneController.getController().toggleMetronome();
 //            GaudrophoneController.getController().toggleMetronome();
 //            GaudrophoneController.getController().toggleMetronome();
             
