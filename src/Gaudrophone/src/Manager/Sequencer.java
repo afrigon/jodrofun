@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,29 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager;
 
-import javax.sound.midi.MetaEventListener;
-import javax.sound.midi.MetaMessage;
+import Music.*;
 
-public class MidiEventListener implements MetaEventListener {//ControllerEventListener {
-
-    @Override
-    public void meta(MetaMessage event) {
-        System.out.println("Event : " + event.getType());
+public class Sequencer {
+    private final Metronome metronome = new Metronome();
+    private Song song = null;
+    private int bpm = 120;
+    
+    public int getBPM() {
+        return this.bpm;
     }
     
-//    @Override
-//    public void controlChange(ShortMessage event) {
-//        int command = event.getCommand();
-//        if (command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF) {
-//            int midiNum = event.getData1();
-//            int octave = (midiNum / 12) - 1;
-//            int note = midiNum % 12;
-//            int velocity = event.getData2();
-//            System.out.println("Note ON/OFF: " + note + " - " + octave + " : vel " + velocity);
-//        } else {
-//            System.out.println("Other command " + command);
-//        }
-//    }
+    public void setBPM(int bpm) {
+        this.bpm = Math.max(0, Math.min(bpm, 600));
+    }
+    
+    public void setSong(Song song) {
+        this.song = song;
+        this.setBPM(song.getBPM());
+    }
+    
+    //return state
+    public boolean toogleMetronome() {
+        if (this.metronome.isInterrupted()) {
+            this.metronome.start(this.bpm);
+        } else {
+            this.metronome.close();
+        }
+        return !this.metronome.isInterrupted();
+    }
 }

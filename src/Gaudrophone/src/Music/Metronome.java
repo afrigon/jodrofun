@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,25 @@
  */
 package Music;
 
-import javax.sound.midi.MetaEventListener;
-import javax.sound.midi.MetaMessage;
-
-public class MidiEventListener implements MetaEventListener {//ControllerEventListener {
-
-    @Override
-    public void meta(MetaMessage event) {
-        System.out.println("Event : " + event.getType());
+public class Metronome extends Thread {
+    private int bpm = 120;
+    
+    public void start(int bpm) {
+        this.bpm = bpm;
+        super.start();
     }
     
-//    @Override
-//    public void controlChange(ShortMessage event) {
-//        int command = event.getCommand();
-//        if (command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF) {
-//            int midiNum = event.getData1();
-//            int octave = (midiNum / 12) - 1;
-//            int note = midiNum % 12;
-//            int velocity = event.getData2();
-//            System.out.println("Note ON/OFF: " + note + " - " + octave + " : vel " + velocity);
-//        } else {
-//            System.out.println("Other command " + command);
-//        }
-//    }
+    @Override
+    public void run() {
+        try {
+            for(;;this.sleep(60000/this.bpm))
+                java.awt.Toolkit.getDefaultToolkit().beep();
+        } catch (InterruptedException e) {
+            this.interrupt();
+        }   
+    }
+    
+    public void close() {
+        this.interrupt();
+    }
 }
