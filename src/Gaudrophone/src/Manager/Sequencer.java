@@ -27,7 +27,6 @@ import Music.*;
 import java.util.ArrayList;
 
 public class Sequencer implements Runnable {
-    private final GaudrophoneController gaudrophone = GaudrophoneController.getController();
     private final Metronome metronome = new Metronome();
     private Song song = null;
     private int bpm = 120;
@@ -84,13 +83,13 @@ public class Sequencer implements Runnable {
     private void createMissingSound(PlayableNote note) {
         Sound sound = new SynthesizedSound(note);
         missingSounds.add(sound);
-        gaudrophone.getSoundService().play(sound);
+        GaudrophoneController.getController().getSoundService().play(sound);
     }
     
     private void playMissingSound(PlayableNote note) {
         for (Sound sound : missingSounds) {
             if (sound.getPlayableNote() == note) {
-                gaudrophone.getSoundService().play(sound);
+                GaudrophoneController.getController().getSoundService().play(sound);
                 return;
             }
         }
@@ -112,7 +111,7 @@ public class Sequencer implements Runnable {
                 
                 if ((chordPlayStep > previousStep) && (chordPlayStep <= currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
-                        if (!gaudrophone.playNote(note)) {
+                        if (!GaudrophoneController.getController().playNote(note)) {
                             playMissingSound(note);
                         }
                     }
@@ -120,10 +119,10 @@ public class Sequencer implements Runnable {
                 
                 if ((chordEndStep > previousStep) && (chordEndStep <= currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
-                        if (!gaudrophone.releaseNote(note)) {
+                        if (!GaudrophoneController.getController().releaseNote(note)) {
                             for (Sound sound : missingSounds) {
                                 if (sound.getPlayableNote() == note) {
-                                    gaudrophone.getSoundService().release(sound);
+                                    GaudrophoneController.getController().getSoundService().release(sound);
                                 }
                             }
                         }
