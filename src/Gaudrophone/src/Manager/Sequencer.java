@@ -27,6 +27,7 @@ import Music.*;
 import java.util.ArrayList;
 
 public class Sequencer implements Runnable {
+    private final double PRESSED_THRESHOLD = 0.5;
     private final Metronome metronome = new Metronome();
     private Song song = null;
     private int bpm = 120;
@@ -78,6 +79,27 @@ public class Sequencer implements Runnable {
     public void stop() {
         isPlaying = false;
         currentStep = 0;
+    }
+    
+    public boolean hasNearNote(double frequency) {
+        // get note(s) that are supposed to be played very soon (or has been played)
+        double chordPlayStep = 0;
+        for (PlayableChord chord : this.song.getChords()) {
+            chordPlayStep += chord.getRelativeSteps();
+            double chordEndStep = chordPlayStep + chord.getLength();
+            
+            double deltaStepDifference = Math.abs(currentStep - chordPlayStep);
+            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double) bpm);
+            
+            if (deltaTimeDiff < PRESSED_THRESHOLD) {
+                for (PlayableNote note : chord.getNotes()) {
+                    if (note.getFrequency() == frequency) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     private void createMissingSound(PlayableNote note) {
