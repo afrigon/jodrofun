@@ -494,4 +494,24 @@ public class GaudrophoneController {
     public boolean toggleMetronome() {
         return this.sequencer.toogleMetronome();
     }
+    
+    public boolean playNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.addState(KeyState.clicked);
+                this.soundService.play(key.getSound());
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void releaseNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                key.removeState(KeyState.clicked);
+                this.soundService.release(key.getSound());
+            }
+        }
+    }
 }
