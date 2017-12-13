@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class Sequencer implements Runnable {
     private final Metronome metronome = new Metronome();
     private Song song = null;
-    private int bpm = 120;
+    private int bpm = -1;
     private boolean isPlaying = false;
     private long lastTimeUpdate = 0;
     private double currentStep = 0;

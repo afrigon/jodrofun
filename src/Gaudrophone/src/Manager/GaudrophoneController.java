@@ -484,12 +484,12 @@ public class GaudrophoneController {
     public void loadSong(String path) {
         this.sequencer.setSong(new SongIO().Load(path));
         this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencer.play();
     }
     
     public void setBPM(int bpm) {
         this.sequencer.setBPM(bpm);
         this.delegate.didSetBPM(this.sequencer.getBPM());
-        this.sequencer.play();
     }
     
     public boolean toggleMetronome() {
