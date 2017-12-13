@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package UI;
+package Music;
 
-import Music.MidiPlayer;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
-import javax.swing.UIManager;
+import javax.sound.midi.ControllerEventListener;
+import javax.sound.midi.MetaEventListener;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.ShortMessage;
 
-public class AppDelegate {
-    private static Window window = new Window();
-    
-    public static void main(String [] args) {
-        AppDelegate.window.setVisible();
-        
-        try {
-            Sequence sequence = MidiSystem.getSequence(new File("yoyoyoy.mid"));
-            MidiPlayer loop = new MidiPlayer(sequence);
-            System.out.println("MidiPlayerCreated");
-        } catch (InvalidMidiDataException | IOException ex) {
-            Logger.getLogger(AppDelegate.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+/**
+ *
+ * @author Olivier
+ */
+public class MidiEventListener implements MetaEventListener {//ControllerEventListener {
+
+    @Override
+    public void meta(MetaMessage event) {
+        System.out.println("Event : " + event.getType());
     }
+    
+//    @Override
+//    public void controlChange(ShortMessage event) {
+//        int command = event.getCommand();
+//        if (command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF) {
+//            int midiNum = event.getData1();
+//            int octave = (midiNum / 12) - 1;
+//            int note = midiNum % 12;
+//            int velocity = event.getData2();
+//            System.out.println("Note ON/OFF: " + note + " - " + octave + " : vel " + velocity);
+//        } else {
+//            System.out.println("Other command " + command);
+//        }
+//    }
 }

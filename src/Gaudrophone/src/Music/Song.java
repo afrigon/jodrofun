@@ -26,12 +26,9 @@ package Music;
 import java.util.LinkedList;
 
 public class Song {
+    private String raw = "";
     private final LinkedList<PlayableChord> chords = new LinkedList<>();
     private int bpm = -1;
-    
-    public Song() {
-        
-    }
     
     public LinkedList<PlayableChord> getChords() {
         return this.chords;
@@ -41,11 +38,23 @@ public class Song {
         return this.bpm;
     }
     
+    public String getRaw() {
+        return this.raw;
+    }
+    
     public void addChord(PlayableChord chord) {
         this.chords.add(chord);
     }
     
+    public void addChords(LinkedList<PlayableChord> chords) {
+        this.chords.addAll(chords);
+    }
+    
     public void setBPM(int bpm) {
         this.bpm = bpm;
+    }
+    
+    public void setRaw(String raw) {
+        this.raw = raw;
     }
 }

@@ -262,7 +262,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
+        fileDialog.setCurrentDirectory(new java.io.File("/"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
