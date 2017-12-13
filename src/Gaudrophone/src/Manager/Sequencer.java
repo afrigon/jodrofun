@@ -86,7 +86,6 @@ public class Sequencer implements Runnable {
         double chordPlayStep = 0;
         for (PlayableChord chord : this.song.getChords()) {
             chordPlayStep += chord.getRelativeSteps();
-            double chordEndStep = chordPlayStep + chord.getLength();
             
             double deltaStepDifference = Math.abs(currentStep - chordPlayStep);
             double deltaTimeDiff = deltaStepDifference * 60.0 / ((double) bpm);
