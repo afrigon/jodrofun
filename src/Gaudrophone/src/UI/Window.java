@@ -1600,7 +1600,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         shapeGenWrapper.setAutoscrolls(true);
 
         shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
-        shapeGenPanel.setLayout(new java.awt.BorderLayout(20, 20));
+        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10);
+        flowLayout2.setAlignOnBaseline(true);
+        shapeGenPanel.setLayout(flowLayout2);
         shapeGenWrapper.setViewportView(shapeGenPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
