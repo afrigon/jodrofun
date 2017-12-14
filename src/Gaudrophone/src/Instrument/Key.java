@@ -26,6 +26,7 @@ package Instrument;
 import Music.Note;
 import Music.Alteration;
 import KeyUtils.KeyShape;
+import Manager.GaudrophoneController;
 import Music.Sound;
 import Music.SynthesizedSound;
 import Music.AudioClip;
@@ -176,5 +177,20 @@ public class Key implements java.io.Serializable {
     
     public void unlink() {
         linked = false;
+    }
+    
+    public void play(boolean playSound) {
+        if (playSound)
+            GaudrophoneController.getController().getSoundService().play(sound);
+        addState(KeyState.clicked);
+    }
+    
+    public void play() {
+        play(true);
+    }
+    
+    public void release() {
+        GaudrophoneController.getController().getSoundService().release(sound);
+        removeState(KeyState.clicked);
     }
 }

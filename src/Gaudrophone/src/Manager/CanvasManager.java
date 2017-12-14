@@ -88,18 +88,18 @@ public class CanvasManager {
     public void clicked(Key key) {
         switch (this.state) {
             case Play:
-                GaudrophoneController.getController().getSoundService().play(key.getSound());
-                key.addState(KeyState.clicked);
+                key.play();
                 this.lastKey = key;
                 break;
                 
             case AutoPlay:
                 Sequencer sequencer = GaudrophoneController.getController().getSequencer();
-                if (!sequencer.isMuted() || sequencer.hasNearNote(key.getSound().getPlayableNote().getFrequency())) {
-                    GaudrophoneController.getController().getSoundService().play(key.getSound());
-                    key.addState(KeyState.clicked);
-                    this.lastKey = key;
-                }
+                if (sequencer.isMuted())
+                    key.play(sequencer.hasNearNote(key.getSound().getPlayableNote().getFrequency()));
+                else
+                    key.play();
+                
+                this.lastKey = key;
                 break;
         }
     }
@@ -124,8 +124,7 @@ public class CanvasManager {
         switch (this.state) {
             case Play:
                 if (key != null) {
-                    GaudrophoneController.getController().getSoundService().release(key.getSound());
-                    key.removeState(KeyState.clicked);
+                    key.release();
                 }
                 break;
             case EditKey:
@@ -186,25 +185,21 @@ public class CanvasManager {
                 if (ds != null) {
                     //If the user clicked the canvas and drag onto a key
                     if (this.lastKey == null) {
-                        GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());
-                        ds.getKey().addState(KeyState.clicked);
+                        ds.getKey().play();
                         if (this.delegate != null) { this.delegate.shouldRedraw(); }
                         this.lastKey = ds.getKey();
                     } else {
                         //If the playing key is not the same as the key being drag right now
                         if (this.lastKey != ds.getKey()) {
-                            GaudrophoneController.getController().getSoundService().release(this.lastKey.getSound());
-                            GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());
-                            ds.getKey().addState(KeyState.clicked);
-                            this.lastKey.removeState(KeyState.clicked);
+                            this.lastKey.release();
+                            ds.getKey().play();
                             if (this.delegate != null) { this.delegate.shouldRedraw(); }
                             this.lastKey = ds.getKey();
                         }
                     }
                 } else {
                     if (this.lastKey != null) {
-                        GaudrophoneController.getController().getSoundService().release(this.lastKey.getSound());
-                        this.lastKey.removeState(KeyState.clicked);
+                        this.lastKey.release();
                         if (this.delegate != null) { this.delegate.shouldRedraw(); }
                         this.lastKey = null;
                     }
