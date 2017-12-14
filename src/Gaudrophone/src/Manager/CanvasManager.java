@@ -28,6 +28,7 @@ import Instrument.KeyState;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import Music.PlayableNote;
+import Music.SongPlayer;
 import Music.SynthesizedSound;
 import UI.DrawableShape;
 import java.util.LinkedList;
@@ -93,11 +94,12 @@ public class CanvasManager {
                 this.lastKey = key;
                 break;
             case AutoPlay:
-                Sequencer sequencer = GaudrophoneController.getController().getSequencer();
-                if (sequencer.isMuted())
+                SongPlayer sequencer = GaudrophoneController.getController().getSequencerManager().getSequencer();
+                if (sequencer.isMuted()) {
                     key.play(sequencer.hasNearNote(key.getSound().getPlayableNote().getFrequency()));
-                else
+                } else {
                     key.play();
+                }
                 
                 this.lastKey = key;
                 break;
@@ -158,7 +160,6 @@ public class CanvasManager {
                         Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
                         GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
                         this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
-                        //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
                     } else {
                         Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(100, this.clickPosition), this.storedKeyShape.getName());
                         GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);

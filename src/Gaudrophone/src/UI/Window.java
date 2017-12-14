@@ -23,6 +23,7 @@
  */
 package UI;
 
+import Instrument.ElectricPiano;
 import Music.Alteration;
 import Instrument.Guitar;
 import Instrument.Key;
@@ -252,10 +253,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
         playTools = new javax.swing.JPanel();
         metronomeButton = new javax.swing.JButton();
-        autoPlayTools = new javax.swing.JPanel();
+        mediaPlayer = new javax.swing.JPanel();
         togglePlayButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
         muteButton = new javax.swing.JButton();
+        songSlider = new javax.swing.JSlider();
+        songSliderLabel = new javax.swing.JLabel();
         selectedKeyTools = new javax.swing.JPanel();
         addPointButton = new javax.swing.JButton();
         buttonDuplicate = new javax.swing.JButton();
@@ -275,6 +278,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         newBlankMenuItem = new javax.swing.JMenuItem();
         newGuitarMenuItem = new javax.swing.JMenuItem();
         newPianoMenuItem = new javax.swing.JMenuItem();
+        newElectricPianoMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         openSongMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
@@ -1569,7 +1573,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         informationWrapper4.setBackground(new java.awt.Color(65, 65, 65));
         informationWrapper4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         informationWrapper4.setPreferredSize(new java.awt.Dimension(50, 20));
-        informationWrapper4.setLayout(new java.awt.GridLayout());
+        informationWrapper4.setLayout(new java.awt.GridLayout(1, 0));
 
         informationTitle4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         informationTitle4.setForeground(new java.awt.Color(255, 255, 255));
@@ -1682,8 +1686,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         jToolBar1.add(playTools);
 
-        autoPlayTools.setBackground(new java.awt.Color(51, 51, 51));
-        autoPlayTools.setLayout(new javax.swing.BoxLayout(autoPlayTools, javax.swing.BoxLayout.LINE_AXIS));
+        mediaPlayer.setBackground(new java.awt.Color(51, 51, 51));
+        mediaPlayer.setLayout(new javax.swing.BoxLayout(mediaPlayer, javax.swing.BoxLayout.LINE_AXIS));
 
         togglePlayButton.setBackground(new java.awt.Color(65, 65, 65));
         togglePlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlaySong.png"))); // NOI18N
@@ -1697,7 +1701,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 togglePlayButtonActionPerformed(evt);
             }
         });
-        autoPlayTools.add(togglePlayButton);
+        mediaPlayer.add(togglePlayButton);
 
         stopButton.setBackground(new java.awt.Color(65, 65, 65));
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnStop.png"))); // NOI18N
@@ -1711,7 +1715,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 stopButtonActionPerformed(evt);
             }
         });
-        autoPlayTools.add(stopButton);
+        mediaPlayer.add(stopButton);
 
         muteButton.setBackground(new java.awt.Color(65, 65, 65));
         muteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/mute_off.png"))); // NOI18N
@@ -1725,9 +1729,35 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 muteButtonActionPerformed(evt);
             }
         });
-        autoPlayTools.add(muteButton);
+        mediaPlayer.add(muteButton);
 
-        jToolBar1.add(autoPlayTools);
+        songSlider.setBackground(new java.awt.Color(51, 51, 51));
+        songSlider.setValue(0);
+        songSlider.setFocusable(false);
+        songSlider.setMinimumSize(new java.awt.Dimension(50, 29));
+        songSlider.setPreferredSize(new java.awt.Dimension(250, 29));
+        songSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                songSliderStateChanged(evt);
+            }
+        });
+        songSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                songSliderMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                songSliderMouseReleased(evt);
+            }
+        });
+        mediaPlayer.add(songSlider);
+
+        songSliderLabel.setBackground(new java.awt.Color(51, 51, 51));
+        songSliderLabel.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        songSliderLabel.setForeground(new java.awt.Color(255, 255, 255));
+        songSliderLabel.setText("00:00");
+        mediaPlayer.add(songSliderLabel);
+
+        jToolBar1.add(mediaPlayer);
 
         selectedKeyTools.setOpaque(false);
         selectedKeyTools.setLayout(new javax.swing.BoxLayout(selectedKeyTools, javax.swing.BoxLayout.LINE_AXIS));
@@ -1874,8 +1904,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         searchTextField.setForeground(new java.awt.Color(153, 153, 153));
         searchTextField.setText("Rechercher");
         searchTextField.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 7), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102), 5)));
-        searchTextField.setMinimumSize(new java.awt.Dimension(0, 10));
-        searchTextField.setPreferredSize(new java.awt.Dimension(69, 10));
+        searchTextField.setMinimumSize(new java.awt.Dimension(150, 10));
+        searchTextField.setPreferredSize(new java.awt.Dimension(150, 10));
         searchTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 searchTextFieldFocusGained(evt);
@@ -1924,6 +1954,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             }
         });
         newMenu.add(newPianoMenuItem);
+
+        newElectricPianoMenuItem.setText("Electric Piano");
+        newElectricPianoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newElectricPianoMenuItemActionPerformed(evt);
+            }
+        });
+        newMenu.add(newElectricPianoMenuItem);
 
         fileMenuItem.add(newMenu);
 
@@ -2577,7 +2615,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_togglePlayButtonActionPerformed
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-        GaudrophoneController.getController().getSequencer().stop();
+        GaudrophoneController.getController().getSequencerManager().getSequencer().stop();
         this.togglePlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlaySong.png")));
     }//GEN-LAST:event_stopButtonActionPerformed
 
@@ -2589,6 +2627,30 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         GaudrophoneController.getController().getDeviceManager().refresh();
         this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice());
     }//GEN-LAST:event_refreshMidiActionPerformed
+
+    private void newElectricPianoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newElectricPianoMenuItemActionPerformed
+        GaudrophoneController.getController().getInstrumentManager().newInstrument(new ElectricPiano());
+        this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+        this.instrumentNameField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+        GaudrophoneController.getController().getCanvasManager().setState(State.Play);
+        GaudrophoneController.getController().getCanvasManager().findNewRatio(new Vector2(this.canvas.getWidth(), this.canvas.getHeight()));
+        this.refresh();
+    }//GEN-LAST:event_newElectricPianoMenuItemActionPerformed
+
+    private void songSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_songSliderStateChanged
+        GaudrophoneController.getController().getSequencerManager().getSequencer().setPosition(this.songSlider.getValue());
+    }//GEN-LAST:event_songSliderStateChanged
+
+    private void songSliderMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_songSliderMousePressed
+        this.songSlider.putClientProperty("wasPlaying", GaudrophoneController.getController().getSequencerManager().getSequencer().isPlaying());
+        GaudrophoneController.getController().getSequencerManager().getSequencer().pause();
+    }//GEN-LAST:event_songSliderMousePressed
+
+    private void songSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_songSliderMouseReleased
+        if ((boolean)this.songSlider.getClientProperty("wasPlaying")) {
+            GaudrophoneController.getController().getSequencerManager().getSequencer().play();
+        }
+    }//GEN-LAST:event_songSliderMouseReleased
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
@@ -2680,7 +2742,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JRadioButton audioClipRadioButton;
     private java.awt.Button audioClipSelectButton;
     private javax.swing.JPanel audioPanel;
-    private javax.swing.JPanel autoPlayTools;
     private javax.swing.JLabel backgroundDisplayLabel;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JPanel backgroundSpacer;
@@ -2790,6 +2851,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel linesSelectionWrapper;
     private javax.swing.JPanel linesWrapper;
     private javax.swing.JComboBox<String> masterWaveformComboBox;
+    private javax.swing.JPanel mediaPlayer;
     private javax.swing.JMenuItem menuEditDelete;
     private javax.swing.JMenuItem menuEditDuplicate;
     private javax.swing.JMenuItem menuEditNext;
@@ -2802,6 +2864,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JButton muteButton;
     private javax.swing.JRadioButton naturalRadioButton;
     private javax.swing.JMenuItem newBlankMenuItem;
+    private javax.swing.JMenuItem newElectricPianoMenuItem;
     private javax.swing.JMenuItem newGuitarMenuItem;
     private javax.swing.JMenu newMenu;
     private javax.swing.JMenuItem newPianoMenuItem;
@@ -2839,6 +2902,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel sizeTitleWrapper;
     private javax.swing.JPanel sizeWrapper;
     private javax.swing.JScrollPane songPannel;
+    private javax.swing.JSlider songSlider;
+    private javax.swing.JLabel songSliderLabel;
     private javax.swing.JSplitPane splitWindow;
     private javax.swing.JButton stopButton;
     private javax.swing.JPanel sunkenProperty;
@@ -3021,8 +3086,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.menuEditPrevious.setEnabled(false);
         this.manageToolBar(state);
         
-        if (state != State.AutoPlay) {
-            GaudrophoneController.getController().closeAutoPlay();
+        if (state != State.Play) {
+            GaudrophoneController.getController().getSequencerManager().setMetronomeState(false);
         }
         
         switch (state) {
@@ -3049,11 +3114,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.buttonAutoPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnAutoPlay.png")));
         this.buttonInsert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnInsert.png")));
         this.metronomeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/metronome_off.png")));
-        this.muteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/mute_off.png")));
+        this.muteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/mute_" + (GaudrophoneController.getController().getSequencerManager().getSequencer().isMuted() ? "on" : "off") + ".png")));
         this.togglePlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlaySong.png")));
+        this.instrumentNameTextField.setVisible(true);
         
         this.playTools.setVisible(false);
-        this.autoPlayTools.setVisible(false);
+        this.mediaPlayer.setVisible(false);
         this.selectedKeyTools.setVisible(false);
         switch (state) {
             case Play:
@@ -3065,7 +3131,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 break;
             case AutoPlay:
                 this.buttonAutoPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnAutoPlay_selected.png")));
-                this.autoPlayTools.setVisible(true);
+                this.mediaPlayer.setVisible(GaudrophoneController.getController().getSequencerManager().getSequencer().hasSong());
+                this.instrumentNameTextField.setVisible(!GaudrophoneController.getController().getSequencerManager().getSequencer().hasSong());
                 break;
             case CreatingShape:
                 this.buttonInsert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnInsert_selected.png")));
@@ -3084,7 +3151,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     public void didSetBPM(int bpm) {
         this.bpmSpinner.setValue(bpm);
     }
-
+    
     @Override
     public void didStopPlayingSong() {
         this.togglePlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlaySong.png")));
@@ -3098,5 +3165,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     @Override
     public void didPauseSong() {
         this.togglePlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlaySong.png")));
+    }
+
+    @Override
+    public void midiDidLink(Key key) {
+        this.buttonMidi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/midi_linked.png")));
+    }
+
+    @Override
+    public void updateMediaPlayerSlider(int percent) {
+        this.songSlider.setValue(percent);
+        this.songSliderLabel.setText(GaudrophoneController.getController().getSequencerManager().getSequencer().getTimeLeft());
     }
 }

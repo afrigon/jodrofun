@@ -140,6 +140,7 @@ public class AudioClip extends Sound {
         
         int sampleCountReleased = 0; // keeps the total number of samples played
         double milliTimePlayed = (double) sampleCount / (double) WaveForm.SAMPLE_RATE * 1000.0;
+        double releasedAmplitude = envelope.getPlayingAmplitude(milliTimePlayed);
         
         // Play the release tail of a sound
         while (playing && released) {
@@ -150,7 +151,7 @@ public class AudioClip extends Sound {
                 
                 double time = (((double) (isampleCount))/WaveForm.SAMPLE_RATE);
                 
-                double amp = volume * envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed);
+                double amp = volume * releasedAmplitude * envelope.getReleasedAmplitude(time * 1000.0);
                 
                 if (amp == 0) {
                     kill();

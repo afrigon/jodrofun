@@ -26,7 +26,6 @@ package KeyUtils;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
-import java.awt.geom.Line2D;
 
 public class KeyShape implements java.io.Serializable {
     private List<Vector2> points = null;
