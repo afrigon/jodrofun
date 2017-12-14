@@ -66,7 +66,6 @@ public class CanvasManager {
             this.ratio = 1;
             return canvasSize2;
         }
-            
     }
     
     public int convertThicknessToPixel(double thickness) {
@@ -281,7 +280,7 @@ public class CanvasManager {
     }
     
     public void setCanvasSize(int x, int y) {
-        this.canvasSize2 = new Vector2(x, y);
+        this.canvasSize2 = new Vector2(x - 10, y - 10);
         if(GaudrophoneController.getController().getInstrumentManager().getInstrument() != null)
             this.findNewRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
     }

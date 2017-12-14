@@ -33,6 +33,8 @@ import Instrument.Piano;
 import KeyUtils.Corner;
 import KeyUtils.RectangleKeyShape;
 import KeyUtils.TriangleKeyShape;
+import KeyUtils.KeyShapeGenType;
+import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import Manager.CanvasManagerDelegate;
 import Manager.GaudrophoneController;
@@ -51,6 +53,7 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -72,6 +75,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         keyTypeButtonGroup = new javax.swing.ButtonGroup();
@@ -244,6 +248,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         visualWrapper5 = new javax.swing.JPanel();
         informationWrapper4 = new javax.swing.JPanel();
         informationTitle4 = new javax.swing.JLabel();
+        shapeGenWrapper = new javax.swing.JScrollPane();
+        shapeGenPanel = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         buttonPlayMode = new javax.swing.JButton();
@@ -294,15 +300,13 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuEditDelete = new javax.swing.JMenuItem();
         menuEditDuplicate = new javax.swing.JMenuItem();
         insertMenuItem = new javax.swing.JMenu();
-        createRectangleMenuItem = new javax.swing.JMenuItem();
-        createTriangleMenuItem = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         menuModePlay = new javax.swing.JMenuItem();
         menuModeEditKey = new javax.swing.JMenuItem();
         menuModeAutoPlay = new javax.swing.JMenuItem();
         menuModeInsert = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1564,7 +1568,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         visualPanel5.setBackground(new java.awt.Color(65, 65, 65));
         visualPanel5.setMinimumSize(new java.awt.Dimension(600, 655));
-        visualPanel5.setPreferredSize(new java.awt.Dimension(50, 200));
         visualPanel5.setLayout(new javax.swing.BoxLayout(visualPanel5, javax.swing.BoxLayout.LINE_AXIS));
 
         visualWrapper5.setBackground(new java.awt.Color(65, 65, 65));
@@ -1572,8 +1575,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         informationWrapper4.setBackground(new java.awt.Color(65, 65, 65));
         informationWrapper4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        informationWrapper4.setPreferredSize(new java.awt.Dimension(50, 20));
-        informationWrapper4.setLayout(new java.awt.GridLayout(1, 0));
+        java.awt.GridBagLayout informationWrapper4Layout = new java.awt.GridBagLayout();
+        informationWrapper4Layout.columnWeights = new double[] {1.0};
+        informationWrapper4Layout.rowWeights = new double[] {1.0};
+        informationWrapper4.setLayout(informationWrapper4Layout);
 
         informationTitle4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         informationTitle4.setForeground(new java.awt.Color(255, 255, 255));
@@ -1581,7 +1586,33 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         informationTitle4.setText("Insérer");
         informationTitle4.setToolTipText("");
         informationTitle4.setPreferredSize(new java.awt.Dimension(72, 20));
-        informationWrapper4.add(informationTitle4);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        informationWrapper4.add(informationTitle4, gridBagConstraints);
+
+        shapeGenWrapper.setBackground(new java.awt.Color(51, 51, 51));
+        shapeGenWrapper.setBorder(null);
+        shapeGenWrapper.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        shapeGenWrapper.setAutoscrolls(true);
+
+        shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
+        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10);
+        flowLayout2.setAlignOnBaseline(true);
+        shapeGenPanel.setLayout(flowLayout2);
+        shapeGenWrapper.setViewportView(shapeGenPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 2.147483647E9;
+        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
+        informationWrapper4.add(shapeGenWrapper, gridBagConstraints);
 
         visualWrapper5.add(informationWrapper4);
 
@@ -2076,25 +2107,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         insertMenuItem.setBorder(null);
         insertMenuItem.setText("Insérer");
-
-        createRectangleMenuItem.setText("Rectangle");
-        createRectangleMenuItem.setBorder(null);
-        createRectangleMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createRectangleMenuItemActionPerformed(evt);
-            }
-        });
-        insertMenuItem.add(createRectangleMenuItem);
-
-        createTriangleMenuItem.setText("Triangle");
-        createTriangleMenuItem.setBorder(null);
-        createTriangleMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createTriangleMenuItemActionPerformed(evt);
-            }
-        });
-        insertMenuItem.add(createTriangleMenuItem);
-
         jMenuBar1.add(insertMenuItem);
 
         jMenu1.setText("Mode");
@@ -2192,16 +2204,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
         saveInstrument();
     }//GEN-LAST:event_saveAsMenuItemActionPerformed
-
-    private void createRectangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRectangleMenuItemActionPerformed
-        GaudrophoneController.getController().getCanvasManager().setState(State.CreatingShape);
-        GaudrophoneController.getController().getCanvasManager().setStoredKeyGenerator(new RectangleKeyShape());
-    }//GEN-LAST:event_createRectangleMenuItemActionPerformed
-
-    private void createTriangleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTriangleMenuItemActionPerformed
-        GaudrophoneController.getController().getCanvasManager().setState(State.CreatingShape);
-        GaudrophoneController.getController().getCanvasManager().setStoredKeyGenerator(new TriangleKeyShape());
-    }//GEN-LAST:event_createTriangleMenuItemActionPerformed
 
     private void buttonPlayModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPlayModeActionPerformed
         GaudrophoneController.getController().getCanvasManager().setState(State.Play);
@@ -2686,6 +2688,24 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.canvas.requestFocusInWindow();
             this.setVisible(true);
             
+            for(KeyShapeGenType gen : KeyShapeGenType.values()) {
+                JMenuItem menuItem = new JMenuItem(gen.getGenerator().getName());
+                menuItem.addActionListener((java.awt.event.ActionEvent evt) -> {
+                    setSelectedCreatingShape(gen.getGenerator());
+                });
+                this.insertMenuItem.add(menuItem);
+                
+                ShapePreview panel = new ShapePreview(gen.getGenerator());
+                panel.setSize(100, 100);
+                panel.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mousePressed(java.awt.event.MouseEvent e) {
+                        setSelectedCreatingShape(gen.getGenerator());
+                    }
+                });
+                this.shapeGenPanel.add(panel);
+            }
+            
             GaudrophoneController.getController().delegate = this;
             GaudrophoneController.getController().getSelectionManager().delegate = this;
             GaudrophoneController.getController().getCanvasManager().delegate = this;
@@ -2769,8 +2789,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel colorTitle1;
     private javax.swing.JPanel colorWrapper;
     private javax.swing.JPanel colorsPanel;
-    private javax.swing.JMenuItem createRectangleMenuItem;
-    private javax.swing.JMenuItem createTriangleMenuItem;
     private javax.swing.JLabel decayLabel;
     private javax.swing.JSlider decaySlider;
     private javax.swing.JPanel decaySliderPanel;
@@ -2895,6 +2913,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JPanel selectedKeyTools;
+    private javax.swing.JPanel shapeGenPanel;
+    private javax.swing.JScrollPane shapeGenWrapper;
     private javax.swing.JRadioButton sharpRadioButton;
     private javax.swing.JPanel showNameProperty;
     private javax.swing.JLabel showNoteNameLabel;
@@ -2955,6 +2975,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
+    private void setSelectedCreatingShape(KeyShapeGenerator gen) {
+        GaudrophoneController.getController().getCanvasManager().setState(State.CreatingShape);
+        GaudrophoneController.getController().getCanvasManager().setStoredKeyGenerator(gen);
+    }
+    
     private void setPositionSpinners(Key key) {
         Vector2 origin = GaudrophoneController.getController().getCanvasManager().convertWorldToPixel(key.getShape().getCorner(Corner.topLeft));
         this.xSpinner.setValue((double)Math.round(origin.getX()));
