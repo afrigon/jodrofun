@@ -23,14 +23,20 @@
  */
 package KeyUtils;
 
-/**
- *
- * @author Alexandre
- */
 public enum KeyShapeGenType {
     
     Rectangle(new RectangleKeyShape()),
-    Triangle(new TriangleKeyShape());
+    Triangle(new TriangleKeyShape()),
+    Pentagon(new PentagonKeyShape()),
+    Hexagon(new hexagonKeyShape()),
+    Heptagon(new HeptagonKeyShape()),
+    Octogon(new OctogonKeyShape()),
+    Nonagon(new NonagonKeyShape()),
+    Decagon(new DecagonKeyShape()),
+    Hendecagon(new HendecagonKeyShape()),
+    Dodecagon(new DodecagonKeyShape()),
+    Circle(new CircleKeyShape()),
+    Dank(new DankKeyShape());
 
     private final KeyShapeGenerator value;
     

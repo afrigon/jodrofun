@@ -27,14 +27,14 @@ import Manager.GaudrophoneController;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class PolygonKeyShape implements KeyShapeGenerator {
-    protected Color defaultColor = new Color(0x5a98fc);
-    protected int sides = 5;
+public class DankKeyShape implements KeyShapeGenerator {
+    protected Color defaultColor;
     
     @Override
     public String getName() {
-        return "Polygon";
+        return "D A N K";
     }
     
     @Override
@@ -54,15 +54,13 @@ public class PolygonKeyShape implements KeyShapeGenerator {
     }
     
     public KeyShape generateShape(int sizeX, int sizeY, Vector2 position) {
+        this.defaultColor = new Color(new Random().nextInt(256*256*256));
         position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
         Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
         List<Vector2> pointList = new ArrayList<>();
         
-        Vector2 center = position.add(new Vector2(sizes.getX()/2, sizes.getY()/2));
-        for (int i = 0; i < this.sides; i++) {
-            double x = center.getX() - (sizeX/2) * Math.cos(2 * Math.PI * i / this.sides);
-            double y = center.getY() - (sizeY/2) * Math.sin(2 * Math.PI * i / this.sides);
-            pointList.add(new Vector2(x, y));
+        for (int i = 0; i < new Random().nextInt(40-3) + 3; i++) {
+            pointList.add(new Vector2(position.getX() + (sizes.getX()/2) * ((double)new Random().nextInt(100)/100), position.getY() + (sizes.getY()/2) * ((double)new Random().nextInt(100)/100)));
         }
         
         return new KeyShape(pointList, this.defaultColor);

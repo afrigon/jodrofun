@@ -23,13 +23,13 @@
  */
 package KeyUtils;
 
-public class PentagonKeyShape extends PolygonKeyShape {
-    public PentagonKeyShape() {
-        this.sides = 5;
+public class OctogonKeyShape extends PolygonKeyShape {
+    public OctogonKeyShape() {
+        this.sides = 8;
     }
 
     @Override
     public String getName() {
-        return "Pentagon";
+        return "Octogon";
     }
 }
