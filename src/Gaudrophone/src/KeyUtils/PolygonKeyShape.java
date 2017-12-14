@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PolygonKeyShape implements KeyShapeGenerator {
-    private Color defaultColor = new Color(0x5a98fc);
-    private int sides = 5;
+    protected Color defaultColor = new Color(0x5a98fc);
+    protected int sides = 5;
     
     @Override
     public String getName() {
@@ -45,49 +45,15 @@ public class PolygonKeyShape implements KeyShapeGenerator {
         int leftX = (int)Math.min(startClickPosition.getX(), endClickPosition.getX());
         int leftY = (int)Math.min(startClickPosition.getY(), endClickPosition.getY());
         
-        return this.generateRectangle(x, y, new Vector2(leftX, leftY));
+        return this.generateShape(x, y, new Vector2(leftX, leftY));
     }
     
     @Override
     public KeyShape generate(int size, Vector2 clickPosition) {
-        return this.generateSquare(size, clickPosition);
+        return this.generateShape((int)clickPosition.getX(), (int)clickPosition.getY(), clickPosition.add(new Vector2(size, size)));
     }
     
-    public KeyShape generateSquare(int squareSize) {
-        double size = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
-        List<Vector2> pointList = new ArrayList<>();
-        pointList.add(new Vector2(0, 0));
-        pointList.add(new Vector2(size, 0));
-        pointList.add(new Vector2(size, size));
-        pointList.add(new Vector2(0, size));
-        
-        return new KeyShape(pointList, this.defaultColor);
-    }
-    
-    public KeyShape generateSquare(int squareSize, Vector2 position) {
-        position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
-        double size = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(squareSize, squareSize).getX();
-        List<Vector2> pointList = new ArrayList<>();
-        pointList.add(new Vector2(position.getX(), position.getY()));
-        pointList.add(new Vector2(position.getX()+ size, position.getY()));
-        pointList.add(new Vector2(position.getX()+ size, position.getY() + size));
-        pointList.add(new Vector2(position.getX(), position.getY() + size));
-        
-        return new KeyShape(pointList, this.defaultColor);
-    }
-    
-    public KeyShape generateRectangle(int sizeX, int sizeY) {
-        Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
-        List<Vector2> pointList = new ArrayList<>();
-        pointList.add(new Vector2(0, 0));
-        pointList.add(new Vector2(sizes.getX(), 0));
-        pointList.add(new Vector2(sizes.getX(), sizes.getY()));
-        pointList.add(new Vector2(0, sizes.getY()));
-        
-        return new KeyShape(pointList, this.defaultColor);
-    }
-    
-    public KeyShape generateRectangle(int sizeX, int sizeY, Vector2 position) {
+    public KeyShape generateShape(int sizeX, int sizeY, Vector2 position) {
         position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
         Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
         List<Vector2> pointList = new ArrayList<>();
@@ -98,5 +64,4 @@ public class PolygonKeyShape implements KeyShapeGenerator {
         
         return new KeyShape(pointList, this.defaultColor);
     }
-    
 }
