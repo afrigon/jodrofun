@@ -51,6 +51,10 @@ public class Sequencer implements Runnable {
         this.setBPM(song.getBPM());
     }
     
+    public void setMuted(boolean active) {
+        muted = active;
+    }
+    
     //return state
     public boolean toogleMetronome() {
         if (!this.metronome.isRunning) {

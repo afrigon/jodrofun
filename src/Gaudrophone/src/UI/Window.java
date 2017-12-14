@@ -259,6 +259,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         selectedKeyTools = new javax.swing.JPanel();
         addPointButton = new javax.swing.JButton();
         buttonDuplicate = new javax.swing.JButton();
+        buttonMidi = new javax.swing.JButton();
         buttonAddImage = new javax.swing.JButton();
         buttonRemoveImage = new javax.swing.JButton();
         buttonAddSunkenImage = new javax.swing.JButton();
@@ -278,6 +279,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         openSongMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        refreshMidi = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         quitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuEditNext = new javax.swing.JMenuItem();
@@ -1758,6 +1762,22 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         });
         selectedKeyTools.add(buttonDuplicate);
 
+        buttonMidi.setBackground(new java.awt.Color(65, 65, 65));
+        buttonMidi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/midi_detected.png"))); // NOI18N
+        buttonMidi.setToolTipText("Associer la touche");
+        buttonMidi.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        buttonMidi.setBorderPainted(false);
+        buttonMidi.setContentAreaFilled(false);
+        buttonMidi.setFocusable(false);
+        buttonMidi.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonMidi.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonMidi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMidiActionPerformed(evt);
+            }
+        });
+        selectedKeyTools.add(buttonMidi);
+
         buttonAddImage.setBackground(new java.awt.Color(65, 65, 65));
         buttonAddImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnAddImage.png"))); // NOI18N
         buttonAddImage.setToolTipText("Ajouter une image");
@@ -1946,6 +1966,18 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             }
         });
         fileMenuItem.add(saveAsMenuItem);
+        fileMenuItem.add(jSeparator3);
+
+        refreshMidi.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        refreshMidi.setText("Rafraichir MIDI");
+        refreshMidi.setBorder(null);
+        refreshMidi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshMidiActionPerformed(evt);
+            }
+        });
+        fileMenuItem.add(refreshMidi);
+        fileMenuItem.add(jSeparator2);
 
         quitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         quitMenuItem.setText("Quitter");
@@ -2548,6 +2580,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         GaudrophoneController.getController().getSequencer().stop();
         this.togglePlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlaySong.png")));
     }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void buttonMidiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMidiActionPerformed
+        this.buttonMidi.setAction(new javax.swing.ImageIcon(getClass().getResource("/resources/" + GaudrophoneController.getController().midiAction() + ".png")));
+    }//GEN-LAST:event_buttonMidiActionPerformed
+
+    private void refreshMidiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMidiActionPerformed
+        GaudrophoneController.getController().getDeviceManager().refresh();
+        this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice);
+    }//GEN-LAST:event_refreshMidiActionPerformed
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
@@ -2615,6 +2656,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.instrumentNameField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
             this.refresh();
             this.showPannel(this.playPannel);
+            
+            GaudrophoneController.getController().getDeviceManager().refresh();
+            this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice);
         });
     }
     
@@ -2655,6 +2699,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JButton buttonDuplicate;
     private javax.swing.JButton buttonEditKey;
     private javax.swing.JButton buttonInsert;
+    private javax.swing.JButton buttonMidi;
     private javax.swing.JButton buttonPlayMode;
     private javax.swing.JButton buttonRemoveImage;
     private javax.swing.JButton buttonRemoveSunkenImage;
@@ -2722,6 +2767,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField keyNameField;
     private javax.swing.JLabel keyNameLabel;
@@ -2776,6 +2823,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel readSpeedLabel;
     private javax.swing.JPanel readSpeedProperty;
     private javax.swing.JSpinner readSpeedSpinner;
+    private javax.swing.JMenuItem refreshMidi;
     private javax.swing.JLabel releaseLabel;
     private javax.swing.JSlider releaseSlider;
     private javax.swing.JPanel releaseSliderPanel;
@@ -2859,6 +2907,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     
     @Override
     public void didSelectKey(Key key) {
+        this.buttonMidi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/" + (key.isLinked() ? "midi_linked" : "midi_detected") + ".png")));
+        
         this.keyNameField.setText(key.getName());
         this.noteComboBox.setSelectedItem(key.getNote());
         this.octaveSpinner.setValue(key.getOctave());
