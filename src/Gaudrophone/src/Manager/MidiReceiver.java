@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
@@ -37,18 +37,19 @@ public class MidiReceiver implements javax.sound.midi.Receiver {
             if (command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF) {
                 int channel = shortMessage.getChannel();
                 int midiNum = shortMessage.getData1();
-                int octave = (midiNum / 12) - 1;
-                int note = midiNum % 12;
-                int velocity = shortMessage.getData2();
-                System.out.println("Note ON/OFF: " + note + " - " + octave + " : vel " + velocity);
+                GaudrophoneController.getController().getDeviceManager().sendInput(channel, midiNum, command == ShortMessage.NOTE_ON);
+//                int octave = (midiNum / 12) - 1;
+//                int note = midiNum % 12;
+//                int velocity = shortMessage.getData2();
+//                System.out.println("Note ON/OFF: " + note + " - " + octave + " : vel " + velocity);
             } else {
-                System.out.println("Other command " + command);
+                //System.out.println("Other command " + command);
             }
         }
     }
 
     @Override
     public void close() {
-        System.out.println("close midi receiver");
+        //System.out.println("close midi receiver");
     }
 }

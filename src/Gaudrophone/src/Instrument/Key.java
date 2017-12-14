@@ -26,6 +26,7 @@ package Instrument;
 import Music.Note;
 import Music.Alteration;
 import KeyUtils.KeyShape;
+import Manager.GaudrophoneController;
 import Music.Sound;
 import Music.SynthesizedSound;
 import Music.AudioClip;
@@ -37,6 +38,9 @@ public class Key implements java.io.Serializable {
     private Sound sound = null;
     private String name = null;
     private int states = 144;
+    private boolean linked = false;
+    private int linkedChannel = 0;
+    private int linkedMidiNumber = 0;
     
     // Constructors
     public Key(Sound keySound, KeyShape keyShape, String keyName) {
@@ -155,5 +159,39 @@ public class Key implements java.io.Serializable {
     
     public void removeStates(int states) {
         this.states -= (this.states & states);
+    }
+    
+    public void link(int channel, int midiNum) {
+        linkedChannel = channel;
+        linkedMidiNumber = midiNum;
+        linked = true;
+        GaudrophoneController.getController().delegate.midiDidLink(this);
+    }
+    
+    public boolean isLinked(int channel, int midiNum) {
+        return (linked && linkedChannel == channel && linkedMidiNumber == midiNum);
+    }
+    
+    public boolean isLinked() {
+        return linked;
+    }
+    
+    public void unlink() {
+        linked = false;
+    }
+    
+    public void play(boolean playSound) {
+        if (playSound)
+            GaudrophoneController.getController().getSoundService().play(sound);
+        addState(KeyState.clicked);
+    }
+    
+    public void play() {
+        play(true);
+    }
+    
+    public void release() {
+        GaudrophoneController.getController().getSoundService().release(sound);
+        removeState(KeyState.clicked);
     }
 }

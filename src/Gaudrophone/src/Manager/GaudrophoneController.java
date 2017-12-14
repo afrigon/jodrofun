@@ -39,6 +39,7 @@ import Music.SongIO;
 import Music.SoundType;
 import Music.WaveFormType;
 import java.awt.Color;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GaudrophoneController {
@@ -76,7 +77,11 @@ public class GaudrophoneController {
     }
     
     public Sequencer getSequencer() {
-        return sequencer;
+        return this.sequencer;
+    }
+    
+    public DeviceManager getDeviceManager() {
+        return this.deviceManager;
     }
     
     public void duplicateKey() {
@@ -103,6 +108,7 @@ public class GaudrophoneController {
                 this.selectionManager.setKey(null);
             }
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
+            this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
             this.canvasManager.delegate.shouldRedraw();
             this.canvasManager.updateRatio(this.instrumentManager.getInstrument().getBoundingBox());
         }
@@ -123,6 +129,7 @@ public class GaudrophoneController {
             key.getShape().translate(translation);
             this.delegate.didMoveKey(key);
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
+            this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
             this.canvasManager.delegate.shouldRedraw();
         }
     }
@@ -151,12 +158,25 @@ public class GaudrophoneController {
         }
     }
     
-    public void createPoint() {
-        
+    public void createPoint(int index) {
+        Key key = this.selectionManager.getSelectedKey();
+        if(key != null) {
+            key.getShape().addPoint(index);
+            this.delegate.didMovePoint(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
     }
     
-    public void deletePoint() {
-        
+    public void deletePoint(int index) {
+        Key key = this.selectionManager.getSelectedKey();
+        //Must remain at least 3 points after removing
+        if(key != null && key.getShape().getPoints().size() > 3) {
+            key.getShape().getPoints().remove(index);
+            key.getShape().getLines().remove(index);
+            this.delegate.didMovePoint(key);
+            this.delegate.shouldUpdateProprietyPannelFor(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
     }
     
     public void movePoint(Vector2 translation) {
@@ -169,8 +189,31 @@ public class GaudrophoneController {
         }
     }
     
+    //Curves won't be out for a while, since border algo need to be redone (previously linear)
     public void curveLine(Vector2 translation) {
-        
+        Key key = this.selectionManager.getSelectedKey();
+        int point = this.selectionManager.getSelectedPoint();
+        if (key != null && point != -1) {
+            key.getShape().getLines().get(point).setCurve(
+                    key.getShape().getLines().get(point).getCurve().add(translation));
+            this.delegate.didMovePoint(key);
+            this.canvasManager.delegate.shouldRedraw();
+        }
+    }
+    
+    public void setLineShape(KeyUtils.LineShape pointShape) {
+        Key key = this.selectionManager.getSelectedKey();
+        int line = this.selectionManager.getSelectedLine();
+        if (key != null && line != -1) {
+            Vector2 p2, p1 = key.getShape().getPoints().get(line);
+            if(line + 1 == key.getShape().getPoints().size()) {
+                p2 = key.getShape().getPoints().get(0);
+            } else {
+                p2 = key.getShape().getPoints().get(line);
+            }
+            key.getShape().getLines().get(line).setShape(pointShape, p1, p2);
+            this.delegate.didMovePoint(key);
+        }
     }
     
     public void setKeyDepth(int index) {
@@ -495,7 +538,6 @@ public class GaudrophoneController {
     public void setBPM(int bpm) {
         this.sequencer.setBPM(bpm);
         this.delegate.didSetBPM(this.sequencer.getBPM());
-        this.sequencer.play();
     }
     
     public boolean toggleMetronome() {
@@ -526,5 +568,46 @@ public class GaudrophoneController {
             }
         }
         return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+    public boolean toggleMute() {
+        return this.sequencer.toggleMute();
+    }
+
+    public void closeAutoPlay() {
+        this.sequencer.stopAll();
+    }
+
+    public void togglePlay() {
+        this.sequencer.togglePlay();
+    }
+
+    public LinkedList<Key> getLinkedKeys(int channel, int midiNum) {
+        LinkedList<Key> linkedKeys = new LinkedList<>();
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if (key.isLinked(channel, midiNum)) {
+                linkedKeys.add(key);
+            }
+        }
+        return linkedKeys;
+    }
+    
+    public String midiAction() {
+        Key key = this.selectionManager.getSelectedKey();
+        if (key != null) {
+            if (key.isLinked()) {
+                key.unlink();
+                return "midi_detected";
+            } else {
+                if (this.deviceManager.isLinking()) {
+                    this.deviceManager.cancelLink();
+                    return "midi_detected";    
+                } else {
+                    this.deviceManager.linkMidiToKey(key);
+                    return "midi_linking";
+                }
+            }
+        }
+        return "midi_detected";
     }
 }

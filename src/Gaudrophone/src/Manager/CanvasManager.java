@@ -32,6 +32,7 @@ import Music.SynthesizedSound;
 import UI.DrawableShape;
 import java.util.LinkedList;
 import java.util.List;
+import java.awt.event.MouseEvent;
 
 public class CanvasManager {
     private List<DrawableShape> shapes;
@@ -106,29 +107,35 @@ public class CanvasManager {
     public void clicked(Key key) {
         switch (this.state) {
             case Play:
-                GaudrophoneController.getController().getSoundService().play(key.getSound());
-                key.addState(KeyState.clicked);
+                key.play();
                 this.lastKey = key;
                 break;
-                
             case AutoPlay:
                 Sequencer sequencer = GaudrophoneController.getController().getSequencer();
-                if (!sequencer.isMuted() || sequencer.hasNearNote(key.getSound().getPlayableNote().getFrequency())) {
-                    GaudrophoneController.getController().getSoundService().play(key.getSound());
-                    key.addState(KeyState.clicked);
-                    this.lastKey = key;
-                }
+                if (sequencer.isMuted())
+                    key.play(sequencer.hasNearNote(key.getSound().getPlayableNote().getFrequency()));
+                else
+                    key.play();
+                
+                this.lastKey = key;
                 break;
         }
     }
     
-    public void clicked(int x, int y) {
+    public void clicked(int x, int y, int button) {
         this.clickPosition = new Vector2(x, y);
-        if(this.state == State.EditKey)
-            if(clickedDot(x, y)) {
-                this.state = State.EditPoint;
+        if(this.state == State.EditKey) {
+            int dot = clickedDot(x, y);
+            if(dot != -1) {
+                if (button == MouseEvent.BUTTON1) /* Left click */ {
+                    GaudrophoneController.getController().getSelectionManager().setPoint(dot);
+                    this.state = State.EditPoint;
+                } else if (button == MouseEvent.BUTTON3) /* Right click */ {
+                    GaudrophoneController.getController().deletePoint(dot);
+                }
                 return;
             }
+        }
         DrawableShape ds = this.clickedShape(x, y);
         if (ds != null) {
             if(this.state == State.EditKey && (ds.getKey().getStates() & KeyState.selected.getValue()) != 0) {
@@ -142,8 +149,7 @@ public class CanvasManager {
         switch (this.state) {
             case Play:
                 if (key != null) {
-                    GaudrophoneController.getController().getSoundService().release(key.getSound());
-                    key.removeState(KeyState.clicked);
+                    key.release();
                 }
                 break;
             case EditKey:
@@ -159,20 +165,23 @@ public class CanvasManager {
         }
     }
     
-    public void released(int x, int y) {
+    public void released(int x, int y, int button) {
         switch (this.state) {
             case Play:
                 this.lastKey = null;
                 break;
-            case CreatingShape : 
-                if (!this.clickPosition.equals(new Vector2(x, y))) {
-                    Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
-                    GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
-                    this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
-                } else {
-                    Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(100, this.clickPosition), this.storedKeyShape.getName());
-                    GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
-                    this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+            case CreatingShape :
+                if (this.storedKeyShape != null) {
+                    if (!this.clickPosition.equals(new Vector2(x, y))) {
+                        Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
+                        GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
+                        this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                        //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
+                    } else {
+                        Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(100, this.clickPosition), this.storedKeyShape.getName());
+                        GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
+                        this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                    }
                 }
                 break;
             case EditKey :
@@ -195,7 +204,7 @@ public class CanvasManager {
         }
     }
     
-    public void dragged(int x, int y) {
+    public void dragged(int x, int y, int button) {
         switch (this.state) {
             case Play:
                 DrawableShape ds = this.clickedShape(x, y);
@@ -203,37 +212,33 @@ public class CanvasManager {
                 if (ds != null) {
                     //If the user clicked the canvas and drag onto a key
                     if (this.lastKey == null) {
-                        GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());
-                        ds.getKey().addState(KeyState.clicked);
+                        ds.getKey().play();
                         if (this.delegate != null) { this.delegate.shouldRedraw(); }
                         this.lastKey = ds.getKey();
                     } else {
                         //If the playing key is not the same as the key being drag right now
                         if (this.lastKey != ds.getKey()) {
-                            GaudrophoneController.getController().getSoundService().release(this.lastKey.getSound());
-                            GaudrophoneController.getController().getSoundService().play(ds.getKey().getSound());
-                            ds.getKey().addState(KeyState.clicked);
-                            this.lastKey.removeState(KeyState.clicked);
+                            this.lastKey.release();
+                            ds.getKey().play();
                             if (this.delegate != null) { this.delegate.shouldRedraw(); }
                             this.lastKey = ds.getKey();
                         }
                     }
                 } else {
                     if (this.lastKey != null) {
-                        GaudrophoneController.getController().getSoundService().release(this.lastKey.getSound());
-                        this.lastKey.removeState(KeyState.clicked);
+                        this.lastKey.release();
                         if (this.delegate != null) { this.delegate.shouldRedraw(); }
                         this.lastKey = null;
                     }
                 }
                 break;
             case CreatingShape:
-                Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
-                GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
-                this.updateRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
-                this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
-                GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().remove(key);
-                
+                if (this.storedKeyShape != null) {
+                    Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
+                    GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
+                    this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
+                    GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().remove(key);
+                }
                 break;
             case EditKey :
                 if(this.draggedShape != null) {
@@ -270,17 +275,15 @@ public class CanvasManager {
         return null;
     }
     
-    private boolean clickedDot(int x, int y) {
+    private int clickedDot(int x, int y) {
         if(GaudrophoneController.getController().getSelectionManager().getSelectedKey() != null)  {
             for(int i = 0; i < DrawableShape.getDot().size(); ++i) {
                 if(DrawableShape.getDot().get(i).contains(x, y)) {
-                    GaudrophoneController.getController().getSelectionManager().setPoint(i);
-                    this.state = State.EditPoint;
-                    return true;
+                    return i;
                 }
             }
         }
-        return false;
+        return -1;
     }
     
     public List<DrawableShape> getDrawableShapes() {

@@ -23,21 +23,17 @@
  */
 package Manager;
 
-import Music.MidiReceiver;
+import Instrument.Key;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Transmitter;
 
-/**
- *
- * @author Olivier
- */
 public final class DeviceManager {
     LinkedList<MidiDevice> devices = new LinkedList<>();
+    private boolean learning = false;
+    private Key learningKey = null;
     
     DeviceManager() {
         refresh();
@@ -59,6 +55,47 @@ public final class DeviceManager {
         } catch (MidiUnavailableException ex) {
             System.out.println("MidiException : " + ex.toString());
         }
+    }
+    
+    public final void sendInput(int channel, int midiNum, boolean noteOn) {
+        if (learning) {
+            if (noteOn) {
+                learningKey.link(channel, midiNum);
+                learning = false;
+            }
+        } else {
+            if (GaudrophoneController.getController().getCanvasManager().getState() == State.Play || GaudrophoneController.getController().getCanvasManager().getState() == State.AutoPlay) {
+                LinkedList<Key> linkedKeys = GaudrophoneController.getController().getLinkedKeys(channel, midiNum);
+                for (Key linkedKey : linkedKeys) {
+                    if (noteOn)
+                        GaudrophoneController.getController().getCanvasManager().clicked(linkedKey);
+                    else
+                        GaudrophoneController.getController().getCanvasManager().released(linkedKey);
+                    GaudrophoneController.getController().getCanvasManager().delegate.shouldRedraw();
+                }
+            }
+        }
+    }
+    
+    public final void linkMidiToKey(Key key) {
+        learningKey = key;
+        learning = true;
+    }
+    
+    public final void cancelLink() {
+        learning = false;
+    }
+    
+    public final boolean hasDevice() {
+        return devices.size() > 0;
+    }
+    
+    public final boolean isLinking(Key key) {
+        return learning && key == learningKey;
+    }
+    
+    public final boolean isLinking() {
+        return learning;
     }
     
     public final void refresh() {
