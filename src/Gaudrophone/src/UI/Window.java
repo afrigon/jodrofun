@@ -2582,12 +2582,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_stopButtonActionPerformed
 
     private void buttonMidiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMidiActionPerformed
-        this.buttonMidi.setAction(new javax.swing.ImageIcon(getClass().getResource("/resources/" + GaudrophoneController.getController().midiAction() + ".png")));
+        this.buttonMidi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/" + GaudrophoneController.getController().midiAction() + ".png")));
     }//GEN-LAST:event_buttonMidiActionPerformed
 
     private void refreshMidiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMidiActionPerformed
         GaudrophoneController.getController().getDeviceManager().refresh();
-        this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice);
+        this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice());
     }//GEN-LAST:event_refreshMidiActionPerformed
     
     private void saveInstrument() {
@@ -2658,7 +2658,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.showPannel(this.playPannel);
             
             GaudrophoneController.getController().getDeviceManager().refresh();
-            this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice);
+            this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice());
         });
     }
     
