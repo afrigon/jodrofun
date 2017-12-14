@@ -47,6 +47,7 @@ import Music.SynthesizedSound;
 import Music.WaveFormType;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
@@ -306,7 +307,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModeAutoPlay = new javax.swing.JMenuItem();
         menuModeInsert = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.1"));
+        fileDialog.setCurrentDirectory(new java.io.File("/"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -2696,7 +2697,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 this.insertMenuItem.add(menuItem);
                 
                 ShapePreview panel = new ShapePreview(gen.getGenerator());
-                panel.setSize(100, 100);
+                panel.setPreferredSize(new Dimension(100, 100));
                 panel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mousePressed(java.awt.event.MouseEvent e) {
