@@ -3101,7 +3101,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }
 
     @Override
-    public void midiDidLink(Key aThis) {
+    public void midiDidLink(Key key) {
         this.buttonMidi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/midi_linked.png")));
     }
 }
