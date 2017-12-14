@@ -526,7 +526,6 @@ public class GaudrophoneController {
     public void loadSong(String path) {
         this.sequencer.setSong(new SongIO().Load(path));
         this.delegate.didSetBPM(this.sequencer.getBPM());
-        this.sequencer.play();
     }
     
     public void setBPM(int bpm) {
@@ -562,5 +561,17 @@ public class GaudrophoneController {
             }
         }
         return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+    public boolean toggleMute() {
+        return this.sequencer.toggleMute();
+    }
+
+    public void closeAutoPlay() {
+        this.sequencer.stopAll();
+    }
+
+    public void togglePlay() {
+        this.sequencer.togglePlay();
     }
 }

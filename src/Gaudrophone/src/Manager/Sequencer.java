@@ -30,7 +30,7 @@ public class Sequencer implements Runnable {
     private final double PRESSED_THRESHOLD = 0.5;
     private final Metronome metronome = new Metronome();
     private Song song = null;
-    private int bpm = -1;
+    private int bpm = 120;
     private boolean isPlaying = false;
     private long lastTimeUpdate = 0;
     private double currentStep = 0;
@@ -62,28 +62,38 @@ public class Sequencer implements Runnable {
     }
     
     public boolean isMuted() {
-        return muted;
+        return this.muted;
+    }
+    
+    public boolean toggleMute() {
+        this.muted = !this.muted;
+        return this.muted;
     }
     
     private double getElapsedTime() {
         long now = System.nanoTime();
-        long delta = now - lastTimeUpdate;
-        lastTimeUpdate = now;
+        long delta = now - this.lastTimeUpdate;
+        this.lastTimeUpdate = now;
         return ((double) delta) / 1000000000.0;
     }
     
     public void play() {
-        isPlaying = true;
+        this.isPlaying = true;
         new Thread(this).start();
+        GaudrophoneController.getController().delegate.didStartPlayingSong();
     }
     
     public void pause() {
-        isPlaying = false;
+        this.isPlaying = false;
+        GaudrophoneController.getController().getSoundService().closeAll();
+        GaudrophoneController.getController().delegate.didPauseSong();
     }
     
     public void stop() {
-        isPlaying = false;
-        currentStep = 0;
+        this.isPlaying = false;
+        this.currentStep = 0;
+        GaudrophoneController.getController().getSoundService().closeAll();
+        GaudrophoneController.getController().delegate.didStopPlayingSong();
     }
     
     public boolean hasNearNote(double frequency) {
@@ -92,10 +102,10 @@ public class Sequencer implements Runnable {
         for (PlayableChord chord : this.song.getChords()) {
             chordPlayStep += chord.getRelativeSteps();
             
-            double deltaStepDifference = Math.abs(currentStep - chordPlayStep);
-            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double) bpm);
+            double deltaStepDifference = Math.abs(this.currentStep - chordPlayStep);
+            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double)this.bpm);
             
-            if (deltaTimeDiff < PRESSED_THRESHOLD) {
+            if (deltaTimeDiff < this.PRESSED_THRESHOLD) {
                 for (PlayableNote note : chord.getNotes()) {
                     if (note.getFrequency() == frequency) {
                         return true;
@@ -108,12 +118,12 @@ public class Sequencer implements Runnable {
     
     private void createMissingSound(PlayableNote note) {
         Sound sound = new SynthesizedSound(note);
-        missingSounds.add(sound);
+        this.missingSounds.add(sound);
         GaudrophoneController.getController().getSoundService().play(sound);
     }
     
     private void playMissingSound(PlayableNote note) {
-        for (Sound sound : missingSounds) {
+        for (Sound sound : this.missingSounds) {
             if (sound.getPlayableNote() == note) {
                 GaudrophoneController.getController().getSoundService().play(sound);
                 return;
@@ -131,9 +141,11 @@ public class Sequencer implements Runnable {
             currentStep += getElapsedTime() * ((double) bpm) / 60.0; // calculate elapsed steps
             
             double chordPlayStep = 0;
+            double chordEndStep = 0;
+            
             for (PlayableChord chord : this.song.getChords()) {
                 chordPlayStep += chord.getRelativeSteps();
-                double chordEndStep = chordPlayStep + chord.getLength();
+                chordEndStep = chordPlayStep + chord.getLength();
                 
                 if ((chordPlayStep > previousStep) && (chordPlayStep <= currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
@@ -155,6 +167,25 @@ public class Sequencer implements Runnable {
                     }
                 }
             }
+            
+            if (this.currentStep > chordEndStep) {
+                this.stop();
+            }
         }
+    }
+
+    public void stopAll() {
+        this.stop();
+        this.metronome.close();
+        this.muted = false;
+    }
+
+    public void togglePlay() {
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.play();
+        }
+        
     }
 }
