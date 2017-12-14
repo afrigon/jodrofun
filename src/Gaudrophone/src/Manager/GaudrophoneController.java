@@ -603,8 +603,10 @@ public class GaudrophoneController {
                     return "midi_detected";    
                 } else {
                     this.deviceManager.linkMidiToKey(key);
+                    return "midi_linking";
                 }
             }
         }
+        return "midi_detected";
     }
 }

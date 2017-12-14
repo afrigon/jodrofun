@@ -30,10 +30,6 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Transmitter;
 
-/**
- *
- * @author Olivier
- */
 public final class DeviceManager {
     LinkedList<MidiDevice> devices = new LinkedList<>();
     private boolean learning = false;
