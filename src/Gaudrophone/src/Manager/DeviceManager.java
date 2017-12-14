@@ -94,7 +94,11 @@ public final class DeviceManager {
     }
     
     public final boolean isLinking(Key key) {
-        return key == learningKey;
+        return learning && key == learningKey;
+    }
+    
+    public final boolean isLinking() {
+        return learning;
     }
     
     public final void refresh() {
