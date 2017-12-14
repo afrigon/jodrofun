@@ -89,6 +89,10 @@ public final class DeviceManager {
         learning = false;
     }
     
+    public final boolean hasDevice() {
+        return devices.size() > 0;
+    }
+    
     public final void refresh() {
         clearDevices();
         
