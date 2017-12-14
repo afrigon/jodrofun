@@ -93,6 +93,10 @@ public final class DeviceManager {
         return devices.size() > 0;
     }
     
+    public final boolean isLinking(Key key) {
+        return key == learningKey;
+    }
+    
     public final void refresh() {
         clearDevices();
         
