@@ -36,6 +36,7 @@ public class Sequencer implements Runnable {
     private double currentStep = 0;
     private final ArrayList<Sound> missingSounds = new ArrayList<>();
     private boolean muted = false;
+    private double totalSteps = 0;
     
     public int getBPM() {
         return this.bpm;
@@ -44,15 +45,29 @@ public class Sequencer implements Runnable {
     public void setBPM(int bpm) {
         this.bpm = Math.max(1, Math.min(bpm, 600));
         this.metronome.adjustBPM(this.bpm);
+        // need to change the time left label
     }
     
     public void setSong(Song song) {
         this.song = song;
         this.setBPM(song.getBPM());
+        for (PlayableChord chord : song.getChords()) {
+            totalSteps += chord.getRelativeSteps();
+        }
+        totalSteps += song.getChords().getLast().getLength();
     }
     
     public void setMuted(boolean active) {
         muted = active;
+    }
+    
+    public void setPosition(double step) {
+        currentStep = step;
+    }
+    
+    public String getTimeLeft() {
+        double time = totalSteps * 60.0 / bpm;
+        return String.format("%d:$%02d", (int) Math.floor(time / 60.0), (int) Math.floor(time % 60.0));
     }
     
     //return state
@@ -170,6 +185,12 @@ public class Sequencer implements Runnable {
                         }
                     }
                 }
+            }
+            
+            double roundPreviousStep = Math.floor(chordEndStep);
+            double roundCurrentStep = Math.floor(currentStep);
+            if (roundPreviousStep != roundCurrentStep) {
+                // FRIGON HELPZ
             }
             
             if (this.currentStep > chordEndStep) {
