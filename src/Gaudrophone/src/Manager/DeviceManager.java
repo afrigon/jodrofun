@@ -85,6 +85,10 @@ public final class DeviceManager {
         learning = true;
     }
     
+    public final void cancelLink() {
+        learning = false;
+    }
+    
     public final void refresh() {
         clearDevices();
         

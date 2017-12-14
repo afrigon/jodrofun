@@ -536,6 +536,10 @@ public class GaudrophoneController {
         deviceManager.linkMidiToKey(key);
     }
     
+    public void cancelLink() {
+        deviceManager.cancelLink();
+    }
+    
     public LinkedList<Key> getLinkedKeys(int channel, int midiNum) {
         LinkedList<Key> linkedKeys = new LinkedList<>();
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
