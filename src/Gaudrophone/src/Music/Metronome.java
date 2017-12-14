@@ -36,17 +36,24 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class Metronome {
     private int bpm = 120;
     public boolean isRunning = false;
-    private AudioInputStream stream;
+    private AudioInputStream stream_high;
+    private AudioInputStream stream_low;
+    private Clip clip_high;
+    private Clip clip_low;
+    private boolean state = false;
     
     public void start(int bpm) {
         this.bpm = bpm;
         this.isRunning = true;
         
         try {
-            Clip clip = AudioSystem.getClip();
-            stream = AudioSystem.getAudioInputStream(getClass().getResource("/resources/metronome.wav"));
-            clip.open(stream);
-            this.cosmos(clip);        
+            this.clip_high = AudioSystem.getClip();
+            this.clip_low = AudioSystem.getClip();
+            this.stream_high = AudioSystem.getAudioInputStream(getClass().getResource("/resources/metronome_high.wav"));
+            this.stream_low = AudioSystem.getAudioInputStream(getClass().getResource("/resources/metronome_low.wav"));
+            this.clip_high.open(this.stream_high);
+            this.clip_low.open(this.stream_low);
+            this.cosmos();        
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) {}
     }
     
@@ -55,13 +62,16 @@ public class Metronome {
     }
     
     //does things
-    public void cosmos(Clip clip) {
+    public void cosmos() {
         if (this.isRunning) {
+            this.state = !this.state;
             ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
-            es.schedule(new Work(clip, this), (int)((double)60000/this.bpm), TimeUnit.MILLISECONDS);
+            es.schedule(new Work(this.state ? this.clip_high : this.clip_low, this), (int)((double)60000/this.bpm), TimeUnit.MILLISECONDS);
         } else {
-            clip.stop();
-            clip.close();
+            this.clip_high.stop();
+            this.clip_low.stop();
+            this.clip_high.close();
+            this.clip_low.close();
         }
     }
 
@@ -83,6 +93,6 @@ class Work implements Runnable {
     public void run() {
         clip.setMicrosecondPosition(0);
         clip.start();
-        this.metronome.cosmos(clip);
+        this.metronome.cosmos();
     }
 }
