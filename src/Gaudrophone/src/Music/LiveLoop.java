@@ -48,7 +48,7 @@ public class LiveLoop {
     }
     
     public void stopRecording() {
-        
+        recording = false;
     }
     
     public void addSound(Sound sound) {

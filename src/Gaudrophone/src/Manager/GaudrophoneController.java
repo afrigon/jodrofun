@@ -60,7 +60,6 @@ public class GaudrophoneController {
       {
         for (int i = 0; i < 9; i++)
             liveLoops[i] = new LiveLoop();
-        liveLoops[0].startRecording();
       }
     
     public static GaudrophoneController getController() {
@@ -577,6 +576,16 @@ public class GaudrophoneController {
             }
         }
         return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+    public void toggleLiveLoop(int index) {
+        
+        System.out.println("Toggleing LiveLoop " + index);
+        
+        if (liveLoops[index].isRecording())
+            liveLoops[index].stopRecording();
+        else
+            liveLoops[index].startRecording();
     }
     
         public void addToLiveLoop(Sound sound)
