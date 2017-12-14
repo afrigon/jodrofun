@@ -40,7 +40,7 @@ public class Guitar implements InstrumentPattern {
     private String fullPathJar;
     
     public Guitar() { 
-        this.fullPathJar = new java.io.File(".").getAbsolutePath().replace("\\.", "");
+        this.fullPathJar = new java.io.File(".").getAbsolutePath().replace("/.", "");
     }
     
     @Override
@@ -68,7 +68,7 @@ public class Guitar implements InstrumentPattern {
             sound.getEnvelope().setRelease(600);
             try {
                 new java.io.File(".").getAbsolutePath();
-                sound.setPath(java.net.URLDecoder.decode(this.fullPathJar + "\\resources\\guitar\\" + keyName + ".wav", "UTF-8"));
+                sound.setPath(java.net.URLDecoder.decode(this.fullPathJar + "/resources/guitar/" + keyName + ".wav", "UTF-8"));
             } catch (UnsupportedEncodingException | NullPointerException ex) {
                 continue;
             }
