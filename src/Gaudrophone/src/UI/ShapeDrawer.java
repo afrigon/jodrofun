@@ -256,6 +256,9 @@ public class ShapeDrawer {
                 }
             }  
         }
+        catch (NullPointerException ex) {
+            //System.out.println(ex.getMessage());
+        }
         catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
