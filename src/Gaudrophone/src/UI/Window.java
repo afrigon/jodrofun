@@ -3099,4 +3099,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     public void didPauseSong() {
         this.togglePlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btnPlaySong.png")));
     }
+
+    @Override
+    public void midiDidLink(Key aThis) {
+        this.buttonMidi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/midi_linked.png")));
+    }
 }
