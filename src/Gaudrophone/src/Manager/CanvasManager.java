@@ -76,24 +76,6 @@ public class CanvasManager {
         }
     }
     
-    public void initBaseRatio() {
-        this.baseSize = this.canvasSize;
-    }
-    
-    public void updateRatio(Vector2 boundingBox) {
-        if (boundingBox.getX() != 0 && boundingBox.getY() != 0) {
-            ratioX = (boundingBox.getX() * baseSize.getX()) / baseSize.getX();
-            ratioY = (boundingBox.getY() * baseSize.getY()) / canvasSize.getY();
-
-            ratio = ratioX > ratioY ? ratioX : ratioY;
-        
-            System.out.println("Bounding box : " + boundingBox.getX() + ':' + boundingBox.getY());
-            System.out.println("Base size : " + baseSize.getX() + ':' + baseSize.getY());
-            System.out.println("Canvas size : " + baseSize.getX() + ':' + baseSize.getY());
-            System.out.println("New ratio : " + ratioX + ':' + ratioY);
-        }
-    }
-    
     public void drawKeys(List<Key> keyList) {
         this.shapes = new LinkedList<>();
         keyList.forEach((key) -> {
@@ -249,8 +231,6 @@ public class CanvasManager {
                     
                     this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                     this.clickPosition = new Vector2(x, y);
-                    
-                    this.updateRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
                 }
                 break;
             case EditPoint : 
@@ -259,9 +239,6 @@ public class CanvasManager {
                         (int)(y - this.clickPosition.getY())));
                 this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
                 this.clickPosition = new Vector2(x, y);
-                
-                this.updateRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
-                
                 break;
         }
     }

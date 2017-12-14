@@ -23,8 +23,13 @@
  */
 package Music;
 
+import Manager.GaudrophoneController;
+
 public class LiveLoop {
+    Song sequence = new Song();
+    PlayableChord currentChord = new PlayableChord();
     boolean recording;
+    long baseTime;
     
     
     public LiveLoop() {
@@ -36,10 +41,31 @@ public class LiveLoop {
     }
     
     public void startRecording() {
+        baseTime = System.nanoTime() / 1000000000;
+        recording = true;
         
+         System.out.println("Start recording. Base Time : " + baseTime);
     }
     
     public void stopRecording() {
         
+    }
+    
+    public void addSound(Sound sound) {
+        PlayableNote note = sound.getPlayableNote();
+        
+        System.out.println("Start Sound");
+
+        currentChord.addNote(note);
+        currentChord.setRelativeSteps(baseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM()));
+    }
+    
+    public void stopSound() {
+        baseTime = System.nanoTime() / 1000000000;
+        currentChord.setLength(baseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM()));
+        sequence.addChord(currentChord);
+        currentChord = new PlayableChord();
+        
+        System.out.println("Stop Sound. Base Time : " + baseTime);
     }
 }

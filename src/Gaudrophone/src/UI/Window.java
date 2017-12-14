@@ -23,6 +23,7 @@
  */
 package UI;
 
+import Instrument.ElectricPiano;
 import Music.Alteration;
 import Instrument.Guitar;
 import Instrument.Key;
@@ -275,6 +276,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         newBlankMenuItem = new javax.swing.JMenuItem();
         newGuitarMenuItem = new javax.swing.JMenuItem();
         newPianoMenuItem = new javax.swing.JMenuItem();
+        newElectricPianoMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         openSongMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
@@ -298,7 +300,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModeAutoPlay = new javax.swing.JMenuItem();
         menuModeInsert = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.2"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1569,7 +1571,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         informationWrapper4.setBackground(new java.awt.Color(65, 65, 65));
         informationWrapper4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
         informationWrapper4.setPreferredSize(new java.awt.Dimension(50, 20));
-        informationWrapper4.setLayout(new java.awt.GridLayout());
+        informationWrapper4.setLayout(new java.awt.GridLayout(1, 0));
 
         informationTitle4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         informationTitle4.setForeground(new java.awt.Color(255, 255, 255));
@@ -1924,6 +1926,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             }
         });
         newMenu.add(newPianoMenuItem);
+
+        newElectricPianoMenuItem.setText("Electric Piano");
+        newElectricPianoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newElectricPianoMenuItemActionPerformed(evt);
+            }
+        });
+        newMenu.add(newElectricPianoMenuItem);
 
         fileMenuItem.add(newMenu);
 
@@ -2589,6 +2599,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         GaudrophoneController.getController().getDeviceManager().refresh();
         this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice());
     }//GEN-LAST:event_refreshMidiActionPerformed
+
+    private void newElectricPianoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newElectricPianoMenuItemActionPerformed
+        GaudrophoneController.getController().getInstrumentManager().newInstrument(new ElectricPiano());
+        this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+        this.instrumentNameField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+        GaudrophoneController.getController().getCanvasManager().setState(State.Play);
+        GaudrophoneController.getController().getCanvasManager().findNewRatio(new Vector2(this.canvas.getWidth(), this.canvas.getHeight()));
+        this.refresh();
+    }//GEN-LAST:event_newElectricPianoMenuItemActionPerformed
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
@@ -2802,6 +2821,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JButton muteButton;
     private javax.swing.JRadioButton naturalRadioButton;
     private javax.swing.JMenuItem newBlankMenuItem;
+    private javax.swing.JMenuItem newElectricPianoMenuItem;
     private javax.swing.JMenuItem newGuitarMenuItem;
     private javax.swing.JMenu newMenu;
     private javax.swing.JMenuItem newPianoMenuItem;

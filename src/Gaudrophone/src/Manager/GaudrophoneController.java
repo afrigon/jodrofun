@@ -34,8 +34,10 @@ import Music.AudioClip;
 import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
+import Music.LiveLoop;
 import Music.PlayableNote;
 import Music.SongIO;
+import Music.Sound;
 import Music.SoundType;
 import Music.WaveFormType;
 import java.awt.Color;
@@ -49,9 +51,17 @@ public class GaudrophoneController {
     private final SelectionManager selectionManager = new SelectionManager();
     private final Sequencer sequencer = new Sequencer();
     private final DeviceManager deviceManager = new DeviceManager();
+    private final LiveLoop[] liveLoops = new LiveLoop[9];
     public GaudrophoneControllerDelegate delegate;
     
     private static GaudrophoneController controller = null;
+    
+    private GaudrophoneController()
+      {
+        for (int i = 0; i < 9; i++)
+            liveLoops[i] = new LiveLoop();
+        liveLoops[0].startRecording();
+      }
     
     public static GaudrophoneController getController() {
         if (controller == null) {
@@ -110,7 +120,6 @@ public class GaudrophoneController {
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
             this.canvasManager.delegate.shouldRedraw();
-            this.canvasManager.updateRatio(this.instrumentManager.getInstrument().getBoundingBox());
         }
     }
     
@@ -568,6 +577,21 @@ public class GaudrophoneController {
             }
         }
         return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+        public void addToLiveLoop(Sound sound)
+      {
+        for (LiveLoop ll: this.liveLoops) {
+            if (ll.isRecording())
+                ll.addSound(sound);
+        }
+      }
+    
+    public void stopSound() {
+        for (LiveLoop ll: this.liveLoops) {
+            if (ll.isRecording())
+                ll.stopSound();
+        }
     }
     
     public boolean toggleMute() {
