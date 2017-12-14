@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Alexandre.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,13 @@
  */
 package KeyUtils;
 
-public enum KeyShapeGenType {
-    
-    Rectangle(new RectangleKeyShape()),
-    Triangle(new TriangleKeyShape()),
-    Pentagon(new PentagonKeyShape()),
-    Hexagon(new hexagonKeyShape()),
-    Heptagon(new HeptagonKeyShape()),
-    Octogon(new OctogonKeyShape()),
-    Nonagon(new NonagonKeyShape()),
-    Decagon(new DecagonKeyShape()),
-    Hendecagon(new HendecagonKeyShape()),
-    Dodecagon(new DodecagonKeyShape()),
-    Circle(new CircleKeyShape()),
-    Dank(new DankKeyShape());
-
-    private final KeyShapeGenerator value;
-    
-    private KeyShapeGenType(KeyShapeGenerator value) {
-        this.value = value;
+public class HendecagonKeyShape extends PolygonKeyShape {
+    public HendecagonKeyShape() {
+        this.sides = 11;
     }
 
-    public KeyShapeGenerator getGenerator() {
-        return value;
+    @Override
+    public String getName() {
+        return "Hendecagon";
     }
 }
