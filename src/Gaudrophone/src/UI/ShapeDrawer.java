@@ -141,7 +141,7 @@ public class ShapeDrawer {
                 
                 //Draw the corner dots of the selected shape
                 g2.setColor(POINTS_COLOR);
-                for(java.awt.geom.Ellipse2D dot : DrawableShape.getDot()) {
+                for (java.awt.Shape dot : DrawableShape.getDot()) {
                     g2.fill(dot);
                 }
             }
@@ -442,6 +442,9 @@ public class ShapeDrawer {
         //Black magic right there : that's the intersection point
         //I didn't used cross-vectors calculs, we haven't reached that part in class yet...
         else {
+            if(a1 == a2) {
+                return new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+            }
             x = (b2 - b1) / (a1 - a2);
             y = a1 * x + b1;
         }

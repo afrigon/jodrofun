@@ -23,10 +23,6 @@
  */
 package KeyUtils;
 
-/**
- *
- * @author Olivier
- */
 public class Complex {
     private double real;
     private double imaginary;

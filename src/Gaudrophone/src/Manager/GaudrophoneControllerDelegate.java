@@ -30,4 +30,8 @@ public interface GaudrophoneControllerDelegate {
     public void didMoveKey(Key key);
     public void didMovePoint(Key key);
     public void didSetBPM(int bpm);
+    public void didStopPlayingSong();
+    public void didStartPlayingSong();
+    public void didPauseSong();
+    public void midiDidLink(Key key);
 }

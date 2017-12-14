@@ -28,10 +28,13 @@ import java.awt.Color;
 public class KeyLine implements java.io.Serializable {
     private Color lineColor;
     private double lineThickness;
+    private LineShape shape = LineShape.LINE;
+    private Vector2 curvePoint = new Vector2(0, 0);
     
     // Constructors
     public KeyLine() {
         lineThickness = 1;
+        lineColor = Color.BLACK;
     }
     
     public KeyLine(Color color) {
@@ -60,5 +63,24 @@ public class KeyLine implements java.io.Serializable {
     
     public double getThickness() {
         return lineThickness;
+    }
+    
+    //Curve Managment, currently not used
+    public Vector2 getCurve() {
+        return this.curvePoint;
+    }
+    
+    public void setCurve(Vector2 curvePoint) {
+        this.curvePoint = curvePoint;
+    }
+    
+    public void setShape(LineShape shape, Vector2 p1, Vector2 p2) {
+        this.shape = shape;
+        //Reset curve point
+        this.curvePoint = new Vector2((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY()) / 2);
+    }
+    
+    public LineShape getShape() {
+        return this.shape;
     }
 }
