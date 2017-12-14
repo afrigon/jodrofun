@@ -77,11 +77,11 @@ public class GaudrophoneController {
     }
     
     public Sequencer getSequencer() {
-        return this.sequencer;
+        return sequencer;
     }
     
     public DeviceManager getDeviceManager() {
-        return this.deviceManager;
+        return deviceManager;
     }
     
     public void duplicateKey() {
@@ -569,6 +569,7 @@ public class GaudrophoneController {
         return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
+<<<<<<< HEAD
     public boolean toggleMute() {
         return this.sequencer.toggleMute();
     }
@@ -579,8 +580,15 @@ public class GaudrophoneController {
 
     public void togglePlay() {
         this.sequencer.togglePlay();
+=======
+    public void linkMidiToKey(Key key) {
+        deviceManager.linkMidiToKey(key);
     }
-
+    
+    public void cancelLink() {
+        deviceManager.cancelLink();
+    }
+    
     public LinkedList<Key> getLinkedKeys(int channel, int midiNum) {
         LinkedList<Key> linkedKeys = new LinkedList<>();
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
@@ -589,22 +597,6 @@ public class GaudrophoneController {
             }
         }
         return linkedKeys;
-    }
-    
-    public String midiAction() {
-        Key key = this.selectionManager.getSelectedKey();
-        if (key != null) {
-            if (key.isLinked()) {
-                key.unlink();
-                return "midi_detected";
-            } else {
-                if (this.deviceManager.isLinking()) {
-                    this.deviceManager.cancelLink();
-                    return "midi_detected";    
-                } else {
-                    this.deviceManager.linkMidiToKey(key);
-                }
-            }
-        }
+>>>>>>> 0a2d2eba60e7295c27961bb03691ea811c011502
     }
 }
