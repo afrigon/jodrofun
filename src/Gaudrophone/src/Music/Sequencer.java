@@ -32,9 +32,14 @@ public abstract class Sequencer implements Runnable {
     protected Song song = null;
     protected long lastTimeUpdate = 0;
     protected double currentStep = 0;
+    protected double totalSteps = 0;
     
     public Sequencer(SequencerManager manager) {
         this.manager = manager;
+    }
+    
+    public boolean isPlaying() {
+        return this.isPlaying;
     }
     
     public boolean hasSong() {
@@ -44,6 +49,10 @@ public abstract class Sequencer implements Runnable {
     public void setSong(Song song) {
         this.song = song;
         this.manager.setBPM(song.getBPM());
+        for (PlayableChord chord : song.getChords()) {
+            this.totalSteps += chord.getRelativeSteps();
+        }
+        this.totalSteps += song.getChords().getLast().getLength();
     }
     
     public abstract void play();

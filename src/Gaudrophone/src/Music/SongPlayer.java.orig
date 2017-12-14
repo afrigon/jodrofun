@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 public class SongPlayer extends Sequencer {
     private boolean muted = false;
+<<<<<<< HEAD:src/Gaudrophone/src/Music/SongPlayer.java
     private final ArrayList<Sound> missingSounds = new ArrayList<>();
     
     public SongPlayer(SequencerManager manager) {
@@ -41,25 +42,58 @@ public class SongPlayer extends Sequencer {
     
     public void setMuted(boolean active) {
         this.muted = active;
+=======
+    private double totalSteps = 0;
+    
+    public int getBPM() {
+        return this.bpm;
     }
     
-    public void setPosition(int percent) {
-        if (!this.isPlaying) {
-            this.currentStep = (double)percent*this.totalSteps/100;
-            GaudrophoneController.getController().delegate.updateMediaPlayerSlider(percent);
+    public void setBPM(int bpm) {
+        this.bpm = Math.max(1, Math.min(bpm, 600));
+        this.metronome.adjustBPM(this.bpm);
+        // need to change the time left label
+    }
+    
+    public void setSong(Song song) {
+        this.song = song;
+        this.setBPM(song.getBPM());
+        for (PlayableChord chord : song.getChords()) {
+            totalSteps += chord.getRelativeSteps();
         }
+        totalSteps += song.getChords().getLast().getLength();
+    }
+    
+    public void setMuted(boolean active) {
+        muted = active;
+    }
+    
+    public void setPosition(double step) {
+        currentStep = step;
     }
     
     public String getTimeLeft() {
-        double time = (this.totalSteps-this.currentStep) * 60.0 / this.manager.getBPM();
-        return String.format("%d:%02d", (int) Math.floor(time / 60.0), (int) Math.ceil(time % 60.0));
+        double time = totalSteps * 60.0 / bpm;
+        return String.format("%d:$%02d", (int) Math.floor(time / 60.0), (int) Math.floor(time % 60.0));
+    }
+    
+    //return state
+    public boolean toogleMetronome() {
+        if (!this.metronome.isRunning) {
+            this.metronome.start(this.bpm);
+        } else {
+            this.metronome.close();
+        }
+        return this.metronome.isRunning;
+    }
+    
+    public boolean isMuted() {
+        return this.muted;
+>>>>>>> c95cc2584ae4f92d01f64803e63730def64a7e51:src/Gaudrophone/src/Manager/Sequencer.java
     }
     
     public boolean toggleMute() {
         this.muted = !this.muted;
-        if (this.muted) {
-            GaudrophoneController.getController().getSoundService().closeAll();
-        }
         return this.muted;
     }
     
@@ -91,7 +125,6 @@ public class SongPlayer extends Sequencer {
         this.currentStep = 0;
         GaudrophoneController.getController().getSoundService().closeAll();
         GaudrophoneController.getController().delegate.didStopPlayingSong();
-        GaudrophoneController.getController().delegate.updateMediaPlayerSlider(0);
     }
     
     private double getElapsedTime() {
@@ -176,7 +209,7 @@ public class SongPlayer extends Sequencer {
             double roundPreviousStep = Math.floor(chordEndStep);
             double roundCurrentStep = Math.floor(currentStep);
             if (roundPreviousStep != roundCurrentStep) {
-                GaudrophoneController.getController().delegate.updateMediaPlayerSlider((int)Math.floor(this.currentStep/this.totalSteps*100));
+                // FRIGON HELPZ
             }
             
             if (this.currentStep > chordEndStep) {

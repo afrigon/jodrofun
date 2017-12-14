@@ -518,6 +518,7 @@ public class GaudrophoneController {
     public void loadSong(String path) {
         this.sequencerManager.getSequencer().setSong(new SongIO().Load(path));
         this.delegate.didSetBPM(this.sequencerManager.getBPM());
+        this.delegate.updateMediaPlayerSlider(0);
     }
     
     public void setBPM(int bpm) {

@@ -34,4 +34,5 @@ public interface GaudrophoneControllerDelegate {
     public void didStartPlayingSong();
     public void didPauseSong();
     public void midiDidLink(Key key);
+    public void updateMediaPlayerSlider(int percent);
 }
