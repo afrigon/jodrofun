@@ -23,29 +23,17 @@
  */
 package KeyUtils;
 
-public enum KeyShapeGenType {
-    
-    Triangle(new TriangleKeyShape()),
-    Rectangle(new RectangleKeyShape()),
-    Lozange(new LozangeKeyShape()),
-    Pentagon(new PentagonKeyShape()),
-    Hexagon(new hexagonKeyShape()),
-    Heptagon(new HeptagonKeyShape()),
-    Octogon(new OctogonKeyShape()),
-    Nonagon(new NonagonKeyShape()),
-    Decagon(new DecagonKeyShape()),
-    Hendecagon(new HendecagonKeyShape()),
-    Dodecagon(new DodecagonKeyShape()),
-    Circle(new CircleKeyShape()),
-    Dank(new DankKeyShape());
-
-    private final KeyShapeGenerator value;
-    
-    private KeyShapeGenType(KeyShapeGenerator value) {
-        this.value = value;
+/**
+ *
+ * @author Alexandre
+ */
+public class LozangeKeyShape extends PolygonKeyShape {
+    public LozangeKeyShape() {
+        this.sides = 4;
     }
 
-    public KeyShapeGenerator getGenerator() {
-        return value;
+    @Override
+    public String getName() {
+        return "Lozange";
     }
 }
