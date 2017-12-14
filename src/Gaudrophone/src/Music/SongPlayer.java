@@ -21,57 +21,61 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package Music;
 
-import Music.*;
+import Manager.GaudrophoneController;
+import Manager.SequencerManager;
 import java.util.ArrayList;
 
-public class Sequencer implements Runnable {
-    private final double PRESSED_THRESHOLD = 0.5;
-    private final Metronome metronome = new Metronome();
-    private Song song = null;
-    private int bpm = 120;
-    private boolean isPlaying = false;
-    private long lastTimeUpdate = 0;
-    private double currentStep = 0;
-    private final ArrayList<Sound> missingSounds = new ArrayList<>();
+public class SongPlayer extends Sequencer {
     private boolean muted = false;
+    private final ArrayList<Sound> missingSounds = new ArrayList<>();
     
-    public int getBPM() {
-        return this.bpm;
-    }
-    
-    public void setBPM(int bpm) {
-        this.bpm = Math.max(1, Math.min(bpm, 600));
-        this.metronome.adjustBPM(this.bpm);
-    }
-    
-    public void setSong(Song song) {
-        this.song = song;
-        this.setBPM(song.getBPM());
-    }
-    
-    public void setMuted(boolean active) {
-        muted = active;
-    }
-    
-    //return state
-    public boolean toogleMetronome() {
-        if (!this.metronome.isRunning) {
-            this.metronome.start(this.bpm);
-        } else {
-            this.metronome.close();
-        }
-        return this.metronome.isRunning;
+    public SongPlayer(SequencerManager manager) {
+        super(manager);
     }
     
     public boolean isMuted() {
         return this.muted;
     }
     
+    public void setMuted(boolean active) {
+        this.muted = active;
+    }
+    
     public boolean toggleMute() {
         this.muted = !this.muted;
         return this.muted;
+    }
+    
+    public void togglePlay() {
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.play();
+        }
+    }
+    
+    @Override
+    public void play() {
+        this.isPlaying = true;
+        new Thread(this).start();
+        GaudrophoneController.getController().delegate.didStartPlayingSong();
+    }
+    
+    @Override
+    public void pause() {
+        this.isPlaying = false;
+        GaudrophoneController.getController().getSoundService().closeAll();
+        GaudrophoneController.getController().delegate.didPauseSong();
+    }
+    
+    @Override
+    public void stop() {
+        this.isPlaying = false;
+        this.currentStep = 0;
+        GaudrophoneController.getController().getSoundService().closeAll();
+        GaudrophoneController.getController().delegate.didStopPlayingSong();
     }
     
     private double getElapsedTime() {
@@ -81,25 +85,6 @@ public class Sequencer implements Runnable {
         return ((double) delta) / 1000000000.0;
     }
     
-    public void play() {
-        this.isPlaying = true;
-        new Thread(this).start();
-        GaudrophoneController.getController().delegate.didStartPlayingSong();
-    }
-    
-    public void pause() {
-        this.isPlaying = false;
-        GaudrophoneController.getController().getSoundService().closeAll();
-        GaudrophoneController.getController().delegate.didPauseSong();
-    }
-    
-    public void stop() {
-        this.isPlaying = false;
-        this.currentStep = 0;
-        GaudrophoneController.getController().getSoundService().closeAll();
-        GaudrophoneController.getController().delegate.didStopPlayingSong();
-    }
-    
     public boolean hasNearNote(double frequency) {
         // get note(s) that are supposed to be played very soon (or has been played)
         double chordPlayStep = 0;
@@ -107,7 +92,7 @@ public class Sequencer implements Runnable {
             chordPlayStep += chord.getRelativeSteps();
             
             double deltaStepDifference = Math.abs(this.currentStep - chordPlayStep);
-            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double)this.bpm);
+            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double)this.manager.getBPM());
             
             if (deltaTimeDiff < this.PRESSED_THRESHOLD) {
                 for (PlayableNote note : chord.getNotes()) {
@@ -142,7 +127,7 @@ public class Sequencer implements Runnable {
         getElapsedTime(); // call the method to init lastTimeUpdate
         while (isPlaying) {
             double previousStep = currentStep;
-            currentStep += getElapsedTime() * ((double) bpm) / 60.0; // calculate elapsed steps
+            currentStep += getElapsedTime() * ((double) this.manager.getBPM()) / 60.0; // calculate elapsed steps
             
             double chordPlayStep = 0;
             double chordEndStep = 0;
@@ -176,20 +161,5 @@ public class Sequencer implements Runnable {
                 this.stop();
             }
         }
-    }
-
-    public void stopAll() {
-        this.stop();
-        this.metronome.close();
-        this.muted = false;
-    }
-
-    public void togglePlay() {
-        if (this.isPlaying) {
-            this.pause();
-        } else {
-            this.play();
-        }
-        
     }
 }

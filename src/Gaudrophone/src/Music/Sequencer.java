@@ -25,28 +25,28 @@ package Music;
 
 import Manager.SequencerManager;
 
-public class LiveLoop extends Sequencer {
-    public LiveLoop(SequencerManager manager) {
-        super(manager);
-    }
-
-    @Override
-    public void play() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pause() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void stop() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+public abstract class Sequencer implements Runnable {
+    protected SequencerManager manager;
+    protected final double PRESSED_THRESHOLD = 0.5;
+    protected boolean isPlaying = false;
+    protected Song song = null;
+    protected long lastTimeUpdate = 0;
+    protected double currentStep = 0;
+    
+    public Sequencer(SequencerManager manager) {
+        this.manager = manager;
     }
     
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean hasSong() {
+        return this.song != null;
     }
+    
+    public void setSong(Song song) {
+        this.song = song;
+        this.manager.setBPM(song.getBPM());
+    }
+    
+    public abstract void play();
+    public abstract void pause();
+    public abstract void stop();
 }

@@ -47,7 +47,7 @@ public class GaudrophoneController {
     private final CanvasManager canvasManager = new CanvasManager();
     private final SoundService soundService = SoundService.getSoundService();
     private final SelectionManager selectionManager = new SelectionManager();
-    private final Sequencer sequencer = new Sequencer();
+    private final SequencerManager sequencerManager = new SequencerManager();
     private final DeviceManager deviceManager = new DeviceManager();
     public GaudrophoneControllerDelegate delegate;
     
@@ -76,8 +76,8 @@ public class GaudrophoneController {
         return this.selectionManager;
     }
     
-    public Sequencer getSequencer() {
-        return this.sequencer;
+    public SequencerManager getSequencerManager() {
+        return this.sequencerManager;
     }
     
     public DeviceManager getDeviceManager() {
@@ -140,7 +140,6 @@ public class GaudrophoneController {
             Vector2 origin = key.getShape().getCorner(Corner.topLeft);
             Vector2 bottomRightOrigin = key.getShape().getCorner(Corner.bottomRight);
             Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
-            //this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
             if (size.getX() != 0 && size.getY() != 0) {
                 key.getShape().setSize(size, Corner.topLeft);
@@ -408,9 +407,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setAttack(newAttack);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -418,9 +414,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setDecay(newDecay);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -428,9 +421,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setSustain((double)newSustain/100);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -438,9 +428,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setRelease(newRelease);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -463,7 +450,6 @@ public class GaudrophoneController {
         if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound sound = ((SynthesizedSound)key.getSound());
             sound.setWaveForm(waveFormType.getWaveForm());
-            //sound.refreshBuffer();
         }
     }
 
@@ -530,31 +516,31 @@ public class GaudrophoneController {
     }
 
     public void loadSong(String path) {
-        this.sequencer.setSong(new SongIO().Load(path));
-        this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencerManager.getSequencer().setSong(new SongIO().Load(path));
+        this.delegate.didSetBPM(this.sequencerManager.getBPM());
     }
     
     public void setBPM(int bpm) {
-        this.sequencer.setBPM(bpm);
-        this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencerManager.setBPM(bpm);
+        this.delegate.didSetBPM(this.sequencerManager.getBPM());
     }
     
     public boolean toggleMetronome() {
-        return this.sequencer.toogleMetronome();
+        return this.sequencerManager.toogleMetronome();
     }
     
     public boolean playNote(PlayableNote note) {
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
             if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
                 key.addState(KeyState.clicked);
-                if (!sequencer.isMuted()) {
+                if (!this.sequencerManager.getSequencer().isMuted()) {
                     this.soundService.play(key.getSound());
                 }
                 this.canvasManager.delegate.shouldRedraw();
                 return true;
             }
         }
-        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
     public boolean releaseNote(PlayableNote note) {
@@ -566,19 +552,15 @@ public class GaudrophoneController {
                 return true;
             }
         }
-        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
     public boolean toggleMute() {
-        return this.sequencer.toggleMute();
-    }
-
-    public void closeAutoPlay() {
-        this.sequencer.stopAll();
+        return this.sequencerManager.getSequencer().toggleMute();
     }
 
     public void togglePlay() {
-        this.sequencer.togglePlay();
+        this.sequencerManager.getSequencer().togglePlay();
     }
 
     public LinkedList<Key> getLinkedKeys(int channel, int midiNum) {
