@@ -100,7 +100,6 @@ public class CanvasManager {
                 } else {
                     key.play();
                 }
-                
                 this.lastKey = key;
                 break;
         }
@@ -131,6 +130,7 @@ public class CanvasManager {
     
     public void released(Key key) {
         switch (this.state) {
+            case AutoPlay:
             case Play:
                 if (key != null) {
                     key.release();
@@ -151,7 +151,9 @@ public class CanvasManager {
     
     public void released(int x, int y, int button) {
         switch (this.state) {
+            case AutoPlay:
             case Play:
+                this.released(this.lastKey);
                 this.lastKey = null;
                 break;
             case CreatingShape :
