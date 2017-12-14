@@ -170,6 +170,10 @@ public class Key implements java.io.Serializable {
         return (linked && linkedChannel == channel && linkedMidiNumber == midiNum);
     }
     
+    public boolean isLinked() {
+        return linked;
+    }
+    
     public void unlink() {
         linked = false;
     }
