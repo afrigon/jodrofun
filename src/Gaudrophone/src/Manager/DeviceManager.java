@@ -71,6 +71,7 @@ public final class DeviceManager {
                         GaudrophoneController.getController().getCanvasManager().clicked(linkedKey);
                     else
                         GaudrophoneController.getController().getCanvasManager().released(linkedKey);
+                    GaudrophoneController.getController().getCanvasManager().delegate.shouldRedraw();
                 }
             }
         }
