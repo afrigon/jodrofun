@@ -69,7 +69,7 @@ public class SequencerManager {
     
     public void setMetronomeState(boolean state) {
         if (state) {
-            this.metronome.start();
+            this.metronome.start(this.bpm);
         } else {
             this.metronome.close();
         }

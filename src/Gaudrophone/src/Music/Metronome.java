@@ -23,31 +23,66 @@
  */
 package Music;
 
-public class Metronome extends Thread {
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+public class Metronome {
     private int bpm = 120;
     public boolean isRunning = false;
+    private AudioInputStream stream;
     
     public void start(int bpm) {
         this.bpm = bpm;
-        if (!this.isRunning) {
-            this.isRunning = true;
-            super.start();
-        }
+        this.isRunning = true;
+        
+        try {
+            Clip clip = AudioSystem.getClip();
+            stream = AudioSystem.getAudioInputStream(getClass().getResource("/resources/metronome.wav"));
+            clip.open(stream);
+            this.cosmos(clip);        
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) {}
     }
     
     public void adjustBPM(int bpm) {
         this.bpm = bpm;
     }
     
-    @Override
-    public void run() {
-        try {
-            for(;this.isRunning; this.sleep(60000/this.bpm))
-                java.awt.Toolkit.getDefaultToolkit().beep();
-        } catch (InterruptedException e) { this.close(); }   
+    //does things
+    public void cosmos(Clip clip) {
+        if (this.isRunning) {
+            ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
+            es.schedule(new Work(clip, this), (int)((double)60000/this.bpm), TimeUnit.MILLISECONDS);
+        } else {
+            clip.stop();
+            clip.close();
+        }
     }
-    
+
     public void close() {
         this.isRunning = false;
+    }
+}
+
+class Work implements Runnable {
+    private final Clip clip;
+    private final Metronome metronome;
+    
+    public Work(Clip clip, Metronome metronome) {
+        this.clip = clip;
+        this.metronome = metronome;
+    }
+    
+    @Override
+    public void run() {
+        clip.setMicrosecondPosition(0);
+        clip.start();
+        this.metronome.cosmos(clip);
     }
 }
