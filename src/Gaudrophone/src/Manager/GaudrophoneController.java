@@ -530,28 +530,35 @@ public class GaudrophoneController {
         return this.sequencerManager.toogleMetronome();
     }
     
-    public boolean playNote(PlayableNote note) {
+    public Key getKeyFromPlayableNote(PlayableNote note) {
         for (Key key: this.instrumentManager.getInstrument().getKeys()) {
-            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
-                key.addState(KeyState.clicked);
-                if (!this.sequencerManager.getSequencer().isMuted()) {
-                    this.soundService.play(key.getSound());
-                }
-                this.canvasManager.delegate.shouldRedraw();
-                return true;
+            if(key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                return key;
             }
+        }
+        return null;
+    }
+    
+    public boolean playNote(PlayableNote note) {
+        Key key = this.getKeyFromPlayableNote(note);
+        if(key != null) {
+            key.addState(KeyState.clicked);
+            if (!this.sequencerManager.getSequencer().isMuted()) {
+                this.soundService.play(key.getSound());
+            }
+            this.canvasManager.delegate.shouldRedraw();
+            return true;
         }
         return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
     public boolean releaseNote(PlayableNote note) {
-        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
-            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
-                key.removeState(KeyState.clicked);
-                this.soundService.release(key.getSound());
-                this.canvasManager.delegate.shouldRedraw();
-                return true;
-            }
+        Key key = this.getKeyFromPlayableNote(note);
+        if(key != null) {
+            key.removeState(KeyState.clicked);
+            this.soundService.release(key.getSound());
+            this.canvasManager.delegate.shouldRedraw();
+            return true;
         }
         return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }

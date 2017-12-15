@@ -31,7 +31,8 @@ public enum KeyState {
     displayNote(16),
     displayAlteration(32),
     displayOctave(64),
-    displayName(128);
+    displayName(128),
+    presentInSong(256);
 
     private final int value;
     private KeyState(int value) {

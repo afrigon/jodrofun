@@ -35,6 +35,16 @@ public class SongPlayer extends Sequencer {
         super(manager);
     }
     
+    @Override
+    public void setSong(Song song) {
+        super.setSong(song);
+        for(PlayableChord chord : song.getChords()){
+            for(PlayableNote note : chord.getNotes()) {
+                GaudrophoneController.getController().getKeyFromPlayableNote(note);
+            }
+        }
+    }
+    
     public boolean isMuted() {
         return this.muted;
     }
