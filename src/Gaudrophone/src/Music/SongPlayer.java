@@ -23,6 +23,7 @@
  */
 package Music;
 
+import Instrument.KeyState;
 import Manager.GaudrophoneController;
 import Manager.SequencerManager;
 import java.util.ArrayList;
@@ -33,6 +34,20 @@ public class SongPlayer extends Sequencer {
     
     public SongPlayer(SequencerManager manager) {
         super(manager);
+    }
+    
+    @Override
+    public void setSong(Song song) {
+        super.setSong(song);
+        for(PlayableChord chord : song.getChords()){
+            for(PlayableNote note : chord.getNotes()) {
+                Instrument.Key key = GaudrophoneController.getController().getKeyFromPlayableNote(note);
+                if(key != null) {
+                    key.addState(KeyState.presentInSong);
+                }
+            }
+        }
+        GaudrophoneController.getController().getCanvasManager().delegate.shouldRedraw();
     }
     
     public boolean isMuted() {
