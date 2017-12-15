@@ -27,7 +27,7 @@ public enum KeyShapeGenType {
     
     Triangle(new TriangleKeyShape()),
     Rectangle(new RectangleKeyShape()),
-    Lozange(new LozangeKeyShape()),
+    Lozange(new LosangeKeyShape()),
     Pentagon(new PentagonKeyShape()),
     Hexagon(new hexagonKeyShape()),
     Heptagon(new HeptagonKeyShape()),

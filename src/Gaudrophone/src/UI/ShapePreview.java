@@ -28,9 +28,11 @@ import java.awt.RenderingHints;
 import KeyUtils.KeyShape;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
+import java.awt.BasicStroke;
 import java.awt.geom.Line2D;
 import java.awt.Polygon;
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 /**
  *
@@ -40,13 +42,30 @@ public class ShapePreview extends javax.swing.JPanel {
     
     private KeyShapeGenerator shapeGen = null;
     private KeyShape shape = null;
+    private static java.util.LinkedList<ShapePreview> previews = new java.util.LinkedList<>();
+    private static ShapePreview selected = null;
     
     public ShapePreview() {
-        
+        ShapePreview.previews.add(this);
+        this.setBackground(new Color(51,51,51));
     }
     
     public ShapePreview(KeyShapeGenerator p_shape) {
+        ShapePreview.previews.add(this);
+        this.setBackground(new Color(51,51,51));
         this.shapeGen = p_shape;
+    }
+    
+    public static void deselect() {
+        selected = null;
+    }
+    
+    public static void repaintAll() {
+        ShapePreview.previews.forEach(ShapePreview::repaint);
+    }
+    
+    public void select() {
+        selected = this;
     }
     
     public void setShapeGenerator(KeyShapeGenerator gen) {
@@ -99,6 +118,14 @@ public class ShapePreview extends javax.swing.JPanel {
             for(int i = 0; i < lines.size(); ++i) {
                 g2.setColor(colors.get(i));
                 g2.draw(lines.get(i));
+            }
+            
+            if(ShapePreview.selected == this) {
+                Rectangle2D boundingBox = p.getBounds2D();
+                float[] f = {4, 2};
+                g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
+                g2.setColor(new Color(0x388e3c));
+                g2.draw(new Rectangle2D.Double(boundingBox.getX() - 4, boundingBox.getY() - 4, boundingBox.getWidth() + 8, boundingBox.getHeight() + 8));
             }
         }
     }

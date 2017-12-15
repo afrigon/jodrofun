@@ -27,13 +27,13 @@ package KeyUtils;
  *
  * @author Alexandre
  */
-public class LozangeKeyShape extends PolygonKeyShape {
-    public LozangeKeyShape() {
+public class LosangeKeyShape extends PolygonKeyShape {
+    public LosangeKeyShape() {
         this.sides = 4;
     }
 
     @Override
     public String getName() {
-        return "Lozange";
+        return "Losange";
     }
 }

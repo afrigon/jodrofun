@@ -307,7 +307,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModeAutoPlay = new javax.swing.JMenuItem();
         menuModeInsert = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("/"));
+        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.2"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1601,9 +1601,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         shapeGenWrapper.setAutoscrolls(true);
 
         shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
-        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10);
-        flowLayout2.setAlignOnBaseline(true);
-        shapeGenPanel.setLayout(flowLayout2);
+        shapeGenPanel.setLayout(new javax.swing.BoxLayout(shapeGenPanel, javax.swing.BoxLayout.Y_AXIS));
         shapeGenWrapper.setViewportView(shapeGenPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2700,8 +2698,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 panel.setPreferredSize(new Dimension(100, 100));
                 panel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
-                    public void mousePressed(java.awt.event.MouseEvent e) {
+                    public void mouseClicked(java.awt.event.MouseEvent e) {
                         setSelectedCreatingShape(gen.getGenerator());
+                        ((ShapePreview)e.getSource()).select();
+                        ShapePreview.repaintAll();
                     }
                 });
                 this.shapeGenPanel.add(panel);
@@ -3111,6 +3111,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.menuEditNext.setEnabled(false);
         this.menuEditPrevious.setEnabled(false);
         this.manageToolBar(state);
+        
+        ShapePreview.deselect();
         
         if (state != State.Play) {
             GaudrophoneController.getController().getSequencerManager().setMetronomeState(false);

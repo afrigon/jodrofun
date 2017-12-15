@@ -60,8 +60,8 @@ public class PolygonKeyShape implements KeyShapeGenerator {
         
         Vector2 center = position.add(new Vector2(sizes.getX()/2, sizes.getY()/2));
         for (int i = 0; i < this.sides; i++) {
-            double x = center.getX() - (sizeX/2) * Math.cos(2 * Math.PI * i / this.sides);
-            double y = center.getY() - (sizeY/2) * Math.sin(2 * Math.PI * i / this.sides);
+            double x = center.getX() - (sizeX/2) * Math.sin(2 * Math.PI * i / this.sides);
+            double y = center.getY() - (sizeY/2) * Math.cos(2 * Math.PI * i / this.sides);
             pointList.add(new Vector2(x, y));
         }
         
