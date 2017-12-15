@@ -51,6 +51,8 @@ import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
+import java.util.Random;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
@@ -307,7 +309,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuModeAutoPlay = new javax.swing.JMenuItem();
         menuModeInsert = new javax.swing.JMenuItem();
 
-        fileDialog.setCurrentDirectory(new java.io.File("C:\\Program Files\\NetBeans 8.2"));
+        fileDialog.setCurrentDirectory(new java.io.File("/"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaudrophone");
@@ -1599,9 +1601,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         shapeGenWrapper.setBorder(null);
         shapeGenWrapper.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         shapeGenWrapper.setAutoscrolls(true);
+        shapeGenWrapper.setViewportView(shapeGenPanel);
 
         shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
-        shapeGenPanel.setLayout(new javax.swing.BoxLayout(shapeGenPanel, javax.swing.BoxLayout.Y_AXIS));
+        shapeGenPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 15));
+        shapeGenPanel.setLayout(new java.awt.GridLayout(0, 3, 15, 15));
         shapeGenWrapper.setViewportView(shapeGenPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1609,8 +1613,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
         gridBagConstraints.weighty = 2.147483647E9;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         informationWrapper4.add(shapeGenWrapper, gridBagConstraints);
 
         visualWrapper5.add(informationWrapper4);
@@ -2695,7 +2701,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 this.insertMenuItem.add(menuItem);
                 
                 ShapePreview panel = new ShapePreview(gen.getGenerator());
-                panel.setPreferredSize(new Dimension(100, 100));
+                panel.setPreferredSize(new Dimension(20, 20));
+                panel.setBackground(new Color(65, 65, 65));
                 panel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent e) {

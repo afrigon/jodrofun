@@ -28,18 +28,12 @@ import java.awt.RenderingHints;
 import KeyUtils.KeyShape;
 import KeyUtils.KeyShapeGenerator;
 import KeyUtils.Vector2;
-import java.awt.BasicStroke;
 import java.awt.geom.Line2D;
 import java.awt.Polygon;
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
+import javax.swing.BorderFactory;
 
-/**
- *
- * @author Alexandre
- */
 public class ShapePreview extends javax.swing.JPanel {
-    
     private KeyShapeGenerator shapeGen = null;
     private KeyShape shape = null;
     private static java.util.LinkedList<ShapePreview> previews = new java.util.LinkedList<>();
@@ -57,7 +51,11 @@ public class ShapePreview extends javax.swing.JPanel {
     }
     
     public static void deselect() {
-        selected = null;
+        selected = null;        
+        for (ShapePreview preview: ShapePreview.previews) {
+            preview.setBorder(BorderFactory.createLineBorder(new Color(65, 65, 65), 10, true));
+        }
+        
     }
     
     public static void repaintAll() {
@@ -66,6 +64,7 @@ public class ShapePreview extends javax.swing.JPanel {
     
     public void select() {
         selected = this;
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0xf19335), 3, true), BorderFactory.createLineBorder(new Color(65, 65, 65), 7, true)));
     }
     
     public void setShapeGenerator(KeyShapeGenerator gen) {
@@ -82,10 +81,9 @@ public class ShapePreview extends javax.swing.JPanel {
         Graphics2D g2 = (Graphics2D)g;
         
         if(shapeGen != null) {
-            
-            this.shape = this.shapeGen.generate(
-                    Math.min(this.getWidth() - 10, this.getHeight() - 10),
-                    new Vector2(Math.max(5, (this.getWidth() - this.getHeight() + 10) / 2), Math.max(5, (this.getHeight() - this.getWidth() + 10) / 2)));
+            this.shape = this.shapeGen.generate(Math.min(this.getWidth() - 20, this.getHeight() - 20),
+                                                new Vector2(Math.max(10, (this.getWidth() - this.getHeight() + 20) / 2),
+                                                            Math.max(10, (this.getHeight() - this.getWidth() + 20) / 2)));
             
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -118,14 +116,6 @@ public class ShapePreview extends javax.swing.JPanel {
             for(int i = 0; i < lines.size(); ++i) {
                 g2.setColor(colors.get(i));
                 g2.draw(lines.get(i));
-            }
-            
-            if(ShapePreview.selected == this) {
-                Rectangle2D boundingBox = p.getBounds2D();
-                float[] f = {4, 2};
-                g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5, f, 0));
-                g2.setColor(new Color(0x388e3c));
-                g2.draw(new Rectangle2D.Double(boundingBox.getX() - 4, boundingBox.getY() - 4, boundingBox.getWidth() + 8, boundingBox.getHeight() + 8));
             }
         }
     }
