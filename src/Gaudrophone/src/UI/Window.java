@@ -645,8 +645,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         backgroundDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         backgroundDisplayLabel.setOpaque(true);
         backgroundDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backgroundDisplayLabelMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                backgroundDisplayLabelMouseReleased(evt);
             }
         });
         backgroundSpacer.add(backgroundDisplayLabel);
@@ -675,8 +675,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         textColorDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         textColorDisplayLabel.setOpaque(true);
         textColorDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                textColorDisplayLabelMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                textColorDisplayLabelMouseReleased(evt);
             }
         });
         textColorSpacer.add(textColorDisplayLabel);
@@ -727,8 +727,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         backgroundSunkenDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         backgroundSunkenDisplayLabel.setOpaque(true);
         backgroundSunkenDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backgroundSunkenDisplayLabelMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                backgroundSunkenDisplayLabelMouseReleased(evt);
             }
         });
         sunkenSpacer.add(backgroundSunkenDisplayLabel);
@@ -757,8 +757,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         textSunkenColorDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         textSunkenColorDisplayLabel.setOpaque(true);
         textSunkenColorDisplayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                textSunkenColorDisplayLabelMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                textSunkenColorDisplayLabelMouseReleased(evt);
             }
         });
         textSunkenColorSpacer.add(textSunkenColorDisplayLabel);
@@ -863,6 +863,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         lineColorEditButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lineColorEditButton.setOpaque(true);
         lineColorEditButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lineColorEditButtonMouseReleased(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lineColorEditButtonMouseClicked(evt);
             }
@@ -1565,10 +1568,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         insertPannel.setBorder(null);
         insertPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         insertPannel.setAutoscrolls(true);
+        insertPannel.setMaximumSize(new java.awt.Dimension(415, 32767));
         insertPannel.setMinimumSize(new java.awt.Dimension(415, 200));
         insertPannel.setPreferredSize(new java.awt.Dimension(415, 200));
 
         visualPanel5.setBackground(new java.awt.Color(65, 65, 65));
+        visualPanel5.setMaximumSize(new java.awt.Dimension(110, 2147483647));
         visualPanel5.setMinimumSize(new java.awt.Dimension(600, 655));
         visualPanel5.setLayout(new javax.swing.BoxLayout(visualPanel5, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -2348,22 +2353,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         }
     }//GEN-LAST:event_buttonAddSunkenImageActionPerformed
 
-    private void backgroundDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundDisplayLabelMouseClicked
-        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundDisplayLabel.getBackground());
-        if (color != null) {
-            GaudrophoneController.getController().setKeyColor(color);
-            this.backgroundDisplayLabel.setBackground(color);
-        }
-    }//GEN-LAST:event_backgroundDisplayLabelMouseClicked
-
-    private void backgroundSunkenDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundSunkenDisplayLabelMouseClicked
-        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundSunkenDisplayLabel.getBackground());
-        if (color != null) {
-            GaudrophoneController.getController().setKeySunkenColor(color);
-            this.backgroundSunkenDisplayLabel.setBackground(color);
-        }
-    }//GEN-LAST:event_backgroundSunkenDisplayLabelMouseClicked
-
     private void octaveSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_octaveSpinnerStateChanged
         GaudrophoneController.getController().setOctave((int)this.octaveSpinner.getValue());
     }//GEN-LAST:event_octaveSpinnerStateChanged
@@ -2383,22 +2372,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void tuningSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tuningSpinnerStateChanged
         GaudrophoneController.getController().setTuning((int)this.tuningSpinner.getValue());
     }//GEN-LAST:event_tuningSpinnerStateChanged
-
-    private void textColorDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textColorDisplayLabelMouseClicked
-        Color color = JColorChooser.showDialog(this, "Choisir une couleur", textColorDisplayLabel.getBackground());
-        if (color != null) {
-            GaudrophoneController.getController().setKeyTextColor(color);
-            this.textColorDisplayLabel.setBackground(color);
-        }
-    }//GEN-LAST:event_textColorDisplayLabelMouseClicked
-
-    private void textSunkenColorDisplayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSunkenColorDisplayLabelMouseClicked
-        Color color = JColorChooser.showDialog(this, "Choisir une couleur", textSunkenColorDisplayLabel.getBackground());
-        if (color != null) {
-            GaudrophoneController.getController().setKeySunkenTextColor(color);
-            this.textSunkenColorDisplayLabel.setBackground(color);
-        }
-    }//GEN-LAST:event_textSunkenColorDisplayLabelMouseClicked
 
     private void xSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSpinnerStateChanged
         GaudrophoneController.getController().setKeyPosition(new Vector2((double)this.xSpinner.getValue(), (double)this.ySpinner.getValue()));
@@ -2550,7 +2523,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }//GEN-LAST:event_waveformComboBoxActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        GaudrophoneController.getController().search(this.searchTextField.getText());
+        if (!"".equals(this.searchTextField.getText())) {
+            GaudrophoneController.getController().search(this.searchTextField.getText());
+        }
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
     private void openSongMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSongMenuItemActionPerformed
@@ -2650,6 +2625,49 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             GaudrophoneController.getController().getSequencerManager().getSequencer().play();
         }
     }//GEN-LAST:event_songSliderMouseReleased
+
+    private void textSunkenColorDisplayLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSunkenColorDisplayLabelMouseReleased
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", textSunkenColorDisplayLabel.getBackground());
+        if (color != null) {
+            GaudrophoneController.getController().setKeySunkenTextColor(color);
+            this.textSunkenColorDisplayLabel.setBackground(color);
+        }
+    }//GEN-LAST:event_textSunkenColorDisplayLabelMouseReleased
+
+    private void backgroundSunkenDisplayLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundSunkenDisplayLabelMouseReleased
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundSunkenDisplayLabel.getBackground());
+        if (color != null) {
+            GaudrophoneController.getController().setKeySunkenColor(color);
+            this.backgroundSunkenDisplayLabel.setBackground(color);
+        }
+    }//GEN-LAST:event_backgroundSunkenDisplayLabelMouseReleased
+
+    private void textColorDisplayLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textColorDisplayLabelMouseReleased
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", textColorDisplayLabel.getBackground());
+        if (color != null) {
+            GaudrophoneController.getController().setKeyTextColor(color);
+            this.textColorDisplayLabel.setBackground(color);
+        }
+    }//GEN-LAST:event_textColorDisplayLabelMouseReleased
+
+    private void backgroundDisplayLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundDisplayLabelMouseReleased
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundDisplayLabel.getBackground());
+        if (color != null) {
+            GaudrophoneController.getController().setKeyColor(color);
+            this.backgroundDisplayLabel.setBackground(color);
+        }
+    }//GEN-LAST:event_backgroundDisplayLabelMouseReleased
+
+    private void lineColorEditButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lineColorEditButtonMouseReleased
+        Color color = JColorChooser.showDialog(this, "Choisir une couleur", backgroundDisplayLabel.getBackground());
+        if (color != null) {
+            if(GaudrophoneController.getController().getSelectionManager().getSelectedLine() == -5)
+                GaudrophoneController.getController().setAllLineColor(color);
+            else
+                GaudrophoneController.getController().setLineColor(color);
+            this.lineColorEditButton.setBackground(color);
+        }
+    }//GEN-LAST:event_lineColorEditButtonMouseReleased
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
@@ -2689,16 +2707,23 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 JMenuItem menuItem = new JMenuItem(gen.getGenerator().getName());
                 menuItem.addActionListener((java.awt.event.ActionEvent evt) -> {
                     setSelectedCreatingShape(gen.getGenerator());
+                    for (Component component: this.shapeGenPanel.getComponents()) {
+                        ShapePreview preview = (ShapePreview)component;
+                        if (preview.getShapeGenerator().getName() == gen.getGenerator().getName()) {
+                            preview.select();
+                        }
+                    }
                 });
                 this.insertMenuItem.add(menuItem);
                 
                 ShapePreview panel = new ShapePreview(gen.getGenerator());
                 panel.setPreferredSize(new Dimension(20, 20));
                 panel.setBackground(new Color(65, 65, 65));
+                panel.setToolTipText(panel.getShapeGenerator().getName());
                 panel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
-                    public void mouseClicked(java.awt.event.MouseEvent e) {
-                        setSelectedCreatingShape(gen.getGenerator());
+                    public void mouseReleased(java.awt.event.MouseEvent e) {
+                        setSelectedCreatingShape(panel.getShapeGenerator());
                         ((ShapePreview)e.getSource()).select();
                         ShapePreview.repaintAll();
                     }

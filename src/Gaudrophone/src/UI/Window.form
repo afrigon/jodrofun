@@ -1168,7 +1168,7 @@
                                         <Property name="opaque" type="boolean" value="true"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="backgroundDisplayLabelMouseClicked"/>
+                                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="backgroundDisplayLabelMouseReleased"/>
                                       </Events>
                                     </Component>
                                     <Component class="javax.swing.Box$Filler" name="filler3">
@@ -1255,7 +1255,7 @@
                                         <Property name="opaque" type="boolean" value="true"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textColorDisplayLabelMouseClicked"/>
+                                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textColorDisplayLabelMouseReleased"/>
                                       </Events>
                                     </Component>
                                     <Component class="javax.swing.Box$Filler" name="filler11">
@@ -1409,7 +1409,7 @@
                                         <Property name="opaque" type="boolean" value="true"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="backgroundSunkenDisplayLabelMouseClicked"/>
+                                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="backgroundSunkenDisplayLabelMouseReleased"/>
                                       </Events>
                                     </Component>
                                     <Component class="javax.swing.Box$Filler" name="filler5">
@@ -1496,7 +1496,7 @@
                                         <Property name="opaque" type="boolean" value="true"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textSunkenColorDisplayLabelMouseClicked"/>
+                                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textSunkenColorDisplayLabelMouseReleased"/>
                                       </Events>
                                     </Component>
                                     <Component class="javax.swing.Box$Filler" name="filler13">
@@ -1836,6 +1836,7 @@
                                                 <Property name="opaque" type="boolean" value="true"/>
                                               </Properties>
                                               <Events>
+                                                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lineColorEditButtonMouseReleased"/>
                                                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lineColorEditButtonMouseClicked"/>
                                               </Events>
                                             </Component>
@@ -3451,6 +3452,9 @@
             </Property>
             <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
             <Property name="autoscrolls" type="boolean" value="true"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[415, 32767]"/>
+            </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[415, 200]"/>
             </Property>
@@ -3470,6 +3474,9 @@
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="41" green="41" red="41" type="rgb"/>
+                </Property>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[110, 2147483647]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[600, 655]"/>

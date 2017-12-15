@@ -48,6 +48,7 @@ public class ShapePreview extends javax.swing.JPanel {
         ShapePreview.previews.add(this);
         this.setBackground(new Color(51,51,51));
         this.shapeGen = p_shape;
+        this.shapeGen.setShouldConvertToRelative(false);
     }
     
     public static void deselect() {
@@ -73,7 +74,12 @@ public class ShapePreview extends javax.swing.JPanel {
     }
     
     public KeyShapeGenerator getShapeGenerator() {
-        return this.shapeGen;
+        try {
+            return this.shapeGen.getClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            System.out.println("UI.ShapePreview.getShapeGenerator() catch");
+            return this.shapeGen;
+        }
     }
     
     @Override
