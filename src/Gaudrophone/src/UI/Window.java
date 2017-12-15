@@ -3124,6 +3124,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         if (state != State.Play) {
             GaudrophoneController.getController().getSequencerManager().setMetronomeState(false);
         }
+        if (state != State.AutoPlay) {
+            GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().forEach((k) -> {
+                k.removeState(KeyState.presentInSong);
+            });
+        }
         
         switch (state) {
             case Play:        
