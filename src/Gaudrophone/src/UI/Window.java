@@ -31,8 +31,6 @@ import Instrument.KeyState;
 import Music.Note;
 import Instrument.Pattern.Piano;
 import KeyUtils.Corner;
-import KeyUtils.Generator.RectangleKeyShape;
-import KeyUtils.Generator.TriangleKeyShape;
 import KeyUtils.Generator.KeyShapeGenType;
 import KeyUtils.Generator.KeyShapeGenerator;
 import KeyUtils.Vector2;
@@ -51,8 +49,6 @@ import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
-import java.util.Random;
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
@@ -228,13 +224,33 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         readSpeedProperty = new javax.swing.JPanel();
         readSpeedLabel = new javax.swing.JLabel();
         readSpeedSpinner = new javax.swing.JSpinner();
+        songPannel = new javax.swing.JScrollPane();
+        insertPannel = new javax.swing.JScrollPane();
+        visualPanel5 = new javax.swing.JPanel();
+        visualWrapper5 = new javax.swing.JPanel();
+        informationWrapper4 = new javax.swing.JPanel();
+        informationTitle4 = new javax.swing.JLabel();
+        shapeGenPanel = new javax.swing.JPanel();
         playPannel = new javax.swing.JScrollPane();
         visualPanel4 = new javax.swing.JPanel();
         visualWrapper4 = new javax.swing.JPanel();
+        informationWrapper6 = new javax.swing.JPanel();
+        informationTitle6 = new javax.swing.JLabel();
+        informationWrapper5 = new javax.swing.JPanel();
+        informationTitle5 = new javax.swing.JLabel();
         keyNameProperty8 = new javax.swing.JPanel();
         keyNameLabel8 = new javax.swing.JLabel();
         bpmSpinner = new javax.swing.JSpinner();
-        songPannel = new javax.swing.JScrollPane();
+        liveloopWrapper = new javax.swing.JPanel();
+        liveloop1 = new GradientPanel(0);
+        liveloop2 = new GradientPanel(35);
+        liveloop3 = new GradientPanel(70);
+        liveloop4 = new GradientPanel(105);
+        liveloop5 = new GradientPanel(140);
+        liveloop6 = new GradientPanel(175);
+        liveloop7 = new GradientPanel(210);
+        liveloop8 = new GradientPanel(245);
+        liveloop9 = new GradientPanel(280);
         globalEditPannel = new javax.swing.JScrollPane();
         visualPanel3 = new javax.swing.JPanel();
         visualWrapper3 = new javax.swing.JPanel();
@@ -246,12 +262,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         keyNameProperty4 = new javax.swing.JPanel();
         keyNameLabel4 = new javax.swing.JLabel();
         masterWaveformComboBox = new javax.swing.JComboBox(WaveFormType.values());
-        insertPannel = new javax.swing.JScrollPane();
-        visualPanel5 = new javax.swing.JPanel();
-        visualWrapper5 = new javax.swing.JPanel();
-        informationWrapper4 = new javax.swing.JPanel();
-        informationTitle4 = new javax.swing.JLabel();
-        shapeGenPanel = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         buttonPlayMode = new javax.swing.JButton();
@@ -314,7 +324,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         setTitle("Gaudrophone");
         setBackground(new java.awt.Color(65, 65, 65));
         setLocation(new java.awt.Point(100, 100));
-        setMinimumSize(new java.awt.Dimension(500, 300));
+        setMinimumSize(new java.awt.Dimension(500, 500));
         setPreferredSize(new java.awt.Dimension(959, 760));
 
         splitWindow.setBackground(new java.awt.Color(51, 51, 51));
@@ -1428,49 +1438,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         splitWindow.setRightComponent(editPannel);
 
-        playPannel.setBackground(new java.awt.Color(65, 65, 65));
-        playPannel.setBorder(null);
-        playPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        playPannel.setAutoscrolls(true);
-        playPannel.setMinimumSize(new java.awt.Dimension(415, 200));
-        playPannel.setPreferredSize(new java.awt.Dimension(415, 200));
-
-        visualPanel4.setBackground(new java.awt.Color(65, 65, 65));
-        visualPanel4.setMinimumSize(new java.awt.Dimension(600, 655));
-        visualPanel4.setPreferredSize(new java.awt.Dimension(50, 200));
-        visualPanel4.setLayout(new javax.swing.BoxLayout(visualPanel4, javax.swing.BoxLayout.LINE_AXIS));
-
-        visualWrapper4.setBackground(new java.awt.Color(65, 65, 65));
-        visualWrapper4.setLayout(new javax.swing.BoxLayout(visualWrapper4, javax.swing.BoxLayout.PAGE_AXIS));
-
-        keyNameProperty8.setBackground(new java.awt.Color(65, 65, 65));
-        keyNameProperty8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        keyNameProperty8.setMinimumSize(new java.awt.Dimension(125, 32));
-        keyNameProperty8.setPreferredSize(new java.awt.Dimension(375, 0));
-        keyNameProperty8.setLayout(new java.awt.GridLayout(1, 0));
-
-        keyNameLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        keyNameLabel8.setText("BPM :");
-        keyNameLabel8.setMinimumSize(new java.awt.Dimension(40, 16));
-        keyNameLabel8.setPreferredSize(new java.awt.Dimension(0, 0));
-        keyNameProperty8.add(keyNameLabel8);
-
-        bpmSpinner.setModel(new javax.swing.SpinnerNumberModel(120, 1, 600, 1));
-        bpmSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                bpmSpinnerStateChanged(evt);
-            }
-        });
-        keyNameProperty8.add(bpmSpinner);
-
-        visualWrapper4.add(keyNameProperty8);
-
-        visualPanel4.add(visualWrapper4);
-
-        playPannel.setViewportView(visualPanel4);
-
-        splitWindow.setRightComponent(playPannel);
-
         songPannel.setBackground(new java.awt.Color(65, 65, 65));
         songPannel.setBorder(null);
         songPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -1478,91 +1445,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         songPannel.setMinimumSize(new java.awt.Dimension(415, 200));
         songPannel.setPreferredSize(new java.awt.Dimension(415, 200));
         splitWindow.setRightComponent(songPannel);
-
-        globalEditPannel.setBackground(new java.awt.Color(65, 65, 65));
-        globalEditPannel.setBorder(null);
-        globalEditPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        globalEditPannel.setAutoscrolls(true);
-        globalEditPannel.setMinimumSize(new java.awt.Dimension(415, 200));
-        globalEditPannel.setPreferredSize(new java.awt.Dimension(415, 200));
-
-        visualPanel3.setBackground(new java.awt.Color(65, 65, 65));
-        visualPanel3.setMinimumSize(new java.awt.Dimension(600, 655));
-        visualPanel3.setPreferredSize(new java.awt.Dimension(50, 200));
-        visualPanel3.setLayout(new javax.swing.BoxLayout(visualPanel3, javax.swing.BoxLayout.LINE_AXIS));
-
-        visualWrapper3.setBackground(new java.awt.Color(65, 65, 65));
-        visualWrapper3.setLayout(new javax.swing.BoxLayout(visualWrapper3, javax.swing.BoxLayout.PAGE_AXIS));
-
-        informationWrapper3.setBackground(new java.awt.Color(65, 65, 65));
-        informationWrapper3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        informationWrapper3.setPreferredSize(new java.awt.Dimension(50, 20));
-        informationWrapper3.setLayout(new java.awt.GridLayout(1, 0));
-
-        informationTitle3.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        informationTitle3.setForeground(new java.awt.Color(255, 255, 255));
-        informationTitle3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        informationTitle3.setText("Instrument");
-        informationTitle3.setToolTipText("");
-        informationTitle3.setPreferredSize(new java.awt.Dimension(72, 20));
-        informationWrapper3.add(informationTitle3);
-
-        visualWrapper3.add(informationWrapper3);
-
-        keyNameProperty3.setBackground(new java.awt.Color(65, 65, 65));
-        keyNameProperty3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        keyNameProperty3.setMinimumSize(new java.awt.Dimension(125, 32));
-        keyNameProperty3.setPreferredSize(new java.awt.Dimension(375, 0));
-        keyNameProperty3.setLayout(new java.awt.GridLayout(1, 0));
-
-        keyNameLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        keyNameLabel3.setText("Nom de l'instrument :");
-        keyNameLabel3.setMinimumSize(new java.awt.Dimension(40, 16));
-        keyNameLabel3.setPreferredSize(new java.awt.Dimension(0, 0));
-        keyNameProperty3.add(keyNameLabel3);
-
-        instrumentNameField.setBackground(new java.awt.Color(238, 238, 238));
-        instrumentNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        instrumentNameField.setText("Nom de l'instrument");
-        instrumentNameField.setBorder(null);
-        instrumentNameField.setMinimumSize(new java.awt.Dimension(30, 26));
-        instrumentNameField.setPreferredSize(new java.awt.Dimension(0, 0));
-        instrumentNameField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                instrumentNameFieldKeyReleased(evt);
-            }
-        });
-        keyNameProperty3.add(instrumentNameField);
-
-        visualWrapper3.add(keyNameProperty3);
-
-        keyNameProperty4.setBackground(new java.awt.Color(65, 65, 65));
-        keyNameProperty4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        keyNameProperty4.setMinimumSize(new java.awt.Dimension(125, 32));
-        keyNameProperty4.setPreferredSize(new java.awt.Dimension(375, 0));
-        keyNameProperty4.setLayout(new java.awt.GridLayout(1, 0));
-
-        keyNameLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        keyNameLabel4.setText("Timbre de base :");
-        keyNameLabel4.setMinimumSize(new java.awt.Dimension(40, 16));
-        keyNameLabel4.setPreferredSize(new java.awt.Dimension(0, 0));
-        keyNameProperty4.add(keyNameLabel4);
-
-        masterWaveformComboBox.setMinimumSize(new java.awt.Dimension(30, 26));
-        masterWaveformComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                masterWaveformComboBoxActionPerformed(evt);
-            }
-        });
-        keyNameProperty4.add(masterWaveformComboBox);
-
-        visualWrapper3.add(keyNameProperty4);
-
-        visualPanel3.add(visualWrapper3);
-
-        globalEditPannel.setViewportView(visualPanel3);
-
-        splitWindow.setRightComponent(globalEditPannel);
 
         insertPannel.setBackground(new java.awt.Color(65, 65, 65));
         insertPannel.setBorder(null);
@@ -1594,13 +1476,12 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         informationTitle4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         informationTitle4.setText("Insérer");
         informationTitle4.setToolTipText("");
-        informationTitle4.setPreferredSize(new java.awt.Dimension(72, 20));
+        informationTitle4.setPreferredSize(new java.awt.Dimension(72, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         informationWrapper4.add(informationTitle4, gridBagConstraints);
 
         shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
@@ -1623,6 +1504,371 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         insertPannel.setViewportView(visualPanel5);
 
         splitWindow.setRightComponent(insertPannel);
+
+        playPannel.setBackground(new java.awt.Color(65, 65, 65));
+        playPannel.setBorder(null);
+        playPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        playPannel.setAutoscrolls(true);
+        playPannel.setMinimumSize(new java.awt.Dimension(415, 200));
+        playPannel.setPreferredSize(new java.awt.Dimension(415, 200));
+        playPannel.setViewportView(visualPanel4);
+
+        visualPanel4.setBackground(new java.awt.Color(65, 65, 65));
+        visualPanel4.setMinimumSize(new java.awt.Dimension(600, 655));
+        visualPanel4.setPreferredSize(new java.awt.Dimension(50, 200));
+        visualPanel4.setLayout(new javax.swing.BoxLayout(visualPanel4, javax.swing.BoxLayout.LINE_AXIS));
+
+        visualWrapper4.setBackground(new java.awt.Color(65, 65, 65));
+        visualWrapper4.setPreferredSize(new java.awt.Dimension(200, 500));
+        java.awt.GridBagLayout visualWrapper4Layout = new java.awt.GridBagLayout();
+        visualWrapper4Layout.columnWeights = new double[] {1.0};
+        visualWrapper4Layout.rowWeights = new double[] {1.0};
+        visualWrapper4.setLayout(visualWrapper4Layout);
+
+        informationWrapper6.setBackground(new java.awt.Color(65, 65, 65));
+        informationWrapper6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        informationWrapper6.setMinimumSize(new java.awt.Dimension(300, 50));
+        informationWrapper6.setPreferredSize(new java.awt.Dimension(300, 50));
+        informationWrapper6.setLayout(new java.awt.GridLayout());
+
+        informationTitle6.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        informationTitle6.setForeground(new java.awt.Color(255, 255, 255));
+        informationTitle6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        informationTitle6.setText("Live Loop");
+        informationTitle6.setToolTipText("");
+        informationTitle6.setMaximumSize(new java.awt.Dimension(72, 50));
+        informationTitle6.setMinimumSize(new java.awt.Dimension(72, 50));
+        informationTitle6.setPreferredSize(new java.awt.Dimension(72, 50));
+        informationWrapper6.add(informationTitle6);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5000000.0;
+        visualWrapper4.add(informationWrapper6, gridBagConstraints);
+
+        informationWrapper5.setBackground(new java.awt.Color(65, 65, 65));
+        informationWrapper5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        informationWrapper5.setMinimumSize(new java.awt.Dimension(300, 50));
+        informationWrapper5.setPreferredSize(new java.awt.Dimension(300, 50));
+        informationWrapper5.setLayout(new java.awt.GridLayout());
+
+        informationTitle5.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        informationTitle5.setForeground(new java.awt.Color(255, 255, 255));
+        informationTitle5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        informationTitle5.setText("Mode jeu");
+        informationTitle5.setToolTipText("");
+        informationTitle5.setMaximumSize(new java.awt.Dimension(72, 30));
+        informationTitle5.setMinimumSize(new java.awt.Dimension(72, 30));
+        informationTitle5.setPreferredSize(new java.awt.Dimension(72, 30));
+        informationWrapper5.add(informationTitle5);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        visualWrapper4.add(informationWrapper5, gridBagConstraints);
+
+        keyNameProperty8.setBackground(new java.awt.Color(65, 65, 65));
+        keyNameProperty8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        keyNameProperty8.setMinimumSize(new java.awt.Dimension(500, 40));
+        keyNameProperty8.setPreferredSize(new java.awt.Dimension(500, 40));
+        keyNameProperty8.setLayout(new java.awt.GridLayout(1, 0));
+
+        keyNameLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        keyNameLabel8.setText("BPM :");
+        keyNameLabel8.setMinimumSize(new java.awt.Dimension(40, 16));
+        keyNameLabel8.setPreferredSize(new java.awt.Dimension(0, 0));
+        keyNameProperty8.add(keyNameLabel8);
+
+        bpmSpinner.setModel(new javax.swing.SpinnerNumberModel(120, 1, 600, 1));
+        bpmSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                bpmSpinnerStateChanged(evt);
+            }
+        });
+        keyNameProperty8.add(bpmSpinner);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5000.0;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper4.add(keyNameProperty8, gridBagConstraints);
+
+        liveloopWrapper.setBackground(new java.awt.Color(51, 51, 51));
+        liveloopWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 25));
+        liveloopWrapper.setMaximumSize(new java.awt.Dimension(400, 400));
+        liveloopWrapper.setMinimumSize(new java.awt.Dimension(400, 400));
+        liveloopWrapper.setPreferredSize(new java.awt.Dimension(400, 400));
+        liveloopWrapper.setLayout(new java.awt.GridLayout(3, 3, 25, 25));
+
+        liveloop1.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop1Layout = new javax.swing.GroupLayout(liveloop1);
+        liveloop1.setLayout(liveloop1Layout);
+        liveloop1Layout.setHorizontalGroup(
+            liveloop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop1Layout.setVerticalGroup(
+            liveloop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop1);
+
+        liveloop2.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop2Layout = new javax.swing.GroupLayout(liveloop2);
+        liveloop2.setLayout(liveloop2Layout);
+        liveloop2Layout.setHorizontalGroup(
+            liveloop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop2Layout.setVerticalGroup(
+            liveloop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop2);
+
+        liveloop3.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop3Layout = new javax.swing.GroupLayout(liveloop3);
+        liveloop3.setLayout(liveloop3Layout);
+        liveloop3Layout.setHorizontalGroup(
+            liveloop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop3Layout.setVerticalGroup(
+            liveloop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop3);
+
+        liveloop4.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop4Layout = new javax.swing.GroupLayout(liveloop4);
+        liveloop4.setLayout(liveloop4Layout);
+        liveloop4Layout.setHorizontalGroup(
+            liveloop4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop4Layout.setVerticalGroup(
+            liveloop4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop4);
+
+        liveloop5.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop5Layout = new javax.swing.GroupLayout(liveloop5);
+        liveloop5.setLayout(liveloop5Layout);
+        liveloop5Layout.setHorizontalGroup(
+            liveloop5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop5Layout.setVerticalGroup(
+            liveloop5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop5);
+
+        liveloop6.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop6Layout = new javax.swing.GroupLayout(liveloop6);
+        liveloop6.setLayout(liveloop6Layout);
+        liveloop6Layout.setHorizontalGroup(
+            liveloop6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop6Layout.setVerticalGroup(
+            liveloop6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop6);
+
+        liveloop7.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop7Layout = new javax.swing.GroupLayout(liveloop7);
+        liveloop7.setLayout(liveloop7Layout);
+        liveloop7Layout.setHorizontalGroup(
+            liveloop7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop7Layout.setVerticalGroup(
+            liveloop7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop7);
+
+        liveloop8.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop8Layout = new javax.swing.GroupLayout(liveloop8);
+        liveloop8.setLayout(liveloop8Layout);
+        liveloop8Layout.setHorizontalGroup(
+            liveloop8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop8Layout.setVerticalGroup(
+            liveloop8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop8);
+
+        liveloop9.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout liveloop9Layout = new javax.swing.GroupLayout(liveloop9);
+        liveloop9.setLayout(liveloop9Layout);
+        liveloop9Layout.setHorizontalGroup(
+            liveloop9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        liveloop9Layout.setVerticalGroup(
+            liveloop9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop9);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5.0E7;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper4.add(liveloopWrapper, gridBagConstraints);
+
+        visualPanel4.add(visualWrapper4);
+
+        playPannel.setViewportView(visualPanel4);
+
+        splitWindow.setRightComponent(playPannel);
+
+        globalEditPannel.setBackground(new java.awt.Color(65, 65, 65));
+        globalEditPannel.setBorder(null);
+        globalEditPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        globalEditPannel.setAutoscrolls(true);
+        globalEditPannel.setMinimumSize(new java.awt.Dimension(415, 200));
+        globalEditPannel.setPreferredSize(new java.awt.Dimension(415, 200));
+
+        visualPanel3.setBackground(new java.awt.Color(65, 65, 65));
+        visualPanel3.setMinimumSize(new java.awt.Dimension(600, 655));
+        visualPanel3.setPreferredSize(new java.awt.Dimension(50, 200));
+        visualPanel3.setLayout(new javax.swing.BoxLayout(visualPanel3, javax.swing.BoxLayout.LINE_AXIS));
+
+        visualWrapper3.setBackground(new java.awt.Color(65, 65, 65));
+        java.awt.GridBagLayout visualWrapper3Layout = new java.awt.GridBagLayout();
+        visualWrapper3Layout.columnWeights = new double[] {1.0};
+        visualWrapper3Layout.rowWeights = new double[] {1.0};
+        visualWrapper3.setLayout(visualWrapper3Layout);
+
+        informationWrapper3.setBackground(new java.awt.Color(65, 65, 65));
+        informationWrapper3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        informationWrapper3.setPreferredSize(new java.awt.Dimension(300, 50));
+        informationWrapper3.setLayout(new java.awt.GridLayout(1, 0));
+
+        informationTitle3.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        informationTitle3.setForeground(new java.awt.Color(255, 255, 255));
+        informationTitle3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        informationTitle3.setText("Instrument");
+        informationTitle3.setToolTipText("");
+        informationTitle3.setPreferredSize(new java.awt.Dimension(72, 30));
+        informationWrapper3.add(informationTitle3);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        visualWrapper3.add(informationWrapper3, gridBagConstraints);
+
+        keyNameProperty3.setBackground(new java.awt.Color(65, 65, 65));
+        keyNameProperty3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        keyNameProperty3.setMinimumSize(new java.awt.Dimension(125, 32));
+        keyNameProperty3.setPreferredSize(new java.awt.Dimension(375, 40));
+        keyNameProperty3.setLayout(new java.awt.GridLayout(1, 0));
+
+        keyNameLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        keyNameLabel3.setText("Nom de l'instrument :");
+        keyNameLabel3.setMinimumSize(new java.awt.Dimension(40, 16));
+        keyNameLabel3.setPreferredSize(new java.awt.Dimension(0, 0));
+        keyNameProperty3.add(keyNameLabel3);
+
+        instrumentNameField.setBackground(new java.awt.Color(238, 238, 238));
+        instrumentNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        instrumentNameField.setText("Nom de l'instrument");
+        instrumentNameField.setBorder(null);
+        instrumentNameField.setMinimumSize(new java.awt.Dimension(30, 26));
+        instrumentNameField.setPreferredSize(new java.awt.Dimension(0, 0));
+        instrumentNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                instrumentNameFieldKeyReleased(evt);
+            }
+        });
+        keyNameProperty3.add(instrumentNameField);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper3.add(keyNameProperty3, gridBagConstraints);
+
+        keyNameProperty4.setBackground(new java.awt.Color(65, 65, 65));
+        keyNameProperty4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        keyNameProperty4.setMinimumSize(new java.awt.Dimension(125, 32));
+        keyNameProperty4.setPreferredSize(new java.awt.Dimension(375, 40));
+        keyNameProperty4.setLayout(new java.awt.GridLayout(1, 0));
+
+        keyNameLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        keyNameLabel4.setText("Timbre de base :");
+        keyNameLabel4.setMinimumSize(new java.awt.Dimension(40, 16));
+        keyNameLabel4.setPreferredSize(new java.awt.Dimension(0, 0));
+        keyNameProperty4.add(keyNameLabel4);
+
+        masterWaveformComboBox.setMinimumSize(new java.awt.Dimension(30, 26));
+        masterWaveformComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                masterWaveformComboBoxActionPerformed(evt);
+            }
+        });
+        keyNameProperty4.add(masterWaveformComboBox);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5000.0;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper3.add(keyNameProperty4, gridBagConstraints);
+
+        visualPanel3.add(visualWrapper3);
+
+        globalEditPannel.setViewportView(visualPanel3);
+
+        splitWindow.setRightComponent(globalEditPannel);
 
         getContentPane().add(splitWindow, java.awt.BorderLayout.CENTER);
 
@@ -2859,9 +3105,13 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JLabel informationTitle;
     private javax.swing.JLabel informationTitle3;
     private javax.swing.JLabel informationTitle4;
+    private javax.swing.JLabel informationTitle5;
+    private javax.swing.JLabel informationTitle6;
     private javax.swing.JPanel informationWrapper;
     private javax.swing.JPanel informationWrapper3;
     private javax.swing.JPanel informationWrapper4;
+    private javax.swing.JPanel informationWrapper5;
+    private javax.swing.JPanel informationWrapper6;
     private javax.swing.JMenu insertMenuItem;
     private javax.swing.JScrollPane insertPannel;
     private javax.swing.JTextField instrumentNameField;
@@ -2893,6 +3143,16 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel lineThicknessWrapper;
     private javax.swing.JPanel linesSelectionWrapper;
     private javax.swing.JPanel linesWrapper;
+    private javax.swing.JPanel liveloop1;
+    private javax.swing.JPanel liveloop2;
+    private javax.swing.JPanel liveloop3;
+    private javax.swing.JPanel liveloop4;
+    private javax.swing.JPanel liveloop5;
+    private javax.swing.JPanel liveloop6;
+    private javax.swing.JPanel liveloop7;
+    private javax.swing.JPanel liveloop8;
+    private javax.swing.JPanel liveloop9;
+    private javax.swing.JPanel liveloopWrapper;
     private javax.swing.JComboBox<String> masterWaveformComboBox;
     private javax.swing.JPanel mediaPlayer;
     private javax.swing.JMenuItem menuEditDelete;
