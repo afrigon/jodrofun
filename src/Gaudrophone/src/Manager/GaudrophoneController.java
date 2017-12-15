@@ -23,6 +23,7 @@
  */
 package Manager;
 
+import Manager.Delegate.GaudrophoneControllerDelegate;
 import Instrument.Key;
 import Instrument.KeyState;
 import KeyUtils.Corner;
@@ -37,7 +38,7 @@ import Music.Alteration;
 import Music.PlayableNote;
 import Music.SongIO;
 import Music.SoundType;
-import Music.WaveFormType;
+import Music.Waveform.WaveFormType;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;

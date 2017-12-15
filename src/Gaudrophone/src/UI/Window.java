@@ -23,28 +23,28 @@
  */
 package UI;
 
-import Instrument.ElectricPiano;
+import Instrument.Pattern.ElectricPiano;
 import Music.Alteration;
-import Instrument.Guitar;
+import Instrument.Pattern.Guitar;
 import Instrument.Key;
 import Instrument.KeyState;
 import Music.Note;
-import Instrument.Piano;
+import Instrument.Pattern.Piano;
 import KeyUtils.Corner;
-import KeyUtils.RectangleKeyShape;
-import KeyUtils.TriangleKeyShape;
-import KeyUtils.KeyShapeGenType;
-import KeyUtils.KeyShapeGenerator;
+import KeyUtils.Generator.RectangleKeyShape;
+import KeyUtils.Generator.TriangleKeyShape;
+import KeyUtils.Generator.KeyShapeGenType;
+import KeyUtils.Generator.KeyShapeGenerator;
 import KeyUtils.Vector2;
-import Manager.CanvasManagerDelegate;
+import Manager.Delegate.CanvasManagerDelegate;
 import Manager.GaudrophoneController;
-import Manager.GaudrophoneControllerDelegate;
-import Manager.SelectionManagerDelegate;
+import Manager.Delegate.GaudrophoneControllerDelegate;
+import Manager.Delegate.SelectionManagerDelegate;
 import Manager.State;
 import Music.AudioClip;
 import Music.SoundType;
 import Music.SynthesizedSound;
-import Music.WaveFormType;
+import Music.Waveform.WaveFormType;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -251,7 +251,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         visualWrapper5 = new javax.swing.JPanel();
         informationWrapper4 = new javax.swing.JPanel();
         informationTitle4 = new javax.swing.JLabel();
-        shapeGenWrapper = new javax.swing.JScrollPane();
         shapeGenPanel = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
@@ -1577,7 +1576,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         visualWrapper5.setLayout(new javax.swing.BoxLayout(visualWrapper5, javax.swing.BoxLayout.PAGE_AXIS));
 
         informationWrapper4.setBackground(new java.awt.Color(65, 65, 65));
-        informationWrapper4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        informationWrapper4.setMaximumSize(new java.awt.Dimension(2147483647, 800));
+        informationWrapper4.setMinimumSize(new java.awt.Dimension(104, 800));
+        informationWrapper4.setPreferredSize(new java.awt.Dimension(110, 800));
         java.awt.GridBagLayout informationWrapper4Layout = new java.awt.GridBagLayout();
         informationWrapper4Layout.columnWeights = new double[] {1.0};
         informationWrapper4Layout.rowWeights = new double[] {1.0};
@@ -1597,27 +1598,18 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         informationWrapper4.add(informationTitle4, gridBagConstraints);
 
-        shapeGenWrapper.setBackground(new java.awt.Color(51, 51, 51));
-        shapeGenWrapper.setBorder(null);
-        shapeGenWrapper.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        shapeGenWrapper.setAutoscrolls(true);
-        shapeGenWrapper.setViewportView(shapeGenPanel);
-
         shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
         shapeGenPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 15));
+        shapeGenPanel.setPreferredSize(new java.awt.Dimension(60, 150));
         shapeGenPanel.setLayout(new java.awt.GridLayout(0, 3, 15, 15));
-        shapeGenWrapper.setViewportView(shapeGenPanel);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 10;
-        gridBagConstraints.ipady = 10;
-        gridBagConstraints.weighty = 2.147483647E9;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        informationWrapper4.add(shapeGenWrapper, gridBagConstraints);
+        gridBagConstraints.weighty = 500.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 15, 15);
+        informationWrapper4.add(shapeGenPanel, gridBagConstraints);
 
         visualWrapper5.add(informationWrapper4);
 
@@ -2922,7 +2914,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JTextField searchTextField;
     private javax.swing.JPanel selectedKeyTools;
     private javax.swing.JPanel shapeGenPanel;
-    private javax.swing.JScrollPane shapeGenWrapper;
     private javax.swing.JRadioButton sharpRadioButton;
     private javax.swing.JPanel showNameProperty;
     private javax.swing.JLabel showNoteNameLabel;

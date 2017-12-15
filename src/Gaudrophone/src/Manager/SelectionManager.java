@@ -23,6 +23,7 @@
  */
 package Manager;
 
+import Manager.Delegate.SelectionManagerDelegate;
 import Instrument.Key;
 import Instrument.KeyState;
 import KeyUtils.KeyLine;

@@ -23,6 +23,8 @@
  */
 package Music;
 
+import Music.Waveform.SineWaveForm;
+import Music.Waveform.WaveForm;
 import javax.sound.sampled.AudioFormat;
 
 

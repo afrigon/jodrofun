@@ -23,9 +23,10 @@
  */
 package Manager;
 
+import Manager.Delegate.CanvasManagerDelegate;
 import Instrument.Key;
 import Instrument.KeyState;
-import KeyUtils.KeyShapeGenerator;
+import KeyUtils.Generator.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import Music.PlayableNote;
 import Music.SongPlayer;
