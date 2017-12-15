@@ -191,12 +191,16 @@ public class SongPlayer extends Sequencer {
             double roundPreviousStep = Math.floor(chordEndStep);
             double roundCurrentStep = Math.floor(currentStep);
             if (roundPreviousStep != roundCurrentStep) {
-                GaudrophoneController.getController().delegate.updateMediaPlayerSlider((int)Math.floor(this.currentStep/this.totalSteps*100));
+                GaudrophoneController.getController().delegate.updateMediaPlayerSlider(this.currentStep/this.totalSteps*100);
             }
             
             if (this.currentStep > chordEndStep) {
                 this.stop();
             }
         }
+    }
+
+    public Song getSong() {
+        return this.song;
     }
 }

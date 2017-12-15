@@ -40,6 +40,7 @@ import Manager.Delegate.GaudrophoneControllerDelegate;
 import Manager.Delegate.SelectionManagerDelegate;
 import Manager.State;
 import Music.AudioClip;
+import Music.Song;
 import Music.SoundType;
 import Music.SynthesizedSound;
 import Music.Waveform.WaveFormType;
@@ -264,8 +265,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         masterWaveformComboBox = new javax.swing.JComboBox(WaveFormType.values());
         songPannel = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        jodrofunHeroPanel = new JodrofunHero();
         jToolBar1 = new javax.swing.JToolBar();
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         buttonPlayMode = new javax.swing.JButton();
@@ -1880,18 +1880,21 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         jPanel1.setPreferredSize(new java.awt.Dimension(704, 180));
         jPanel1.setLayout(new java.awt.GridLayout());
 
-        jScrollPane1.setBackground(new java.awt.Color(65, 65, 65));
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 15));
+        jodrofunHeroPanel.setBackground(new java.awt.Color(65, 65, 65));
+        jodrofunHeroPanel.setForeground(new java.awt.Color(255, 255, 255));
 
-        jTextPane1.setEditable(false);
-        jTextPane1.setBackground(new java.awt.Color(65, 65, 65));
-        jTextPane1.setBorder(null);
-        jTextPane1.setFont(new java.awt.Font("Menlo", 0, 14)); // NOI18N
-        jTextPane1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextPane1.setText("Cliquez sur Fichier → Ouvrir chanson pour commencer");
-        jScrollPane1.setViewportView(jTextPane1);
+        javax.swing.GroupLayout jodrofunHeroPanelLayout = new javax.swing.GroupLayout(jodrofunHeroPanel);
+        jodrofunHeroPanel.setLayout(jodrofunHeroPanelLayout);
+        jodrofunHeroPanelLayout.setHorizontalGroup(
+            jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 704, Short.MAX_VALUE)
+        );
+        jodrofunHeroPanelLayout.setVerticalGroup(
+            jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 685, Short.MAX_VALUE)
+        );
 
-        jPanel1.add(jScrollPane1);
+        jPanel1.add(jodrofunHeroPanel);
 
         songPannel.setViewportView(jPanel1);
 
@@ -3148,12 +3151,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JPanel jodrofunHeroPanel;
     private javax.swing.JTextField keyNameField;
     private javax.swing.JLabel keyNameLabel;
     private javax.swing.JLabel keyNameLabel3;
@@ -3521,8 +3523,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }
 
     @Override
-    public void updateMediaPlayerSlider(int percent) {
-        this.songSlider.setValue(percent);
+    public void updateMediaPlayerSlider(double percent) {
+        this.songSlider.setValue((int)Math.floor(percent));
         this.songSliderLabel.setText(GaudrophoneController.getController().getSequencerManager().getSequencer().getTimeLeft());
+        ((JodrofunHero)this.jodrofunHeroPanel).setProgress(percent);
+    }
+    
+    @Override
+    public void didLoadSong(Song song) {
+        ((JodrofunHero)this.jodrofunHeroPanel).setSong(song);
     }
 }

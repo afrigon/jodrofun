@@ -28,7 +28,7 @@ import java.io.FileReader;
 import java.util.LinkedList;
 
 public class SongIO {
-    private double lastChordLength = 0;
+    private double lastChordLength = 0.25;
     
     public Song Load(String path) {
         LinkedList<String> lines = this.readFile(path);
@@ -92,6 +92,12 @@ public class SongIO {
             
             this.readChord(chordLines, song);
         }
+        
+        //silence at the end
+        PlayableChord silence = new PlayableChord();
+        silence.setLength(4);
+        silence.setRelativeSteps(song.getChords().getLast().getLength());
+        song.addChord(silence);
         return song;
     }
     
