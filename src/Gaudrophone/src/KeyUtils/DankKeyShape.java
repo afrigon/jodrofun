@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Random;
 
 public class DankKeyShape implements KeyShapeGenerator {
-    protected Color defaultColor;
-    
     @Override
     public String getName() {
         return "D A N K";
@@ -54,15 +52,14 @@ public class DankKeyShape implements KeyShapeGenerator {
     }
     
     public KeyShape generateShape(int sizeX, int sizeY, Vector2 position) {
-        this.defaultColor = new Color(new Random().nextInt(256*256*256));
         position = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld((int)position.getX(), (int)position.getY());
         Vector2 sizes = GaudrophoneController.getController().getCanvasManager().convertPixelToWorld(sizeX, sizeY);
         List<Vector2> pointList = new ArrayList<>();
         
         for (int i = 0; i < new Random().nextInt(40-3) + 3; i++) {
-            pointList.add(new Vector2(position.getX() + (sizes.getX()/2) * ((double)new Random().nextInt(100)/100), position.getY() + (sizes.getY()/2) * ((double)new Random().nextInt(100)/100)));
+            pointList.add(new Vector2(position.getX() + sizes.getX() * ((double)new Random().nextInt(100)/100), position.getY() + sizes.getY() * ((double)new Random().nextInt(100)/100)));
         }
         
-        return new KeyShape(pointList, this.defaultColor);
+        return new KeyShape(pointList, new Color(new Random().nextInt(256*256*256)));
     }
 }
