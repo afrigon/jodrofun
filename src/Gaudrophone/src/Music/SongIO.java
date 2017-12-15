@@ -65,6 +65,8 @@ public class SongIO {
         song.setRaw(String.join("\n", lines));
         int i = 0;
         
+        song.addChord(new Silence(this.lastChordLength, 0));
+        
         while (i < lines.size()) {
             if (song.getBPM() == -1) {
                 //find the song's BPM
@@ -94,10 +96,8 @@ public class SongIO {
         }
         
         //silence at the end
-        PlayableChord silence = new PlayableChord();
-        silence.setLength(4);
-        silence.setRelativeSteps(song.getChords().getLast().getLength());
-        song.addChord(silence);
+        song.addChord(new Silence(1, this.lastChordLength));
+        
         return song;
     }
     
@@ -122,7 +122,7 @@ public class SongIO {
                     }
                     chord = new PlayableChord();
                     if (tempo != null) {
-                        chord.setLength(tempo.get(song.getChords().size()));
+                        chord.setLength(tempo.get(song.getChords().size()-1));
                     }
                     chord.setRelativeSteps(this.lastChordLength);
                     this.lastChordLength = chord.getLength();
@@ -153,14 +153,14 @@ public class SongIO {
                     if (value.matches("[ABCDEFGX]")) {
                         j++;
                         if (!"X".equals(value)) {
-                            song.getChords().get(j).addNote(new PlayableNote(Note.getNoteFromName(value), 4));
+                            song.getChords().get(j+1).addNote(new PlayableNote(Note.getNoteFromName(value), 4));
                         }
                     } else if (value.matches("[\\d]")) {
                         try {
-                            song.getChords().get(j).getNotes().getLast().setOctave(Integer.parseInt(value));
+                            song.getChords().get(j+1).getNotes().getLast().setOctave(Integer.parseInt(value));
                         } catch (NumberFormatException ex) {}
                     } else if ("#".equals(value)) {
-                        song.getChords().get(j).getNotes().getLast().setAlteration(Alteration.Sharp);
+                        song.getChords().get(j+1).getNotes().getLast().setAlteration(Alteration.Sharp);
                     }
                 }
             }

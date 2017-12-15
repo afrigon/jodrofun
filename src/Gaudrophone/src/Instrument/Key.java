@@ -165,7 +165,7 @@ public class Key implements java.io.Serializable {
         linkedChannel = channel;
         linkedMidiNumber = midiNum;
         linked = true;
-        GaudrophoneController.getController().delegate.midiDidLink(this);
+        GaudrophoneController.getController().getDelegate().midiDidLink(this);
     }
     
     public boolean isLinked(int channel, int midiNum) {

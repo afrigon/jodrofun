@@ -40,16 +40,26 @@ public class CanvasManager {
     private List<DrawableShape> shapes;
     private State state = State.Play;
     private KeyShapeGenerator storedKeyShape;
-    
     private DrawableShape draggedShape = null;
-    
     private double ratio = Double.POSITIVE_INFINITY;
     private Vector2 canvasSize2 = new Vector2(0, 0);
-    
-    public CanvasManagerDelegate delegate;
-    
     private Key lastKey;
     private Vector2 clickPosition;
+    
+    private CanvasManagerDelegate delegate;
+    public void setDelegate(CanvasManagerDelegate delegate) { this.delegate = delegate; }
+    public CanvasManagerDelegate getDelegate() {
+        if (this.delegate != null) {
+            return this.delegate;
+        } else {
+            return new CanvasManagerDelegate() {
+                @Override
+                public void shouldRedraw() {}
+                @Override
+                public void didChangeState(State state) {}
+            };
+        }
+    }
     
     public Vector2 convertPixelToWorld(int x, int y) {
         if(ratio != Double.POSITIVE_INFINITY)
@@ -82,9 +92,7 @@ public class CanvasManager {
         keyList.forEach((key) -> {
             this.shapes.add(new DrawableShape(key));
         });
-        if (this.delegate != null) {
-            this.delegate.shouldRedraw();
-        }
+        this.getDelegate().shouldRedraw();
     }
     
     public void clicked(Key key) {
@@ -198,21 +206,21 @@ public class CanvasManager {
                     //If the user clicked the canvas and drag onto a key
                     if (this.lastKey == null) {
                         ds.getKey().play();
-                        if (this.delegate != null) { this.delegate.shouldRedraw(); }
+                        this.getDelegate().shouldRedraw();
                         this.lastKey = ds.getKey();
                     } else {
                         //If the playing key is not the same as the key being drag right now
                         if (this.lastKey != ds.getKey()) {
                             this.lastKey.release();
                             ds.getKey().play();
-                            if (this.delegate != null) { this.delegate.shouldRedraw(); }
+                            this.getDelegate().shouldRedraw();
                             this.lastKey = ds.getKey();
                         }
                     }
                 } else {
                     if (this.lastKey != null) {
                         this.lastKey.release();
-                        if (this.delegate != null) { this.delegate.shouldRedraw(); }
+                        this.getDelegate().shouldRedraw();
                         this.lastKey = null;
                     }
                 }
@@ -277,7 +285,7 @@ public class CanvasManager {
             GaudrophoneController.getController().getSelectionManager().setKey(null);
         }
         this.state = state;
-        this.delegate.didChangeState(state);
+        this.getDelegate().didChangeState(state);
     }
     
     public void setCanvasSize(int x, int y) {
