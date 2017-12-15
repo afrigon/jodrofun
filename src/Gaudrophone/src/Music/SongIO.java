@@ -112,17 +112,17 @@ public class SongIO {
                 }
             }
             
+            int beforeChordCount = song.getChords().size();
+            
             //and here miracle occurs
             PlayableChord chord = null;
-            for (char c: lines.get(0).toCharArray()) {
-                String value = String.valueOf(c).toUpperCase();
+            for (int i = 0; i < lines.get(0).toCharArray().length; i++) {
+                String value = String.valueOf(lines.get(0).toCharArray()[i]).toUpperCase();
                 if (value.matches("[ABCDEFGX]")) {
-                    if (chord != null) {
-                        song.addChord(chord);
-                    }
+                    if (chord != null) { song.addChord(chord); }
                     chord = new PlayableChord();
                     if (tempo != null) {
-                        chord.setLength(tempo.get(song.getChords().size()-1));
+                        chord.setLength(tempo.get(i));
                     }
                     chord.setRelativeSteps(this.lastChordLength);
                     this.lastChordLength = chord.getLength();
@@ -147,7 +147,8 @@ public class SongIO {
             //the rest
             for (int i = 1; i < lines.size(); i++) {
                 String line = lines.get(i);
-                int j = -1;
+                //-2 because of the start silence and the index is incremented before operations
+                int j = beforeChordCount-2;
                 for (char c: line.toCharArray()) {
                     String value = String.valueOf(c).toUpperCase();
                     if (value.matches("[ABCDEFGX]")) {
