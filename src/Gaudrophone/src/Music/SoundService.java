@@ -62,7 +62,6 @@ public class SoundService {
             line = AudioSystem.getSourceDataLine(sound.getAudioFormat());
             sound.play(line);
             playingSounds.add(sound);
-
         } catch (LineUnavailableException ex) {
             Logger.getLogger(SoundService.class.getName()).log(Level.SEVERE, null, ex);
         }

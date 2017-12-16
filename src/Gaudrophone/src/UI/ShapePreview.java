@@ -26,7 +26,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import KeyUtils.KeyShape;
-import KeyUtils.KeyShapeGenerator;
+import KeyUtils.Generator.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import java.awt.geom.Line2D;
 import java.awt.Polygon;
@@ -48,14 +48,14 @@ public class ShapePreview extends javax.swing.JPanel {
         ShapePreview.previews.add(this);
         this.setBackground(new Color(51,51,51));
         this.shapeGen = p_shape;
+        this.shapeGen.setShouldConvertToRelative(false);
     }
     
     public static void deselect() {
-        selected = null;        
+        ShapePreview.selected = null;        
         for (ShapePreview preview: ShapePreview.previews) {
             preview.setBorder(BorderFactory.createLineBorder(new Color(65, 65, 65), 10, true));
         }
-        
     }
     
     public static void repaintAll() {
@@ -63,18 +63,25 @@ public class ShapePreview extends javax.swing.JPanel {
     }
     
     public void select() {
-        selected = this;
+        ShapePreview.selected = this;
         this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0xf19335), 3, true), BorderFactory.createLineBorder(new Color(65, 65, 65), 7, true)));
     }
     
     public void setShapeGenerator(KeyShapeGenerator gen) {
         this.shapeGen = gen;
+        this.shapeGen.setShouldConvertToRelative(false);
         this.repaint();
     }
     
     public KeyShapeGenerator getShapeGenerator() {
-        return this.shapeGen;
+        try {
+            return this.shapeGen.getClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            System.out.println("UI.ShapePreview.getShapeGenerator() catch");
+            return this.shapeGen;
+        }
     }
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

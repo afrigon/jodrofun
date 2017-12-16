@@ -31,9 +31,22 @@ import java.util.ArrayList;
 public class SongPlayer extends Sequencer {
     private boolean muted = false;
     private final ArrayList<Sound> missingSounds = new ArrayList<>();
+    private double playbackSpeed = 1;
     
     public SongPlayer(SequencerManager manager) {
         super(manager);
+    }
+    
+    public double getPlaybackSpeed() {
+        return this.playbackSpeed;
+    }
+    
+    public void setPlaybackSpeed(double speed) {
+        this.playbackSpeed = speed;
+    }
+    
+    public double getAlteredBPM() {
+        return this.manager.getBPM() * this.playbackSpeed;
     }
     
     @Override
@@ -47,7 +60,7 @@ public class SongPlayer extends Sequencer {
                 }
             }
         }
-        GaudrophoneController.getController().getCanvasManager().delegate.shouldRedraw();
+        GaudrophoneController.getController().getCanvasManager().getDelegate().shouldRedraw();
     }
     
     public boolean isMuted() {
@@ -61,12 +74,12 @@ public class SongPlayer extends Sequencer {
     public void setPosition(int percent) {
         if (!this.isPlaying) {
             this.currentStep = (double)percent*this.totalSteps/100;
-            GaudrophoneController.getController().delegate.updateMediaPlayerSlider(percent);
+            GaudrophoneController.getController().getDelegate().updateMediaPlayerSlider(percent);
         }
     }
     
     public String getTimeLeft() {
-        double time = (this.totalSteps-this.currentStep) * 60.0 / this.manager.getBPM();
+        double time = (this.totalSteps-this.currentStep) * 60.0 / this.getAlteredBPM();
         return String.format("%d:%02d", (int) Math.floor(time / 60.0), (int) Math.ceil(time % 60.0));
     }
     
@@ -90,14 +103,14 @@ public class SongPlayer extends Sequencer {
     public void play() {
         this.isPlaying = true;
         new Thread(this).start();
-        GaudrophoneController.getController().delegate.didStartPlayingSong();
+        GaudrophoneController.getController().getDelegate().didStartPlayingSong();
     }
     
     @Override
     public void pause() {
         this.isPlaying = false;
         GaudrophoneController.getController().getSoundService().closeAll();
-        GaudrophoneController.getController().delegate.didPauseSong();
+        GaudrophoneController.getController().getDelegate().didPauseSong();
     }
     
     @Override
@@ -105,8 +118,8 @@ public class SongPlayer extends Sequencer {
         this.isPlaying = false;
         this.currentStep = 0;
         GaudrophoneController.getController().getSoundService().closeAll();
-        GaudrophoneController.getController().delegate.didStopPlayingSong();
-        GaudrophoneController.getController().delegate.updateMediaPlayerSlider(0);
+        GaudrophoneController.getController().getDelegate().didStopPlayingSong();
+        GaudrophoneController.getController().getDelegate().updateMediaPlayerSlider(0);
     }
     
     private double getElapsedTime() {
@@ -123,7 +136,7 @@ public class SongPlayer extends Sequencer {
             chordPlayStep += chord.getRelativeSteps();
             
             double deltaStepDifference = Math.abs(this.currentStep - chordPlayStep);
-            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double)this.manager.getBPM());
+            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double)this.getAlteredBPM());
             
             if (deltaTimeDiff < this.PRESSED_THRESHOLD) {
                 for (PlayableNote note : chord.getNotes()) {
@@ -158,7 +171,7 @@ public class SongPlayer extends Sequencer {
         getElapsedTime(); // call the method to init lastTimeUpdate
         while (isPlaying) {
             double previousStep = currentStep;
-            currentStep += getElapsedTime() * ((double) this.manager.getBPM()) / 60.0; // calculate elapsed steps
+            currentStep += getElapsedTime() * ((double) this.getAlteredBPM()) / 60.0; // calculate elapsed steps
             
             double chordPlayStep = 0;
             double chordEndStep = 0;
@@ -191,12 +204,16 @@ public class SongPlayer extends Sequencer {
             double roundPreviousStep = Math.floor(chordEndStep);
             double roundCurrentStep = Math.floor(currentStep);
             if (roundPreviousStep != roundCurrentStep) {
-                GaudrophoneController.getController().delegate.updateMediaPlayerSlider((int)Math.floor(this.currentStep/this.totalSteps*100));
+                GaudrophoneController.getController().getDelegate().updateMediaPlayerSlider(this.currentStep*100/this.totalSteps);
             }
             
             if (this.currentStep > chordEndStep) {
                 this.stop();
             }
         }
+    }
+
+    public Song getSong() {
+        return this.song;
     }
 }

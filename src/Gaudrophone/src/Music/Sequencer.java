@@ -49,6 +49,8 @@ public abstract class Sequencer implements Runnable {
     public void setSong(Song song) {
         this.song = song;
         this.manager.setBPM(song.getBPM());
+        this.totalSteps = 0;
+        this.currentStep = 0;
         for (PlayableChord chord : song.getChords()) {
             this.totalSteps += chord.getRelativeSteps();
         }

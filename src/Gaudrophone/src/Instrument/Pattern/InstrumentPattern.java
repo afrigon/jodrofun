@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Instrument.Pattern;
 
-import java.util.LinkedList;
+import Instrument.Instrument;
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
-    
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
-    }
-    
-    public double getRelativeSteps() {
-        return this.relativeSteps;
-    }
-    
-    public double getLength() {
-        return this.length;
-    }
-    
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
-    }
-    
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
-    }
-    
-    public void setLength(double steps) {
-        this.length = steps;
-    }
-    
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
-    }
+public interface InstrumentPattern {
+    public Instrument generate();
 }

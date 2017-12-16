@@ -21,40 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager.Delegate;
 
-import java.util.LinkedList;
+import Instrument.Key;
+import java.awt.Color;
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
-    
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
-    }
-    
-    public double getRelativeSteps() {
-        return this.relativeSteps;
-    }
-    
-    public double getLength() {
-        return this.length;
-    }
-    
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
-    }
-    
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
-    }
-    
-    public void setLength(double steps) {
-        this.length = steps;
-    }
-    
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
-    }
+public interface SelectionManagerDelegate {
+    public void didSelectKey(Key key);
+    public void didDeselectKey();
+    public void didSelectLine(Color color, double thickness);
 }

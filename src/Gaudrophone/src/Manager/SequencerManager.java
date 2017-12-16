@@ -38,9 +38,11 @@ public class SequencerManager {
     
     public void addLiveLoop(LiveLoop ll) {
         this.liveloops.add(ll);
+        ll.play();
     }
     
     public void removeLiveLoop(int index) {
+        this.liveloops.get(index).stop();
         this.liveloops.remove(index);
     }
     

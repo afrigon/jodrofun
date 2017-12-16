@@ -26,11 +26,11 @@ package Instrument;
 import KeyUtils.Corner;
 import java.util.ArrayList;
 import KeyUtils.Vector2;
-import Music.WaveForm;
+import Music.Waveform.WaveForm;
 
 public class Instrument implements java.io.Serializable {
     private String name = "Instrument vide";
-    private WaveForm masterWaveForm = new Music.SineWaveForm();
+    private WaveForm masterWaveForm = new Music.Waveform.SineWaveForm();
     private final ArrayList<Key> keys = new ArrayList<>();
     
     public String getName() {

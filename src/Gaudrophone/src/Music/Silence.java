@@ -23,38 +23,12 @@
  */
 package Music;
 
-import java.util.LinkedList;
+public class Silence extends PlayableChord {
+    public Silence(double length, double relativeSteps) {
+        this.length = length;
+        this.relativeSteps = relativeSteps;
+    }
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
-    
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
-    }
-    
-    public double getRelativeSteps() {
-        return this.relativeSteps;
-    }
-    
-    public double getLength() {
-        return this.length;
-    }
-    
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
-    }
-    
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
-    }
-    
-    public void setLength(double steps) {
-        this.length = steps;
-    }
-    
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
-    }
+    @Override
+    public void addNote(PlayableNote note) {}
 }
