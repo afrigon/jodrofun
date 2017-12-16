@@ -53,10 +53,8 @@ public class CanvasManager {
             return this.delegate;
         } else {
             return new CanvasManagerDelegate() {
-                @Override
-                public void shouldRedraw() {}
-                @Override
-                public void didChangeState(State state) {}
+                @Override public void shouldRedraw() {}
+                @Override public void didChangeState(State state) {}
             };
         }
     }

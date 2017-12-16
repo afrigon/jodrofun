@@ -32,17 +32,23 @@ import java.awt.RenderingHints;
 
 public class GradientPanel extends javax.swing.JPanel {
     private Color[] colors = new Color[2];
-    private boolean isSelected = false;
+    private Color borderColor = new Color(0x00000000, true);
+    private boolean drawImage = false;
+            
+    public void setDrawImage(boolean value) {
+        this.drawImage = value;
+        this.repaint();
+    }
     
-    public GradientPanel(int hue) {
+    public void setBorderColor(Color color) {
+        this.borderColor = color;
+        this.repaint();
+    }
+    
+   public GradientPanel(int hue) {
         Color color = HSL.getRGB((float)hue, 65f, 65f);
         this.colors[0] = color.brighter();
         this.colors[1] = color;
-    }
-    
-    public void setSelected(boolean value) {
-        this.isSelected = value;
-        this.repaint();
     }
     
     @Override
@@ -57,14 +63,19 @@ public class GradientPanel extends javax.swing.JPanel {
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         int w = this.getWidth();
         int h = this.getHeight();
-        float[] dist = {0, 0.9f};
+        float[] dist = {0, 1f};
         RadialGradientPaint gp = new RadialGradientPaint((float)w/2, (float)h/2, (float)Math.max(h, w)/2, dist, this.colors);
         g2.setPaint(gp);
         g2.fillRoundRect(0, 0, w, h, 20, 20);
-        if (this.isSelected) {
-            g2.setPaint(Color.white);
-            g2.setStroke(new BasicStroke(8));
-            g2.drawRoundRect(3, 3, w-7, h-7, 16, 16);    
+        
+        //border
+        g2.setPaint(this.borderColor);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(2, 2, w-5, h-5, 16, 16);
+        
+        //image
+        if (this.drawImage) {
+            
         }
     }
 }

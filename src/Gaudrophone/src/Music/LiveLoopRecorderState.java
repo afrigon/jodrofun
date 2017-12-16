@@ -21,23 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager.Delegate;
+package Music;
 
-import Instrument.Key;
-import Music.Song;
-
-public interface GaudrophoneControllerDelegate {
-    public void shouldUpdateProprietyPannelFor(Key key);
-    public void didMoveKey(Key key);
-    public void didMovePoint(Key key);
-    public void didSetBPM(int bpm);
-    public void didStopPlayingSong();
-    public void didStartPlayingSong();
-    public void didPauseSong();
-    public void midiDidLink(Key key);
-    public void updateMediaPlayerSlider(double percent);
-    public void didLoadSong(Song song);
-    public void liveLoopDidStartRecording(int index);
-    public void liveLoopDidCancelRecording(int index);
-    public void liveLoopDidStop(int index);
+public enum LiveLoopRecorderState {
+    idle, waiting, recording
 }
