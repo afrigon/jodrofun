@@ -23,30 +23,69 @@
  */
 package Music;
 
+import Manager.GaudrophoneController;
 import Manager.SequencerManager;
 
 public class LiveLoop extends Sequencer {
-    public LiveLoop(SequencerManager manager) {
+    private int loopIndex = -1;
+    
+    public LiveLoop(SequencerManager manager, int index) {
         super(manager);
+        this.loopIndex = index;
     }
 
     @Override
     public void play() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.isPlaying = true;
+        new Thread(this).start();
     }
-
+    
     @Override
     public void pause() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.stop();
     }
-
+    
     @Override
     public void stop() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.isPlaying = false;
+        this.currentStep = 0;
+        GaudrophoneController.getController().getDelegate().liveLoopDidStop(this.loopIndex);
+    }
+    
+    private double getElapsedTime() {
+        long now = System.nanoTime();
+        long delta = now - this.lastTimeUpdate;
+        this.lastTimeUpdate = now;
+        return ((double) delta) / 1000000000.0;
     }
     
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.getElapsedTime(); // call the method to init lastTimeUpdate
+        while (isPlaying) {
+            double previousStep = this.currentStep;
+            this.currentStep += this.getElapsedTime() * ((double) this.song.getBPM()) / 60.0; // calculate elapsed steps
+            double chordStartStep = 0, chordEndStep = 0;
+            
+            for (PlayableChord chord : this.song.getChords()) {
+                chordStartStep += chord.getRelativeSteps();
+                chordEndStep = chordStartStep + chord.getLength();
+                if ((chordStartStep >= previousStep) && (chordStartStep < currentStep)) {
+                    for (PlayableNote note : chord.getNotes()) {
+                        GaudrophoneController.getController().playNote(note);
+                    }
+                }
+                
+                if ((chordEndStep >= previousStep) && (chordEndStep < currentStep)) {
+                    for (PlayableNote note : chord.getNotes()) {
+                        GaudrophoneController.getController().releaseNote(note);
+                    }
+                }
+            }
+            
+            if (this.currentStep > chordEndStep) {
+                this.currentStep = 0;
+            }
+        }
     }
 }

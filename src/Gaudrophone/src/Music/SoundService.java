@@ -23,6 +23,8 @@
  */
 package Music;
 
+import Manager.GaudrophoneController;
+
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +57,8 @@ public class SoundService {
         
         if (sound.isPlaying())
             sound.kill();
+        
+        GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().addSound(sound);
         
         soundPlayingQty++;
         SourceDataLine line;

@@ -83,23 +83,36 @@ public class ShapeDrawer {
                     g2.setColor(shape.getKey().getShape().getIdleAppearance().getColor());
             }
             
+            //If the shape is present in song or hovered, make it whiter or darker (depending on color, just change it -.-" )
+            if((keyState & KeyState.hover.getValue()) != 0 || (keyState & KeyState.presentInSong.getValue()) != 0) {
+                if(java.awt.Color.class.isInstance(g2.getPaint())) {
+                    if(UI.HSL.rgbToHSL(g2.getColor())[2] <= 50) {
+                        g2.setColor(g2.getColor().brighter());
+                    } else {
+                        g2.setColor(g2.getColor().darker());
+                    }
+                }
+            }
+            
             //Draw the shape
             g2.fill(shape.getShape());
+            
+            //If the shape is present in song or hovered, but is an image and couldn't set color, draw a white mask on it.
+            if((keyState & KeyState.hover.getValue()) != 0 || ((keyState & KeyState.presentInSong.getValue()) != 0) && (keyState & KeyState.clicked.getValue()) == 0) {
+                if(!java.awt.Color.class.isInstance(g2.getPaint())) {
+                    g2.setColor(new Color(255, 255, 255, 60));
+                    g2.fill(shape.getShape());
+                }
+            }
             
             //Draw weird cross-lines in the middle
             drawCrossLines(g2, shape.getKey().getShape().getCrossLines(), shape);
             
             //Draw each border lines
-            drawLines(g2, shape.getLines(), (keyState & KeyState.searched.getValue()) != 0 || (keyState & KeyState.presentInSong.getValue()) != 0);
+            drawLines(g2, shape.getLines());
             
             //Draw the key information (name, etc.)
             drawText(g2, shape);
-            
-            //If the key is hovered, add a white mask
-            if((keyState & KeyState.hover.getValue()) != 0 || (keyState & KeyState.presentInSong.getValue()) != 0) {
-                g2.setColor(new Color(255, 255, 255, 60));
-                g2.fill(shape.getShape());
-            }
         }
         catch (Exception ex) {
             System.out.println("ShapeDrawer.drawShape : " + ex.getMessage());
@@ -160,7 +173,7 @@ public class ShapeDrawer {
     }
     
     //Draw border lines of a shape
-    private void drawLines(Graphics2D g2, List<DrawableLine> lines, Boolean searched) {
+    private void drawLines(Graphics2D g2, List<DrawableLine> lines) {
         try {
             //First corner of all the shape, and the last corner used
             Point2D cornerExtern = null, firstCornerExtern = null, cornerIntern = null, firstCornerIntern = null;
@@ -249,7 +262,7 @@ public class ShapeDrawer {
                     }
                     
                     //Paint the line using his color
-                    g2.setPaint(searched ? this.SELECTION_COLOR : current.getColor());
+                    g2.setPaint(current.getColor());
                     g2.fill(p);
                     //Current line is the next one. Iterate now.
                     current = next;
@@ -257,7 +270,7 @@ public class ShapeDrawer {
             }  
         }
         catch (NullPointerException ex) {
-            //System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage()); //It's just spamming the console. It's working (acceptable), so we don't need it anymore
         }
         catch (Exception ex) {
             System.out.println(ex.getMessage());

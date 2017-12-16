@@ -49,6 +49,10 @@ public class SongPlayer extends Sequencer {
         return this.manager.getBPM() * this.playbackSpeed;
     }
     
+    public Song getSong() {
+        return this.song;
+    }
+    
     @Override
     public void setSong(Song song) {
         super.setSong(song);
@@ -162,16 +166,16 @@ public class SongPlayer extends Sequencer {
                 return;
             }
         }
-        createMissingSound(note);
+        this.createMissingSound(note);
     }
     
     @Override
     public void run() {
-        missingSounds.clear();
-        getElapsedTime(); // call the method to init lastTimeUpdate
+        this.missingSounds.clear();
+        this.getElapsedTime(); // call the method to init lastTimeUpdate
         while (isPlaying) {
-            double previousStep = currentStep;
-            currentStep += getElapsedTime() * ((double) this.getAlteredBPM()) / 60.0; // calculate elapsed steps
+            double previousStep = this.currentStep;
+            this.currentStep += this.getElapsedTime() * ((double) this.getAlteredBPM()) / 60.0; // calculate elapsed steps
             
             double chordPlayStep = 0;
             double chordEndStep = 0;
@@ -180,15 +184,15 @@ public class SongPlayer extends Sequencer {
                 chordPlayStep += chord.getRelativeSteps();
                 chordEndStep = chordPlayStep + chord.getLength();
                 
-                if ((chordPlayStep > previousStep) && (chordPlayStep <= currentStep)) {
+                if ((chordPlayStep >= previousStep) && (chordPlayStep < currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
                         if (!GaudrophoneController.getController().playNote(note)) {
-                            playMissingSound(note);
+                            this.playMissingSound(note);
                         }
                     }
                 }
                 
-                if ((chordEndStep > previousStep) && (chordEndStep <= currentStep)) {
+                if ((chordEndStep >= previousStep) && (chordEndStep < currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
                         if (!GaudrophoneController.getController().releaseNote(note)) {
                             for (Sound sound : missingSounds) {
@@ -211,9 +215,5 @@ public class SongPlayer extends Sequencer {
                 this.stop();
             }
         }
-    }
-
-    public Song getSong() {
-        return this.song;
     }
 }

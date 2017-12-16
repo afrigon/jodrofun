@@ -35,6 +35,8 @@ import Music.AudioClip;
 import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
+import Music.LiveLoop;
+import Music.LiveLoopRecorderState;
 import Music.PlayableNote;
 import Music.Song;
 import Music.SongIO;
@@ -51,6 +53,7 @@ public class GaudrophoneController {
     private final SelectionManager selectionManager = new SelectionManager();
     private final SequencerManager sequencerManager = new SequencerManager();
     private final DeviceManager deviceManager = new DeviceManager();
+    private final LiveLoop[] liveLoops = new LiveLoop[9];
     
     private GaudrophoneControllerDelegate delegate;
     public void setDelegate(GaudrophoneControllerDelegate delegate) { this.delegate = delegate; }
@@ -59,25 +62,19 @@ public class GaudrophoneController {
             return this.delegate;
         } else {
             return new GaudrophoneControllerDelegate() {
-                @Override
-                public void shouldUpdateProprietyPannelFor(Key key) {}
-                @Override
-                public void didMoveKey(Key key) {}
-                @Override
-                public void didMovePoint(Key key) {}
-                @Override
-                public void didSetBPM(int bpm) {}
-                @Override
-                public void didStopPlayingSong() {}
-                @Override
-                public void didStartPlayingSong() {}@Override
-                public void didPauseSong() {}
-                @Override
-                public void midiDidLink(Key key) {}
-                @Override
-                public void updateMediaPlayerSlider(double percent) {}
-                @Override
-                public void didLoadSong(Song song) {}
+                @Override public void shouldUpdateProprietyPannelFor(Key key) {}
+                @Override public void didMoveKey(Key key) {}
+                @Override public void didMovePoint(Key key) {}
+                @Override public void didSetBPM(int bpm) {}
+                @Override public void didStopPlayingSong() {}
+                @Override public void didStartPlayingSong() {}
+                @Override public void didPauseSong() {}
+                @Override public void midiDidLink(Key key) {}
+                @Override public void updateMediaPlayerSlider(double percent) {}
+                @Override public void didLoadSong(Song song) {}
+                @Override public void liveLoopDidStartRecording(int index) {}
+                @Override public void liveLoopDidCancelRecording(int index) {}
+                @Override public void liveLoopDidStop(int index) {}
             };
         }
     }
@@ -583,17 +580,6 @@ public class GaudrophoneController {
         return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
-    public boolean releaseNote(PlayableNote note) {
-        Key key = this.getKeyFromPlayableNote(note);
-        if(key != null) {
-            key.removeState(KeyState.clicked);
-            this.soundService.release(key.getSound());
-            this.canvasManager.getDelegate().shouldRedraw();
-            return true;
-        }
-        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
-    }
-    
     public boolean toggleMute() {
         return this.sequencerManager.getSequencer().toggleMute();
     }
@@ -629,5 +615,37 @@ public class GaudrophoneController {
             }
         }
         return "midi_detected";
+    }
+    
+    public boolean releaseNote(PlayableNote note) {
+        Key key = this.getKeyFromPlayableNote(note);
+        if(key != null) {
+            key.removeState(KeyState.clicked);
+            this.soundService.release(key.getSound());
+            this.canvasManager.getDelegate().shouldRedraw();
+            return true;
+        }
+        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+    public void startRecordingLiveLoop(int index) {
+        LiveLoopRecorderState state = this.sequencerManager.getLiveLoopRecorder().getState();
+        if (state != LiveLoopRecorderState.idle) {
+            if (state == LiveLoopRecorderState.waiting) {
+                this.getDelegate().liveLoopDidCancelRecording(index);
+            }
+            this.sequencerManager.getLiveLoopRecorder().stopRecording();
+        } else {
+            this.sequencerManager.getLiveLoopRecorder().startRecording(index);
+        }
+    }
+    
+    public void startPlayingLiveLoop(int index) {
+        this.sequencerManager.addLiveLoop(this.sequencerManager.getLiveLoopRecorder().stopRecording(), index);
+    }
+    
+    public void stopPlayingLiveLoop(int index) {
+        this.sequencerManager.stopLiveLoop(index);
+        this.getDelegate().liveLoopDidStop(index);
     }
 }
