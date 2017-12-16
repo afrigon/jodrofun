@@ -131,6 +131,7 @@ public class SongIO {
             
             //and here miracle occurs
             int linesBefore = 0;
+            int nbrOctaves = 0;
             PlayableChord chord = null;
             for (int j = 0; j < paragraphCount.size(); ++j) {
                 for (int i = 0; i < lines.get(linesBefore).toCharArray().length; i++) {
@@ -139,7 +140,7 @@ public class SongIO {
                         if (chord != null) { song.addChord(chord); }
                         chord = new PlayableChord();
                         if (!tempo.isEmpty()) {
-                            chord.setLength(tempo.get(i));
+                            chord.setLength(tempo.get(i - nbrOctaves));
                         }
                         chord.setRelativeSteps(this.lastChordLength);
                         this.lastChordLength = chord.getLength();
@@ -150,7 +151,8 @@ public class SongIO {
                     } else if (value.matches("[\\d]")) {
                         try {
                             if (chord != null && !chord.isEmpty()) {
-                                chord.getNotes().getLast().setOctave(Integer.parseInt(value));    
+                                chord.getNotes().getLast().setOctave(Integer.parseInt(value));
+                                ++nbrOctaves;
                             }
                         } catch (NumberFormatException ex) {}
                     } else if ("#".equals(value)) {
@@ -160,6 +162,7 @@ public class SongIO {
                     }
                 }
                 linesBefore += paragraphCount.get(j);
+                nbrOctaves = 0;
             }
             song.addChord(chord);
             linesBefore = 0;
