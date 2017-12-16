@@ -70,7 +70,8 @@ public class GaudrophoneController {
                 @Override
                 public void didStopPlayingSong() {}
                 @Override
-                public void didStartPlayingSong() {}@Override
+                public void didStartPlayingSong() {}
+                @Override
                 public void didPauseSong() {}
                 @Override
                 public void midiDidLink(Key key) {}
