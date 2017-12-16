@@ -28,8 +28,9 @@ import java.util.LinkedList;
 
 public class SequencerManager {
     private final Metronome metronome = new Metronome();
-    private final LinkedList<Sequencer> liveloops = new LinkedList<>();
+    private final LinkedList<LiveLoop> liveloops = new LinkedList<>();
     private final SongPlayer sequencer;
+    private final LiveLoopRecorder recorder = new LiveLoopRecorder();
     private int bpm = 120;
     
     public SequencerManager() {
@@ -39,14 +40,21 @@ public class SequencerManager {
         }
     }
     
-    public void addLiveLoop(LiveLoop ll, int index) {
-        this.liveloops.remove(index);
-        this.liveloops.add(index, ll);
+    public LiveLoopRecorder getLiveLoopRecorder() {
+        return this.recorder;
+    }
+    
+    public void addLiveLoop(Song song, int index) {
+        this.liveloops.get(index).setSong(song);
         this.liveloops.get(index).play();
     }
     
     public void stopLiveLoop(int index) {
         this.liveloops.get(index).stop();
+    }
+    
+    public LiveLoop getLiveLoop(int index) {
+        return this.liveloops.get(index);
     }
     
     public SongPlayer getSequencer() {

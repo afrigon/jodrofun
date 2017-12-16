@@ -41,12 +41,9 @@ public class SelectionManager {
             return this.delegate;
         } else {
             return new SelectionManagerDelegate() {
-                @Override
-                public void didSelectKey(Key key) {}
-                @Override
-                public void didDeselectKey() {}
-                @Override
-                public void didSelectLine(Color color, double thickness) {}
+                @Override public void didSelectKey(Key key) {}
+                @Override public void didDeselectKey() {}
+                @Override public void didSelectLine(Color color, double thickness) {}
             };
         }
     }

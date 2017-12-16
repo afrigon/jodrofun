@@ -36,10 +36,10 @@ import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
 import Music.LiveLoop;
+import Music.LiveLoopRecorderState;
 import Music.PlayableNote;
 import Music.Song;
 import Music.SongIO;
-import Music.Sound;
 import Music.SoundType;
 import Music.Waveform.WaveFormType;
 import java.awt.Color;
@@ -54,48 +54,32 @@ public class GaudrophoneController {
     private final SequencerManager sequencerManager = new SequencerManager();
     private final DeviceManager deviceManager = new DeviceManager();
     private final LiveLoop[] liveLoops = new LiveLoop[9];
-    public GaudrophoneControllerDelegate delegate;
     
-    //private GaudrophoneControllerDelegate delegate;
+    private GaudrophoneControllerDelegate delegate;
     public void setDelegate(GaudrophoneControllerDelegate delegate) { this.delegate = delegate; }
     public GaudrophoneControllerDelegate getDelegate() {
         if (this.delegate != null) {
             return this.delegate;
         } else {
             return new GaudrophoneControllerDelegate() {
-                @Override
-                public void shouldUpdateProprietyPannelFor(Key key) {}
-                @Override
-                public void didMoveKey(Key key) {}
-                @Override
-                public void didMovePoint(Key key) {}
-                @Override
-                public void didSetBPM(int bpm) {}
-                @Override
-                public void didStopPlayingSong() {}
-                @Override
-                public void didStartPlayingSong() {}@Override
-                public void didPauseSong() {}
-                @Override
-                public void midiDidLink(Key key) {}
-                @Override
-                public void updateMediaPlayerSlider(double percent) {}
-                @Override
-                public void didLoadSong(Song song) {}
-                @Override
-                public void liveLoopDidStop(int index) {}
+                @Override public void shouldUpdateProprietyPannelFor(Key key) {}
+                @Override public void didMoveKey(Key key) {}
+                @Override public void didMovePoint(Key key) {}
+                @Override public void didSetBPM(int bpm) {}
+                @Override public void didStopPlayingSong() {}
+                @Override public void didStartPlayingSong() {}
+                @Override public void didPauseSong() {}
+                @Override public void midiDidLink(Key key) {}
+                @Override public void updateMediaPlayerSlider(double percent) {}
+                @Override public void didLoadSong(Song song) {}
+                @Override public void liveLoopDidStartRecording(int index) {}
+                @Override public void liveLoopDidCancelRecording(int index) {}
+                @Override public void liveLoopDidStop(int index) {}
             };
         }
     }
     
     private static GaudrophoneController controller = null;
-    
-    private GaudrophoneController()
-      {
-        for (int i = 0; i < 9; i++)
-//            liveLoops[i] = new LiveLoop();
-            ;
-      }
     
     public static GaudrophoneController getController() {
         if (controller == null) {
@@ -596,31 +580,6 @@ public class GaudrophoneController {
         return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
-    public void toggleLiveLoop(int index) {
-        
-        System.out.println("Toggleing LiveLoop " + index);
-        
-        /*if (liveLoops[index].isRecording())
-            liveLoops[index].stopRecording();
-        else
-            liveLoops[index].startRecording();*/
-    }
-    
-        public void addToLiveLoop(Sound sound)
-      {
-        /*for (LiveLoop ll: this.liveLoops) {
-            if (ll.isRecording())
-                ll.addSound(sound);
-        }*/
-      }
-    
-    public void stopSound() {
-/*        for (LiveLoop ll: this.liveLoops) {
-            if (ll.isRecording())
-                ll.stopSound();
-        }*/
-    }
-    
     public boolean toggleMute() {
         return this.sequencerManager.getSequencer().toggleMute();
     }
@@ -667,5 +626,26 @@ public class GaudrophoneController {
             return true;
         }
         return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
+    
+    public void startRecordingLiveLoop(int index) {
+        LiveLoopRecorderState state = this.sequencerManager.getLiveLoopRecorder().getState();
+        if (state != LiveLoopRecorderState.idle) {
+            if (state == LiveLoopRecorderState.waiting) {
+                this.getDelegate().liveLoopDidCancelRecording(index);
+            }
+            this.sequencerManager.getLiveLoopRecorder().stopRecording();
+        } else {
+            this.sequencerManager.getLiveLoopRecorder().startRecording(index);
+        }
+    }
+    
+    public void startPlayingLiveLoop(int index) {
+        this.sequencerManager.addLiveLoop(this.sequencerManager.getLiveLoopRecorder().stopRecording(), index);
+    }
+    
+    public void stopPlayingLiveLoop(int index) {
+        this.sequencerManager.stopLiveLoop(index);
+        this.getDelegate().liveLoopDidStop(index);
     }
 }

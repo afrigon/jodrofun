@@ -55,17 +55,6 @@ public class Canvas extends javax.swing.JPanel {
             }
         });
         
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent e) {
-                if (e.getKeyCode() >= 48 && e.getKeyCode() <= 57)
-                    GaudrophoneController.getController().toggleLiveLoop(e.getKeyCode() - 48);
-            }
-            
-            public void keyReleased(java.awt.event.KeyEvent e) {
-                
-            }
-        });
-        
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent e) {
                 GaudrophoneController.getController().getCanvasManager().setCanvasSize(e.getComponent().getWidth(), e.getComponent().getWidth());

@@ -28,34 +28,28 @@ import Manager.SequencerManager;
 
 public class LiveLoop extends Sequencer {
     private int loopIndex = -1;
+    
     public LiveLoop(SequencerManager manager, int index) {
         super(manager);
         this.loopIndex = index;
     }
-/*import Manager.GaudrophoneController;
 
-        @Override
+    @Override
     public void play() {
         this.isPlaying = true;
         new Thread(this).start();
-        GaudrophoneController.getController().getDelegate().didStartPlayingSong();
     }
     
     @Override
     public void pause() {
         this.stop();
     }
-    }*/
     
     @Override
     public void stop() {
         this.isPlaying = false;
         this.currentStep = 0;
         GaudrophoneController.getController().getDelegate().liveLoopDidStop(this.loopIndex);
-    }
-    
-    private void restart() {
-        this.currentStep = 0;
     }
     
     private double getElapsedTime() {
@@ -67,19 +61,17 @@ public class LiveLoop extends Sequencer {
     
     @Override
     public void run() {
-        getElapsedTime(); // call the method to init lastTimeUpdate
+        this.getElapsedTime(); // call the method to init lastTimeUpdate
         while (isPlaying) {
-            double previousStep = currentStep;
-            currentStep += getElapsedTime() * ((double) this.song.getBPM()) / 60.0; // calculate elapsed steps
-            
-            double chordPlayStep = 0;
-            double chordEndStep = 0;
+            double previousStep = this.currentStep;
+            this.currentStep += this.getElapsedTime() * ((double) this.song.getBPM()) / 60.0; // calculate elapsed steps
+            System.out.println(this.currentStep);
+            double chordStartStep = 0, chordEndStep = 0;
             
             for (PlayableChord chord : this.song.getChords()) {
-                chordPlayStep += chord.getRelativeSteps();
-                chordEndStep = chordPlayStep + chord.getLength();
-                
-                if ((chordPlayStep > previousStep) && (chordPlayStep <= currentStep)) {
+                chordStartStep += chord.getRelativeSteps();
+                chordEndStep = chordStartStep + chord.getLength();
+                if ((chordStartStep > previousStep) && (chordStartStep <= currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
                         GaudrophoneController.getController().playNote(note);
                     }
@@ -93,40 +85,8 @@ public class LiveLoop extends Sequencer {
             }
             
             if (this.currentStep > chordEndStep) {
-                this.restart();
+                this.currentStep = 0;System.out.println("reset");
             }
         }
     }
-/*    public void stopRecording() {
-        recording = false;
-        
-        System.out.println("Stop recording.\nRecorded notes : " + sequence.getChords().size());
-        GaudrophoneController.getController().getSequencer().setSong(sequence);
-         GaudrophoneController.getController().getSequencer().play();
-    }
-    
-    public void addSound(Sound sound) {
-        PlayableNote note = sound.getPlayableNote();
-        
-        System.out.println("Start Sound");
-
-        currentChord.addNote(note);
-        currentChord.setRelativeSteps(baseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM()));
-    }
-    
-    public void stopSound() {
-        long newBaseTime = System.nanoTime() / 1000000000;
-        double newSteps = newBaseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM());
-        currentChord.setLength(newSteps);
-        sequence.addChord(currentChord);
-                       
-        System.out.println("Stop Sound. Base Time : " + baseTime);
-        System.out.println("BPM : " + GaudrophoneController.getController().getSequencer().getBPM());
-        System.out.println("Steps : " + currentChord.getRelativeSteps());
-        System.out.println("Length : " + newSteps);
-        
-        baseTime = newBaseTime;
-        
-        currentChord = new PlayableChord();
-    }*/
 }
