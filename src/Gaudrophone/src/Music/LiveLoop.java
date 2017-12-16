@@ -28,6 +28,7 @@ import Manager.SequencerManager;
 public class LiveLoop extends Sequencer {
     public LiveLoop(SequencerManager manager) {
         super(manager);
+    }
 /*import Manager.GaudrophoneController;
 
 public class LiveLoop {
