@@ -90,13 +90,13 @@ public class ShapeDrawer {
             drawCrossLines(g2, shape.getKey().getShape().getCrossLines(), shape);
             
             //Draw each border lines
-            drawLines(g2, shape.getLines(), (keyState & KeyState.searched.getValue()) != 0);
+            drawLines(g2, shape.getLines(), (keyState & KeyState.searched.getValue()) != 0 || (keyState & KeyState.presentInSong.getValue()) != 0);
             
             //Draw the key information (name, etc.)
             drawText(g2, shape);
             
             //If the key is hovered, add a white mask
-            if((keyState & KeyState.hover.getValue()) != 0) {
+            if((keyState & KeyState.hover.getValue()) != 0 || (keyState & KeyState.presentInSong.getValue()) != 0) {
                 g2.setColor(new Color(255, 255, 255, 60));
                 g2.fill(shape.getShape());
             }
@@ -255,6 +255,9 @@ public class ShapeDrawer {
                     current = next;
                 }
             }  
+        }
+        catch (NullPointerException ex) {
+            //System.out.println(ex.getMessage());
         }
         catch (Exception ex) {
             System.out.println(ex.getMessage());

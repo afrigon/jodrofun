@@ -23,38 +23,41 @@
  */
 package Music;
 
-import java.util.LinkedList;
+import Manager.SequencerManager;
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
+public abstract class Sequencer implements Runnable {
+    protected SequencerManager manager;
+    protected final double PRESSED_THRESHOLD = 0.5;
+    protected boolean isPlaying = false;
+    protected Song song = null;
+    protected long lastTimeUpdate = 0;
+    protected double currentStep = 0;
+    protected double totalSteps = 0;
     
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
+    public Sequencer(SequencerManager manager) {
+        this.manager = manager;
     }
     
-    public double getRelativeSteps() {
-        return this.relativeSteps;
+    public boolean isPlaying() {
+        return this.isPlaying;
     }
     
-    public double getLength() {
-        return this.length;
+    public boolean hasSong() {
+        return this.song != null;
     }
     
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
+    public void setSong(Song song) {
+        this.song = song;
+        this.manager.setBPM(song.getBPM());
+        this.totalSteps = 0;
+        this.currentStep = 0;
+        for (PlayableChord chord : song.getChords()) {
+            this.totalSteps += chord.getRelativeSteps();
+        }
+        this.totalSteps += song.getChords().getLast().getLength();
     }
     
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
-    }
-    
-    public void setLength(double steps) {
-        this.length = steps;
-    }
-    
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
-    }
+    public abstract void play();
+    public abstract void pause();
+    public abstract void stop();
 }

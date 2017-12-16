@@ -21,57 +21,105 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package Music;
 
-import Music.*;
+import Instrument.KeyState;
+import Manager.GaudrophoneController;
+import Manager.SequencerManager;
 import java.util.ArrayList;
 
-public class Sequencer implements Runnable {
-    private final double PRESSED_THRESHOLD = 0.5;
-    private final Metronome metronome = new Metronome();
-    private Song song = null;
-    private int bpm = 120;
-    private boolean isPlaying = false;
-    private long lastTimeUpdate = 0;
-    private double currentStep = 0;
-    private final ArrayList<Sound> missingSounds = new ArrayList<>();
+public class SongPlayer extends Sequencer {
     private boolean muted = false;
+    private final ArrayList<Sound> missingSounds = new ArrayList<>();
+    private double playbackSpeed = 1;
     
-    public int getBPM() {
-        return this.bpm;
+    public SongPlayer(SequencerManager manager) {
+        super(manager);
     }
     
-    public void setBPM(int bpm) {
-        this.bpm = Math.max(1, Math.min(bpm, 600));
-        this.metronome.adjustBPM(this.bpm);
+    public double getPlaybackSpeed() {
+        return this.playbackSpeed;
     }
     
+    public void setPlaybackSpeed(double speed) {
+        this.playbackSpeed = speed;
+    }
+    
+    public double getAlteredBPM() {
+        return this.manager.getBPM() * this.playbackSpeed;
+    }
+    
+    @Override
     public void setSong(Song song) {
-        this.song = song;
-        this.setBPM(song.getBPM());
-    }
-    
-    public void setMuted(boolean active) {
-        muted = active;
-    }
-    
-    //return state
-    public boolean toogleMetronome() {
-        if (!this.metronome.isRunning) {
-            this.metronome.start(this.bpm);
-        } else {
-            this.metronome.close();
+        super.setSong(song);
+        for(PlayableChord chord : song.getChords()){
+            for(PlayableNote note : chord.getNotes()) {
+                Instrument.Key key = GaudrophoneController.getController().getKeyFromPlayableNote(note);
+                if(key != null) {
+                    key.addState(KeyState.presentInSong);
+                }
+            }
         }
-        return this.metronome.isRunning;
+        GaudrophoneController.getController().getCanvasManager().getDelegate().shouldRedraw();
     }
     
     public boolean isMuted() {
         return this.muted;
     }
     
+    public void setMuted(boolean active) {
+        this.muted = active;
+    }
+    
+    public void setPosition(int percent) {
+        if (!this.isPlaying) {
+            this.currentStep = (double)percent*this.totalSteps/100;
+            GaudrophoneController.getController().getDelegate().updateMediaPlayerSlider(percent);
+        }
+    }
+    
+    public String getTimeLeft() {
+        double time = (this.totalSteps-this.currentStep) * 60.0 / this.getAlteredBPM();
+        return String.format("%d:%02d", (int) Math.floor(time / 60.0), (int) Math.ceil(time % 60.0));
+    }
+    
     public boolean toggleMute() {
         this.muted = !this.muted;
+        if (this.muted) {
+            GaudrophoneController.getController().getSoundService().closeAll();
+        }
         return this.muted;
+    }
+    
+    public void togglePlay() {
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.play();
+        }
+    }
+    
+    @Override
+    public void play() {
+        this.isPlaying = true;
+        new Thread(this).start();
+        GaudrophoneController.getController().getDelegate().didStartPlayingSong();
+    }
+    
+    @Override
+    public void pause() {
+        this.isPlaying = false;
+        GaudrophoneController.getController().getSoundService().closeAll();
+        GaudrophoneController.getController().getDelegate().didPauseSong();
+    }
+    
+    @Override
+    public void stop() {
+        this.isPlaying = false;
+        this.currentStep = 0;
+        GaudrophoneController.getController().getSoundService().closeAll();
+        GaudrophoneController.getController().getDelegate().didStopPlayingSong();
+        GaudrophoneController.getController().getDelegate().updateMediaPlayerSlider(0);
     }
     
     private double getElapsedTime() {
@@ -81,25 +129,6 @@ public class Sequencer implements Runnable {
         return ((double) delta) / 1000000000.0;
     }
     
-    public void play() {
-        this.isPlaying = true;
-        new Thread(this).start();
-        GaudrophoneController.getController().delegate.didStartPlayingSong();
-    }
-    
-    public void pause() {
-        this.isPlaying = false;
-        GaudrophoneController.getController().getSoundService().closeAll();
-        GaudrophoneController.getController().delegate.didPauseSong();
-    }
-    
-    public void stop() {
-        this.isPlaying = false;
-        this.currentStep = 0;
-        GaudrophoneController.getController().getSoundService().closeAll();
-        GaudrophoneController.getController().delegate.didStopPlayingSong();
-    }
-    
     public boolean hasNearNote(double frequency) {
         // get note(s) that are supposed to be played very soon (or has been played)
         double chordPlayStep = 0;
@@ -107,7 +136,7 @@ public class Sequencer implements Runnable {
             chordPlayStep += chord.getRelativeSteps();
             
             double deltaStepDifference = Math.abs(this.currentStep - chordPlayStep);
-            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double)this.bpm);
+            double deltaTimeDiff = deltaStepDifference * 60.0 / ((double)this.getAlteredBPM());
             
             if (deltaTimeDiff < this.PRESSED_THRESHOLD) {
                 for (PlayableNote note : chord.getNotes()) {
@@ -142,7 +171,7 @@ public class Sequencer implements Runnable {
         getElapsedTime(); // call the method to init lastTimeUpdate
         while (isPlaying) {
             double previousStep = currentStep;
-            currentStep += getElapsedTime() * ((double) bpm) / 60.0; // calculate elapsed steps
+            currentStep += getElapsedTime() * ((double) this.getAlteredBPM()) / 60.0; // calculate elapsed steps
             
             double chordPlayStep = 0;
             double chordEndStep = 0;
@@ -172,24 +201,19 @@ public class Sequencer implements Runnable {
                 }
             }
             
+            double roundPreviousStep = Math.floor(chordEndStep);
+            double roundCurrentStep = Math.floor(currentStep);
+            if (roundPreviousStep != roundCurrentStep) {
+                GaudrophoneController.getController().getDelegate().updateMediaPlayerSlider(this.currentStep*100/this.totalSteps);
+            }
+            
             if (this.currentStep > chordEndStep) {
                 this.stop();
             }
         }
     }
 
-    public void stopAll() {
-        this.stop();
-        this.metronome.close();
-        this.muted = false;
-    }
-
-    public void togglePlay() {
-        if (this.isPlaying) {
-            this.pause();
-        } else {
-            this.play();
-        }
-        
+    public Song getSong() {
+        return this.song;
     }
 }

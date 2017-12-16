@@ -21,13 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package Instrument.Pattern;
 
+import Instrument.Instrument;
+import Instrument.Key;
 import Music.Note;
 import Music.Alteration;
 import KeyUtils.KeyLine;
 import KeyUtils.KeyShape;
-import KeyUtils.RectangleKeyShape;
+import KeyUtils.Generator.RectangleKeyShape;
 import KeyUtils.Vector2;
 import Music.PlayableNote;
 import Music.SynthesizedSound;
@@ -90,7 +92,7 @@ public class Piano implements InstrumentPattern {
     }
     
     private KeyShape getWhiteKey() {
-        KeyShape shape = new RectangleKeyShape().generateRectangle((int)this.KEY_WIDTH, (int)this.KEY_HEIGHT, new Vector2(this.x, 0));
+        KeyShape shape = new RectangleKeyShape().generateShape((int)this.KEY_WIDTH, (int)this.KEY_HEIGHT, new Vector2(this.x, 0));
         LinkedList<KeyLine> lines = new LinkedList<>();
         for (int j = 0; j < 4; j++) {
             lines.add(new KeyLine(j % 2 == 0 ? 0 : 1, new Color(0x858585)));
@@ -102,7 +104,7 @@ public class Piano implements InstrumentPattern {
     }
     
     private KeyShape getBlackKey() {
-        KeyShape shape = new RectangleKeyShape().generateRectangle((int)this.KEY_WIDTH/2, (int)(this.KEY_HEIGHT*0.66), new Vector2(this.x, 0));
+        KeyShape shape = new RectangleKeyShape().generateShape((int)this.KEY_WIDTH/2, (int)(this.KEY_HEIGHT*0.66), new Vector2(this.x, 0));
         shape.getIdleAppearance().setColor(new Color(0x000000));
         shape.getSunkenAppearance().setColor(new Color(0x555555));
         return shape;

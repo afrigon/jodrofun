@@ -96,10 +96,10 @@ public class Envelope implements java.io.Serializable {
             }
         }
     }
-    public double getReleasedAmplitude(double time, double timePlayed) {
+    public double getReleasedAmplitude(double time) {
         if (time < release) {
             double powThis = 1 - time / release;
-            return getPlayingAmplitude(timePlayed) * powThis * powThis;// * (1 - Math.exp(-time/5));
+            return powThis * powThis;// * (1 - Math.exp(-time/5));
         } else {
             return 0;
         } 

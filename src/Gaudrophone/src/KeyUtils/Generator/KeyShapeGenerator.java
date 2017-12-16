@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils.Generator;
 
-import java.util.LinkedList;
+import KeyUtils.KeyShape;
+import KeyUtils.Vector2;
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
+
+public abstract class KeyShapeGenerator {
+    protected boolean shouldConvertToRelative = true;
     
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
+    public void setShouldConvertToRelative(boolean value) {
+        this.shouldConvertToRelative = value;
     }
     
-    public double getRelativeSteps() {
-        return this.relativeSteps;
-    }
-    
-    public double getLength() {
-        return this.length;
-    }
-    
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
-    }
-    
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
-    }
-    
-    public void setLength(double steps) {
-        this.length = steps;
-    }
-    
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
-    }
+    public abstract String getName();
+    public abstract KeyShape generate(int size, Vector2 clickPosition);
+    public abstract KeyShape generate(Vector2 startClickPosition, Vector2 endClickPosition);
 }

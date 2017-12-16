@@ -21,12 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils.Generator.Polygon;
 
-public class SawWaveForm extends WaveForm implements java.io.Serializable {
+public class hexagonKeyShape extends PolygonKeyShape {
+    public hexagonKeyShape() {
+        this.sides = 6;
+    }
+
     @Override
-    public double getAmplitude(double frequency, double time) {
-        double angle = 2 * Math.PI * ((frequency * time) % 1);
-        return 2.0 * angle / Math.PI - 1.0;
+    public String getName() {
+        return "Hexagon";
     }
 }

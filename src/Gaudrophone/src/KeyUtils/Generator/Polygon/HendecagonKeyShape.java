@@ -21,11 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils.Generator.Polygon;
 
-public class SquareWaveForm extends WaveForm implements java.io.Serializable {
+public class HendecagonKeyShape extends PolygonKeyShape {
+    public HendecagonKeyShape() {
+        this.sides = 11;
+    }
+
     @Override
-    public double getAmplitude(double frequency, double time) {
-        return Math.signum(Math.sin(2 * Math.PI * frequency * time));
+    public String getName() {
+        return "Hendecagon";
     }
 }

@@ -21,40 +21,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager;
 
+import Music.*;
 import java.util.LinkedList;
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
+public class SequencerManager {
+    private final Metronome metronome = new Metronome();
+    private final LinkedList<Sequencer> liveloops = new LinkedList<>();
+    private final SongPlayer sequencer;
+    private int bpm = 120;
     
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
+    public SequencerManager() {
+        this.sequencer = new SongPlayer(this);
     }
     
-    public double getRelativeSteps() {
-        return this.relativeSteps;
+    public void addLiveLoop(LiveLoop ll) {
+        this.liveloops.add(ll);
     }
     
-    public double getLength() {
-        return this.length;
+    public void removeLiveLoop(int index) {
+        this.liveloops.remove(index);
     }
     
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
+    public SongPlayer getSequencer() {
+        return this.sequencer;
     }
     
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
+    public int getBPM() {
+        return this.bpm;
     }
     
-    public void setLength(double steps) {
-        this.length = steps;
+    public void setBPM(int bpm) {
+        this.bpm = Math.max(1, Math.min(bpm, 600));
+        this.metronome.adjustBPM(this.bpm);
     }
     
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
+    //return state
+    public boolean toogleMetronome() {
+        if (!this.metronome.isRunning) {
+            this.metronome.start(this.bpm);
+        } else {
+            this.metronome.close();
+        }
+        return this.metronome.isRunning;
+    }
+    
+    public void setMetronomeState(boolean state) {
+        if (state) {
+            this.metronome.start(this.bpm);
+        } else {
+            this.metronome.close();
+        }
     }
 }

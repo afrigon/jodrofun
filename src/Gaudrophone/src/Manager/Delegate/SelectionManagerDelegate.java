@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package Manager.Delegate;
 
-public interface InstrumentPattern {
-    public Instrument generate();
+import Instrument.Key;
+import java.awt.Color;
+
+public interface SelectionManagerDelegate {
+    public void didSelectKey(Key key);
+    public void didDeselectKey();
+    public void didSelectLine(Color color, double thickness);
 }

@@ -23,6 +23,8 @@
  */
 package Music;
 
+import Music.Waveform.SineWaveForm;
+import Music.Waveform.WaveForm;
 import javax.sound.sampled.AudioFormat;
 
 
@@ -62,6 +64,7 @@ public class SynthesizedSound extends Sound {
         
         int sampleCountReleased = 0; // keeps the total number of samples played
         double milliTimePlayed = (double) sampleCount / (double) WaveForm.SAMPLE_RATE * 1000.0;
+        double releasedAmplitude = envelope.getPlayingAmplitude(milliTimePlayed);
         
         // Play the release tail of a sound
         while (playing && released) {
@@ -70,7 +73,7 @@ public class SynthesizedSound extends Sound {
             for (int i = 0; i < BUFFER_SIZE; i++) {
                 double time = (((double) (i + sampleCountReleased))/WaveForm.SAMPLE_RATE);
                 
-                double envelopeAmplitude = envelope.getReleasedAmplitude(time * 1000.0, milliTimePlayed);
+                double envelopeAmplitude = releasedAmplitude * envelope.getReleasedAmplitude(time * 1000.0);
                 
                 if (envelopeAmplitude == 0) {
                     kill();
@@ -83,12 +86,6 @@ public class SynthesizedSound extends Sound {
                 buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
                 buffer[4 * i + 2] = buffer[4 * i];
                 buffer[4 * i + 3] = buffer[4 * i + 1];
-                
-                
-                if (envelopeAmplitude == 0) {
-                    kill();
-                    return;
-                }
             }
             
             sampleCountReleased += BUFFER_SIZE;

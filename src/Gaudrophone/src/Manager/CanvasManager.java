@@ -23,11 +23,13 @@
  */
 package Manager;
 
+import Manager.Delegate.CanvasManagerDelegate;
 import Instrument.Key;
 import Instrument.KeyState;
-import KeyUtils.KeyShapeGenerator;
+import KeyUtils.Generator.KeyShapeGenerator;
 import KeyUtils.Vector2;
 import Music.PlayableNote;
+import Music.SongPlayer;
 import Music.SynthesizedSound;
 import UI.DrawableShape;
 import java.util.LinkedList;
@@ -38,16 +40,26 @@ public class CanvasManager {
     private List<DrawableShape> shapes;
     private State state = State.Play;
     private KeyShapeGenerator storedKeyShape;
-    
     private DrawableShape draggedShape = null;
-    
     private double ratio = Double.POSITIVE_INFINITY;
     private Vector2 canvasSize2 = new Vector2(0, 0);
-    
-    public CanvasManagerDelegate delegate;
-    
     private Key lastKey;
     private Vector2 clickPosition;
+    
+    private CanvasManagerDelegate delegate;
+    public void setDelegate(CanvasManagerDelegate delegate) { this.delegate = delegate; }
+    public CanvasManagerDelegate getDelegate() {
+        if (this.delegate != null) {
+            return this.delegate;
+        } else {
+            return new CanvasManagerDelegate() {
+                @Override
+                public void shouldRedraw() {}
+                @Override
+                public void didChangeState(State state) {}
+            };
+        }
+    }
     
     public Vector2 convertPixelToWorld(int x, int y) {
         if(ratio != Double.POSITIVE_INFINITY)
@@ -65,7 +77,6 @@ public class CanvasManager {
             this.ratio = 1;
             return canvasSize2;
         }
-            
     }
     
     public int convertThicknessToPixel(double thickness) {
@@ -81,9 +92,7 @@ public class CanvasManager {
         keyList.forEach((key) -> {
             this.shapes.add(new DrawableShape(key));
         });
-        if (this.delegate != null) {
-            this.delegate.shouldRedraw();
-        }
+        this.getDelegate().shouldRedraw();
     }
     
     public void clicked(Key key) {
@@ -93,12 +102,12 @@ public class CanvasManager {
                 this.lastKey = key;
                 break;
             case AutoPlay:
-                Sequencer sequencer = GaudrophoneController.getController().getSequencer();
-                if (sequencer.isMuted())
+                SongPlayer sequencer = GaudrophoneController.getController().getSequencerManager().getSequencer();
+                if (sequencer.isMuted()) {
                     key.play(sequencer.hasNearNote(key.getSound().getPlayableNote().getFrequency()));
-                else
+                } else {
                     key.play();
-                
+                }
                 this.lastKey = key;
                 break;
         }
@@ -129,6 +138,7 @@ public class CanvasManager {
     
     public void released(Key key) {
         switch (this.state) {
+            case AutoPlay:
             case Play:
                 if (key != null) {
                     key.release();
@@ -149,7 +159,9 @@ public class CanvasManager {
     
     public void released(int x, int y, int button) {
         switch (this.state) {
+            case AutoPlay:
             case Play:
+                this.released(this.lastKey);
                 this.lastKey = null;
                 break;
             case CreatingShape :
@@ -158,7 +170,6 @@ public class CanvasManager {
                         Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(this.clickPosition, new Vector2(x, y)), this.storedKeyShape.getName());
                         GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
                         this.drawKeys(GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys());
-                        //this.originalCanvas = GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox();
                     } else {
                         Key key = new Key(new SynthesizedSound(new PlayableNote()), this.storedKeyShape.generate(100, this.clickPosition), this.storedKeyShape.getName());
                         GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().add(key);
@@ -195,21 +206,21 @@ public class CanvasManager {
                     //If the user clicked the canvas and drag onto a key
                     if (this.lastKey == null) {
                         ds.getKey().play();
-                        if (this.delegate != null) { this.delegate.shouldRedraw(); }
+                        this.getDelegate().shouldRedraw();
                         this.lastKey = ds.getKey();
                     } else {
                         //If the playing key is not the same as the key being drag right now
                         if (this.lastKey != ds.getKey()) {
                             this.lastKey.release();
                             ds.getKey().play();
-                            if (this.delegate != null) { this.delegate.shouldRedraw(); }
+                            this.getDelegate().shouldRedraw();
                             this.lastKey = ds.getKey();
                         }
                     }
                 } else {
                     if (this.lastKey != null) {
                         this.lastKey.release();
-                        if (this.delegate != null) { this.delegate.shouldRedraw(); }
+                        this.getDelegate().shouldRedraw();
                         this.lastKey = null;
                     }
                 }
@@ -274,11 +285,11 @@ public class CanvasManager {
             GaudrophoneController.getController().getSelectionManager().setKey(null);
         }
         this.state = state;
-        this.delegate.didChangeState(state);
+        this.getDelegate().didChangeState(state);
     }
     
     public void setCanvasSize(int x, int y) {
-        this.canvasSize2 = new Vector2(x, y);
+        this.canvasSize2 = new Vector2(x - 10, y - 10);
         if(GaudrophoneController.getController().getInstrumentManager().getInstrument() != null)
             this.findNewRatio(GaudrophoneController.getController().getInstrumentManager().getInstrument().getBoundingBox());
     }

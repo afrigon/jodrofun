@@ -21,40 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-import java.util.LinkedList;
+public enum WaveFormType {
+    Sine(new SineWaveForm()), 
+    Square(new SquareWaveForm()), 
+    Triangle(new TriangleWaveForm()), 
+    Saw(new SawWaveForm()), 
+    Random(new RandomWaveForm());
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
-    
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
+    private final WaveForm value;
+    private WaveFormType(WaveForm value) {
+        this.value = value;
     }
-    
-    public double getRelativeSteps() {
-        return this.relativeSteps;
-    }
-    
-    public double getLength() {
-        return this.length;
-    }
-    
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
-    }
-    
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
-    }
-    
-    public void setLength(double steps) {
-        this.length = steps;
-    }
-    
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
+
+    public WaveForm getWaveForm() {
+        return value;
     }
 }

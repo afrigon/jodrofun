@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package Music.Waveform;
 
-import Instrument.Key;
-import java.awt.Color;
+import javax.sound.sampled.AudioFormat;
 
-public interface SelectionManagerDelegate {
-    public void didSelectKey(Key key);
-    public void didDeselectKey();
-    public void didSelectLine(Color color, double thickness);
+public abstract class WaveForm {
+    public static final int SAMPLE_RATE = 44100;
+    public static final int SAMPLE_SIZE = 16; // This is related to SynthesizedSound.getPlayingStream() and SynthesizedSound.getReleasedStream()
+    public static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE, 2, true, false);
+    
+    public abstract double getAmplitude(double frequency, double time);
 }

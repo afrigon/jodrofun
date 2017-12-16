@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,12 @@
  */
 package Music;
 
-public class SineWaveForm extends WaveForm implements java.io.Serializable {
-    @Override
-    public double getAmplitude(double frequency, double time) {
-        return Math.sin(2 * Math.PI * frequency * time);
+public class Silence extends PlayableChord {
+    public Silence(double length, double relativeSteps) {
+        this.length = length;
+        this.relativeSteps = relativeSteps;
     }
+
+    @Override
+    public void addNote(PlayableNote note) {}
 }

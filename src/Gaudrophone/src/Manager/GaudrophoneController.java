@@ -23,6 +23,7 @@
  */
 package Manager;
 
+import Manager.Delegate.GaudrophoneControllerDelegate;
 import Instrument.Key;
 import Instrument.KeyState;
 import KeyUtils.Corner;
@@ -36,10 +37,11 @@ import Music.Note;
 import Music.Alteration;
 import Music.LiveLoop;
 import Music.PlayableNote;
+import Music.Song;
 import Music.SongIO;
 import Music.Sound;
 import Music.SoundType;
-import Music.WaveFormType;
+import Music.Waveform.WaveFormType;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,10 +51,40 @@ public class GaudrophoneController {
     private final CanvasManager canvasManager = new CanvasManager();
     private final SoundService soundService = SoundService.getSoundService();
     private final SelectionManager selectionManager = new SelectionManager();
-    private final Sequencer sequencer = new Sequencer();
+    private final SequencerManager sequencerManager = new SequencerManager();
     private final DeviceManager deviceManager = new DeviceManager();
     private final LiveLoop[] liveLoops = new LiveLoop[9];
     public GaudrophoneControllerDelegate delegate;
+    
+    private GaudrophoneControllerDelegate delegate;
+    public void setDelegate(GaudrophoneControllerDelegate delegate) { this.delegate = delegate; }
+    public GaudrophoneControllerDelegate getDelegate() {
+        if (this.delegate != null) {
+            return this.delegate;
+        } else {
+            return new GaudrophoneControllerDelegate() {
+                @Override
+                public void shouldUpdateProprietyPannelFor(Key key) {}
+                @Override
+                public void didMoveKey(Key key) {}
+                @Override
+                public void didMovePoint(Key key) {}
+                @Override
+                public void didSetBPM(int bpm) {}
+                @Override
+                public void didStopPlayingSong() {}
+                @Override
+                public void didStartPlayingSong() {}@Override
+                public void didPauseSong() {}
+                @Override
+                public void midiDidLink(Key key) {}
+                @Override
+                public void updateMediaPlayerSlider(double percent) {}
+                @Override
+                public void didLoadSong(Song song) {}
+            };
+        }
+    }
     
     private static GaudrophoneController controller = null;
     
@@ -85,8 +117,8 @@ public class GaudrophoneController {
         return this.selectionManager;
     }
     
-    public Sequencer getSequencer() {
-        return this.sequencer;
+    public SequencerManager getSequencerManager() {
+        return this.sequencerManager;
     }
     
     public DeviceManager getDeviceManager() {
@@ -102,7 +134,7 @@ public class GaudrophoneController {
             instrumentManager.getInstrument().addKey(k);
             this.selectionManager.setKey(k);
             this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -118,7 +150,7 @@ public class GaudrophoneController {
             }
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -135,10 +167,10 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().translate(translation);
-            this.delegate.didMoveKey(key);
+            this.getDelegate().didMoveKey(key);
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
             this.canvasManager.drawKeys(this.instrumentManager.getInstrument().getKeys());
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -146,10 +178,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             size = this.canvasManager.convertPixelToWorld((int)size.getX(), (int)size.getY());
-            Vector2 origin = key.getShape().getCorner(Corner.topLeft);
-            Vector2 bottomRightOrigin = key.getShape().getCorner(Corner.bottomRight);
-            Vector2 oldSize = new Vector2(bottomRightOrigin.getX() - origin.getX(), bottomRightOrigin.getY() - origin.getY());
-            //this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
 
             if (size.getX() != 0 && size.getY() != 0) {
                 key.getShape().setSize(size, Corner.topLeft);
@@ -162,7 +190,7 @@ public class GaudrophoneController {
         if (key != null) {
             key.getShape().stretch(delta);
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -170,8 +198,8 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if(key != null) {
             key.getShape().addPoint(index);
-            this.delegate.didMovePoint(key);
-            this.canvasManager.delegate.shouldRedraw();
+            this.getDelegate().didMovePoint(key);
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -181,9 +209,9 @@ public class GaudrophoneController {
         if(key != null && key.getShape().getPoints().size() > 3) {
             key.getShape().getPoints().remove(index);
             key.getShape().getLines().remove(index);
-            this.delegate.didMovePoint(key);
-            this.delegate.shouldUpdateProprietyPannelFor(key);
-            this.canvasManager.delegate.shouldRedraw();
+            this.getDelegate().didMovePoint(key);
+            this.getDelegate().shouldUpdateProprietyPannelFor(key);
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -193,7 +221,7 @@ public class GaudrophoneController {
         if (key != null && point != -1) {
             key.getShape().getPoints().set(point, key.getShape().getPoints().get(point).add(translation));
             this.canvasManager.findNewRatio(this.instrumentManager.getInstrument().getBoundingBox());
-            this.delegate.didMovePoint(key);
+            this.getDelegate().didMovePoint(key);
         }
     }
     
@@ -204,8 +232,8 @@ public class GaudrophoneController {
         if (key != null && point != -1) {
             key.getShape().getLines().get(point).setCurve(
                     key.getShape().getLines().get(point).getCurve().add(translation));
-            this.delegate.didMovePoint(key);
-            this.canvasManager.delegate.shouldRedraw();
+            this.getDelegate().didMovePoint(key);
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -220,7 +248,7 @@ public class GaudrophoneController {
                 p2 = key.getShape().getPoints().get(line);
             }
             key.getShape().getLines().get(line).setShape(pointShape, p1, p2);
-            this.delegate.didMovePoint(key);
+            this.getDelegate().didMovePoint(key);
         }
     }
     
@@ -236,7 +264,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getIdleAppearance().setColor(newColor);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -244,7 +272,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getSunkenAppearance().setColor(newColor);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -252,7 +280,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getIdleAppearance().setTextColor(newColor);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -260,7 +288,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getShape().getSunkenAppearance().setTextColor(newColor);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -273,7 +301,7 @@ public class GaudrophoneController {
                 key.getShape().getIdleAppearance().setImage(path);
             }
             
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -285,7 +313,7 @@ public class GaudrophoneController {
             } else {
                 key.getShape().getSunkenAppearance().setImage(path);
             }
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -302,7 +330,7 @@ public class GaudrophoneController {
                 shapeLines.get(line).setColor(newColor);
                 key.getShape().setLines(shapeLines);
             }
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
         
     }
@@ -316,7 +344,7 @@ public class GaudrophoneController {
                     line.setColor(newColor);
             }
             key.getShape().setLines(shapeLines);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -329,7 +357,7 @@ public class GaudrophoneController {
                     line.setThickness(newThickness);
             }
             key.getShape().setLines(shapeLines);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -346,7 +374,7 @@ public class GaudrophoneController {
                 shapeLines.get(line).setThickness(newThickness);
                 key.getShape().setLines(shapeLines);
             }
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -354,7 +382,7 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.setName(newName);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -374,7 +402,7 @@ public class GaudrophoneController {
     private void setFrequency(Key key) {
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound sound = (SynthesizedSound)key.getSound();
-            this.delegate.shouldUpdateProprietyPannelFor(key);
+            this.getDelegate().shouldUpdateProprietyPannelFor(key);
         }
     }
     
@@ -383,7 +411,7 @@ public class GaudrophoneController {
         if (key != null) {
             key.setNote(newNote);
             this.setFrequency(key);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -392,7 +420,7 @@ public class GaudrophoneController {
         if (key != null) {
             key.setAlteration(alteration);
             this.setFrequency(key);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -401,7 +429,7 @@ public class GaudrophoneController {
         if (key != null) {
             key.setOctave(newOctave);
             this.setFrequency(key);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         }
     }
     
@@ -417,9 +445,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setAttack(newAttack);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -427,9 +452,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setDecay(newDecay);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -437,9 +459,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setSustain((double)newSustain/100);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -447,9 +466,6 @@ public class GaudrophoneController {
         Key key = this.selectionManager.getSelectedKey();
         if (key != null) {
             key.getSound().getEnvelope().setRelease(newRelease);
-            if(key.getSound().getType() == SoundType.synthesizedSound) {
-                //((SynthesizedSound)key.getSound()).refreshBuffer();
-            }
         }
     }
         
@@ -472,7 +488,6 @@ public class GaudrophoneController {
         if (key != null && key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound sound = ((SynthesizedSound)key.getSound());
             sound.setWaveForm(waveFormType.getWaveForm());
-            //sound.refreshBuffer();
         }
     }
 
@@ -502,11 +517,11 @@ public class GaudrophoneController {
             int index = this.instrumentManager.getInstrument().getKeys().indexOf(key);
             Key newKey = this.instrumentManager.getInstrument().getKeys().get(index+1 >= this.instrumentManager.getInstrument().getKeys().size() ? 0 : index+1);
             this.selectionManager.setKey(newKey);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         } else {
             if (this.instrumentManager.getInstrument().getKeys().size() > 0) {
                 this.selectionManager.setKey(this.instrumentManager.getInstrument().getKeys().get(0));
-                this.canvasManager.delegate.shouldRedraw();
+                this.canvasManager.getDelegate().shouldRedraw();
             }
         }
     }
@@ -517,11 +532,11 @@ public class GaudrophoneController {
             int index = this.instrumentManager.getInstrument().getKeys().indexOf(key);
             Key newKey = this.instrumentManager.getInstrument().getKeys().get(index-1 >= 0 ? index-1 : this.instrumentManager.getInstrument().getKeys().size()-1);
             this.selectionManager.setKey(newKey);
-            this.canvasManager.delegate.shouldRedraw();
+            this.canvasManager.getDelegate().shouldRedraw();
         } else {
             if (this.instrumentManager.getInstrument().getKeys().size() > 0) {
                 this.selectionManager.setKey(this.instrumentManager.getInstrument().getKeys().get(0));
-                this.canvasManager.delegate.shouldRedraw();
+                this.canvasManager.getDelegate().shouldRedraw();
             }
         }
     }
@@ -535,47 +550,47 @@ public class GaudrophoneController {
             Search search = new SearchAll(this.instrumentManager.getInstrument().getKeys());
             search.search(text);
         }
-        this.canvasManager.delegate.shouldRedraw();
+        this.canvasManager.getDelegate().shouldRedraw();
     }
 
     public void loadSong(String path) {
-        this.sequencer.setSong(new SongIO().Load(path));
-        this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencerManager.getSequencer().setSong(new SongIO().Load(path));
+        this.getDelegate().didSetBPM(this.sequencerManager.getBPM());
+        this.sequencerManager.getSequencer().setPlaybackSpeed(1);
+        this.sequencerManager.getSequencer().setPosition(0);
+        this.sequencerManager.getSequencer().setMuted(false);
+        this.getDelegate().didLoadSong(this.sequencerManager.getSequencer().getSong());
     }
     
     public void setBPM(int bpm) {
-        this.sequencer.setBPM(bpm);
-        this.delegate.didSetBPM(this.sequencer.getBPM());
+        this.sequencerManager.setBPM(bpm);
+        this.getDelegate().didSetBPM(this.sequencerManager.getBPM());
     }
     
     public boolean toggleMetronome() {
-        return this.sequencer.toogleMetronome();
+        return this.sequencerManager.toogleMetronome();
+    }
+    
+    public Key getKeyFromPlayableNote(PlayableNote note) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            if(key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
+                return key;
+            }
+        }
+        return null;
     }
     
     public boolean playNote(PlayableNote note) {
-        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
-            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
-                key.addState(KeyState.clicked);
-                if (!sequencer.isMuted()) {
-                    this.soundService.play(key.getSound());
-                }
-                this.canvasManager.delegate.shouldRedraw();
-                return true;
+        Key key = this.getKeyFromPlayableNote(note);
+        if(key != null) {
+            key.addState(KeyState.clicked);
+            if (!this.sequencerManager.getSequencer().isMuted()) {
+                this.soundService.play(key.getSound());
             }
+            this.canvasManager.getDelegate().shouldRedraw();
+            return true;
         }
-        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
-    }
-    
-    public boolean releaseNote(PlayableNote note) {
-        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
-            if (key.getSound().getPlayableNote().getFrequency() == note.getFrequency()) {
-                key.removeState(KeyState.clicked);
-                this.soundService.release(key.getSound());
-                this.canvasManager.delegate.shouldRedraw();
-                return true;
-            }
-        }
-        return sequencer.isMuted(); // so if it is muted the sound will not be played by the Sequencer
+        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
     public void toggleLiveLoop(int index) {
@@ -604,15 +619,11 @@ public class GaudrophoneController {
     }
     
     public boolean toggleMute() {
-        return this.sequencer.toggleMute();
-    }
-
-    public void closeAutoPlay() {
-        this.sequencer.stopAll();
+        return this.sequencerManager.getSequencer().toggleMute();
     }
 
     public void togglePlay() {
-        this.sequencer.togglePlay();
+        this.sequencerManager.getSequencer().togglePlay();
     }
 
     public LinkedList<Key> getLinkedKeys(int channel, int midiNum) {

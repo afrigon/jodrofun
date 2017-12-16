@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,11 @@
  */
 package Music;
 
+import Manager.SequencerManager;
+
+public class LiveLoop extends Sequencer {
+    public LiveLoop(SequencerManager manager) {
+        super(manager);
 import Manager.GaudrophoneController;
 
 public class LiveLoop {
@@ -35,10 +40,15 @@ public class LiveLoop {
     public LiveLoop() {
         recording = false;
     }
-    
-    public boolean isRecording() {
-        return recording;
+
+    @Override
+    public void play() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void pause() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     
     public void startRecording() {
         baseTime = System.nanoTime() / 1000000000;
@@ -46,7 +56,15 @@ public class LiveLoop {
         
          System.out.println("Start recording. Base Time : " + baseTime);
     }
+
+    @Override
+    public void stop() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     public void stopRecording() {
         recording = false;
         

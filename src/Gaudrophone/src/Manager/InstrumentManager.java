@@ -23,6 +23,7 @@
  */
 package Manager;
 
+import Instrument.Pattern.InstrumentPattern;
 import Instrument.*;
 
 public class InstrumentManager {

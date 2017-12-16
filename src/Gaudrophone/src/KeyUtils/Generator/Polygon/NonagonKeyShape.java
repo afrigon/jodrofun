@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package KeyUtils.Generator.Polygon;
 
-import Instrument.Key;
+public class NonagonKeyShape extends PolygonKeyShape {
+    public NonagonKeyShape() {
+        this.sides = 9;
+    }
 
-public interface GaudrophoneControllerDelegate {
-    public void shouldUpdateProprietyPannelFor(Key key);
-    public void didMoveKey(Key key);
-    public void didMovePoint(Key key);
-    public void didSetBPM(int bpm);
-    public void didStopPlayingSong();
-    public void didStartPlayingSong();
-    public void didPauseSong();
-    public void midiDidLink(Key key);
+    @Override
+    public String getName() {
+        return "Nonagon";
+    }
 }

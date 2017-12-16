@@ -71,7 +71,7 @@ public final class DeviceManager {
                         GaudrophoneController.getController().getCanvasManager().clicked(linkedKey);
                     else
                         GaudrophoneController.getController().getCanvasManager().released(linkedKey);
-                    GaudrophoneController.getController().getCanvasManager().delegate.shouldRedraw();
+                    GaudrophoneController.getController().getCanvasManager().getDelegate().shouldRedraw();
                 }
             }
         }
@@ -104,13 +104,6 @@ public final class DeviceManager {
         for (MidiDevice.Info info : MidiSystem.getMidiDeviceInfo()) {
             try {
                 MidiDevice device = MidiSystem.getMidiDevice(info);
-//                System.out.println("INFO : ");
-//                System.out.println(info.getName());
-//                System.out.println(info.getDescription());
-//                System.out.println("getMaxTransmitters()");
-//                System.out.println(device.getMaxTransmitters());
-//                System.out.println("device.getMaxReceivers()");
-//                System.out.println(device.getMaxReceivers());
                 if (device.getMaxReceivers() == 0) {
                     addDevice(device);
                 }

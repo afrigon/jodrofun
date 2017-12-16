@@ -21,21 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager.Delegate;
 
-public enum WaveFormType {
-    Sine(new SineWaveForm()), 
-    Square(new SquareWaveForm()), 
-    Triangle(new TriangleWaveForm()), 
-    Saw(new SawWaveForm()), 
-    Random(new RandomWaveForm());
+import Instrument.Key;
+import Music.Song;
 
-    private final WaveForm value;
-    private WaveFormType(WaveForm value) {
-        this.value = value;
-    }
-
-    public WaveForm getWaveForm() {
-        return value;
-    }
+public interface GaudrophoneControllerDelegate {
+    public void shouldUpdateProprietyPannelFor(Key key);
+    public void didMoveKey(Key key);
+    public void didMovePoint(Key key);
+    public void didSetBPM(int bpm);
+    public void didStopPlayingSong();
+    public void didStartPlayingSong();
+    public void didPauseSong();
+    public void midiDidLink(Key key);
+    public void updateMediaPlayerSlider(double percent);
+    public void didLoadSong(Song song);
 }
