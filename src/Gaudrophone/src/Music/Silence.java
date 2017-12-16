@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package KeyUtils;
+package Music;
 
+public class Silence extends PlayableChord {
+    public Silence(double length, double relativeSteps) {
+        this.length = length;
+        this.relativeSteps = relativeSteps;
+    }
 
-public interface KeyShapeGenerator {
-    public String getName();
-    public KeyShape generate(int size, Vector2 clickPosition);
-    public KeyShape generate(Vector2 startClickPosition, Vector2 endClickPosition);
+    @Override
+    public void addNote(PlayableNote note) {}
 }

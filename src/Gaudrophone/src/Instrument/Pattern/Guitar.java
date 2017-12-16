@@ -21,13 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Instrument;
+package Instrument.Pattern;
 
+import Instrument.Instrument;
+import Instrument.Key;
 import Music.Note;
 import KeyUtils.CrossLine;
 import KeyUtils.KeyLine;
 import KeyUtils.KeyShape;
-import KeyUtils.RectangleKeyShape;
+import KeyUtils.Generator.RectangleKeyShape;
 import KeyUtils.Vector2;
 import Music.AudioClip;
 import Music.PlayableNote;
@@ -40,7 +42,7 @@ public class Guitar implements InstrumentPattern {
     private String fullPathJar;
     
     public Guitar() { 
-        this.fullPathJar = new java.io.File(".").getAbsolutePath().replace("\\.", "");
+        this.fullPathJar = new java.io.File(".").getAbsolutePath().replace("/.", "");
     }
     
     @Override
@@ -68,7 +70,7 @@ public class Guitar implements InstrumentPattern {
             sound.getEnvelope().setRelease(600);
             try {
                 new java.io.File(".").getAbsolutePath();
-                sound.setPath(java.net.URLDecoder.decode(this.fullPathJar + "\\resources\\guitar\\" + keyName + ".wav", "UTF-8"));
+                sound.setPath(java.net.URLDecoder.decode(this.fullPathJar + "/resources/guitar/" + keyName + ".wav", "UTF-8"));
             } catch (UnsupportedEncodingException | NullPointerException ex) {
                 continue;
             }
@@ -80,7 +82,7 @@ public class Guitar implements InstrumentPattern {
     }
     
     private KeyShape getVisual(int x, int y) {
-        KeyShape shape = new RectangleKeyShape().generateRectangle(100, 30, new Vector2(x*100, y*30+60));
+        KeyShape shape = new RectangleKeyShape().generateShape(100, 30, new Vector2(x*100, y*30+60));
         LinkedList<KeyLine> lines = new LinkedList<>();
         for (int j = 0; j < 4; j++) {
             lines.add(new KeyLine((j % 2 == 0) ? 0 : 1, new Color(0x5f7684)));

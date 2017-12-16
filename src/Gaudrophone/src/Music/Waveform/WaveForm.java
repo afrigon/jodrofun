@@ -21,12 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-public class SawWaveForm extends WaveForm implements java.io.Serializable {
-    @Override
-    public double getAmplitude(double frequency, double time) {
-        double angle = 2 * Math.PI * ((frequency * time) % 1);
-        return 2.0 * angle / Math.PI - 1.0;
-    }
+import javax.sound.sampled.AudioFormat;
+
+public abstract class WaveForm {
+    public static final int SAMPLE_RATE = 44100;
+    public static final int SAMPLE_SIZE = 16; // This is related to SynthesizedSound.getPlayingStream() and SynthesizedSound.getReleasedStream()
+    public static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE, 2, true, false);
+    
+    public abstract double getAmplitude(double frequency, double time);
 }

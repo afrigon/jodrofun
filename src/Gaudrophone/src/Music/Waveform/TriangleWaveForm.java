@@ -21,11 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-public class SquareWaveForm extends WaveForm implements java.io.Serializable {
+public class TriangleWaveForm extends WaveForm implements java.io.Serializable {
     @Override
     public double getAmplitude(double frequency, double time) {
-        return Math.signum(Math.sin(2 * Math.PI * frequency * time));
+        double angle = 2 * Math.PI * ((frequency * time) % 1);
+        return 2.0 * Math.abs(2.0 * angle / Math.PI - 1.0) - 1.0;
     }
 }

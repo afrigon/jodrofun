@@ -23,15 +23,30 @@
  */
 package Manager;
 
+import Manager.Delegate.SelectionManagerDelegate;
 import Instrument.Key;
 import Instrument.KeyState;
 import KeyUtils.KeyLine;
+import java.awt.Color;
 
 public class SelectionManager {
     private Key selectedKey = null;
     private int selectedLine = -5;
     private int selectedPoint = -1;
-    public SelectionManagerDelegate delegate;
+    
+    private SelectionManagerDelegate delegate;
+    public void setDelegate(SelectionManagerDelegate delegate) { this.delegate = delegate; }
+    public SelectionManagerDelegate getDelegate() {
+        if (this.delegate != null) {
+            return this.delegate;
+        } else {
+            return new SelectionManagerDelegate() {
+                @Override public void didSelectKey(Key key) {}
+                @Override public void didDeselectKey() {}
+                @Override public void didSelectLine(Color color, double thickness) {}
+            };
+        }
+    }
     
     public void setKey(Key key) {
         if (this.selectedKey != null) {
@@ -41,24 +56,22 @@ public class SelectionManager {
         this.selectedLine = -5;
         this.selectedKey = key;
         if (key != null) { key.addState(KeyState.selected); }
-        if (this.delegate != null) {
-            if (key != null) {   
-                this.delegate.didSelectKey(key);
-            } else {
-                this.delegate.didDeselectKey();
-            }
+        if (key != null) {   
+            this.getDelegate().didSelectKey(key);
+        } else {
+            this.getDelegate().didDeselectKey();
         }
     }
     
     public void setLine(int line) {
         this.selectedLine = line;
-        if (this.delegate != null && line != -5) {
+        if (line != -5) {
             if (line >= 0) {
                 KeyLine keyLine = this.selectedKey.getShape().getLines().get(line);
-                this.delegate.didSelectLine(keyLine.getColor(), keyLine.getThickness());
+                this.getDelegate().didSelectLine(keyLine.getColor(), keyLine.getThickness());
             } else {
                 KeyLine keyLine = this.selectedKey.getShape().getCrossLines()[Math.abs(line)-1];
-                this.delegate.didSelectLine(keyLine.getColor(), keyLine.getThickness());
+                this.getDelegate().didSelectLine(keyLine.getColor(), keyLine.getThickness());
             }
         }
     }

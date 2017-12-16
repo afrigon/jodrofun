@@ -21,15 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils.Generator.Polygon;
 
-import javax.sound.sampled.AudioFormat;
+public class NonagonKeyShape extends PolygonKeyShape {
+    public NonagonKeyShape() {
+        this.sides = 9;
+    }
 
-public abstract class WaveForm {
-    static final int SAMPLE_RATE = 44100;
-    static final int SAMPLE_SIZE = 16; // This is related to SynthesizedSound.getPlayingStream() and SynthesizedSound.getReleasedStream()
-    
-    static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE, 2, true, false);
-    
-    public abstract double getAmplitude(double frequency, double time);
+    @Override
+    public String getName() {
+        return "Nonagon";
+    }
 }

@@ -23,6 +23,7 @@
  */
 package Music;
 
+import Music.Waveform.WaveForm;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

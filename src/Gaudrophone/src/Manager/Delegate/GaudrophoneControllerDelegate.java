@@ -21,40 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager.Delegate;
 
-import java.util.LinkedList;
+import Instrument.Key;
+import Music.Song;
 
-public class PlayableChord {
-    private final LinkedList<PlayableNote> notes = new LinkedList<>();
-    protected double relativeSteps = 0;
-    protected double length = 1;
-    
-    public LinkedList<PlayableNote> getNotes() {
-        return this.notes;
-    }
-    
-    public double getRelativeSteps() {
-        return this.relativeSteps;
-    }
-    
-    public double getLength() {
-        return this.length;
-    }
-    
-    public void addNote(PlayableNote note) {
-        this.notes.add(note);
-    }
-    
-    public void setRelativeSteps(double steps) {
-        this.relativeSteps = steps;
-    }
-    
-    public void setLength(double steps) {
-        this.length = steps;
-    }
-    
-    public boolean isEmpty() {
-        return this.notes.isEmpty();
-    }
+public interface GaudrophoneControllerDelegate {
+    public void shouldUpdateProprietyPannelFor(Key key);
+    public void didMoveKey(Key key);
+    public void didMovePoint(Key key);
+    public void didSetBPM(int bpm);
+    public void didStopPlayingSong();
+    public void didStartPlayingSong();
+    public void didPauseSong();
+    public void midiDidLink(Key key);
+    public void updateMediaPlayerSlider(double percent);
+    public void didLoadSong(Song song);
+    public void liveLoopDidStartRecording(int index);
+    public void liveLoopDidCancelRecording(int index);
+    public void liveLoopDidStop(int index);
 }

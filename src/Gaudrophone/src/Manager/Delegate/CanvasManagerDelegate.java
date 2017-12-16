@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Olivier.
+ * Copyright 2017 frigon.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Manager.Delegate;
 
-public class RandomWaveForm extends WaveForm implements java.io.Serializable {
-    @Override
-    public double getAmplitude(double frequency, double time) {
-        return Math.random();
-    }
+import Manager.State;
+
+public interface CanvasManagerDelegate {
+    public void shouldRedraw();
+    public void didChangeState(State state);
 }

@@ -23,45 +23,59 @@
  */
 package UI;
 
-import Manager.CanvasManager;
-import Manager.GaudrophoneController;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
-import java.util.List;
 
-public class Canvas extends javax.swing.JPanel {
-    
-    private final ShapeDrawer shapeDrawer;
-    
-    public Canvas() {
-        
-        shapeDrawer = new ShapeDrawer();
+public class GradientPanel extends javax.swing.JPanel {
+    private Color[] colors = new Color[2];
+    private Color borderColor = new Color(0x00000000, true);
+    private boolean drawImage = false;
+            
+    public void setDrawImage(boolean value) {
+        this.drawImage = value;
+        this.repaint();
     }
     
-    public void setSearchingFlag(boolean value) {
-        this.shapeDrawer.setIsSearching(value);
+    public void setBorderColor(Color color) {
+        this.borderColor = color;
+        this.repaint();
+    }
+    
+   public GradientPanel(int hue) {
+        Color color = HSL.getRGB((float)hue, 65f, 65f);
+        this.colors[0] = color.brighter();
+        this.colors[1] = color;
     }
     
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g; //g2 > g en terme de performance
-        
-        //Rendering flags
-        //Some are currently set on Quality. Default or Speed might be needed if the canvas is hard to draw.
+        Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        int w = this.getWidth();
+        int h = this.getHeight();
+        float[] dist = {0, 1f};
+        RadialGradientPaint gp = new RadialGradientPaint((float)w/2, (float)h/2, (float)Math.max(h, w)/2, dist, this.colors);
+        g2.setPaint(gp);
+        g2.fillRoundRect(0, 0, w, h, 20, 20);
         
-        //Get all shapes from canvasManager
-        List<DrawableShape> drawableShapes = GaudrophoneController.getController().getCanvasManager().getDrawableShapes();
-        if (drawableShapes == null) return; //error prevention
+        //border
+        g2.setPaint(this.borderColor);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(2, 2, w-5, h-5, 16, 16);
         
-        //Drawing time :)
-        shapeDrawer.drawShapes(g2, drawableShapes, this.getBounds());
+        //image
+        if (this.drawImage) {
+            
+        }
     }
 }

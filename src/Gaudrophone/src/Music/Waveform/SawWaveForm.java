@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,21 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package Music.Waveform;
 
-public enum WaveFormType {
-    Sine(new SineWaveForm()), 
-    Square(new SquareWaveForm()), 
-    Triangle(new TriangleWaveForm()), 
-    Saw(new SawWaveForm()), 
-    Random(new RandomWaveForm());
-
-    private final WaveForm value;
-    private WaveFormType(WaveForm value) {
-        this.value = value;
-    }
-
-    public WaveForm getWaveForm() {
-        return value;
+public class SawWaveForm extends WaveForm implements java.io.Serializable {
+    @Override
+    public double getAmplitude(double frequency, double time) {
+        double angle = 2 * Math.PI * ((frequency * time) % 1);
+        return 2.0 * angle / Math.PI - 1.0;
     }
 }

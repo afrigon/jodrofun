@@ -23,17 +23,20 @@
  */
 package Music;
 
+import Manager.GaudrophoneController;
+import Music.Waveform.WaveForm;
 import javax.sound.sampled.AudioFormat;
 
 
 public class SynthesizedSound extends Sound {
-    private WaveForm waveForm = new SineWaveForm();
+    private WaveForm waveForm = null;
     
     private static final int BUFFER_SIZE = (int) (WaveForm.SAMPLE_RATE / 20);
     
     public SynthesizedSound(PlayableNote playableNote) {
         this.type = SoundType.synthesizedSound;
         this.playableNote = playableNote;
+        this.waveForm = GaudrophoneController.getController().getInstrumentManager().getInstrument().getMasterWaveForm();
     }
     
     @Override

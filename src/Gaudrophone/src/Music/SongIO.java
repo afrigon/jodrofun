@@ -28,7 +28,7 @@ import java.io.FileReader;
 import java.util.LinkedList;
 
 public class SongIO {
-    private double lastChordLength = 0;
+    private double lastChordLength = 0.25;
     
     public Song Load(String path) {
         LinkedList<String> lines = this.readFile(path);
@@ -65,6 +65,8 @@ public class SongIO {
         song.setRaw(String.join("\n", lines));
         int i = 0;
         
+        song.addChord(new Silence(this.lastChordLength, 0));
+        
         while (i < lines.size()) {
             if (song.getBPM() == -1) {
                 //find the song's BPM
@@ -92,6 +94,10 @@ public class SongIO {
             
             this.readChord(chordLines, song);
         }
+        
+        //silence at the end
+        song.addChord(new Silence(1, this.lastChordLength));
+        
         return song;
     }
     
@@ -106,17 +112,17 @@ public class SongIO {
                 }
             }
             
+            int beforeChordCount = song.getChords().size();
+            
             //and here miracle occurs
             PlayableChord chord = null;
-            for (char c: lines.get(0).toCharArray()) {
-                String value = String.valueOf(c).toUpperCase();
+            for (int i = 0; i < lines.get(0).toCharArray().length; i++) {
+                String value = String.valueOf(lines.get(0).toCharArray()[i]).toUpperCase();
                 if (value.matches("[ABCDEFGX]")) {
-                    if (chord != null) {
-                        song.addChord(chord);
-                    }
+                    if (chord != null) { song.addChord(chord); }
                     chord = new PlayableChord();
                     if (tempo != null) {
-                        chord.setLength(tempo.get(song.getChords().size()));
+                        chord.setLength(tempo.get(i));
                     }
                     chord.setRelativeSteps(this.lastChordLength);
                     this.lastChordLength = chord.getLength();
@@ -141,7 +147,8 @@ public class SongIO {
             //the rest
             for (int i = 1; i < lines.size(); i++) {
                 String line = lines.get(i);
-                int j = -1;
+                //-2 because of the start silence and the index is incremented before operations
+                int j = beforeChordCount+1;
                 for (char c: line.toCharArray()) {
                     String value = String.valueOf(c).toUpperCase();
                     if (value.matches("[ABCDEFGX]")) {

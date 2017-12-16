@@ -21,11 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Music;
+package KeyUtils.Generator.Polygon;
 
-public class SineWaveForm extends WaveForm implements java.io.Serializable {
+public class OctogonKeyShape extends PolygonKeyShape {
+    public OctogonKeyShape() {
+        this.sides = 8;
+    }
+
     @Override
-    public double getAmplitude(double frequency, double time) {
-        return Math.sin(2 * Math.PI * frequency * time);
+    public String getName() {
+        return "Octogon";
     }
 }

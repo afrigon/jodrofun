@@ -52,8 +52,8 @@ public class Key implements java.io.Serializable {
     //Everything need to be brand new, otherwise it will use a referenced pointer
     //Exemple, moving one key will move any duplicated because the points are the same pointers
     public Key(Key key) {
-        //Create new Sound, synthesized or audioclip
         
+        //Create new Sound, synthesized or audioclip
         if (key.getSound().getType() == SoundType.synthesizedSound) {
             SynthesizedSound s = (SynthesizedSound)key.getSound();
             this.sound = new SynthesizedSound(new PlayableNote());
@@ -162,36 +162,38 @@ public class Key implements java.io.Serializable {
     }
     
     public void link(int channel, int midiNum) {
-        linkedChannel = channel;
-        linkedMidiNumber = midiNum;
-        linked = true;
-        GaudrophoneController.getController().delegate.midiDidLink(this);
+        this.linkedChannel = channel;
+        this.linkedMidiNumber = midiNum;
+        this.linked = true;
+        GaudrophoneController.getController().getDelegate().midiDidLink(this);
     }
     
     public boolean isLinked(int channel, int midiNum) {
-        return (linked && linkedChannel == channel && linkedMidiNumber == midiNum);
+        return (this.linked && this.linkedChannel == channel && this.linkedMidiNumber == midiNum);
     }
     
     public boolean isLinked() {
-        return linked;
+        return this.linked;
     }
     
     public void unlink() {
-        linked = false;
+        this.linked = false;
     }
     
     public void play(boolean playSound) {
-        if (playSound)
-            GaudrophoneController.getController().getSoundService().play(sound);
-        addState(KeyState.clicked);
+        if (playSound) {
+            GaudrophoneController.getController().getSoundService().play(this.sound);
+        }
+        this.addState(KeyState.clicked);
     }
     
     public void play() {
-        play(true);
+        this.play(true);
     }
     
     public void release() {
-        GaudrophoneController.getController().getSoundService().release(sound);
-        removeState(KeyState.clicked);
+        GaudrophoneController.getController().getSoundService().release(this.sound);
+        GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().stopSound(this.sound);
+        this.removeState(KeyState.clicked);
     }
 }

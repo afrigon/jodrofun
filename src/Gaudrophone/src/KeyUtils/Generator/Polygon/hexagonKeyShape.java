@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 frigon.
+ * Copyright 2017 Olivier.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Manager;
+package KeyUtils.Generator.Polygon;
 
-public interface CanvasManagerDelegate {
-    public void shouldRedraw();
-    public void didChangeState(State state);
+public class hexagonKeyShape extends PolygonKeyShape {
+    public hexagonKeyShape() {
+        this.sides = 6;
+    }
+
+    @Override
+    public String getName() {
+        return "Hexagon";
+    }
 }
