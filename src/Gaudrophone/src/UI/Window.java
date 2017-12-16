@@ -3271,8 +3271,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             addKeyListener(new java.awt.event.KeyAdapter() {
                 @Override
                 public void keyPressed(java.awt.event.KeyEvent e) {
-                    if (e.getKeyCode() >= 48 && e.getKeyCode() <= 57)
-                        GaudrophoneController.getController().toggleLiveLoop(e.getKeyCode() - 48);
+                    //key 1 to 9 included
+                    if (e.getKeyCode() >= 49 && e.getKeyCode() <= 57) {
+                        liveLoopAction(e.getKeyCode() - 49);
+                    }
                 }
             });
             

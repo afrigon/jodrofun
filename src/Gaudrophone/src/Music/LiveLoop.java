@@ -65,19 +65,18 @@ public class LiveLoop extends Sequencer {
         while (isPlaying) {
             double previousStep = this.currentStep;
             this.currentStep += this.getElapsedTime() * ((double) this.song.getBPM()) / 60.0; // calculate elapsed steps
-            System.out.println(this.currentStep);
             double chordStartStep = 0, chordEndStep = 0;
             
             for (PlayableChord chord : this.song.getChords()) {
                 chordStartStep += chord.getRelativeSteps();
                 chordEndStep = chordStartStep + chord.getLength();
-                if ((chordStartStep > previousStep) && (chordStartStep <= currentStep)) {
+                if ((chordStartStep >= previousStep) && (chordStartStep < currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
                         GaudrophoneController.getController().playNote(note);
                     }
                 }
                 
-                if ((chordEndStep > previousStep) && (chordEndStep <= currentStep)) {
+                if ((chordEndStep >= previousStep) && (chordEndStep < currentStep)) {
                     for (PlayableNote note : chord.getNotes()) {
                         GaudrophoneController.getController().releaseNote(note);
                     }
@@ -85,7 +84,7 @@ public class LiveLoop extends Sequencer {
             }
             
             if (this.currentStep > chordEndStep) {
-                this.currentStep = 0;System.out.println("reset");
+                this.currentStep = 0;
             }
         }
     }

@@ -148,20 +148,20 @@ public class SongIO {
             for (int i = 1; i < lines.size(); i++) {
                 String line = lines.get(i);
                 //-2 because of the start silence and the index is incremented before operations
-                int j = beforeChordCount-2;
+                int j = beforeChordCount+1;
                 for (char c: line.toCharArray()) {
                     String value = String.valueOf(c).toUpperCase();
                     if (value.matches("[ABCDEFGX]")) {
                         j++;
                         if (!"X".equals(value)) {
-                            song.getChords().get(j+1).addNote(new PlayableNote(Note.getNoteFromName(value), 4));
+                            song.getChords().get(j).addNote(new PlayableNote(Note.getNoteFromName(value), 4));
                         }
                     } else if (value.matches("[\\d]")) {
                         try {
-                            song.getChords().get(j+1).getNotes().getLast().setOctave(Integer.parseInt(value));
+                            song.getChords().get(j).getNotes().getLast().setOctave(Integer.parseInt(value));
                         } catch (NumberFormatException ex) {}
                     } else if ("#".equals(value)) {
-                        song.getChords().get(j+1).getNotes().getLast().setAlteration(Alteration.Sharp);
+                        song.getChords().get(j).getNotes().getLast().setAlteration(Alteration.Sharp);
                     }
                 }
             }

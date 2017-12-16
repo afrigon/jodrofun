@@ -62,6 +62,7 @@ public class LiveLoopRecorder {
         this.song = new Song();
         this.song.setBPM(GaudrophoneController.getController().getSequencerManager().getBPM());
         this.liveLoopIndex = index;
+        this.lastStartTime = 0;
     }
     
     public Song stopRecording() {
@@ -79,8 +80,7 @@ public class LiveLoopRecorder {
             PlayableChord chord = new PlayableChord();
             chord.addNote(note);
             double time = System.currentTimeMillis();
-            chord.setRelativeSteps(this.lastStartTime == 0 ? this.lastStartTime : time-this.lastStartTime*this.song.getBPM()/60000);
-
+            chord.setRelativeSteps(this.lastStartTime == 0 ? this.lastStartTime : (time-this.lastStartTime)*this.song.getBPM()/60000);
             this.playingSounds.put(sound, new ChordData(chord, time));
             this.lastStartTime = time;
         }
