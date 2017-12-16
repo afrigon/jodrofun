@@ -44,15 +44,24 @@ public class SynthesizedSound extends Sound {
         
         int sampleCount = 0;
         
-        // play the attack, decay and sustain part until sound is killed or released
-        while (playing && (!released)) {
+        double timePlayed = -1;
+        double releasedAmplitude = 0;
+        while (playing) {
             byte[] buffer = new byte[4 * BUFFER_SIZE];
             
             for (int i = 0; i < BUFFER_SIZE; i++) {
                 double time = (((double) (i + sampleCount))/WaveForm.SAMPLE_RATE);
                 
-                short amplitude = (short) (32767.0 * envelope.getPlayingAmplitude(time * 1000.0) * volume * waveForm.getAmplitude(playableNote.getFrequency(), time));
-            
+                short amplitude = 0;
+                if (released) {
+                    if (timePlayed == -1) {
+                        timePlayed = time;
+                        releasedAmplitude = envelope.getPlayingAmplitude(time * 1000.0);
+                    }
+                    amplitude = (short) (32767.0 * releasedAmplitude * envelope.getReleasedAmplitude((time - timePlayed) * 1000.0) * volume * waveForm.getAmplitude(playableNote.getFrequency(), time));
+                } else {
+                    amplitude = (short) (32767.0 * envelope.getPlayingAmplitude(time * 1000.0) * volume * waveForm.getAmplitude(playableNote.getFrequency(), time));
+                }
                 buffer[4 * i] = (byte) (amplitude & 0xff);
                 buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
                 buffer[4 * i + 2] = buffer[4 * i];
@@ -60,36 +69,6 @@ public class SynthesizedSound extends Sound {
             }
             sampleCount += BUFFER_SIZE;
             
-            line.write(buffer, 0, buffer.length);
-        }
-        
-        int sampleCountReleased = 0; // keeps the total number of samples played
-        double milliTimePlayed = (double) sampleCount / (double) WaveForm.SAMPLE_RATE * 1000.0;
-        double releasedAmplitude = envelope.getPlayingAmplitude(milliTimePlayed);
-        
-        // Play the release tail of a sound
-        while (playing && released) {
-            byte[] buffer = new byte[4 * BUFFER_SIZE];
-            
-            for (int i = 0; i < BUFFER_SIZE; i++) {
-                double time = (((double) (i + sampleCountReleased))/WaveForm.SAMPLE_RATE);
-                
-                double envelopeAmplitude = releasedAmplitude * envelope.getReleasedAmplitude(time * 1000.0);
-                
-                if (envelopeAmplitude == 0) {
-                    kill();
-                    return;
-                }
-                
-                short amplitude = (short) (32767.0 * envelopeAmplitude * volume * waveForm.getAmplitude(playableNote.getFrequency(), time));
-            
-                buffer[4 * i] = (byte) (amplitude & 0xff);
-                buffer[4 * i + 1] = (byte) ((amplitude >> 8) & 0xff);
-                buffer[4 * i + 2] = buffer[4 * i];
-                buffer[4 * i + 3] = buffer[4 * i + 1];
-            }
-            
-            sampleCountReleased += BUFFER_SIZE;
             line.write(buffer, 0, buffer.length);
         }
     }
