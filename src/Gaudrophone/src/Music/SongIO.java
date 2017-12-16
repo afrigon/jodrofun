@@ -68,6 +68,7 @@ public class SongIO {
         song.addChord(new Silence(this.lastChordLength, 0));
         
         while (i < lines.size()) {
+            LinkedList<String> chordLines = new LinkedList<>();
             if (song.getBPM() == -1) {
                 //find the song's BPM
                 if (!"".equals(lines.get(i))) {
@@ -86,12 +87,12 @@ public class SongIO {
             }
 
             //load each section
-            LinkedList<String> chordLines = new LinkedList<>();
             do {
-                chordLines.add(lines.get(i));
+                if(!"".equals(lines.get(i))) {
+                    chordLines.add(lines.get(i));
+                }
                 i++;
-            } while (i < lines.size() && !"".equals(lines.get(i)));
-            
+            } while (i < lines.size());
             this.readChord(chordLines, song);
         }
         
@@ -102,68 +103,88 @@ public class SongIO {
     }
     
     private void readChord(LinkedList<String> lines, Song song) {
+        boolean paragraphCompleted = true;
+        java.util.ArrayList<java.lang.Integer> paragraphCount = new java.util.ArrayList<>();
         if (!lines.isEmpty()) {
             //get tempo for each note
-            LinkedList<Double> tempo = null;
-            if (lines.get(lines.size()-1).matches("[_,.\\d]+")) {
-                tempo = new LinkedList<>();
-                for (char c: lines.removeLast().toCharArray()) {
-                    tempo.add(this.stringToStep(c));
+            LinkedList<Double> tempo = new LinkedList<>();
+            for(int i = 0 ; i < lines.size(); ) {
+                if (paragraphCompleted && lines.get(i).toUpperCase().matches("[ABCDEBGX].*")) {
+                    paragraphCompleted = false;
+                    paragraphCount.add(1);
+                    ++i;
+                } else if (!paragraphCompleted && lines.get(i).toUpperCase().matches("[ABCDEBGX].*")) {
+                    paragraphCount.set(paragraphCount.size() - 1, paragraphCount.get(paragraphCount.size() - 1) + 1);
+                    ++i;
+                } else if (lines.get(i).matches("[_,.\\d]+")) {
+                    paragraphCompleted = true;
+                    for (char c: lines.get(i).toCharArray()) {
+                        tempo.add(this.stringToStep(c));
+                    }
+                    lines.remove(lines.get(i));
+                } else {
+                    ++i;
                 }
             }
             
             int beforeChordCount = song.getChords().size();
             
             //and here miracle occurs
+            int linesBefore = 0;
             PlayableChord chord = null;
-            for (int i = 0; i < lines.get(0).toCharArray().length; i++) {
-                String value = String.valueOf(lines.get(0).toCharArray()[i]).toUpperCase();
-                if (value.matches("[ABCDEFGX]")) {
-                    if (chord != null) { song.addChord(chord); }
-                    chord = new PlayableChord();
-                    if (tempo != null) {
-                        chord.setLength(tempo.get(i));
-                    }
-                    chord.setRelativeSteps(this.lastChordLength);
-                    this.lastChordLength = chord.getLength();
-                    
-                    if (!"X".equals(value)) {
-                        chord.addNote(new PlayableNote(Note.getNoteFromName(value), 4));
-                    }
-                } else if (value.matches("[\\d]")) {
-                    try {
-                        if (chord != null && !chord.isEmpty()) {
-                            chord.getNotes().getLast().setOctave(Integer.parseInt(value));    
-                        }
-                    } catch (NumberFormatException ex) {}
-                } else if ("#".equals(value)) {
-                    if (chord != null && !chord.isEmpty()) {
-                        chord.getNotes().getLast().setAlteration(Alteration.Sharp);    
-                    }
-                }
-            }
-            song.addChord(chord);
-            
-            //the rest
-            for (int i = 1; i < lines.size(); i++) {
-                String line = lines.get(i);
-                //-2 because of the start silence and the index is incremented before operations
-                int j = beforeChordCount+1;
-                for (char c: line.toCharArray()) {
-                    String value = String.valueOf(c).toUpperCase();
+            for (int j = 0; j < paragraphCount.size(); ++j) {
+                for (int i = 0; i < lines.get(linesBefore).toCharArray().length; i++) {
+                    String value = String.valueOf(lines.get(linesBefore).toCharArray()[i]).toUpperCase();
                     if (value.matches("[ABCDEFGX]")) {
-                        j++;
+                        if (chord != null) { song.addChord(chord); }
+                        chord = new PlayableChord();
+                        if (!tempo.isEmpty()) {
+                            chord.setLength(tempo.get(i));
+                        }
+                        chord.setRelativeSteps(this.lastChordLength);
+                        this.lastChordLength = chord.getLength();
+
                         if (!"X".equals(value)) {
-                            song.getChords().get(j).addNote(new PlayableNote(Note.getNoteFromName(value), 4));
+                            chord.addNote(new PlayableNote(Note.getNoteFromName(value), 4));
                         }
                     } else if (value.matches("[\\d]")) {
                         try {
-                            song.getChords().get(j).getNotes().getLast().setOctave(Integer.parseInt(value));
+                            if (chord != null && !chord.isEmpty()) {
+                                chord.getNotes().getLast().setOctave(Integer.parseInt(value));    
+                            }
                         } catch (NumberFormatException ex) {}
                     } else if ("#".equals(value)) {
-                        song.getChords().get(j).getNotes().getLast().setAlteration(Alteration.Sharp);
+                        if (chord != null && !chord.isEmpty()) {
+                            chord.getNotes().getLast().setAlteration(Alteration.Sharp);    
+                        }
                     }
                 }
+                linesBefore += paragraphCount.get(j);
+            }
+            song.addChord(chord);
+            linesBefore = 0;
+            //the rest
+            for(int y = 0; y < paragraphCount.size(); ++y) {
+                for (int i = 1; i < paragraphCount.get(y); ++i) {
+                    String line = lines.get(i + linesBefore);
+                    int j = beforeChordCount - 1 + y * (song.getChords().size() / paragraphCount.size());
+                    for (char c: line.toCharArray()) {
+                        String value = String.valueOf(c).toUpperCase();
+                        if (value.matches("[ABCDEFGX]")) {
+                            j++;
+                            if (!"X".equals(value)) {
+                                song.getChords().get(j).addNote(new PlayableNote(Note.getNoteFromName(value), 4));
+                            }
+                        } else if (value.matches("[\\d]")) {
+                            try {
+                                song.getChords().get(j).getNotes().getLast().setOctave(Integer.parseInt(value));
+                            } catch (NumberFormatException ex) {}
+                        } else if ("#".equals(value)) {
+                            song.getChords().get(j).getNotes().getLast().setAlteration(Alteration.Sharp);
+                        }
+                    }
+                }
+                linesBefore += paragraphCount.get(y);
             }
         }
     }
