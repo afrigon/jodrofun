@@ -655,4 +655,15 @@ public class GaudrophoneController {
         }
         return "midi_detected";
     }
+    
+    public boolean releaseNote(PlayableNote note) {
+        Key key = this.getKeyFromPlayableNote(note);
+        if(key != null) {
+            key.removeState(KeyState.clicked);
+            this.soundService.release(key.getSound());
+            this.canvasManager.getDelegate().shouldRedraw();
+            return true;
+        }
+        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    }
 }
