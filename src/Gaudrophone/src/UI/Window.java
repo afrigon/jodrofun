@@ -3689,4 +3689,37 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         GaudrophoneController.getController().getSequencerManager().getSequencer().setPlaybackSpeed(1);
         ((JodrofunHero)this.jodrofunHeroPanel).setSong(song);
     }
+
+    @Override
+    public void liveLoopDidStop(int index) {
+        switch (index) {
+            case 0:
+                ((GradientPanel)this.liveloop1).setSelected(false);
+                break;
+            case 1:
+                ((GradientPanel)this.liveloop2).setSelected(false);
+                break;
+            case 2:
+                ((GradientPanel)this.liveloop3).setSelected(false);
+                break;
+            case 3:
+                ((GradientPanel)this.liveloop4).setSelected(false);
+                break;
+            case 4:
+                ((GradientPanel)this.liveloop5).setSelected(false);
+                break;
+            case 5:
+                ((GradientPanel)this.liveloop6).setSelected(false);
+                break;
+            case 6:
+                ((GradientPanel)this.liveloop7).setSelected(false);
+                break;
+            case 7:
+                ((GradientPanel)this.liveloop8).setSelected(false);
+                break;
+            case 8:
+                ((GradientPanel)this.liveloop9).setSelected(false);
+                break;
+        }
+    }
 }
