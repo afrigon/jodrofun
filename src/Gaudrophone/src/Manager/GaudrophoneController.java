@@ -35,9 +35,11 @@ import Music.AudioClip;
 import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
+import Music.LiveLoop;
 import Music.PlayableNote;
 import Music.Song;
 import Music.SongIO;
+import Music.Sound;
 import Music.SoundType;
 import Music.Waveform.WaveFormType;
 import java.awt.Color;
@@ -51,8 +53,10 @@ public class GaudrophoneController {
     private final SelectionManager selectionManager = new SelectionManager();
     private final SequencerManager sequencerManager = new SequencerManager();
     private final DeviceManager deviceManager = new DeviceManager();
+    private final LiveLoop[] liveLoops = new LiveLoop[9];
+    public GaudrophoneControllerDelegate delegate;
     
-    private GaudrophoneControllerDelegate delegate;
+    //private GaudrophoneControllerDelegate delegate;
     public void setDelegate(GaudrophoneControllerDelegate delegate) { this.delegate = delegate; }
     public GaudrophoneControllerDelegate getDelegate() {
         if (this.delegate != null) {
@@ -86,6 +90,13 @@ public class GaudrophoneController {
     }
     
     private static GaudrophoneController controller = null;
+    
+    private GaudrophoneController()
+      {
+        for (int i = 0; i < 9; i++)
+//            liveLoops[i] = new LiveLoop();
+            ;
+      }
     
     public static GaudrophoneController getController() {
         if (controller == null) {
@@ -586,15 +597,29 @@ public class GaudrophoneController {
         return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
     
-    public boolean releaseNote(PlayableNote note) {
-        Key key = this.getKeyFromPlayableNote(note);
-        if(key != null) {
-            key.removeState(KeyState.clicked);
-            this.soundService.release(key.getSound());
-            this.canvasManager.getDelegate().shouldRedraw();
-            return true;
-        }
-        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
+    public void toggleLiveLoop(int index) {
+        
+        System.out.println("Toggleing LiveLoop " + index);
+        
+        /*if (liveLoops[index].isRecording())
+            liveLoops[index].stopRecording();
+        else
+            liveLoops[index].startRecording();*/
+    }
+    
+        public void addToLiveLoop(Sound sound)
+      {
+        /*for (LiveLoop ll: this.liveLoops) {
+            if (ll.isRecording())
+                ll.addSound(sound);
+        }*/
+      }
+    
+    public void stopSound() {
+/*        for (LiveLoop ll: this.liveLoops) {
+            if (ll.isRecording())
+                ll.stopSound();
+        }*/
     }
     
     public boolean toggleMute() {
@@ -632,5 +657,16 @@ public class GaudrophoneController {
             }
         }
         return "midi_detected";
+    }
+    
+    public boolean releaseNote(PlayableNote note) {
+        Key key = this.getKeyFromPlayableNote(note);
+        if(key != null) {
+            key.removeState(KeyState.clicked);
+            this.soundService.release(key.getSound());
+            this.canvasManager.getDelegate().shouldRedraw();
+            return true;
+        }
+        return this.sequencerManager.getSequencer().isMuted(); // so if it is muted the sound will not be played by the Sequencer
     }
 }

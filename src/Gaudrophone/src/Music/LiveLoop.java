@@ -32,6 +32,7 @@ public class LiveLoop extends Sequencer {
         super(manager);
         this.loopIndex = index;
     }
+/*import Manager.GaudrophoneController;
 
         @Override
     public void play() {
@@ -44,6 +45,7 @@ public class LiveLoop extends Sequencer {
     public void pause() {
         this.stop();
     }
+    }*/
     
     @Override
     public void stop() {
@@ -95,4 +97,36 @@ public class LiveLoop extends Sequencer {
             }
         }
     }
+/*    public void stopRecording() {
+        recording = false;
+        
+        System.out.println("Stop recording.\nRecorded notes : " + sequence.getChords().size());
+        GaudrophoneController.getController().getSequencer().setSong(sequence);
+         GaudrophoneController.getController().getSequencer().play();
+    }
+    
+    public void addSound(Sound sound) {
+        PlayableNote note = sound.getPlayableNote();
+        
+        System.out.println("Start Sound");
+
+        currentChord.addNote(note);
+        currentChord.setRelativeSteps(baseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM()));
+    }
+    
+    public void stopSound() {
+        long newBaseTime = System.nanoTime() / 1000000000;
+        double newSteps = newBaseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM());
+        currentChord.setLength(newSteps);
+        sequence.addChord(currentChord);
+                       
+        System.out.println("Stop Sound. Base Time : " + baseTime);
+        System.out.println("BPM : " + GaudrophoneController.getController().getSequencer().getBPM());
+        System.out.println("Steps : " + currentChord.getRelativeSteps());
+        System.out.println("Length : " + newSteps);
+        
+        baseTime = newBaseTime;
+        
+        currentChord = new PlayableChord();
+    }*/
 }
