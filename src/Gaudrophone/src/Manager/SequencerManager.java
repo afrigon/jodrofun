@@ -34,14 +34,19 @@ public class SequencerManager {
     
     public SequencerManager() {
         this.sequencer = new SongPlayer(this);
+        for (int i = 0; i < 9; i++) {
+            this.liveloops.add(new LiveLoop(this, i));
+        }
     }
     
-    public void addLiveLoop(LiveLoop ll) {
-        this.liveloops.add(ll);
-    }
-    
-    public void removeLiveLoop(int index) {
+    public void addLiveLoop(LiveLoop ll, int index) {
         this.liveloops.remove(index);
+        this.liveloops.add(index, ll);
+        this.liveloops.get(index).play();
+    }
+    
+    public void stopLiveLoop(int index) {
+        this.liveloops.get(index).stop();
     }
     
     public SongPlayer getSequencer() {

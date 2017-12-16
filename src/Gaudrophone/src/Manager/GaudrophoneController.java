@@ -82,6 +82,8 @@ public class GaudrophoneController {
                 public void updateMediaPlayerSlider(double percent) {}
                 @Override
                 public void didLoadSong(Song song) {}
+                @Override
+                public void liveLoopDidStop(int index) {}
             };
         }
     }

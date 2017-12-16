@@ -23,6 +23,7 @@
  */
 package UI;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -31,10 +32,17 @@ import java.awt.RenderingHints;
 
 public class GradientPanel extends javax.swing.JPanel {
     private Color[] colors = new Color[2];
+    private boolean isSelected = false;
+    
     public GradientPanel(int hue) {
         Color color = HSL.getRGB((float)hue, 65f, 65f);
         this.colors[0] = color.brighter();
         this.colors[1] = color;
+    }
+    
+    public void setSelected(boolean value) {
+        this.isSelected = value;
+        this.repaint();
     }
     
     @Override
@@ -53,5 +61,10 @@ public class GradientPanel extends javax.swing.JPanel {
         RadialGradientPaint gp = new RadialGradientPaint((float)w/2, (float)h/2, (float)Math.max(h, w)/2, dist, this.colors);
         g2.setPaint(gp);
         g2.fillRoundRect(0, 0, w, h, 20, 20);
+        if (this.isSelected) {
+            g2.setPaint(Color.white);
+            g2.setStroke(new BasicStroke(8));
+            g2.drawRoundRect(3, 3, w-7, h-7, 16, 16);    
+        }
     }
 }

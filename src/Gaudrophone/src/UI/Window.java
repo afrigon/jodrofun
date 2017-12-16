@@ -320,11 +320,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         menuItemStop = new javax.swing.JMenuItem();
         menuItemMute = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        menuItemVerySlowSpeed = new javax.swing.JMenuItem();
+        menuItemSlowSpeed = new javax.swing.JMenuItem();
+        menuItemRegularSpeed = new javax.swing.JMenuItem();
+        menuItemFastSpeed = new javax.swing.JMenuItem();
+        menuItemVeryFastSpeed = new javax.swing.JMenuItem();
         insertMenuItem = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         menuModePlay = new javax.swing.JMenuItem();
@@ -2424,21 +2424,46 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         jMenu3.setText("Vitesse de lecture");
 
-        jMenuItem4.setText("1/4x");
-        jMenu3.add(jMenuItem4);
+        menuItemVerySlowSpeed.setText("1/4x");
+        menuItemVerySlowSpeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemVerySlowSpeedActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuItemVerySlowSpeed);
 
-        jMenuItem5.setText("1/2x");
-        jMenu3.add(jMenuItem5);
+        menuItemSlowSpeed.setText("1/2x");
+        menuItemSlowSpeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSlowSpeedActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuItemSlowSpeed);
 
-        jMenuItem6.setText("1x");
-        jMenuItem6.setSelected(true);
-        jMenu3.add(jMenuItem6);
+        menuItemRegularSpeed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ic_check_black_12dp_1x.png"))); // NOI18N
+        menuItemRegularSpeed.setText("1x");
+        menuItemRegularSpeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRegularSpeedActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuItemRegularSpeed);
 
-        jMenuItem7.setText("2x");
-        jMenu3.add(jMenuItem7);
+        menuItemFastSpeed.setText("2x");
+        menuItemFastSpeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemFastSpeedActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuItemFastSpeed);
 
-        jMenuItem8.setText("4x");
-        jMenu3.add(jMenuItem8);
+        menuItemVeryFastSpeed.setText("4x");
+        menuItemVeryFastSpeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemVeryFastSpeedActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuItemVeryFastSpeed);
 
         menuAutoPlay.add(jMenu3);
 
@@ -3023,6 +3048,44 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             GaudrophoneController.getController().toggleMute();
         }
     }//GEN-LAST:event_menuItemMuteActionPerformed
+
+    private void menuItemVerySlowSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemVerySlowSpeedActionPerformed
+        this.readSpeedReset();
+        this.menuItemVerySlowSpeed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ic_check_black_12dp_1x.png")));
+        GaudrophoneController.getController().getSequencerManager().getSequencer().setPlaybackSpeed(0.25);
+    }//GEN-LAST:event_menuItemVerySlowSpeedActionPerformed
+
+    private void menuItemSlowSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSlowSpeedActionPerformed
+        this.readSpeedReset();
+        this.menuItemSlowSpeed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ic_check_black_12dp_1x.png")));
+        GaudrophoneController.getController().getSequencerManager().getSequencer().setPlaybackSpeed(0.5);
+    }//GEN-LAST:event_menuItemSlowSpeedActionPerformed
+
+    private void menuItemRegularSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRegularSpeedActionPerformed
+        this.readSpeedReset();
+        this.menuItemRegularSpeed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ic_check_black_12dp_1x.png")));
+        GaudrophoneController.getController().getSequencerManager().getSequencer().setPlaybackSpeed(1);
+    }//GEN-LAST:event_menuItemRegularSpeedActionPerformed
+
+    private void menuItemFastSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemFastSpeedActionPerformed
+        this.readSpeedReset();
+        this.menuItemFastSpeed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ic_check_black_12dp_1x.png")));
+        GaudrophoneController.getController().getSequencerManager().getSequencer().setPlaybackSpeed(2);
+    }//GEN-LAST:event_menuItemFastSpeedActionPerformed
+
+    private void menuItemVeryFastSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemVeryFastSpeedActionPerformed
+        this.readSpeedReset();
+        this.menuItemVeryFastSpeed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ic_check_black_12dp_1x.png")));
+        GaudrophoneController.getController().getSequencerManager().getSequencer().setPlaybackSpeed(4);
+    }//GEN-LAST:event_menuItemVeryFastSpeedActionPerformed
+    
+    private void readSpeedReset() {
+        this.menuItemVerySlowSpeed.setIcon(null);
+        this.menuItemSlowSpeed.setIcon(null);
+        this.menuItemRegularSpeed.setIcon(null);
+        this.menuItemFastSpeed.setIcon(null);
+        this.menuItemVeryFastSpeed.setIcon(null);
+    }
     
     private void saveInstrument() {
         fileDialog.setDialogTitle("Sélectionner un emplacement");
@@ -3230,11 +3293,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -3277,9 +3335,14 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JMenuItem menuEditDuplicate;
     private javax.swing.JMenuItem menuEditNext;
     private javax.swing.JMenuItem menuEditPrevious;
+    private javax.swing.JMenuItem menuItemFastSpeed;
     private javax.swing.JMenuItem menuItemMute;
     private javax.swing.JMenuItem menuItemPlayPause;
+    private javax.swing.JMenuItem menuItemRegularSpeed;
+    private javax.swing.JMenuItem menuItemSlowSpeed;
     private javax.swing.JMenuItem menuItemStop;
+    private javax.swing.JMenuItem menuItemVeryFastSpeed;
+    private javax.swing.JMenuItem menuItemVerySlowSpeed;
     private javax.swing.JMenuItem menuModeAutoPlay;
     private javax.swing.JMenuItem menuModeEditKey;
     private javax.swing.JMenuItem menuModeInsert;
@@ -3621,6 +3684,42 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     
     @Override
     public void didLoadSong(Song song) {
+        this.readSpeedReset();
+        this.menuItemRegularSpeed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ic_check_black_12dp_1x.png")));
+        GaudrophoneController.getController().getSequencerManager().getSequencer().setPlaybackSpeed(1);
         ((JodrofunHero)this.jodrofunHeroPanel).setSong(song);
+    }
+
+    @Override
+    public void liveLoopDidStop(int index) {
+        switch (index) {
+            case 0:
+                ((GradientPanel)this.liveloop1).setSelected(false);
+                break;
+            case 1:
+                ((GradientPanel)this.liveloop2).setSelected(false);
+                break;
+            case 2:
+                ((GradientPanel)this.liveloop3).setSelected(false);
+                break;
+            case 3:
+                ((GradientPanel)this.liveloop4).setSelected(false);
+                break;
+            case 4:
+                ((GradientPanel)this.liveloop5).setSelected(false);
+                break;
+            case 5:
+                ((GradientPanel)this.liveloop6).setSelected(false);
+                break;
+            case 6:
+                ((GradientPanel)this.liveloop7).setSelected(false);
+                break;
+            case 7:
+                ((GradientPanel)this.liveloop8).setSelected(false);
+                break;
+            case 8:
+                ((GradientPanel)this.liveloop9).setSelected(false);
+                break;
+        }
     }
 }
