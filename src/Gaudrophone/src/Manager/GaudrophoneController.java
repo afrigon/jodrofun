@@ -56,7 +56,7 @@ public class GaudrophoneController {
     private final LiveLoop[] liveLoops = new LiveLoop[9];
     public GaudrophoneControllerDelegate delegate;
     
-    private GaudrophoneControllerDelegate delegate;
+    //private GaudrophoneControllerDelegate delegate;
     public void setDelegate(GaudrophoneControllerDelegate delegate) { this.delegate = delegate; }
     public GaudrophoneControllerDelegate getDelegate() {
         if (this.delegate != null) {
@@ -91,7 +91,8 @@ public class GaudrophoneController {
     private GaudrophoneController()
       {
         for (int i = 0; i < 9; i++)
-            liveLoops[i] = new LiveLoop();
+//            liveLoops[i] = new LiveLoop();
+            ;
       }
     
     public static GaudrophoneController getController() {
@@ -597,25 +598,25 @@ public class GaudrophoneController {
         
         System.out.println("Toggleing LiveLoop " + index);
         
-        if (liveLoops[index].isRecording())
+        /*if (liveLoops[index].isRecording())
             liveLoops[index].stopRecording();
         else
-            liveLoops[index].startRecording();
+            liveLoops[index].startRecording();*/
     }
     
         public void addToLiveLoop(Sound sound)
       {
-        for (LiveLoop ll: this.liveLoops) {
+        /*for (LiveLoop ll: this.liveLoops) {
             if (ll.isRecording())
                 ll.addSound(sound);
-        }
+        }*/
       }
     
     public void stopSound() {
-        for (LiveLoop ll: this.liveLoops) {
+/*        for (LiveLoop ll: this.liveLoops) {
             if (ll.isRecording())
                 ll.stopSound();
-        }
+        }*/
     }
     
     public boolean toggleMute() {

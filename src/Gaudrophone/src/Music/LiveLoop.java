@@ -28,7 +28,7 @@ import Manager.SequencerManager;
 public class LiveLoop extends Sequencer {
     public LiveLoop(SequencerManager manager) {
         super(manager);
-import Manager.GaudrophoneController;
+/*import Manager.GaudrophoneController;
 
 public class LiveLoop {
     Song sequence = new Song();
@@ -39,7 +39,7 @@ public class LiveLoop {
     
     public LiveLoop() {
         recording = false;
-    }
+    }*/
 
     @Override
     public void play() {
@@ -49,13 +49,14 @@ public class LiveLoop {
     @Override
     public void pause() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
-    public void startRecording() {
+   /* public void startRecording() {
         baseTime = System.nanoTime() / 1000000000;
         recording = true;
         
          System.out.println("Start recording. Base Time : " + baseTime);
-    }
+    }*/
 
     @Override
     public void stop() {
@@ -65,7 +66,8 @@ public class LiveLoop {
     @Override
     public void run() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    public void stopRecording() {
+    }
+/*    public void stopRecording() {
         recording = false;
         
         System.out.println("Stop recording.\nRecorded notes : " + sequence.getChords().size());
@@ -96,5 +98,5 @@ public class LiveLoop {
         baseTime = newBaseTime;
         
         currentChord = new PlayableChord();
-    }
+    }*/
 }
