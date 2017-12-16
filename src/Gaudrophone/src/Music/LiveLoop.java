@@ -83,7 +83,7 @@ public class LiveLoop extends Sequencer {
                 }
             }
             
-            if (this.currentStep > chordEndStep) {
+            if (this.currentStep >= song.getDuration()) {
                 this.currentStep = 0;
             }
         }

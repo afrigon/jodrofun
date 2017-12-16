@@ -41,6 +41,7 @@ public class LiveLoopRecorder {
     private final HashMap<Sound, ChordData> playingSounds = new HashMap<>();
     private int liveLoopIndex = -1;
     private LiveLoopRecorderState state = LiveLoopRecorderState.idle;
+    private long startedRecordingTime = 0;
     
     public LiveLoopRecorderState getState() {
         return this.state;
@@ -69,12 +70,17 @@ public class LiveLoopRecorder {
         this.state = LiveLoopRecorderState.idle;
         this.liveLoopIndex = -1;
         this.playingSounds.clear();
+        song.setDuration(Math.round((System.currentTimeMillis() - startedRecordingTime) * (double) this.song.getBPM() / 60000.0));
         return this.song;
     }
     
     public void addSound(Sound sound) {
-        if (this.state == LiveLoopRecorderState.waiting || this.state == LiveLoopRecorderState.recording) {
+        if (this.state == LiveLoopRecorderState.waiting) {
             this.state = LiveLoopRecorderState.recording;
+            startedRecordingTime = System.currentTimeMillis();
+        }
+            
+        if (this.state == LiveLoopRecorderState.recording) {
             GaudrophoneController.getController().getDelegate().liveLoopDidStartRecording(this.liveLoopIndex);
             PlayableNote note = sound.getPlayableNote();
             PlayableChord chord = new PlayableChord();
