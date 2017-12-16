@@ -34,6 +34,7 @@ public final class DeviceManager {
     LinkedList<MidiDevice> devices = new LinkedList<>();
     private boolean learning = false;
     private Key learningKey = null;
+    private boolean autoLinking = false;
     
     DeviceManager() {
         refresh();
@@ -63,6 +64,9 @@ public final class DeviceManager {
                 learningKey.link(channel, midiNum);
                 learning = false;
             }
+        } else if (autoLinking) {
+            GaudrophoneController.getController().autoLinkKeys(channel);
+            autoLinking = false;
         } else {
             if (GaudrophoneController.getController().getCanvasManager().getState() == State.Play || GaudrophoneController.getController().getCanvasManager().getState() == State.AutoPlay) {
                 LinkedList<Key> linkedKeys = GaudrophoneController.getController().getLinkedKeys(channel, midiNum);
@@ -86,6 +90,10 @@ public final class DeviceManager {
         learning = false;
     }
     
+    public final void cancelAutoLink() {
+        autoLinking = false;
+    }
+    
     public final boolean hasDevice() {
         return devices.size() > 0;
     }
@@ -96,6 +104,10 @@ public final class DeviceManager {
     
     public final boolean isLinking() {
         return learning;
+    }
+    
+    public final boolean isAutoLinking() {
+        return autoLinking;
     }
     
     public final void refresh() {

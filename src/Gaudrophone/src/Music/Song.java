@@ -29,6 +29,7 @@ public class Song {
     private String raw = "";
     private final LinkedList<PlayableChord> chords = new LinkedList<>();
     private int bpm = -1;
+    private double duration = 0;
     
     public LinkedList<PlayableChord> getChords() {
         return this.chords;
@@ -40,6 +41,10 @@ public class Song {
     
     public String getRaw() {
         return this.raw;
+    }
+    
+    public double getDuration() {
+        return duration;
     }
     
     public void addChord(PlayableChord chord) {
@@ -56,5 +61,10 @@ public class Song {
     
     public void setRaw(String raw) {
         this.raw = raw;
+    }
+    
+    public void setDuration(double steps) {
+        duration = steps;
+        System.out.println("Total duration : " + steps);
     }
 }

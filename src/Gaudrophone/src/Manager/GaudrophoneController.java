@@ -648,4 +648,11 @@ public class GaudrophoneController {
         this.sequencerManager.stopLiveLoop(index);
         this.getDelegate().liveLoopDidStop(index);
     }
+    
+    public void autoLinkKeys(int channel) {
+        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
+            int midiNum = (int)Math.ceil(69.0 + (12.0 / Math.log(2.0)) * Math.log(key.getFrequency() / 440.0));
+            key.link(channel, midiNum);
+        }
+    }
 }
