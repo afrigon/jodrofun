@@ -84,8 +84,9 @@ public class AudioClip extends Sound {
         int bufferSize = (int) (sampleRate / 20);
         int sampleCount = 0;
         
-        // play the attack, decay and sustain part until sound is killed or released
-        while (playing && (!released)) {
+        double timePlayed = -1;
+        double releasedAmplitude = 0;
+        while (playing) {
             byte[] buffer = new byte[frameSize * bufferSize];
             
             for (int i = 0; i < bufferSize; i++) {
@@ -93,7 +94,16 @@ public class AudioClip extends Sound {
                 
                 double time = (((double) (isampleCount))/WaveForm.SAMPLE_RATE);
                 
-                double amp = volume * envelope.getPlayingAmplitude(time * 1000.0);
+                double amp = 0;
+                if (released) {
+                    if (timePlayed == -1) {
+                        timePlayed = time;
+                        releasedAmplitude = envelope.getPlayingAmplitude(time * 1000.0);
+                    }
+                    amp = volume * releasedAmplitude * envelope.getReleasedAmplitude((time - timePlayed) * 1000.0);
+                } else {
+                    amp = volume * envelope.getPlayingAmplitude(time * 1000.0);
+                }
                 
                 if (isampleCount >= originalBuffer.length) {
                     for (int j = 0; j < channels; j++) {
@@ -135,70 +145,6 @@ public class AudioClip extends Sound {
                 }
             }
             sampleCount += bufferSize;
-            
-            line.write(buffer, 0, buffer.length);
-        }
-        
-        int sampleCountReleased = 0; // keeps the total number of samples played
-        double milliTimePlayed = (double) sampleCount / (double) WaveForm.SAMPLE_RATE * 1000.0;
-        double releasedAmplitude = envelope.getPlayingAmplitude(milliTimePlayed);
-        
-        // Play the release tail of a sound
-        while (playing && released) {
-            byte[] buffer = new byte[frameSize * bufferSize];
-            
-            for (int i = 0; i < bufferSize; i++) {
-                int isampleCount = (i + sampleCount + sampleCountReleased);
-                
-                double time = (((double) (isampleCount))/WaveForm.SAMPLE_RATE);
-                
-                double amp = volume * releasedAmplitude * envelope.getReleasedAmplitude(time * 1000.0);
-                
-                if (amp == 0) {
-                    kill();
-                    return;
-                }
-                
-                if (isampleCount * frameSize >= originalBuffer.length) {
-                    for (int j = 0; j < channels; j++) {
-                        if (sampleSizeInByte == 1) {
-                            buffer[isampleCount * frameSize + j] = 0;
-
-                        } else if (sampleSizeInByte == 2) {
-                            buffer[isampleCount * frameSize + j * channels + 1] = 0;
-                            buffer[isampleCount * frameSize + j * channels] = 0;
-                        }
-                    }
-                } else {
-                    for (int j = 0; j < channels; j++) {
-                        if (sampleSizeInByte == 1) {
-                            buffer[i * frameSize + j] = (byte) (((double) originalBuffer[isampleCount * frameSize + j]) * amp);
-
-                        } else if (sampleSizeInByte == 2) {
-                            int firstBytePosition = i * frameSize + j * channels;
-                            int ifirstBytePosition = isampleCount * frameSize + j * channels;
-                            if (isBigEndian) {
-                                System.out.println("Big Endian file might not be supported.");
-                                short value = (short) ((originalBuffer[ifirstBytePosition] << 8) + (originalBuffer[ifirstBytePosition + 1] & 0xff));
-
-                                value = (short) (amp * ((double) value));
-
-                                buffer[firstBytePosition + 1] = (byte) (value & 0xff);
-                                buffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
-
-                            } else {
-                                short value = (short) ((originalBuffer[ifirstBytePosition + 1] << 8) + (originalBuffer[ifirstBytePosition] & 0xff));
-
-                                value = (short) (amp * ((double) value));
-
-                                buffer[firstBytePosition] = (byte) (value & 0xff);
-                                buffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
-                            }
-                        }
-                    }
-                }
-            }
-            sampleCountReleased += bufferSize;
             
             line.write(buffer, 0, buffer.length);
         }

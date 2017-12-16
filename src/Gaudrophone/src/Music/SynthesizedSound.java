@@ -44,7 +44,6 @@ public class SynthesizedSound extends Sound {
         
         int sampleCount = 0;
         
-        // play the attack, decay and sustain part until sound is killed or released
         double timePlayed = -1;
         double releasedAmplitude = 0;
         while (playing) {
