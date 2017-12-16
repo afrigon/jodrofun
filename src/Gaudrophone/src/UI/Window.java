@@ -59,7 +59,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Window extends javax.swing.JFrame implements GaudrophoneControllerDelegate, SelectionManagerDelegate, CanvasManagerDelegate {
-    Canvas canvas = new Canvas(Manager.GaudrophoneController.getController().getCanvasManager());
+    Canvas canvas = new Canvas();
 
     public Window() {
         initComponents();
@@ -2794,7 +2794,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
         this.searchTextField.setText("");
         this.searchTextField.setForeground(Color.white);
-        this.canvas.shapeDrawer.setIsSearching(true);
+        this.canvas.setSearchingFlag(true);
         this.refresh();
     }//GEN-LAST:event_searchTextFieldFocusGained
     
@@ -2802,7 +2802,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.searchTextField.setText("Rechercher");
         this.searchTextField.setForeground(new Color(153, 153, 153));
         GaudrophoneController.getController().search(null);
-        this.canvas.shapeDrawer.setIsSearching(false);
+        this.canvas.setSearchingFlag(false);
         this.refresh();
     }//GEN-LAST:event_searchTextFieldFocusLost
     
@@ -3156,13 +3156,30 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.canvas.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mousePressed(java.awt.event.MouseEvent e) {
+                    GaudrophoneController.getController().getCanvasManager().clicked(e.getX(), e.getY(), e.getButton());
                     refresh();
                 }
 
                 @Override
                 public void mouseReleased(java.awt.event.MouseEvent e) {
+                    GaudrophoneController.getController().getCanvasManager().released(e.getX(), e.getY(), e.getButton());
                     canvas.requestFocusInWindow();
                     refresh();
+                }
+            });
+        
+            this.canvas.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+                @Override
+                public void mouseDragged(java.awt.event.MouseEvent e) {
+                    GaudrophoneController.getController().getCanvasManager().dragged(e.getX(), e.getY(), e.getButton());
+                }
+            });
+            
+            addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyPressed(java.awt.event.KeyEvent e) {
+                    if (e.getKeyCode() >= 48 && e.getKeyCode() <= 57)
+                        GaudrophoneController.getController().toggleLiveLoop(e.getKeyCode() - 48);
                 }
             });
             

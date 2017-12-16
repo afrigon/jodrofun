@@ -32,45 +32,15 @@ import java.util.List;
 
 public class Canvas extends javax.swing.JPanel {
     
-    CanvasManager manager;
-    ShapeDrawer shapeDrawer;
-    public Canvas(CanvasManager p_manager) {
+    private final ShapeDrawer shapeDrawer;
+    
+    public Canvas() {
         
-        manager = p_manager;
         shapeDrawer = new ShapeDrawer();
-        
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                manager.clicked(e.getX(), e.getY(), e.getButton());
-            }
-            
-            public void mouseReleased(java.awt.event.MouseEvent e) {
-                manager.released(e.getX(), e.getY(), e.getButton());
-            }
-        });
-        
-        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent e) {
-                manager.dragged(e.getX(), e.getY(), e.getButton());
-            }
-        });
-        
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent e) {
-                if (e.getKeyCode() >= 48 && e.getKeyCode() <= 57)
-                    GaudrophoneController.getController().toggleLiveLoop(e.getKeyCode() - 48);
-            }
-            
-            public void keyReleased(java.awt.event.KeyEvent e) {
-                
-            }
-        });
-        
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent e) {
-                GaudrophoneController.getController().getCanvasManager().setCanvasSize(e.getComponent().getWidth(), e.getComponent().getWidth());
-            }
-        });
+    }
+    
+    public void setSearchingFlag(boolean value) {
+        this.shapeDrawer.setIsSearching(value);
     }
     
     @Override
@@ -88,7 +58,7 @@ public class Canvas extends javax.swing.JPanel {
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         
         //Get all shapes from canvasManager
-        List<DrawableShape> drawableShapes = manager.getDrawableShapes();
+        List<DrawableShape> drawableShapes = GaudrophoneController.getController().getCanvasManager().getDrawableShapes();
         if (drawableShapes == null) return; //error prevention
         
         //Drawing time :)
