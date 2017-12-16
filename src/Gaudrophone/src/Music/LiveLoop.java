@@ -49,6 +49,10 @@ public class LiveLoop {
     
     public void stopRecording() {
         recording = false;
+        
+        System.out.println("Stop recording.\nRecorded notes : " + sequence.getChords().size());
+        GaudrophoneController.getController().getSequencer().setSong(sequence);
+         GaudrophoneController.getController().getSequencer().play();
     }
     
     public void addSound(Sound sound) {
@@ -61,11 +65,18 @@ public class LiveLoop {
     }
     
     public void stopSound() {
-        baseTime = System.nanoTime() / 1000000000;
-        currentChord.setLength(baseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM()));
+        long newBaseTime = System.nanoTime() / 1000000000;
+        double newSteps = newBaseTime / (60 * GaudrophoneController.getController().getSequencer().getBPM());
+        currentChord.setLength(newSteps);
         sequence.addChord(currentChord);
-        currentChord = new PlayableChord();
-        
+                       
         System.out.println("Stop Sound. Base Time : " + baseTime);
+        System.out.println("BPM : " + GaudrophoneController.getController().getSequencer().getBPM());
+        System.out.println("Steps : " + currentChord.getRelativeSteps());
+        System.out.println("Length : " + newSteps);
+        
+        baseTime = newBaseTime;
+        
+        currentChord = new PlayableChord();
     }
 }
