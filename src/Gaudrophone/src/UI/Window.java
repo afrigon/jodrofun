@@ -1533,11 +1533,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         jodrofunHeroPanel.setLayout(jodrofunHeroPanelLayout);
         jodrofunHeroPanelLayout.setHorizontalGroup(
             jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 704, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jodrofunHeroPanelLayout.setVerticalGroup(
             jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 485, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jPanel1.add(jodrofunHeroPanel);
@@ -3705,6 +3705,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         
         if (state != State.Play) {
             GaudrophoneController.getController().getSequencerManager().setMetronomeState(false);
+            if (GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().getState() != LiveLoopRecorderState.idle) {
+                this.liveLoopAction(GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().getLiveLoopIndex());
+            }
         }
         if (state != State.AutoPlay) {
             GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().forEach((k) -> {
@@ -3832,7 +3835,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             case recording:
                 //going to playing
                 ((GradientPanel)this.liveloops[index]).setBorderColor(new Color(0x00000000, true));
-                ((GradientPanel)this.liveloops[index]).setBorderColor(new Color(0x00ff00)); // to remove
                 ((GradientPanel)this.liveloops[index]).setDrawImage(true);
                 GaudrophoneController.getController().startPlayingLiveLoop(index);
                 break;
@@ -3851,9 +3853,8 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     
     @Override
     public void liveLoopDidStop(int index) {
-        ((GradientPanel)this.liveloops[index]).setBorderColor(new Color(0x00000000, true)); // to remove
         ((GradientPanel)this.liveloops[index]).setDrawImage(false);
     }
 }
 
-//TODO shut down waiting and recoring liveloop when state change to not play
+//TODO shut down waiting and recoring liveloop when state change to !play
