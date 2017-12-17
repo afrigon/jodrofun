@@ -643,9 +643,8 @@ public class GaudrophoneController {
                 this.getDelegate().liveLoopDidCancelRecording(index);
             }
             this.sequencerManager.getLiveLoopRecorder().stopRecording();
-        } else {
-            this.sequencerManager.getLiveLoopRecorder().startRecording(index);
         }
+        this.sequencerManager.getLiveLoopRecorder().startRecording(index);
     }
     
     public void startPlayingLiveLoop(int index) {
