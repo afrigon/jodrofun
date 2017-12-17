@@ -3802,6 +3802,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     }
     
     private void liveLoopAction(int index) {
+        int currentIndex = GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().getLiveLoopIndex();
+        if (currentIndex != -1 && currentIndex != index) {
+            return;
+        }
+        
         switch (GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().getStateForIndex(index)) {
             case idle:
                 if (!GaudrophoneController.getController().getSequencerManager().getLiveLoop(index).isPlaying()) {
