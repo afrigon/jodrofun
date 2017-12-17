@@ -88,6 +88,46 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         splitWindow = new javax.swing.JSplitPane();
         instrumentPanel = new javax.swing.JPanel();
         canvasPannel = new javax.swing.Box.Filler(new java.awt.Dimension(300, 100), new java.awt.Dimension(600, 600), new java.awt.Dimension(3000, 3000));
+        globalEditPannel = new javax.swing.JScrollPane();
+        visualPanel3 = new javax.swing.JPanel();
+        visualWrapper3 = new javax.swing.JPanel();
+        informationWrapper3 = new javax.swing.JPanel();
+        informationTitle3 = new javax.swing.JLabel();
+        keyNameProperty3 = new javax.swing.JPanel();
+        keyNameLabel3 = new javax.swing.JLabel();
+        instrumentNameField = new javax.swing.JTextField();
+        keyNameProperty4 = new javax.swing.JPanel();
+        keyNameLabel4 = new javax.swing.JLabel();
+        masterWaveformComboBox = new javax.swing.JComboBox(WaveFormType.values());
+        insertPannel = new javax.swing.JScrollPane();
+        visualPanel5 = new javax.swing.JPanel();
+        visualWrapper5 = new javax.swing.JPanel();
+        informationWrapper4 = new javax.swing.JPanel();
+        informationTitle4 = new javax.swing.JLabel();
+        shapeGenPanel = new javax.swing.JPanel();
+        songPannel = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        jodrofunHeroPanel = new JodrofunHero();
+        playPannel = new javax.swing.JScrollPane();
+        visualPanel4 = new javax.swing.JPanel();
+        visualWrapper4 = new javax.swing.JPanel();
+        informationWrapper6 = new javax.swing.JPanel();
+        informationTitle6 = new javax.swing.JLabel();
+        informationWrapper5 = new javax.swing.JPanel();
+        informationTitle5 = new javax.swing.JLabel();
+        keyNameProperty8 = new javax.swing.JPanel();
+        keyNameLabel8 = new javax.swing.JLabel();
+        bpmSpinner = new javax.swing.JSpinner();
+        liveloopWrapper = new javax.swing.JPanel();
+        liveloop1 = new GradientPanel(0);
+        liveloop2 = new GradientPanel(35);
+        liveloop3 = new GradientPanel(70);
+        liveloop4 = new GradientPanel(105);
+        liveloop5 = new GradientPanel(140);
+        liveloop6 = new GradientPanel(175);
+        liveloop7 = new GradientPanel(210);
+        liveloop8 = new GradientPanel(245);
+        liveloop9 = new GradientPanel(280);
         editPannel = new javax.swing.JScrollPane();
         tabbedPane = new javax.swing.JTabbedPane();
         visualPanel = new javax.swing.JPanel();
@@ -226,49 +266,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         audioClipFileLabel = new javax.swing.JLabel();
         audioClipPathLabel = new javax.swing.JLabel();
         audioClipSelectButton = new java.awt.Button();
-        readSpeedProperty = new javax.swing.JPanel();
-        readSpeedLabel = new javax.swing.JLabel();
-        readSpeedSpinner = new javax.swing.JSpinner();
-        insertPannel = new javax.swing.JScrollPane();
-        visualPanel5 = new javax.swing.JPanel();
-        visualWrapper5 = new javax.swing.JPanel();
-        informationWrapper4 = new javax.swing.JPanel();
-        informationTitle4 = new javax.swing.JLabel();
-        shapeGenPanel = new javax.swing.JPanel();
-        songPannel = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
-        jodrofunHeroPanel = new JodrofunHero();
-        playPannel = new javax.swing.JScrollPane();
-        visualPanel4 = new javax.swing.JPanel();
-        visualWrapper4 = new javax.swing.JPanel();
-        informationWrapper6 = new javax.swing.JPanel();
-        informationTitle6 = new javax.swing.JLabel();
-        informationWrapper5 = new javax.swing.JPanel();
-        informationTitle5 = new javax.swing.JLabel();
-        keyNameProperty8 = new javax.swing.JPanel();
-        keyNameLabel8 = new javax.swing.JLabel();
-        bpmSpinner = new javax.swing.JSpinner();
-        liveloopWrapper = new javax.swing.JPanel();
-        liveloop1 = new GradientPanel(0);
-        liveloop2 = new GradientPanel(35);
-        liveloop3 = new GradientPanel(70);
-        liveloop4 = new GradientPanel(105);
-        liveloop5 = new GradientPanel(140);
-        liveloop6 = new GradientPanel(175);
-        liveloop7 = new GradientPanel(210);
-        liveloop8 = new GradientPanel(245);
-        liveloop9 = new GradientPanel(280);
-        globalEditPannel = new javax.swing.JScrollPane();
-        visualPanel3 = new javax.swing.JPanel();
-        visualWrapper3 = new javax.swing.JPanel();
-        informationWrapper3 = new javax.swing.JPanel();
-        informationTitle3 = new javax.swing.JLabel();
-        keyNameProperty3 = new javax.swing.JPanel();
-        keyNameLabel3 = new javax.swing.JLabel();
-        instrumentNameField = new javax.swing.JTextField();
-        keyNameProperty4 = new javax.swing.JPanel();
-        keyNameLabel4 = new javax.swing.JLabel();
-        masterWaveformComboBox = new javax.swing.JComboBox(WaveFormType.values());
         jToolBar1 = new javax.swing.JToolBar();
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         buttonPlayMode = new javax.swing.JButton();
@@ -359,6 +356,508 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         instrumentPanel.add(canvasPannel, java.awt.BorderLayout.CENTER);
 
         splitWindow.setLeftComponent(instrumentPanel);
+
+        globalEditPannel.setBackground(new java.awt.Color(65, 65, 65));
+        globalEditPannel.setBorder(null);
+        globalEditPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        globalEditPannel.setAutoscrolls(true);
+        globalEditPannel.setMinimumSize(new java.awt.Dimension(415, 200));
+        globalEditPannel.setPreferredSize(new java.awt.Dimension(415, 200));
+
+        visualPanel3.setBackground(new java.awt.Color(65, 65, 65));
+        visualPanel3.setMinimumSize(new java.awt.Dimension(600, 655));
+        visualPanel3.setPreferredSize(new java.awt.Dimension(50, 200));
+        visualPanel3.setLayout(new javax.swing.BoxLayout(visualPanel3, javax.swing.BoxLayout.LINE_AXIS));
+
+        visualWrapper3.setBackground(new java.awt.Color(65, 65, 65));
+        java.awt.GridBagLayout visualWrapper3Layout = new java.awt.GridBagLayout();
+        visualWrapper3Layout.columnWeights = new double[] {1.0};
+        visualWrapper3Layout.rowWeights = new double[] {1.0};
+        visualWrapper3.setLayout(visualWrapper3Layout);
+
+        informationWrapper3.setBackground(new java.awt.Color(65, 65, 65));
+        informationWrapper3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        informationWrapper3.setPreferredSize(new java.awt.Dimension(300, 50));
+        informationWrapper3.setLayout(new java.awt.GridLayout(1, 0));
+
+        informationTitle3.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        informationTitle3.setForeground(new java.awt.Color(255, 255, 255));
+        informationTitle3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        informationTitle3.setText("Instrument");
+        informationTitle3.setToolTipText("");
+        informationTitle3.setPreferredSize(new java.awt.Dimension(72, 30));
+        informationWrapper3.add(informationTitle3);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        visualWrapper3.add(informationWrapper3, gridBagConstraints);
+
+        keyNameProperty3.setBackground(new java.awt.Color(65, 65, 65));
+        keyNameProperty3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        keyNameProperty3.setMinimumSize(new java.awt.Dimension(125, 32));
+        keyNameProperty3.setPreferredSize(new java.awt.Dimension(375, 40));
+        keyNameProperty3.setLayout(new java.awt.GridLayout(1, 0));
+
+        keyNameLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        keyNameLabel3.setText("Nom de l'instrument :");
+        keyNameLabel3.setMinimumSize(new java.awt.Dimension(40, 16));
+        keyNameLabel3.setPreferredSize(new java.awt.Dimension(0, 0));
+        keyNameProperty3.add(keyNameLabel3);
+
+        instrumentNameField.setBackground(new java.awt.Color(238, 238, 238));
+        instrumentNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        instrumentNameField.setText("Nom de l'instrument");
+        instrumentNameField.setBorder(null);
+        instrumentNameField.setMinimumSize(new java.awt.Dimension(30, 26));
+        instrumentNameField.setPreferredSize(new java.awt.Dimension(0, 0));
+        instrumentNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                instrumentNameFieldKeyReleased(evt);
+            }
+        });
+        keyNameProperty3.add(instrumentNameField);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper3.add(keyNameProperty3, gridBagConstraints);
+
+        keyNameProperty4.setBackground(new java.awt.Color(65, 65, 65));
+        keyNameProperty4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        keyNameProperty4.setMinimumSize(new java.awt.Dimension(125, 32));
+        keyNameProperty4.setPreferredSize(new java.awt.Dimension(375, 40));
+        keyNameProperty4.setLayout(new java.awt.GridLayout(1, 0));
+
+        keyNameLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        keyNameLabel4.setText("Timbre de base :");
+        keyNameLabel4.setMinimumSize(new java.awt.Dimension(40, 16));
+        keyNameLabel4.setPreferredSize(new java.awt.Dimension(0, 0));
+        keyNameProperty4.add(keyNameLabel4);
+
+        masterWaveformComboBox.setMinimumSize(new java.awt.Dimension(30, 26));
+        masterWaveformComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                masterWaveformComboBoxActionPerformed(evt);
+            }
+        });
+        keyNameProperty4.add(masterWaveformComboBox);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5000.0;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper3.add(keyNameProperty4, gridBagConstraints);
+
+        visualPanel3.add(visualWrapper3);
+
+        globalEditPannel.setViewportView(visualPanel3);
+
+        splitWindow.setRightComponent(globalEditPannel);
+
+        insertPannel.setBackground(new java.awt.Color(65, 65, 65));
+        insertPannel.setBorder(null);
+        insertPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        insertPannel.setAutoscrolls(true);
+        insertPannel.setMaximumSize(new java.awt.Dimension(415, 32767));
+        insertPannel.setMinimumSize(new java.awt.Dimension(415, 200));
+        insertPannel.setPreferredSize(new java.awt.Dimension(415, 200));
+
+        visualPanel5.setBackground(new java.awt.Color(65, 65, 65));
+        visualPanel5.setMaximumSize(new java.awt.Dimension(110, 2147483647));
+        visualPanel5.setMinimumSize(new java.awt.Dimension(600, 655));
+        visualPanel5.setLayout(new javax.swing.BoxLayout(visualPanel5, javax.swing.BoxLayout.LINE_AXIS));
+
+        visualWrapper5.setBackground(new java.awt.Color(65, 65, 65));
+        visualWrapper5.setLayout(new javax.swing.BoxLayout(visualWrapper5, javax.swing.BoxLayout.PAGE_AXIS));
+
+        informationWrapper4.setBackground(new java.awt.Color(65, 65, 65));
+        informationWrapper4.setMaximumSize(new java.awt.Dimension(2147483647, 800));
+        informationWrapper4.setMinimumSize(new java.awt.Dimension(104, 800));
+        informationWrapper4.setPreferredSize(new java.awt.Dimension(110, 800));
+        java.awt.GridBagLayout informationWrapper4Layout = new java.awt.GridBagLayout();
+        informationWrapper4Layout.columnWeights = new double[] {1.0};
+        informationWrapper4Layout.rowWeights = new double[] {1.0};
+        informationWrapper4.setLayout(informationWrapper4Layout);
+
+        informationTitle4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        informationTitle4.setForeground(new java.awt.Color(255, 255, 255));
+        informationTitle4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        informationTitle4.setText("Insérer");
+        informationTitle4.setToolTipText("");
+        informationTitle4.setPreferredSize(new java.awt.Dimension(72, 50));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        informationWrapper4.add(informationTitle4, gridBagConstraints);
+
+        shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
+        shapeGenPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 15));
+        shapeGenPanel.setPreferredSize(new java.awt.Dimension(60, 150));
+        shapeGenPanel.setLayout(new java.awt.GridLayout(0, 3, 15, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 500.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 15, 15);
+        informationWrapper4.add(shapeGenPanel, gridBagConstraints);
+
+        visualWrapper5.add(informationWrapper4);
+
+        visualPanel5.add(visualWrapper5);
+
+        insertPannel.setViewportView(visualPanel5);
+
+        splitWindow.setRightComponent(insertPannel);
+
+        songPannel.setBackground(new java.awt.Color(65, 65, 65));
+        songPannel.setBorder(null);
+        songPannel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        songPannel.setAutoscrolls(true);
+        songPannel.setMinimumSize(new java.awt.Dimension(415, 200));
+        songPannel.setPreferredSize(new java.awt.Dimension(415, 200));
+
+        jPanel1.setBackground(new java.awt.Color(65, 65, 65));
+        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 180));
+        jPanel1.setMinimumSize(new java.awt.Dimension(0, 180));
+        jPanel1.setPreferredSize(new java.awt.Dimension(704, 180));
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+
+        jodrofunHeroPanel.setBackground(new java.awt.Color(65, 65, 65));
+        jodrofunHeroPanel.setForeground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jodrofunHeroPanelLayout = new javax.swing.GroupLayout(jodrofunHeroPanel);
+        jodrofunHeroPanel.setLayout(jodrofunHeroPanelLayout);
+        jodrofunHeroPanelLayout.setHorizontalGroup(
+            jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jodrofunHeroPanelLayout.setVerticalGroup(
+            jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jodrofunHeroPanel);
+
+        songPannel.setViewportView(jPanel1);
+
+        splitWindow.setRightComponent(songPannel);
+
+        playPannel.setBackground(new java.awt.Color(65, 65, 65));
+        playPannel.setBorder(null);
+        playPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        playPannel.setAutoscrolls(true);
+        playPannel.setMinimumSize(new java.awt.Dimension(415, 200));
+        playPannel.setPreferredSize(new java.awt.Dimension(415, 200));
+        playPannel.setViewportView(visualPanel4);
+
+        visualPanel4.setBackground(new java.awt.Color(65, 65, 65));
+        visualPanel4.setMinimumSize(new java.awt.Dimension(600, 655));
+        visualPanel4.setPreferredSize(new java.awt.Dimension(50, 200));
+        visualPanel4.setLayout(new javax.swing.BoxLayout(visualPanel4, javax.swing.BoxLayout.LINE_AXIS));
+
+        visualWrapper4.setBackground(new java.awt.Color(65, 65, 65));
+        visualWrapper4.setPreferredSize(new java.awt.Dimension(200, 500));
+        java.awt.GridBagLayout visualWrapper4Layout = new java.awt.GridBagLayout();
+        visualWrapper4Layout.columnWeights = new double[] {1.0};
+        visualWrapper4Layout.rowWeights = new double[] {1.0};
+        visualWrapper4.setLayout(visualWrapper4Layout);
+
+        informationWrapper6.setBackground(new java.awt.Color(65, 65, 65));
+        informationWrapper6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        informationWrapper6.setMinimumSize(new java.awt.Dimension(300, 50));
+        informationWrapper6.setPreferredSize(new java.awt.Dimension(300, 50));
+        informationWrapper6.setLayout(new java.awt.GridLayout(1, 0));
+
+        informationTitle6.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        informationTitle6.setForeground(new java.awt.Color(255, 255, 255));
+        informationTitle6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        informationTitle6.setText("Live Loop");
+        informationTitle6.setToolTipText("");
+        informationTitle6.setMaximumSize(new java.awt.Dimension(72, 50));
+        informationTitle6.setMinimumSize(new java.awt.Dimension(72, 50));
+        informationTitle6.setPreferredSize(new java.awt.Dimension(72, 50));
+        informationWrapper6.add(informationTitle6);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5000000.0;
+        visualWrapper4.add(informationWrapper6, gridBagConstraints);
+
+        informationWrapper5.setBackground(new java.awt.Color(65, 65, 65));
+        informationWrapper5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        informationWrapper5.setMinimumSize(new java.awt.Dimension(300, 50));
+        informationWrapper5.setPreferredSize(new java.awt.Dimension(300, 50));
+        informationWrapper5.setLayout(new java.awt.GridLayout(1, 0));
+
+        informationTitle5.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        informationTitle5.setForeground(new java.awt.Color(255, 255, 255));
+        informationTitle5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        informationTitle5.setText("Mode jeu");
+        informationTitle5.setToolTipText("");
+        informationTitle5.setMaximumSize(new java.awt.Dimension(72, 30));
+        informationTitle5.setMinimumSize(new java.awt.Dimension(72, 30));
+        informationTitle5.setPreferredSize(new java.awt.Dimension(72, 30));
+        informationWrapper5.add(informationTitle5);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        visualWrapper4.add(informationWrapper5, gridBagConstraints);
+
+        keyNameProperty8.setBackground(new java.awt.Color(65, 65, 65));
+        keyNameProperty8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
+        keyNameProperty8.setMinimumSize(new java.awt.Dimension(500, 40));
+        keyNameProperty8.setPreferredSize(new java.awt.Dimension(500, 40));
+        keyNameProperty8.setLayout(new java.awt.GridLayout(1, 0));
+
+        keyNameLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        keyNameLabel8.setText("BPM :");
+        keyNameLabel8.setMinimumSize(new java.awt.Dimension(40, 16));
+        keyNameLabel8.setPreferredSize(new java.awt.Dimension(0, 0));
+        keyNameProperty8.add(keyNameLabel8);
+
+        bpmSpinner.setModel(new javax.swing.SpinnerNumberModel(120, 1, 600, 1));
+        bpmSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                bpmSpinnerStateChanged(evt);
+            }
+        });
+        keyNameProperty8.add(bpmSpinner);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5000.0;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper4.add(keyNameProperty8, gridBagConstraints);
+
+        liveloopWrapper.setBackground(new java.awt.Color(51, 51, 51));
+        liveloopWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 25));
+        liveloopWrapper.setMaximumSize(new java.awt.Dimension(400, 400));
+        liveloopWrapper.setMinimumSize(new java.awt.Dimension(400, 400));
+        liveloopWrapper.setPreferredSize(new java.awt.Dimension(400, 400));
+        liveloopWrapper.setLayout(new java.awt.GridLayout(3, 3, 25, 25));
+
+        liveloop1.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop1MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop1Layout = new javax.swing.GroupLayout(liveloop1);
+        liveloop1.setLayout(liveloop1Layout);
+        liveloop1Layout.setHorizontalGroup(
+            liveloop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop1Layout.setVerticalGroup(
+            liveloop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop1);
+
+        liveloop2.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop2MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop2Layout = new javax.swing.GroupLayout(liveloop2);
+        liveloop2.setLayout(liveloop2Layout);
+        liveloop2Layout.setHorizontalGroup(
+            liveloop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop2Layout.setVerticalGroup(
+            liveloop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop2);
+
+        liveloop3.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop3MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop3Layout = new javax.swing.GroupLayout(liveloop3);
+        liveloop3.setLayout(liveloop3Layout);
+        liveloop3Layout.setHorizontalGroup(
+            liveloop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop3Layout.setVerticalGroup(
+            liveloop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop3);
+
+        liveloop4.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop4MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop4Layout = new javax.swing.GroupLayout(liveloop4);
+        liveloop4.setLayout(liveloop4Layout);
+        liveloop4Layout.setHorizontalGroup(
+            liveloop4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop4Layout.setVerticalGroup(
+            liveloop4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop4);
+
+        liveloop5.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop5MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop5Layout = new javax.swing.GroupLayout(liveloop5);
+        liveloop5.setLayout(liveloop5Layout);
+        liveloop5Layout.setHorizontalGroup(
+            liveloop5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop5Layout.setVerticalGroup(
+            liveloop5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop5);
+
+        liveloop6.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop6MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop6Layout = new javax.swing.GroupLayout(liveloop6);
+        liveloop6.setLayout(liveloop6Layout);
+        liveloop6Layout.setHorizontalGroup(
+            liveloop6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop6Layout.setVerticalGroup(
+            liveloop6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop6);
+
+        liveloop7.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop7MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop7Layout = new javax.swing.GroupLayout(liveloop7);
+        liveloop7.setLayout(liveloop7Layout);
+        liveloop7Layout.setHorizontalGroup(
+            liveloop7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop7Layout.setVerticalGroup(
+            liveloop7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop7);
+
+        liveloop8.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop8MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop8Layout = new javax.swing.GroupLayout(liveloop8);
+        liveloop8.setLayout(liveloop8Layout);
+        liveloop8Layout.setHorizontalGroup(
+            liveloop8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop8Layout.setVerticalGroup(
+            liveloop8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop8);
+
+        liveloop9.setBackground(new java.awt.Color(51, 51, 51));
+        liveloop9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                liveloop9MouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout liveloop9Layout = new javax.swing.GroupLayout(liveloop9);
+        liveloop9.setLayout(liveloop9Layout);
+        liveloop9Layout.setHorizontalGroup(
+            liveloop9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        liveloop9Layout.setVerticalGroup(
+            liveloop9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        liveloopWrapper.add(liveloop9);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 5.0E7;
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        visualWrapper4.add(liveloopWrapper, gridBagConstraints);
+
+        visualPanel4.add(visualWrapper4);
+
+        playPannel.setViewportView(visualPanel4);
+
+        splitWindow.setRightComponent(playPannel);
 
         editPannel.setBackground(new java.awt.Color(65, 65, 65));
         editPannel.setBorder(null);
@@ -1090,11 +1589,11 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         envelopeGraph.setLayout(envelopeGraphLayout);
         envelopeGraphLayout.setHorizontalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGap(0, 689, Short.MAX_VALUE)
         );
         envelopeGraphLayout.setVerticalGroup(
             envelopeGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 107, Short.MAX_VALUE)
         );
 
         envelopeProperties.add(envelopeGraph);
@@ -1422,30 +1921,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
 
         audioClipProperties.add(audioClipFileProperty);
 
-        readSpeedProperty.setBackground(new java.awt.Color(65, 65, 65));
-        readSpeedProperty.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        readSpeedProperty.setMinimumSize(new java.awt.Dimension(125, 32));
-        readSpeedProperty.setPreferredSize(new java.awt.Dimension(50, 32));
-        readSpeedProperty.setLayout(new java.awt.GridLayout(1, 2));
-
-        readSpeedLabel.setBackground(new java.awt.Color(65, 65, 65));
-        readSpeedLabel.setForeground(new java.awt.Color(255, 255, 255));
-        readSpeedLabel.setText("Pitch : ");
-        readSpeedLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        readSpeedLabel.setOpaque(true);
-        readSpeedProperty.add(readSpeedLabel);
-
-        readSpeedSpinner.setModel(new javax.swing.SpinnerNumberModel(1.0d, 0.05d, 100.0d, 0.05d));
-        readSpeedSpinner.setMinimumSize(new java.awt.Dimension(30, 26));
-        readSpeedSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                readSpeedSpinnerStateChanged(evt);
-            }
-        });
-        readSpeedProperty.add(readSpeedSpinner);
-
-        audioClipProperties.add(readSpeedProperty);
-
         KeyProperties.add(audioClipProperties);
 
         audioPanel.add(KeyProperties);
@@ -1456,508 +1931,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         tabbedPane.getAccessibleContext().setAccessibleName("Forme");
 
         splitWindow.setRightComponent(editPannel);
-
-        insertPannel.setBackground(new java.awt.Color(65, 65, 65));
-        insertPannel.setBorder(null);
-        insertPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        insertPannel.setAutoscrolls(true);
-        insertPannel.setMaximumSize(new java.awt.Dimension(415, 32767));
-        insertPannel.setMinimumSize(new java.awt.Dimension(415, 200));
-        insertPannel.setPreferredSize(new java.awt.Dimension(415, 200));
-
-        visualPanel5.setBackground(new java.awt.Color(65, 65, 65));
-        visualPanel5.setMaximumSize(new java.awt.Dimension(110, 2147483647));
-        visualPanel5.setMinimumSize(new java.awt.Dimension(600, 655));
-        visualPanel5.setLayout(new javax.swing.BoxLayout(visualPanel5, javax.swing.BoxLayout.LINE_AXIS));
-
-        visualWrapper5.setBackground(new java.awt.Color(65, 65, 65));
-        visualWrapper5.setLayout(new javax.swing.BoxLayout(visualWrapper5, javax.swing.BoxLayout.PAGE_AXIS));
-
-        informationWrapper4.setBackground(new java.awt.Color(65, 65, 65));
-        informationWrapper4.setMaximumSize(new java.awt.Dimension(2147483647, 800));
-        informationWrapper4.setMinimumSize(new java.awt.Dimension(104, 800));
-        informationWrapper4.setPreferredSize(new java.awt.Dimension(110, 800));
-        java.awt.GridBagLayout informationWrapper4Layout = new java.awt.GridBagLayout();
-        informationWrapper4Layout.columnWeights = new double[] {1.0};
-        informationWrapper4Layout.rowWeights = new double[] {1.0};
-        informationWrapper4.setLayout(informationWrapper4Layout);
-
-        informationTitle4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        informationTitle4.setForeground(new java.awt.Color(255, 255, 255));
-        informationTitle4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        informationTitle4.setText("Insérer");
-        informationTitle4.setToolTipText("");
-        informationTitle4.setPreferredSize(new java.awt.Dimension(72, 50));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        informationWrapper4.add(informationTitle4, gridBagConstraints);
-
-        shapeGenPanel.setBackground(new java.awt.Color(51, 51, 51));
-        shapeGenPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 15));
-        shapeGenPanel.setPreferredSize(new java.awt.Dimension(60, 150));
-        shapeGenPanel.setLayout(new java.awt.GridLayout(0, 3, 15, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 500.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 15, 15);
-        informationWrapper4.add(shapeGenPanel, gridBagConstraints);
-
-        visualWrapper5.add(informationWrapper4);
-
-        visualPanel5.add(visualWrapper5);
-
-        insertPannel.setViewportView(visualPanel5);
-
-        splitWindow.setRightComponent(insertPannel);
-
-        songPannel.setBackground(new java.awt.Color(65, 65, 65));
-        songPannel.setBorder(null);
-        songPannel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        songPannel.setAutoscrolls(true);
-        songPannel.setMinimumSize(new java.awt.Dimension(415, 200));
-        songPannel.setPreferredSize(new java.awt.Dimension(415, 200));
-
-        jPanel1.setBackground(new java.awt.Color(65, 65, 65));
-        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 180));
-        jPanel1.setMinimumSize(new java.awt.Dimension(0, 180));
-        jPanel1.setPreferredSize(new java.awt.Dimension(704, 180));
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
-
-        jodrofunHeroPanel.setBackground(new java.awt.Color(65, 65, 65));
-        jodrofunHeroPanel.setForeground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jodrofunHeroPanelLayout = new javax.swing.GroupLayout(jodrofunHeroPanel);
-        jodrofunHeroPanel.setLayout(jodrofunHeroPanelLayout);
-        jodrofunHeroPanelLayout.setHorizontalGroup(
-            jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jodrofunHeroPanelLayout.setVerticalGroup(
-            jodrofunHeroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jodrofunHeroPanel);
-
-        songPannel.setViewportView(jPanel1);
-
-        splitWindow.setRightComponent(songPannel);
-
-        playPannel.setBackground(new java.awt.Color(65, 65, 65));
-        playPannel.setBorder(null);
-        playPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        playPannel.setAutoscrolls(true);
-        playPannel.setMinimumSize(new java.awt.Dimension(415, 200));
-        playPannel.setPreferredSize(new java.awt.Dimension(415, 200));
-        playPannel.setViewportView(visualPanel4);
-
-        visualPanel4.setBackground(new java.awt.Color(65, 65, 65));
-        visualPanel4.setMinimumSize(new java.awt.Dimension(600, 655));
-        visualPanel4.setPreferredSize(new java.awt.Dimension(50, 200));
-        visualPanel4.setLayout(new javax.swing.BoxLayout(visualPanel4, javax.swing.BoxLayout.LINE_AXIS));
-
-        visualWrapper4.setBackground(new java.awt.Color(65, 65, 65));
-        visualWrapper4.setPreferredSize(new java.awt.Dimension(200, 500));
-        java.awt.GridBagLayout visualWrapper4Layout = new java.awt.GridBagLayout();
-        visualWrapper4Layout.columnWeights = new double[] {1.0};
-        visualWrapper4Layout.rowWeights = new double[] {1.0};
-        visualWrapper4.setLayout(visualWrapper4Layout);
-
-        informationWrapper6.setBackground(new java.awt.Color(65, 65, 65));
-        informationWrapper6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        informationWrapper6.setMinimumSize(new java.awt.Dimension(300, 50));
-        informationWrapper6.setPreferredSize(new java.awt.Dimension(300, 50));
-        informationWrapper6.setLayout(new java.awt.GridLayout(1, 0));
-
-        informationTitle6.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        informationTitle6.setForeground(new java.awt.Color(255, 255, 255));
-        informationTitle6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        informationTitle6.setText("Live Loop");
-        informationTitle6.setToolTipText("");
-        informationTitle6.setMaximumSize(new java.awt.Dimension(72, 50));
-        informationTitle6.setMinimumSize(new java.awt.Dimension(72, 50));
-        informationTitle6.setPreferredSize(new java.awt.Dimension(72, 50));
-        informationWrapper6.add(informationTitle6);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        gridBagConstraints.weighty = 5000000.0;
-        visualWrapper4.add(informationWrapper6, gridBagConstraints);
-
-        informationWrapper5.setBackground(new java.awt.Color(65, 65, 65));
-        informationWrapper5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        informationWrapper5.setMinimumSize(new java.awt.Dimension(300, 50));
-        informationWrapper5.setPreferredSize(new java.awt.Dimension(300, 50));
-        informationWrapper5.setLayout(new java.awt.GridLayout(1, 0));
-
-        informationTitle5.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        informationTitle5.setForeground(new java.awt.Color(255, 255, 255));
-        informationTitle5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        informationTitle5.setText("Mode jeu");
-        informationTitle5.setToolTipText("");
-        informationTitle5.setMaximumSize(new java.awt.Dimension(72, 30));
-        informationTitle5.setMinimumSize(new java.awt.Dimension(72, 30));
-        informationTitle5.setPreferredSize(new java.awt.Dimension(72, 30));
-        informationWrapper5.add(informationTitle5);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        visualWrapper4.add(informationWrapper5, gridBagConstraints);
-
-        keyNameProperty8.setBackground(new java.awt.Color(65, 65, 65));
-        keyNameProperty8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        keyNameProperty8.setMinimumSize(new java.awt.Dimension(500, 40));
-        keyNameProperty8.setPreferredSize(new java.awt.Dimension(500, 40));
-        keyNameProperty8.setLayout(new java.awt.GridLayout(1, 0));
-
-        keyNameLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        keyNameLabel8.setText("BPM :");
-        keyNameLabel8.setMinimumSize(new java.awt.Dimension(40, 16));
-        keyNameLabel8.setPreferredSize(new java.awt.Dimension(0, 0));
-        keyNameProperty8.add(keyNameLabel8);
-
-        bpmSpinner.setModel(new javax.swing.SpinnerNumberModel(120, 1, 600, 1));
-        bpmSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                bpmSpinnerStateChanged(evt);
-            }
-        });
-        keyNameProperty8.add(bpmSpinner);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        gridBagConstraints.weighty = 5000.0;
-        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        visualWrapper4.add(keyNameProperty8, gridBagConstraints);
-
-        liveloopWrapper.setBackground(new java.awt.Color(51, 51, 51));
-        liveloopWrapper.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51), 25));
-        liveloopWrapper.setMaximumSize(new java.awt.Dimension(400, 400));
-        liveloopWrapper.setMinimumSize(new java.awt.Dimension(400, 400));
-        liveloopWrapper.setPreferredSize(new java.awt.Dimension(400, 400));
-        liveloopWrapper.setLayout(new java.awt.GridLayout(3, 3, 25, 25));
-
-        liveloop1.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop1MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop1Layout = new javax.swing.GroupLayout(liveloop1);
-        liveloop1.setLayout(liveloop1Layout);
-        liveloop1Layout.setHorizontalGroup(
-            liveloop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop1Layout.setVerticalGroup(
-            liveloop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop1);
-
-        liveloop2.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop2MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop2Layout = new javax.swing.GroupLayout(liveloop2);
-        liveloop2.setLayout(liveloop2Layout);
-        liveloop2Layout.setHorizontalGroup(
-            liveloop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop2Layout.setVerticalGroup(
-            liveloop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop2);
-
-        liveloop3.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop3MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop3Layout = new javax.swing.GroupLayout(liveloop3);
-        liveloop3.setLayout(liveloop3Layout);
-        liveloop3Layout.setHorizontalGroup(
-            liveloop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop3Layout.setVerticalGroup(
-            liveloop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop3);
-
-        liveloop4.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop4MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop4Layout = new javax.swing.GroupLayout(liveloop4);
-        liveloop4.setLayout(liveloop4Layout);
-        liveloop4Layout.setHorizontalGroup(
-            liveloop4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop4Layout.setVerticalGroup(
-            liveloop4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop4);
-
-        liveloop5.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop5MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop5Layout = new javax.swing.GroupLayout(liveloop5);
-        liveloop5.setLayout(liveloop5Layout);
-        liveloop5Layout.setHorizontalGroup(
-            liveloop5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop5Layout.setVerticalGroup(
-            liveloop5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop5);
-
-        liveloop6.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop6MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop6Layout = new javax.swing.GroupLayout(liveloop6);
-        liveloop6.setLayout(liveloop6Layout);
-        liveloop6Layout.setHorizontalGroup(
-            liveloop6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop6Layout.setVerticalGroup(
-            liveloop6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop6);
-
-        liveloop7.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop7MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop7Layout = new javax.swing.GroupLayout(liveloop7);
-        liveloop7.setLayout(liveloop7Layout);
-        liveloop7Layout.setHorizontalGroup(
-            liveloop7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop7Layout.setVerticalGroup(
-            liveloop7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop7);
-
-        liveloop8.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop8.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop8MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop8Layout = new javax.swing.GroupLayout(liveloop8);
-        liveloop8.setLayout(liveloop8Layout);
-        liveloop8Layout.setHorizontalGroup(
-            liveloop8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop8Layout.setVerticalGroup(
-            liveloop8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop8);
-
-        liveloop9.setBackground(new java.awt.Color(51, 51, 51));
-        liveloop9.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                liveloop9MouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout liveloop9Layout = new javax.swing.GroupLayout(liveloop9);
-        liveloop9.setLayout(liveloop9Layout);
-        liveloop9Layout.setHorizontalGroup(
-            liveloop9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        liveloop9Layout.setVerticalGroup(
-            liveloop9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        liveloopWrapper.add(liveloop9);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        gridBagConstraints.weighty = 5.0E7;
-        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        visualWrapper4.add(liveloopWrapper, gridBagConstraints);
-
-        visualPanel4.add(visualWrapper4);
-
-        playPannel.setViewportView(visualPanel4);
-
-        splitWindow.setRightComponent(playPannel);
-
-        globalEditPannel.setBackground(new java.awt.Color(65, 65, 65));
-        globalEditPannel.setBorder(null);
-        globalEditPannel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        globalEditPannel.setAutoscrolls(true);
-        globalEditPannel.setMinimumSize(new java.awt.Dimension(415, 200));
-        globalEditPannel.setPreferredSize(new java.awt.Dimension(415, 200));
-
-        visualPanel3.setBackground(new java.awt.Color(65, 65, 65));
-        visualPanel3.setMinimumSize(new java.awt.Dimension(600, 655));
-        visualPanel3.setPreferredSize(new java.awt.Dimension(50, 200));
-        visualPanel3.setLayout(new javax.swing.BoxLayout(visualPanel3, javax.swing.BoxLayout.LINE_AXIS));
-
-        visualWrapper3.setBackground(new java.awt.Color(65, 65, 65));
-        java.awt.GridBagLayout visualWrapper3Layout = new java.awt.GridBagLayout();
-        visualWrapper3Layout.columnWeights = new double[] {1.0};
-        visualWrapper3Layout.rowWeights = new double[] {1.0};
-        visualWrapper3.setLayout(visualWrapper3Layout);
-
-        informationWrapper3.setBackground(new java.awt.Color(65, 65, 65));
-        informationWrapper3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        informationWrapper3.setPreferredSize(new java.awt.Dimension(300, 50));
-        informationWrapper3.setLayout(new java.awt.GridLayout(1, 0));
-
-        informationTitle3.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        informationTitle3.setForeground(new java.awt.Color(255, 255, 255));
-        informationTitle3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        informationTitle3.setText("Instrument");
-        informationTitle3.setToolTipText("");
-        informationTitle3.setPreferredSize(new java.awt.Dimension(72, 30));
-        informationWrapper3.add(informationTitle3);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        visualWrapper3.add(informationWrapper3, gridBagConstraints);
-
-        keyNameProperty3.setBackground(new java.awt.Color(65, 65, 65));
-        keyNameProperty3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        keyNameProperty3.setMinimumSize(new java.awt.Dimension(125, 32));
-        keyNameProperty3.setPreferredSize(new java.awt.Dimension(375, 40));
-        keyNameProperty3.setLayout(new java.awt.GridLayout(1, 0));
-
-        keyNameLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        keyNameLabel3.setText("Nom de l'instrument :");
-        keyNameLabel3.setMinimumSize(new java.awt.Dimension(40, 16));
-        keyNameLabel3.setPreferredSize(new java.awt.Dimension(0, 0));
-        keyNameProperty3.add(keyNameLabel3);
-
-        instrumentNameField.setBackground(new java.awt.Color(238, 238, 238));
-        instrumentNameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        instrumentNameField.setText("Nom de l'instrument");
-        instrumentNameField.setBorder(null);
-        instrumentNameField.setMinimumSize(new java.awt.Dimension(30, 26));
-        instrumentNameField.setPreferredSize(new java.awt.Dimension(0, 0));
-        instrumentNameField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                instrumentNameFieldKeyReleased(evt);
-            }
-        });
-        keyNameProperty3.add(instrumentNameField);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        visualWrapper3.add(keyNameProperty3, gridBagConstraints);
-
-        keyNameProperty4.setBackground(new java.awt.Color(65, 65, 65));
-        keyNameProperty4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(65, 65, 65), 4));
-        keyNameProperty4.setMinimumSize(new java.awt.Dimension(125, 32));
-        keyNameProperty4.setPreferredSize(new java.awt.Dimension(375, 40));
-        keyNameProperty4.setLayout(new java.awt.GridLayout(1, 0));
-
-        keyNameLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        keyNameLabel4.setText("Timbre de base :");
-        keyNameLabel4.setMinimumSize(new java.awt.Dimension(40, 16));
-        keyNameLabel4.setPreferredSize(new java.awt.Dimension(0, 0));
-        keyNameProperty4.add(keyNameLabel4);
-
-        masterWaveformComboBox.setMinimumSize(new java.awt.Dimension(30, 26));
-        masterWaveformComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                masterWaveformComboBoxActionPerformed(evt);
-            }
-        });
-        keyNameProperty4.add(masterWaveformComboBox);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        gridBagConstraints.weighty = 5000.0;
-        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        visualWrapper3.add(keyNameProperty4, gridBagConstraints);
-
-        visualPanel3.add(visualWrapper3);
-
-        globalEditPannel.setViewportView(visualPanel3);
-
-        splitWindow.setRightComponent(globalEditPannel);
 
         getContentPane().add(splitWindow, java.awt.BorderLayout.CENTER);
 
@@ -2818,10 +2791,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         this.refresh();
     }//GEN-LAST:event_heightSpinnerStateChanged
 
-    private void readSpeedSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_readSpeedSpinnerStateChanged
-        GaudrophoneController.getController().setPitch((double)this.readSpeedSpinner.getValue());
-    }//GEN-LAST:event_readSpeedSpinnerStateChanged
-
     private void audioClipSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioClipSelectButtonActionPerformed
         fileDialog.setDialogTitle("Sélectionner un fichier");
         fileDialog.resetChoosableFileFilters();
@@ -3514,9 +3483,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel playTools;
     private javax.swing.JPanel positionProperty;
     private javax.swing.JMenuItem quitMenuItem;
-    private javax.swing.JLabel readSpeedLabel;
-    private javax.swing.JPanel readSpeedProperty;
-    private javax.swing.JSpinner readSpeedSpinner;
     private javax.swing.JMenuItem refreshMidi;
     private javax.swing.JLabel releaseLabel;
     private javax.swing.JSlider releaseSlider;
@@ -3649,7 +3615,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.audioClipRadioButton.setSelected(true);
             AudioClip sound = (AudioClip)key.getSound();
             this.audioClipPathLabel.setText(sound.getPath() == null ? "Aucun fichier" : sound.getPath());
-            this.readSpeedSpinner.setValue(sound.getSpeed());
         }
         
         this.setPositionSpinners(key);
