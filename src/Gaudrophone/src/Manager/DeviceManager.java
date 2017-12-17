@@ -61,12 +61,12 @@ public final class DeviceManager {
     public final void sendInput(int channel, int midiNum, boolean noteOn) {
         if (learning) {
             if (noteOn) {
-                learningKey.link(channel, midiNum);
-                learning = false;
+                this.learningKey.link(channel, midiNum);
+                this.learning = false;
             }
         } else if (autoLinking) {
-            GaudrophoneController.getController().autoLinkKeys(channel);
-            autoLinking = false;
+            this.autoLinkKeys(channel);
+            GaudrophoneController.getController().getDelegate().didAutoBindMidi();
         } else {
             if (GaudrophoneController.getController().getCanvasManager().getState() == State.Play || GaudrophoneController.getController().getCanvasManager().getState() == State.AutoPlay) {
                 LinkedList<Key> linkedKeys = GaudrophoneController.getController().getLinkedKeys(channel, midiNum);
@@ -126,6 +126,13 @@ public final class DeviceManager {
             } catch (javax.sound.midi.MidiUnavailableException e) {
                 
             }
+        }
+    }
+    
+    public void autoLinkKeys(int channel) {
+        for (Key key: GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys()) {
+            int midiNum = (int)Math.ceil(69.0 + (12.0 / Math.log(2.0)) * Math.log(key.getFrequency() / 440.0));
+            key.link(channel, midiNum);
         }
     }
 }

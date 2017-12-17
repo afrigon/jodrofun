@@ -54,8 +54,10 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -308,6 +310,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         saveAsMenuItem = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         refreshMidi = new javax.swing.JMenuItem();
+        bindMidi = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         quitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -2380,6 +2383,15 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             }
         });
         fileMenuItem.add(refreshMidi);
+
+        bindMidi.setText("JodroBind™");
+        bindMidi.setBorder(null);
+        bindMidi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bindMidiActionPerformed(evt);
+            }
+        });
+        fileMenuItem.add(bindMidi);
         fileMenuItem.add(jSeparator2);
 
         quitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -3008,6 +3020,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void refreshMidiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMidiActionPerformed
         GaudrophoneController.getController().getDeviceManager().refresh();
         this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice());
+        this.bindMidi.setEnabled(GaudrophoneController.getController().getDeviceManager().hasDevice());
     }//GEN-LAST:event_refreshMidiActionPerformed
 
     private void newElectricPianoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newElectricPianoMenuItemActionPerformed
@@ -3160,6 +3173,13 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private void liveloop9MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liveloop9MouseReleased
         this.liveLoopAction(8);
     }//GEN-LAST:event_liveloop9MouseReleased
+
+    private JLabel bindMidiLabel = new JLabel("Appuillez sur une touche de votre contrôlleur MIDI");
+    private void bindMidiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bindMidiActionPerformed
+        GaudrophoneController.getController().getDeviceManager().autoLink();
+        javax.swing.JOptionPane.showMessageDialog(null, this.bindMidiLabel, "JodroBind™", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        GaudrophoneController.getController().getDeviceManager().cancelAutoLink();
+    }//GEN-LAST:event_bindMidiActionPerformed
     
     private void readSpeedReset() {
         this.menuItemVerySlowSpeed.setIcon(null);
@@ -3301,6 +3321,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             GaudrophoneController.getController().getInstrumentManager().newInstrument();
             this.instrumentNameTextField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
             this.instrumentNameField.setText(GaudrophoneController.getController().getInstrumentManager().getName());
+            this.bindMidi.setEnabled(GaudrophoneController.getController().getDeviceManager().hasDevice());
             this.refresh();
             this.showPannel(this.playPannel);
             
@@ -3332,6 +3353,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     private javax.swing.JPanel backgroundSpacer;
     private javax.swing.JLabel backgroundSunkenDisplayLabel;
     private javax.swing.JLabel backgroundSunkenLabel;
+    private javax.swing.JMenuItem bindMidi;
     private javax.swing.JComboBox<String> borderComboBox;
     private javax.swing.JPanel borderPanel;
     private javax.swing.JLabel borderSelectLabel;
@@ -3855,6 +3877,10 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
     public void liveLoopDidStop(int index) {
         ((GradientPanel)this.liveloops[index]).setDrawImage(false);
     }
+    
+    @Override
+    public void didAutoBindMidi() {
+        SwingUtilities.getWindowAncestor(this.bindMidiLabel).setVisible(false);
+    }
 }
 
-//TODO shut down waiting and recoring liveloop when state change to !play
