@@ -131,7 +131,7 @@ public final class DeviceManager {
     
     public void autoLinkKeys(int channel) {
         for (Key key: GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys()) {
-            int midiNum = (int)Math.ceil(69.0 + (12.0 / Math.log(2.0)) * Math.log(key.getFrequency() / 440.0));
+            int midiNum = (int)Math.round(69.0 + (12.0 * Math.log(key.getFrequency() / 440.0) / Math.log(2.0)));
             key.link(channel, midiNum);
         }
     }
