@@ -47,15 +47,19 @@ public class LiveLoopRecorder {
         return this.state;
     }
 
-    public void setState(LiveLoopRecorderState state) {
-        this.state = state;
-    }
-    
     public LiveLoopRecorderState getStateForIndex(int index) {
         if (index == this.liveLoopIndex) {
             return this.state;
         }
         return LiveLoopRecorderState.idle;
+    }
+    
+    public void setState(LiveLoopRecorderState state) {
+        this.state = state;
+    }
+    
+    public int getLiveLoopIndex() {
+        return this.liveLoopIndex;
     }
     
     public void startRecording(int index) {

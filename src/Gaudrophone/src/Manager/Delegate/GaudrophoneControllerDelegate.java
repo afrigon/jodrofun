@@ -40,4 +40,5 @@ public interface GaudrophoneControllerDelegate {
     public void liveLoopDidStartRecording(int index);
     public void liveLoopDidCancelRecording(int index);
     public void liveLoopDidStop(int index);
+    public void didAutoBindMidi();
 }

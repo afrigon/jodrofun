@@ -35,7 +35,6 @@ import Music.AudioClip;
 import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
-import Music.LiveLoop;
 import Music.LiveLoopRecorderState;
 import Music.PlayableNote;
 import Music.Song;
@@ -53,7 +52,6 @@ public class GaudrophoneController {
     private final SelectionManager selectionManager = new SelectionManager();
     private final SequencerManager sequencerManager = new SequencerManager();
     private final DeviceManager deviceManager = new DeviceManager();
-    private final LiveLoop[] liveLoops = new LiveLoop[9];
     
     private GaudrophoneControllerDelegate delegate;
     public void setDelegate(GaudrophoneControllerDelegate delegate) { this.delegate = delegate; }
@@ -75,6 +73,7 @@ public class GaudrophoneController {
                 @Override public void liveLoopDidStartRecording(int index) {}
                 @Override public void liveLoopDidCancelRecording(int index) {}
                 @Override public void liveLoopDidStop(int index) {}
+                @Override public void didAutoBindMidi() {}
             };
         }
     }
@@ -567,6 +566,11 @@ public class GaudrophoneController {
         return null;
     }
     
+    public void playKey(Key key) {
+        key.play();
+        this.sequencerManager.getLiveLoopRecorder().addSound(key.getSound());
+    }
+    
     public boolean playNote(PlayableNote note) {
         Key key = this.getKeyFromPlayableNote(note);
         if(key != null) {
@@ -617,6 +621,11 @@ public class GaudrophoneController {
         return "midi_detected";
     }
     
+    public void releaseKey(Key key) {
+        this.sequencerManager.getLiveLoopRecorder().stopSound(key.getSound());
+        key.release();
+    }
+    
     public boolean releaseNote(PlayableNote note) {
         Key key = this.getKeyFromPlayableNote(note);
         if(key != null) {
@@ -647,12 +656,5 @@ public class GaudrophoneController {
     public void stopPlayingLiveLoop(int index) {
         this.sequencerManager.stopLiveLoop(index);
         this.getDelegate().liveLoopDidStop(index);
-    }
-    
-    public void autoLinkKeys(int channel) {
-        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
-            int midiNum = (int)Math.ceil(69.0 + (12.0 / Math.log(2.0)) * Math.log(key.getFrequency() / 440.0));
-            key.link(channel, midiNum);
-        }
     }
 }

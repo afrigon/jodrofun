@@ -25,6 +25,7 @@ package Music;
 
 import Manager.GaudrophoneController;
 import Manager.SequencerManager;
+import java.util.Iterator;
 
 public class LiveLoop extends Sequencer {
     private int loopIndex = -1;
@@ -86,6 +87,12 @@ public class LiveLoop extends Sequencer {
             if (this.currentStep >= song.getDuration()) {
                 this.currentStep = 0;
             }
+        }
+        for (Iterator<PlayableChord> it = this.song.getChords().iterator(); it.hasNext();) {
+            PlayableChord chord = it.next();
+            chord.getNotes().forEach((note) -> {
+                GaudrophoneController.getController().releaseNote(note);
+            });
         }
     }
 }

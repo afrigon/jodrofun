@@ -29,12 +29,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class GradientPanel extends javax.swing.JPanel {
     private Color[] colors = new Color[2];
     private Color borderColor = new Color(0x00000000, true);
     private boolean drawImage = false;
-            
+    private BufferedImage image;
+    
     public void setDrawImage(boolean value) {
         this.drawImage = value;
         this.repaint();
@@ -49,6 +55,9 @@ public class GradientPanel extends javax.swing.JPanel {
         Color color = HSL.getRGB((float)hue, 65f, 65f);
         this.colors[0] = color.brighter();
         this.colors[1] = color;
+        try {
+            this.image = ImageIO.read(this.getClass().getResource("/resources/liveloop_playing.png"));
+        } catch (IOException ex) {}
     }
     
     @Override
@@ -75,7 +84,7 @@ public class GradientPanel extends javax.swing.JPanel {
         
         //image
         if (this.drawImage) {
-            
+            g2.drawImage(this.image, null, (w-48)/2, (h-48)/2);
         }
     }
 }
