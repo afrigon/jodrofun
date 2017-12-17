@@ -35,7 +35,6 @@ import Music.AudioClip;
 import Music.SynthesizedSound;
 import Music.Note;
 import Music.Alteration;
-import Music.LiveLoop;
 import Music.LiveLoopRecorderState;
 import Music.PlayableNote;
 import Music.Song;
@@ -53,7 +52,6 @@ public class GaudrophoneController {
     private final SelectionManager selectionManager = new SelectionManager();
     private final SequencerManager sequencerManager = new SequencerManager();
     private final DeviceManager deviceManager = new DeviceManager();
-    private final LiveLoop[] liveLoops = new LiveLoop[9];
     
     private GaudrophoneControllerDelegate delegate;
     public void setDelegate(GaudrophoneControllerDelegate delegate) { this.delegate = delegate; }
@@ -567,6 +565,11 @@ public class GaudrophoneController {
         return null;
     }
     
+    public void playKey(Key key) {
+        key.play();
+        this.sequencerManager.getLiveLoopRecorder().addSound(key.getSound());
+    }
+    
     public boolean playNote(PlayableNote note) {
         Key key = this.getKeyFromPlayableNote(note);
         if(key != null) {
@@ -615,6 +618,11 @@ public class GaudrophoneController {
             }
         }
         return "midi_detected";
+    }
+    
+    public void releaseKey(Key key) {
+        this.sequencerManager.getLiveLoopRecorder().stopSound(key.getSound());
+        key.release();
     }
     
     public boolean releaseNote(PlayableNote note) {

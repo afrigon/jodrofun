@@ -193,7 +193,6 @@ public class Key implements java.io.Serializable {
     
     public void release() {
         GaudrophoneController.getController().getSoundService().release(this.sound);
-        GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().stopSound(this.sound);
         this.removeState(KeyState.clicked);
     }
 }

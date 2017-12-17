@@ -77,7 +77,6 @@ public class ShapePreview extends javax.swing.JPanel {
         try {
             return this.shapeGen.getClass().newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
-            System.out.println("UI.ShapePreview.getShapeGenerator() catch");
             return this.shapeGen;
         }
     }

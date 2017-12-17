@@ -96,7 +96,7 @@ public class CanvasManager {
     public void clicked(Key key) {
         switch (this.state) {
             case Play:
-                key.play();
+                GaudrophoneController.getController().playKey(key);
                 this.lastKey = key;
                 break;
             case AutoPlay:
@@ -139,7 +139,7 @@ public class CanvasManager {
             case AutoPlay:
             case Play:
                 if (key != null) {
-                    key.release();
+                    GaudrophoneController.getController().releaseKey(key);
                 }
                 break;
             case EditKey:
@@ -203,21 +203,21 @@ public class CanvasManager {
                 if (ds != null) {
                     //If the user clicked the canvas and drag onto a key
                     if (this.lastKey == null) {
-                        ds.getKey().play();
+                        GaudrophoneController.getController().playKey(ds.getKey());
                         this.getDelegate().shouldRedraw();
                         this.lastKey = ds.getKey();
                     } else {
                         //If the playing key is not the same as the key being drag right now
                         if (this.lastKey != ds.getKey()) {
-                            this.lastKey.release();
-                            ds.getKey().play();
+                            GaudrophoneController.getController().releaseKey(this.lastKey);
+                            GaudrophoneController.getController().playKey(ds.getKey());
                             this.getDelegate().shouldRedraw();
                             this.lastKey = ds.getKey();
                         }
                     }
                 } else {
                     if (this.lastKey != null) {
-                        this.lastKey.release();
+                        GaudrophoneController.getController().releaseKey(this.lastKey);
                         this.getDelegate().shouldRedraw();
                         this.lastKey = null;
                     }
