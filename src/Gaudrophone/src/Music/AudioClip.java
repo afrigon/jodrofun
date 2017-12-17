@@ -38,7 +38,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AudioClip extends Sound {
     private String path = null;
-    private double speed = 1;
     private transient AudioFormat audioFormat = null;
     private byte[] originalBuffer = null;
     
@@ -156,10 +155,6 @@ public class AudioClip extends Sound {
         return path;
     }
     
-    public double getSpeed() {
-        return speed;
-    }
-    
     // Setters
     public final Boolean setPath(String newPath) {
         path = newPath;
@@ -195,9 +190,5 @@ public class AudioClip extends Sound {
         } catch (UnsupportedAudioFileException | IOException ex) {
             return false;
         }
-    }
-    
-    public void setSpeed(double newSpeed) {
-        speed = newSpeed;
     }
 }

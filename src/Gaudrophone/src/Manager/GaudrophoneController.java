@@ -461,13 +461,6 @@ public class GaudrophoneController {
             key.getSound().setVolume(newVolume);
         }
     }
-    
-    public void setPitch(double pitch) {
-        Key key = this.selectionManager.getSelectedKey();
-        if (key != null && key.getSound().getType() == SoundType.audioClip) {
-            ((AudioClip)key.getSound()).setSpeed(pitch);
-        }
-    }
 
     public void setWaveform(WaveFormType waveFormType) {
         Key key = this.selectionManager.getSelectedKey();
