@@ -81,6 +81,7 @@ public class ElectricPiano implements InstrumentPattern {
     
     private Key generateKey(Note note, int octave, Alteration alteration) {
         SynthesizedSound sound = new SynthesizedSound(new PlayableNote(note, octave, alteration, 0));
+        sound.setWaveForm(new Music.Waveform.SineWaveForm());
         sound.setEnvelope(new Envelope(100, 1000, 0, 1000));
         KeyShape shape = alteration == Alteration.Natural ? this.getWhiteKey() : this.getBlackKey();
         String noteName = note.toString() + alteration.getString() + octave;
