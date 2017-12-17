@@ -3713,6 +3713,7 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
                 break;
             case AutoPlay:
                 this.showPannel(this.songPannel);
+                this.splitWindow.setDividerLocation(this.splitWindow.getHeight()-200);
                 break;
             case CreatingShape:
                 this.showPannel(this.insertPannel);
