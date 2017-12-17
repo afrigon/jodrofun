@@ -36,7 +36,7 @@ public abstract class Sound implements Runnable, java.io.Serializable {
     protected PlayableNote playableNote = new PlayableNote();
     protected Envelope envelope = null;
     protected SoundType type = null;
-    protected SourceDataLine line = null;
+    protected transient SourceDataLine line = null;
     
     protected boolean playing = false;
     protected boolean released = false;
@@ -62,7 +62,9 @@ public abstract class Sound implements Runnable, java.io.Serializable {
     
     public void kill() {
         playing = false;
-        line.close();
+        if(line != null) {
+            line.close();
+        }
         SOUNDSERVICE.killed();
     }
     
