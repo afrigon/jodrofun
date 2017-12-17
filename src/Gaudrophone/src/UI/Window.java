@@ -3293,8 +3293,6 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
             this.bindMidi.setEnabled(GaudrophoneController.getController().getDeviceManager().hasDevice());
             this.refresh();
             this.showPannel(this.playPannel);
-            
-            GaudrophoneController.getController().getDeviceManager().refresh();
             this.buttonMidi.setVisible(GaudrophoneController.getController().getDeviceManager().hasDevice());
         });
     }

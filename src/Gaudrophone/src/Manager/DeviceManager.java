@@ -31,19 +31,20 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Transmitter;
 
 public final class DeviceManager {
-    LinkedList<MidiDevice> devices = new LinkedList<>();
+    private final LinkedList<MidiDevice> devices = new LinkedList<>();
     private boolean learning = false;
     private Key learningKey = null;
     private boolean autoLinking = false;
     
-    DeviceManager() {
-        refresh();
+    public DeviceManager() {
+        this.refresh();
     }
     
     public final void clearDevices() {
-        for (MidiDevice device : devices)
+        for (MidiDevice device : devices) {
             device.close();
-        devices.clear();
+        }
+        this.devices.clear();
     }
     
     private void addDevice(MidiDevice device) {
@@ -52,14 +53,14 @@ public final class DeviceManager {
             device.open();
             Transmitter trans = device.getTransmitter();
             trans.setReceiver(receiver);
-            devices.add(device);
+            this.devices.add(device);
         } catch (MidiUnavailableException ex) {
             System.out.println("MidiException : " + ex.toString());
         }
     }
     
     public final void sendInput(int channel, int midiNum, boolean noteOn) {
-        if (learning) {
+        if (this.learning) {
             if (noteOn) {
                 this.learningKey.link(channel, midiNum);
                 this.learning = false;
@@ -71,10 +72,11 @@ public final class DeviceManager {
             if (GaudrophoneController.getController().getCanvasManager().getState() == State.Play || GaudrophoneController.getController().getCanvasManager().getState() == State.AutoPlay) {
                 LinkedList<Key> linkedKeys = GaudrophoneController.getController().getLinkedKeys(channel, midiNum);
                 for (Key linkedKey : linkedKeys) {
-                    if (noteOn)
+                    if (noteOn) {
                         GaudrophoneController.getController().getCanvasManager().clicked(linkedKey);
-                    else
+                    } else {
                         GaudrophoneController.getController().getCanvasManager().released(linkedKey);
+                    }
                     GaudrophoneController.getController().getCanvasManager().getDelegate().shouldRedraw();
                 }
             }
@@ -82,50 +84,48 @@ public final class DeviceManager {
     }
     
     public final void linkMidiToKey(Key key) {
-        learningKey = key;
-        learning = true;
+        this.learningKey = key;
+        this.learning = true;
     }
     
     public final void autoLink() {
-        autoLinking = true;
+        this.autoLinking = true;
     }
     
     public final void cancelLink() {
-        learning = false;
+        this.learning = false;
     }
     
     public final void cancelAutoLink() {
-        autoLinking = false;
+        this.autoLinking = false;
     }
     
     public final boolean hasDevice() {
-        return devices.size() > 0;
+        return this.devices.size() > 0;
     }
     
     public final boolean isLinking(Key key) {
-        return learning && key == learningKey;
+        return this.learning && key == this.learningKey;
     }
     
     public final boolean isLinking() {
-        return learning;
+        return this.learning;
     }
     
     public final boolean isAutoLinking() {
-        return autoLinking;
+        return this.autoLinking;
     }
     
     public final void refresh() {
-        clearDevices();
+        this.clearDevices();
         
         for (MidiDevice.Info info : MidiSystem.getMidiDeviceInfo()) {
             try {
                 MidiDevice device = MidiSystem.getMidiDevice(info);
                 if (device.getMaxReceivers() == 0) {
-                    addDevice(device);
+                    this.addDevice(device);
                 }
-            } catch (javax.sound.midi.MidiUnavailableException e) {
-                
-            }
+            } catch (javax.sound.midi.MidiUnavailableException e) {}
         }
     }
     

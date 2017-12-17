@@ -27,8 +27,6 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
 public class MidiReceiver implements javax.sound.midi.Receiver {
-    //private final NoteTranslator translator = new NoteTranslator();
-    
     @Override
     public void send(MidiMessage message, long l) {
         if (message instanceof ShortMessage) {
@@ -37,16 +35,13 @@ public class MidiReceiver implements javax.sound.midi.Receiver {
             if (command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF) {
                 int channel = shortMessage.getChannel();
                 int midiNum = shortMessage.getData1();
-                GaudrophoneController.getController().getDeviceManager().sendInput(channel, midiNum, command == ShortMessage.NOTE_ON);
-//                int octave = (midiNum / 12) - 1;
-//                int note = midiNum % 12;
-//                int velocity = shortMessage.getData2();
-            } else {
+                GaudrophoneController.getController().getDeviceManager().sendInput(channel, midiNum, command == ShortMessage.NOTE_ON && shortMessage.getData2() != 0);
             }
         }
     }
 
     @Override
     public void close() {
+        //update ui state
     }
 }
