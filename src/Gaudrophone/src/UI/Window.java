@@ -3705,6 +3705,9 @@ public class Window extends javax.swing.JFrame implements GaudrophoneControllerD
         
         if (state != State.Play) {
             GaudrophoneController.getController().getSequencerManager().setMetronomeState(false);
+            if (GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().getState() != LiveLoopRecorderState.idle) {
+                this.liveLoopAction(GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().getLiveLoopIndex());
+            }
         }
         if (state != State.AutoPlay) {
             GaudrophoneController.getController().getInstrumentManager().getInstrument().getKeys().forEach((k) -> {
