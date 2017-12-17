@@ -57,9 +57,7 @@ public class SoundService {
         
         if (sound.isPlaying())
             sound.kill();
-        
-        GaudrophoneController.getController().getSequencerManager().getLiveLoopRecorder().addSound(sound);
-        
+                
         soundPlayingQty++;
         SourceDataLine line;
         try {

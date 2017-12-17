@@ -65,6 +65,5 @@ public class Song {
     
     public void setDuration(double steps) {
         duration = steps;
-        System.out.println("Total duration : " + steps);
     }
 }
