@@ -32,6 +32,7 @@ import Music.SynthesizedSound;
 import Music.AudioClip;
 import Music.PlayableNote;
 import Music.SoundType;
+import java.awt.Color;
 
 public class Key implements java.io.Serializable {
     private KeyShape shape = null;
@@ -70,6 +71,19 @@ public class Key implements java.io.Serializable {
         this.shape = new KeyShape(v, key.getShape().getIdleAppearance().getColor(), key.getShape().getSunkenAppearance().getColor());
         this.shape.getIdleAppearance().setImage(key.getShape().getIdleAppearance().getImagePath());
         this.shape.getSunkenAppearance().setImage(key.getShape().getSunkenAppearance().getImagePath());
+        //Set lines borders and color using iterator because swag! (hope this work, first time)
+        java.util.Iterator<KeyUtils.KeyLine> itline = key.getShape().getLines().iterator();
+        for(int i = 0; itline.hasNext(); ++i) {
+            KeyUtils.KeyLine line = itline.next();
+            this.shape.getLines().get(i).setColor(line.getColor());
+            this.shape.getLines().get(i).setThickness(line.getThickness());
+        }
+        //Same for cross-lines
+        for(int i = 0; i < key.getShape().getCrossLines().length; ++i) {
+            KeyUtils.KeyLine line = key.getShape().getCrossLines()[i];
+            this.shape.getCrossLines()[i].setColor(line.getColor());
+            this.shape.getCrossLines()[i].setThickness(line.getThickness());
+        }
         
         //Set Others
         this.name = key.name;
@@ -77,6 +91,21 @@ public class Key implements java.io.Serializable {
         this.sound.getPlayableNote().setOctave(key.sound.getPlayableNote().getOctave());
         this.sound.getPlayableNote().setAlteration(key.sound.getPlayableNote().getAlteration());
         this.sound.getPlayableNote().setTuning(key.sound.getPlayableNote().getTuning());
+        
+        //Flags
+        this.states = 0;
+        if((key.getStates() & KeyState.displayAlteration.getValue()) != 0) {
+            this.states += KeyState.displayAlteration.getValue();
+        }
+        if((key.getStates() & KeyState.displayName.getValue()) != 0) {
+            this.states += KeyState.displayName.getValue();
+        }
+        if((key.getStates() & KeyState.displayNote.getValue()) != 0) {
+            this.states += KeyState.displayNote.getValue();
+        }
+        if((key.getStates() & KeyState.displayOctave.getValue()) != 0) {
+            this.states += KeyState.displayOctave.getValue();
+        }
     }
     
     // Setters

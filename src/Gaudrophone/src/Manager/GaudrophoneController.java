@@ -73,6 +73,7 @@ public class GaudrophoneController {
                 @Override public void liveLoopDidStartRecording(int index) {}
                 @Override public void liveLoopDidCancelRecording(int index) {}
                 @Override public void liveLoopDidStop(int index) {}
+                @Override public void didAutoBindMidi() {}
             };
         }
     }
@@ -460,13 +461,6 @@ public class GaudrophoneController {
             key.getSound().setVolume(newVolume);
         }
     }
-    
-    public void setPitch(double pitch) {
-        Key key = this.selectionManager.getSelectedKey();
-        if (key != null && key.getSound().getType() == SoundType.audioClip) {
-            ((AudioClip)key.getSound()).setSpeed(pitch);
-        }
-    }
 
     public void setWaveform(WaveFormType waveFormType) {
         Key key = this.selectionManager.getSelectedKey();
@@ -643,9 +637,8 @@ public class GaudrophoneController {
                 this.getDelegate().liveLoopDidCancelRecording(index);
             }
             this.sequencerManager.getLiveLoopRecorder().stopRecording();
-        } else {
-            this.sequencerManager.getLiveLoopRecorder().startRecording(index);
         }
+        this.sequencerManager.getLiveLoopRecorder().startRecording(index);
     }
     
     public void startPlayingLiveLoop(int index) {
@@ -655,12 +648,5 @@ public class GaudrophoneController {
     public void stopPlayingLiveLoop(int index) {
         this.sequencerManager.stopLiveLoop(index);
         this.getDelegate().liveLoopDidStop(index);
-    }
-    
-    public void autoLinkKeys(int channel) {
-        for (Key key: this.instrumentManager.getInstrument().getKeys()) {
-            int midiNum = (int)Math.ceil(69.0 + (12.0 / Math.log(2.0)) * Math.log(key.getFrequency() / 440.0));
-            key.link(channel, midiNum);
-        }
     }
 }
