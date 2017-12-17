@@ -86,6 +86,10 @@ public final class DeviceManager {
         learning = true;
     }
     
+    public final void autoLink() {
+        autoLinking = true;
+    }
+    
     public final void cancelLink() {
         learning = false;
     }

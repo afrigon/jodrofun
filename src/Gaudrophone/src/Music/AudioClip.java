@@ -118,28 +118,29 @@ public class AudioClip extends Sound {
                 } else {
                     for (int j = 0; j < channels; j++) {
                         if (sampleSizeInByte == 1) {
-                            buffer[i * frameSize + j] = (byte) (((double) originalBuffer[isampleCount * frameSize + j]) * amp);
-
+                            if (isampleCount * frameSize + j < originalBuffer.length) {
+                                buffer[i * frameSize + j] = (byte) (((double) originalBuffer[isampleCount * frameSize + j]) * amp);
+                            } else {
+                                buffer[i * frameSize + j] = 0;
+                            }
                         } else if (sampleSizeInByte == 2) {
                             int firstBytePosition = i * frameSize + j * channels;
                             int ifirstBytePosition = isampleCount * frameSize + j * channels;
-                            if (isBigEndian) {
-                                System.out.println("Big Endian file might not be supported.");
-                                short value = (short) ((originalBuffer[ifirstBytePosition] << 8) + (originalBuffer[ifirstBytePosition + 1] & 0xff));
-
-                                value = (short) (amp * ((double) value));
-
-                                buffer[firstBytePosition + 1] = (byte) (value & 0xff);
-                                buffer[firstBytePosition] = (byte) ((value >> 8) & 0xff);
-
-                            } else {
-                                short value = (short) ((originalBuffer[ifirstBytePosition + 1] << 8) + (originalBuffer[ifirstBytePosition] & 0xff));
-
-                                value = (short) (amp * ((double) value));
-
-                                buffer[firstBytePosition] = (byte) (value & 0xff);
-                                buffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
+                           
+                            double audioValue = 0;
+                            if (ifirstBytePosition + 1 < originalBuffer.length) {
+                                if (isBigEndian) {
+                                    System.out.println("Big Endian file might not be supported.");
+                                    audioValue = (double) ((originalBuffer[ifirstBytePosition] << 8) + (originalBuffer[ifirstBytePosition + 1] & 0xff));
+                                } else {
+                                    audioValue = (double) ((originalBuffer[ifirstBytePosition + 1] << 8) + (originalBuffer[ifirstBytePosition] & 0xff));
+                                }
                             }
+
+                            short value = (short) (amp * audioValue);
+
+                            buffer[firstBytePosition] = (byte) (value & 0xff);
+                            buffer[firstBytePosition + 1] = (byte) ((value >> 8) & 0xff);
                         }
                     }
                 }
