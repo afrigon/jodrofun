@@ -80,6 +80,7 @@ public class Piano implements InstrumentPattern {
     
     private Key generateKey(Note note, int octave, Alteration alteration) {
         SynthesizedSound sound = new SynthesizedSound(new PlayableNote(note, octave, alteration, 0));
+        sound.setWaveForm(new Music.Waveform.SineWaveForm());
         sound.getEnvelope().setAttack(10);
         sound.getEnvelope().setRelease(30);
         KeyShape shape = alteration == Alteration.Natural ? this.getWhiteKey() : this.getBlackKey();
