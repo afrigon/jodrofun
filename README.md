@@ -14,7 +14,7 @@ Originally the program was called Gaudrophone, but during development the team h
 
 ![ad](https://cdn.discordapp.com/attachments/361898594292334594/384567843758538763/Banner.png)
 
-The logo is a beautiful picture of our *lord* and *savior*,  ***Pistache** he was the main inspiration through the entire project.
+The logo is a beautiful picture of our *lord* and *savior*,  ***Pistache*** he was the main inspiration through the entire project.
 
 ## Contributions
 
