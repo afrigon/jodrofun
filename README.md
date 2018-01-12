@@ -8,7 +8,7 @@ Jodrofun is a musical tool created for the course GLO-2004 at University Laval t
 
 Simply download the exe folder and use the jar file to lunch the jodrofun and become an awesome musician.
 
-## Origin
+### Origins
 
 Originally the program was called Gaudrophone, but during development the team had one too many one nighter and decided to go dank on this one. Here is the geniously design ad.
 
@@ -16,7 +16,7 @@ Originally the program was called Gaudrophone, but during development the team h
 
 The logo is a beautiful picture of our *lord* and *savior*,  ***Pistache*** he was the main inspiration through the entire project.
 
-## Contributions
+### Contributions
 
 we've reach the final version for the scope of the class, no more development will be done on this project by the team. if you see potential in this tool feel free to get in contact.
 
