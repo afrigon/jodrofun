@@ -1,7 +1,25 @@
-# The legend of the Gaudrophone
+![](https://raw.githubusercontent.com/afrigon/jodrofun/master/banner.jpg)
 
-![Hero](https://raw.githubusercontent.com/afrigon/jodrofun/master/cat-adult-landing-hero.jpg)
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-Here is **Pistache**, our *lord* and *savior*. May he let you compose sick beats with this masterpiece of software engineering.
+Jodrofun is a musical tool created for the course GLO-2004 at University Laval that let users create instrument from visual to audio with a customizable experience. Users $
 
-![Banner](https://cdn.discordapp.com/attachments/361898594292334594/384567843758538763/Banner.png)
+## Installation
+
+Simply download the exe folder and use the jar file to lunch the jodrofun and become an awesome musician.
+
+## Origin
+
+Originally the program was called Gaudrophone, but during development the team had one too many one nighter and decided to go dank on this one. Here is the geniously desig$
+
+![ad](https://cdn.discordapp.com/attachments/361898594292334594/384567843758538763/Banner.png)
+
+The logo is a beautiful picture of our *lord* and *savior*,  ***Pistache** he was the main inspiration through the entire project.
+
+## Contributions
+
+we've reach the final version for the scope of the class, no more development will be done on this project by the team. if you see potential in this tool feel free to get $
+
+### License
+
+Jodrofun is [MIT licensed](./LICENSE).
