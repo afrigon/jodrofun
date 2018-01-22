@@ -183,11 +183,11 @@ public class Key implements java.io.Serializable {
     }
     
     public void removeState(KeyState state) {
-        this.states -= (this.states & state.getValue());
+        this.states &= ~state.getValue();
     }
     
     public void removeStates(int states) {
-        this.states -= (this.states & states);
+        this.states &= ~states;
     }
     
     public void link(int channel, int midiNum) {
