@@ -20,7 +20,7 @@ Simply download the exe folder and use the jar file to lunch the jodrofun and be
 
 The logo is a beautiful picture of our *lord* and *savior*,  ***Pistache*** he was the main inspiration through the entire project.
 
-Originally the program was called Gaudrophone, but during development the team had one too many one nighter and decided to go dank on this one. Here is the geniously design ad.
+Originally the program was called Gaudrophone, but during development the team had one too many one nighter and decided to go dank on this one. Here is the geniously designed ad.
 
 ![ad](https://cdn.discordapp.com/attachments/361898594292334594/384567843758538763/Banner.png)
 
