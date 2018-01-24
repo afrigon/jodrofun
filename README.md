@@ -8,6 +8,14 @@ Jodrofun is a musical tool created for the course GLO-2004 at University Laval t
 
 Simply download the exe folder and use the jar file to lunch the jodrofun and become an awesome musician.
 
+## Features
+
+* Create instruments with custom sound and shapes
+* Gaudrophone hero play mode (similar to guitar hero)
+* Generate sound from waveform
+* ADSR enveloppe
+* MIDI keyboard support
+
 ## Origins
 
 The logo is a beautiful picture of our *lord* and *savior*,  ***Pistache*** he was the main inspiration through the entire project.
